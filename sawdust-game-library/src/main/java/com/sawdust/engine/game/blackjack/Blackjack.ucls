@@ -1,0 +1,53 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.blackjack.Commands" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/Commands.java" 
+    binary="false">    
+    <position x="119" y="62" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.blackjack.BlackjackGame.GamePhases" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" 
+    binary="false">    
+    <position x="349" y="650" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.blackjack.BlackjackGame" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" 
+    binary="false">    
+    <position x="372" y="254" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.game.blackjack.BlackjackGame" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" binary="false" 
+      navigable="false">      
+      <attribute name="_currentPhase"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.game.blackjack.BlackjackGame.GamePhases" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.game.blackjack.BlackjackGame" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.game.blackjack.BlackjackGame.GamePhases" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/blackjack/BlackjackGame.java" binary="false"/>  
+  </nesting>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

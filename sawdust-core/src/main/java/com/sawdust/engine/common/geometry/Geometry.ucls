@@ -1,0 +1,84 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.geometry.ParametricPosition" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricPosition.java" 
+    binary="false">    
+    <position x="125" y="186" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.geometry.Vector" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/geometry/Vector.java" binary="false">    
+    <position x="340" y="258" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.geometry.ParametricLine" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricLine.java" 
+    binary="false">    
+    <position x="457" y="87" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.geometry.IPosition" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/geometry/IPosition.java" 
+    binary="false">    
+    <position x="515" y="509" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.geometry.Position" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/geometry/Position.java" 
+    binary="false">    
+    <position x="523" y="298" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <realization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.geometry.Position" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/Position.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.geometry.IPosition" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/IPosition.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.geometry.ParametricLine" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricLine.java" binary="false" navigable="false">      
+      <attribute name="_start"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.geometry.Position" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/Position.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.geometry.ParametricLine" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricLine.java" binary="false" navigable="false">      
+      <attribute name="_vector"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.geometry.Vector" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/Vector.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.geometry.ParametricLine" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricLine.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.geometry.ParametricPosition" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/geometry/ParametricPosition.java" binary="false"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

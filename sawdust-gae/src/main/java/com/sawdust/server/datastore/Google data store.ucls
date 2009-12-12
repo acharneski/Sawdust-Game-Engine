@@ -1,0 +1,163 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.GameListing.InviteSearchParam" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameListing.java" 
+    binary="false">    
+    <position x="470" y="1301" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.GameSession" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameSession.java" 
+    binary="false">    
+    <position x="156" y="887" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.Account" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/server/datastore/Account.java" binary="false">    
+    <position x="765" y="1010" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.DataStore" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataStore.java" 
+    binary="false">    
+    <position x="487" y="316" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.SessionMember" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" 
+    binary="false">    
+    <position x="147" y="165" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.GameListing" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameListing.java" 
+    binary="false">    
+    <position x="459" y="992" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.AccountPlayer" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/AccountPlayer.java" 
+    binary="false">    
+    <position x="614" y="144" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.TinySession" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/TinySession.java" 
+    binary="false">    
+    <position x="717" y="584" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.DataObj" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataObj.java" binary="false">    
+    <position x="447" y="594" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="com.sawdust.server.datastore.SessionMember.MemberStatus" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" 
+    binary="false">    
+    <position x="417" y="128" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <nesting>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameListing" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameListing.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameListing.InviteSearchParam" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameListing.java" binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember.MemberStatus" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false"/>  
+  </nesting>  
+  <generalization>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameListing" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameListing.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.DataObj" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataObj.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameSession" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameSession.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.DataObj" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataObj.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.TinySession" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/TinySession.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.DataObj" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataObj.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameSession" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameSession.java" binary="false" navigable="false">      
+      <attribute name="members"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <bendpoint x="616" y="761"/>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.Account" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/Account.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.DataObj" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/DataObj.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false" navigable="false">      
+      <attribute name="gameSession"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.GameSession" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/GameSession.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false" navigable="false">      
+      <attribute name="memberStatus"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.server.datastore.SessionMember.MemberStatus" 
+      file="/Sawdust Game Engine/src/com/sawdust/server/datastore/SessionMember.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

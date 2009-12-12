@@ -1,0 +1,155 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.ClientCommand" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/ClientCommand.java" 
+    binary="false">    
+    <position x="95" y="337" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.CommandResult" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/CommandResult.java" 
+    binary="false">    
+    <position x="296" y="330" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.AccessToken" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/AccessToken.java" 
+    binary="false">    
+    <position x="817" y="252" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.GameState" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/GameState.java" binary="false">    
+    <position x="598" y="274" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.geometry.Position" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/Position.java" binary="false">    
+    <position x="376" y="565" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.GameConfig" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/GameConfig.java" 
+    binary="false">    
+    <position x="149" y="549" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.Token" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/Token.java" binary="false">    
+    <position x="788" y="735" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.GameLabel" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/GameLabel.java" binary="false">    
+    <position x="557" y="783" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.Game" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/Game.java" binary="false">    
+    <position x="309" y="139" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.GameLocation" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/GameLocation.java" 
+    binary="false">    
+    <position x="824" y="448" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.Message" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/Message.java" binary="false">    
+    <position x="83" y="150" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.PropertyConfig.PropertyType" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" 
+    binary="false">    
+    <position x="396" y="781" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.PropertyConfig" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" 
+    binary="false">    
+    <position x="140" y="793" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <nesting>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.common.PropertyConfig" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.PropertyConfig.PropertyType" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.common.PropertyConfig" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" binary="false" navigable="false">      
+      <attribute name="type"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.PropertyConfig.PropertyType" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/PropertyConfig.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.common.GameLabel" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/GameLabel.java" binary="false" navigable="false">      
+      <attribute name="position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.geometry.Position" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/Position.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.common.Token" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/Token.java" binary="false" navigable="false">      
+      <attribute name="_position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.geometry.Position" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/Position.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

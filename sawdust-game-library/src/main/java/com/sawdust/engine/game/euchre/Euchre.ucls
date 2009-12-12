@@ -1,0 +1,54 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.euchre.EuchreLayout" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/EuchreLayout.java" 
+    binary="false">    
+    <position x="575" y="237" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.euchre.ai.Stupid1id1" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/ai/Stupid1.java" 
+    binary="false">    
+    <position x="868" y="182" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.euchre.EuchreDeck" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/EuchreDeck.java" 
+    binary="false">    
+    <position x="879" y="81" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.euchre.EuchreGame" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/EuchreGame.java" 
+    binary="false">    
+    <position x="168" y="311" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.game.euchre.EuchreGame" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/EuchreGame.java" binary="false" navigable="false">      
+      <attribute name="_layout"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.game.euchre.EuchreLayout" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/euchre/EuchreLayout.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

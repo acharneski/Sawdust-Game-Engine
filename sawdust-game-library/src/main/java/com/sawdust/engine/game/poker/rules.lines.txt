@@ -1,0 +1,249 @@
+R-P-0001 In casino play the first betting round begins with the player to the left
+R-P-0002 of the big blind, and subsequent rounds begin with the player to the dealer's
+R-P-0003 left. Home games typically use an ante; the first betting round begins
+R-P-0004 with the player to the dealer's left, and the second round begins with
+R-P-0005 the player who opened the first round.
+
+In this version, the running bet is started at the level of the game ante and betting 
+goes from Player 1 onward. Each player can raise, see the current bet level, or fold.
+
+R-P-0006 Play begins with each player being dealt five cards, one at a time, all
+R-P-0007 face down. The remaining deck is placed aside, often protected by placing
+R-P-0008 a chip or other marker on it. Players pick up the cards and hold them 
+R-P-0009 in their hands, being careful to keep them concealed from the other players,
+R-P-0010 then a round of betting occurs.
+R-P-0011 If more than one player remains after the first round, the "draw" phase
+R-P-0012 begins. Each player specifies how many of their cards they wish to replace
+R-P-0013 and discards them. The deck is retrieved, and each player is dealt in 
+R-P-0014 turn from the deck the same number of cards they discarded so that each
+R-P-0015 player again has five cards.
+R-P-0016 A second "after the draw" betting round occurs beginning with the player
+R-P-0017 to the dealer's left or else beginning with the player who opened the 
+R-P-0018 first round (the latter is common when antes are used instead of blinds).
+R-P-0019 This is followed by a showdown if more than one player remains, in which
+R-P-0020 the player with the best hand wins the pot.
+
+There is no second-round betting before the showdown
+
+R-P-0021 
+R-P-0022 House rules
+R-P-0023 
+R-P-0024 A common "house rule" in some places is that a player may not replace 
+R-P-0025 more than three cards, unless they draw four cards while keeping an ace
+R-P-0026 (or wild card). This rule is only needed for low-stakes social games where
+R-P-0027 many players will stay for the draw, and will help avoid depletion of 
+R-P-0028 the deck. In more serious games such as those played in casinos it is 
+R-P-0029 unnecessary and generally not used. A rule that is used by many casinos
+R-P-0030 is that a player is not allowed to draw five consecutive cards from the
+R-P-0031 deck. In this case, if a player wishes to replace all five of their cards,
+R-P-0032 that player is given four of them in turn, the other players are given
+R-P-0033 their draws, and then the dealer returns to that player to give the fifth
+R-P-0034 replacement card; if no other player draws it is necessary to deal a burn
+R-P-0035 card first.
+
+Players may draw any number of cards
+
+R-P-0036 Another common house rule is that the bottom card of the deck is never
+R-P-0037 given as a replacement, to avoid the possibility of someone who might 
+R-P-0038 have seen it during the deal using that information. If the deck is depleted
+R-P-0039 during the draw before all players have received their replacements, the
+R-P-0040 last players can receive cards chosen randomly from among those discarded
+R-P-0041 by previous players. For example, if the last player to draw wants three
+R-P-0042 replacements but there are only two cards remaining in the deck, the dealer
+R-P-0043 gives the player the one top card he can give, then shuffles together 
+R-P-0044 the bottom card of the deck, the burn card, and the earlier players' discards
+R-P-0045 (but not the player's own discards), and finally deals two more replacements
+R-P-0046 to the last player.
+
+This is not applicable
+
+R-P-0047 
+R-P-0048 Hand ranking rules
+R-P-0049 
+R-P-0050 The following general rules apply to evaluating poker hands, whatever 
+R-P-0051 set of hand values are used.
+R-P-0052 Individual cards are ranked A (high), K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3,
+R-P-0053 2 (low). Aces can appear low when part of an A-2-3-4-5 straight or straight
+R-P-0054 flush. Individual card ranks are used to compare hands that contain no
+R-P-0055 pairs or other special combinations, or to compare the kickers of otherwise
+R-P-0056 equal hands. The ace plays low only in ace-to-five and ace-to-six lowball
+R-P-0057 games, and plays high only in deuce-to-seven lowball.
+R-P-0058 Suits have no value. The suits of the cards are mainly used in determining
+R-P-0059 whether a hand fits a certain category (specifically the flush and straight
+R-P-0060 flush hands). In most variants, if two players have hands that are identical
+R-P-0061 except for suit, then they are tied and split the pot (so 3♠ 4♠ 5♠
+R-P-0062 6♠ 7♠ does not beat 3♦ 4♦ 5♦ 6♦ 7♦). Sometimes a ranking
+R-P-0063 called high card by suit is used for randomly selecting a player to deal.
+R-P-0064 Low card by suit usually determines the bring-in bettor in stud games.
+R-P-0065 
+R-P-0066 A hand always consists of five cards. In games where more than five cards
+R-P-0067 are available to each player, the best five-card combination of those 
+R-P-0068 cards plays.
+R-P-0069 Hands are ranked first by category, then by individual card ranks: even
+R-P-0070 the lowest qualifying hand in a certain category defeats all hands in 
+R-P-0071 all lower categories. The smallest two pair hand (2♦ 2♠ 3♦ 3♣ 
+R-P-0072 4♠), for example, defeats all hands with just one pair or high card.
+R-P-0073 Only between two hands in the same category are card ranks used to break
+R-P-0074 ties.
+R-P-0075 
+R-P-0076 Standard ranking
+R-P-0077 
+R-P-0078 For ease of recognition, poker hands are usually presented with the most
+R-P-0079 important cards on the left, with cards descending in importance towards
+R-P-0080 the right. However, a poker hand still has the same value however it is
+R-P-0081 arranged. There are 311,875,200 ways (permutations) of being dealt five
+R-P-0082 cards from a 52 card deck,[Note 1] but since the order of cards does not
+R-P-0083 matter there are  possible distinct hands (combinations).
+R-P-0084 
+R-P-0085 Straight flush
+R-P-0086 
+R-P-0087 "Straight Flush" redirects here. For The World War II bomber, see Straight
+R-P-0088 Flush (B-29).
+R-P-0089 
+R-P-0090 A straight flush is a poker hand which contains five cards in sequence,
+R-P-0091 all of the same suit, such as Q♣ J♣ 10♣ 9♣ 8♣. Two such hands
+R-P-0092 are compared by their highest card; since suits have no relative value,
+R-P-0093 two otherwise identical straight flushes tie (so 10♣ 9♣ 8♣ 7♣ 
+R-P-0094 6♣ ties with 10♥ 9♥ 8♥ 7♥ 6♥). Aces can play low in straights
+R-P-0095 and straight flushes: 5♦ 4♦ 3♦ 2♦ A♦ is a 5-high straight flush,
+R-P-0096 also known as a "steel wheel".[1][2] An ace-high straight flush such as
+R-P-0097 A♠ K♠ Q♠ J♠ 10♠ is known as a royal flush, and is the highest
+R-P-0098 ranking standard poker hand.
+R-P-0099 There are 40 possible straight flushes, including the four royal flushes.
+R-P-0100   
+R-P-0101 
+R-P-0102 Four of a kind
+R-P-0103 
+R-P-0104 Four of a kind, also known as quads, is a poker hand such as 9♣ 9♠
+R-P-0105 9♦ 9♥ J♥, which contains four cards of one rank, and an unmatched
+R-P-0106 card of another rank. It ranks above a full house and below a straight
+R-P-0107 flush. Higher ranking quads defeat lower ranking ones. In community-card
+R-P-0108 games (such as Texas Hold 'em) or games with wildcards it is possible 
+R-P-0109 for two or more players to obtain the same quad; in this instance, the
+R-P-0110 unmatched card acts as a kicker, so 7♣ 7♠ 7♦ 7♥ J♥ defeats 7♣
+R-P-0111 7♠ 7♦ 7♥ 10♣.
+R-P-0112 There are 624 possible hands including four of a kind; the probability
+R-P-0113 of being dealt one is 
+R-P-0114 
+R-P-0115 Full house
+R-P-0116 
+R-P-0117 A full house, also known as a full boat, is a hand such as 3♣ 3♠ 3♦
+R-P-0118 6♣ 6♥, which contains three matching cards of one rank, and two matching
+R-P-0119 cards of another rank. It ranks below a four of a kind and above a flush.
+R-P-0120 Between two full houses, the one with the higher ranking set of three 
+R-P-0121 wins, so 7♠ 7♥ 7♦ 4♠ 4♣ defeats 6♠ 6♥ 6♦ A♠ A♣. If
+R-P-0122 two hands have the same set of three (possible in wild card and community
+R-P-0123 card games), the hand with the higher pair wins, so 5♥ 5♦ 5♠ Q♥
+R-P-0124 Q♣ defeats 5♣ 5♦ 5♠ J♠ J♦. Full houses are described as "Three
+R-P-0125 full of Pair" or occasionally "Three over Pair"; Q♣ Q♦ Q♠ 9♥ 9♣
+R-P-0126 could be described as "Queens over nines", "Queens full of nines", or 
+R-P-0127 simply "Queens full". However, "Queens over nines" is more commonly used
+R-P-0128 to describe the hand containing two pairs, one pair of queens and one 
+R-P-0129 pair of nines, as in Q♠ Q♥ 9♣ 9♠ J♦.
+R-P-0130 There are 3,744 possible full houses; the probability of being dealt one
+R-P-0131 in a five-card hand is 
+R-P-0132 
+R-P-0133 Flush
+R-P-0134 
+R-P-0135 A flush is a poker hand such as Q♣ 10♣ 7♣ 6♣ 4♣, which contains
+R-P-0136 five cards of the same suit, not in rank sequence. It ranks above a straight
+R-P-0137 and below a full house. Two flushes are compared as if they were high 
+R-P-0138 card hands; the highest ranking card of each is compared to determine 
+R-P-0139 the winner. If both hands have the same highest card, then the second-highest
+R-P-0140 ranking card is compared, and so on until a difference is found. If the
+R-P-0141 two flushes contain the same five ranks of cards, they are tied – suits
+R-P-0142 are not used to differentiate them. Flushes are described by their highest
+R-P-0143 card, as in "queen-high flush" to describe Q♦ 9♦ 7♦ 4♦ 3♦. If
+R-P-0144 the rank of the second card is important, it can also be included: K♠
+R-P-0145 10♠ 5♠ 3♠ 2♠ is a "king-ten-high flush" or just a "king-ten flush",
+R-P-0146 while K♥ Q♥ 9♥ 5♥ 4♥ is a "king-queen-high flush".
+R-P-0147 There are 5,148 possible flushes, of which 40 are also straight flushes;
+R-P-0148 the probability of being dealt a flush in a five-card hand is 
+R-P-0149 
+R-P-0150 Straight
+R-P-0151 
+R-P-0152 A straight is a poker hand such as Q♣ J♠ 10♠ 9♥ 8♥, which contains
+R-P-0153 five cards of sequential rank but in more than one suit. It ranks above
+R-P-0154 three of a kind and below a flush. Two straights are ranked by comparing
+R-P-0155 the highest card of each. Two straights with the same high card are of
+R-P-0156 equal value, suits are not used to separate them. Straights are described
+R-P-0157 by their highest card, as in "ten-high straight" or "straight to the ten"
+R-P-0158 for 10♣ 9♦ 8♥ 7♣ 6♠.
+R-P-0159 A hand such as A♣ K♣ Q♦ J♠ 10♠ is an ace-high straight (also
+R-P-0160 known as Broadway), and ranks above a king-high straight such as K♥ 
+R-P-0161 Q♠ J♥ 10♥ 9♣. The ace may also be played as a low card in a five-high
+R-P-0162 straight such as 5♠ 4♦ 3♦ 2♠ A♥, which is colloquially known
+R-P-0163 as a wheel. The ace may not "wrap around", or play both high and low: 
+R-P-0164 3♣ 2♦ A♥ K♠ Q♣ is not a straight, just an ace-high high card.
+R-P-0165 
+R-P-0166 There are 10,240 possible straights, of which 40 are also straight flushes;
+R-P-0167 the probability of being dealt a straight in a five-card hand is .
+R-P-0168 
+R-P-0169 Three of a kind
+R-P-0170 
+R-P-0171 Three of a kind, also called trips, set or a prile (the last of these 
+R-P-0172 from its use in three card poker[3]), is a poker hand such as 2♦ 2♠
+R-P-0173 2♣ K♠ 6♥, which contains three cards of the same rank, plus two 
+R-P-0174 unmatched cards. It ranks above two pair and below a straight. In Texas
+R-P-0175 hold 'em and other flop games, a "set" refers specifically to a three 
+R-P-0176 of a kind composed of a pocket pair and one card of matching rank on the
+R-P-0177 board (as opposed to two matching cards on the board and a third in the
+R-P-0178 player's hand).[4] Higher-valued three of a kind defeat lower-valued three
+R-P-0179 of a kind, so Q♠ Q♥ Q♦ 7♠ 4♣ defeats J♠ J♣ J♦ A♦ K♣.
+R-P-0180 If two hands contain threes of a kind of the same value, possible in games
+R-P-0181 with wild cards or community cards, the kickers are compared to break 
+R-P-0182 the tie, so 4♦ 4♣ 4♠ 9♦ 2♣ defeats 4♦ 4♣ 4♠ 8♣ 7♦.
+R-P-0183 
+R-P-0184 There are 54,912 possible three of a kind hands which are not also full
+R-P-0185 houses; the probability of being dealt one in a five-card hand is 
+R-P-0186 
+R-P-0187 Two pair
+R-P-0188 
+R-P-0189 A poker hand such as J♥ J♣ 4♣ 4♠ 9♥, which contains two cards
+R-P-0190 of the same rank, plus two cards of another rank (that match each other
+R-P-0191 but not the first pair), plus one unmatched card, is called two pair. 
+R-P-0192 It ranks above one pair and below three of a kind. To rank two hands both
+R-P-0193 containing two pair, the higher ranking pair of each is first compared,
+R-P-0194 and the higher pair wins (so 10♠ 10♣ 8♥ 8♣ 4♠ defeats 8♥ 8♣
+R-P-0195 4♠ 4♣ 10♠). If both hands have the same "top pair", then the second
+R-P-0196 pair of each is compared, such that 10♠ 10♣ 8♥ 8♣ 4♠ defeats
+R-P-0197 10♠ 10♣ 4♠ 4♥ 8♥. Finally, if both hands have the same two pairs,
+R-P-0198 the kicker determines the winner: 10♠ 10♣ 8♥ 8♣ 4♠ loses to 
+R-P-0199 10♠ 10♣ 8♥ 8♣ A♦. Two pair are described by the higher pair 
+R-P-0200 first, followed by the lower pair if necessary; K♣ K♦ 9♠ 9♥ 5♥
+R-P-0201 could be described as "Kings over nines", "Kings and nines" or simply 
+R-P-0202 "Kings up" if the nines are not important.
+R-P-0203 There are 123,552 possible two pair hands that are not also full houses;
+R-P-0204 the probability of being dealt one in a five-card hand is 
+R-P-0205 
+R-P-0206 One pair
+R-P-0207 
+R-P-0208 One pair is a poker hand such as 4♥ 4♠ K♠ 10♦ 5♠, which contains
+R-P-0209 two cards of the same rank, plus three other unmatched cards. It ranks
+R-P-0210 above any high card hand, but below all other poker hands. Higher ranking
+R-P-0211 pairs defeat lower ranking pairs; if two hands have the same pair, the
+R-P-0212 non-paired cards (the kickers) are compared in descending order to determine
+R-P-0213 the winner.
+R-P-0214 There are 1,098,240 possible one pair hands; the probability of being 
+R-P-0215 dealt one in a five-card hand is 
+R-P-0216 
+R-P-0217 High card
+R-P-0218 
+R-P-0219 A high-card or no-pair hand is a poker hand such as K♥ J♣ 8♣ 7♦
+R-P-0220 3♠, in which no two cards have the same rank, the five cards are not
+R-P-0221 in sequence, and the five cards are not all the same suit. It is also 
+R-P-0222 referred to as "no pair", as well as "nothing", "garbage," and various
+R-P-0223 other derogatory terms. High card ranks below all other poker hands; two
+R-P-0224 such hands are ranked by comparing the highest ranking card. If those 
+R-P-0225 are equal, then the next highest ranking card from each hand is compared,
+R-P-0226 and so on until a difference is found. High card hands are described by
+R-P-0227 the one or two highest cards in the hand, such as "king high", "ace-queen
+R-P-0228 high", or by as many cards as are necessary to break a tie.
+R-P-0229 The lowest possible high card is seven-high (such as 7♠ 5♣ 4♦ 3♦
+R-P-0230 2♣), because a hand such as 6♦ 5♣ 4♠ 3♦ 2♥ would be a straight.
+R-P-0231 
+R-P-0232 Of the 2,598,960 possible hands, 1,302,540 do not contain any pairs and
+R-P-0233 are neither straights nor flushes. 
+
+
+

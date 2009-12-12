@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='gameClient'>
+	<inherits name='com.google.gwt.user.User' />
+
+	<inherits name="com.google.gwt.user.Debug" />
+    <set-property name="gwt.enableDebugId" value="true" />
+
+    <inherits name="com.google.gwt.user.theme.dark.DarkResources"/>
+	<!--  
+	   <stylesheet src="gwt/sawdust/sawdust.css" />
+	 -->
+	<inherits name='com.sawdust.engine.SawdustEngine' />
+	<source path="common/gwt" />
+	<source path="client/gwt" />
+	<entry-point class='com.sawdust.client.gwt.GameClient' />
+</module>

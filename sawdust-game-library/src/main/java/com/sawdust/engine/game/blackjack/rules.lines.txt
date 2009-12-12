@@ -1,0 +1,123 @@
+R-B-0001 In casino blackjack, the dealer faces one to seven players from behind
+R-B-0002 a kidney-shaped table. Each player plays his hand independently against
+R-B-0003 the dealer. At the beginning of each round, the player places a bet in
+R-B-0004 the "betting box" and receives an initial hand of two cards. The object
+R-B-0005 of the game is to get a higher card total than the dealer, but without
+R-B-0006 going over 21 which is called "busting", "breaking", or many other terms.
+R-B-0007 (The spot cards count 2 to 9; the 10, jack, queen, and king count as ten;
+R-B-0008 an ace can be either 1 or 11 at the player's choice). The player goes 
+R-B-0009 first and plays his hand by taking additional cards if he desires. If 
+R-B-0010 he busts, he loses. Then the dealer plays his or her hand. If the dealer
+R-B-0011 busts, he loses to all remaining players. If neither busts, the higher
+R-B-0012 hand total wins. In case of a tie, no one wins - the hand is a "push" 
+R-B-0013 and all bets are returned. It is possible for the dealer to lose to some
+R-B-0014 players but still beat other players in the same round.
+
+In this version, house takes all ties.
+
+R-B-0015 Example of a Blackjack game. The top half of the picture shows the beginning
+R-B-0016 of the round, with bets placed and an initial two cards for each player.
+R-B-0017 The bottom half shows the end of the round, with the associated losses
+R-B-0018 or payoffs.
+R-B-0019 
+R-B-0020 Cards are dealt in three ways, either from one or two hand-held decks,
+R-B-0021 from a box containing four to eight decks called a "shoe," or from a shuffling
+R-B-0022 machine. When dealt by hand, the player's two initial cards are face-down,
+R-B-0023 while the dealer has one face-up card called the "upcard" and one face-down
+R-B-0024 card called the "hole card." (In European blackjack, the dealer's hole
+R-B-0025 card is not actually dealt until the players all play their hands.) When
+R-B-0026 dealt from a shoe, all player cards are normally dealt face-up, with minor
+R-B-0027 exceptions. It shouldn't matter to the player whether his cards are dealt
+R-B-0028 face-down or face-up since the dealer must play according to predetermined
+R-B-0029 rules. If the dealer has less than 17, he must hit. If the dealer has 
+R-B-0030 17 or more, he must stand (take no more cards), unless it is a "soft 17"
+R-B-0031 (a hand that includes an ace valued as "11," for example a hand consisting
+R-B-0032 of Ace+6, or Ace+2+4). With a soft 17, the dealer follows the casino rules
+R-B-0033 printed on the blackjack table, either to "hit soft 17" or to "stand on
+R-B-0034 all 17's."
+
+Our dealer stands on all 17's
+
+R-B-0035 
+R-B-0036 The highest possible hand is a "blackjack" or "natural," meaning an initial
+R-B-0037 two-card total of 21 (an ace and a ten-value card). A player blackjack
+R-B-0038 is an automatic winner unless the dealer also has blackjack, in which 
+R-B-0039 case the hand is a "push" (a tie). When the dealer upcard is an ace, the
+R-B-0040 player is allowed to make a side bet called "insurance," supposedly to
+R-B-0041 guard against the risk that the dealer has a blackjack (i.e., a ten-value
+R-B-0042 card as his hole card). The insurance bet pays 2-to-1 if the dealer has
+R-B-0043 a blackjack. Whenever the dealer has a blackjack, he wins against all 
+R-B-0044 player hands except those that also have a blackjack (which are a "push").
+
+Dealer wins all ties and pushes. 
+There is no insurance.
+
+R-B-0045 
+R-B-0046 
+R-B-0047 The minimum and maximum bets are posted on the table. The payoff on most
+R-B-0048 bets is 1:1, meaning that the player wins the same amount as he bets. 
+
+All bets are fixed at the ante level set at the game beginning.
+
+R-B-0049 The payoff for a player blackjack is 3:2, meaning that the casino pays
+R-B-0050 $3 for each $2 originally bet. (There are many single-deck games which
+R-B-0051 pay only 6:5 for a blackjack.)
+
+Blackjack pays the same as all wins, at 1:1.
+
+R-B-0052 
+R-B-0053 Player decisions
+R-B-0054 
+R-B-0055 After receiving his initial two cards, the player has four standard options:
+R-B-0056 he can "Hit," "Stand," "Double Down," or "Split a pair." Each option requires
+R-B-0057 the use of a hand signal. At some casinos or tables, the player may have
+R-B-0058 a fifth option called "Surrender."
+
+At this time, only hit and stand are supported.
+
+R-B-0059 
+R-B-0060 * Hit: Take another card.
+R-B-0061 
+R-B-0062 * Stand: Take no more cards, also "stick" or "stay".
+R-B-0063 
+R-B-0064 * Double down: After receiving his first two cards and before any more
+R-B-0065 are dealt to him, a player has the option to "double down". To "double
+R-B-0066 down" means the player is allowed to double his initial bet in exchange
+R-B-0067 for limiting himself to getting only one more card from the dealer. The
+R-B-0068 hand played consists of his original two cards plus one more from the 
+R-B-0069 dealer. To do this he moves a second bet equal to the first into the betting
+R-B-0070 box next to his original bet. (If desired, the player is usually allowed
+R-B-0071 to "double down for less," although this is generally not a good idea 
+R-B-0072 as the player should only double in favorable situations but should then
+R-B-0073 increase the bet as much as possible.)
+
+Not implemented
+
+R-B-0074 
+R-B-0075 * Split a pair: If his first two cards are a "pair," meaning two cards
+R-B-0076 of the same value, the player can "split the pair." To do this, he moves
+R-B-0077 a second bet equal to the first into the betting box next to his original
+R-B-0078 bet. The dealer splits the cards to create two hands, placing one bet 
+R-B-0079 with each hand. The player then plays two separate hands.
+
+Not implemented
+
+R-B-0080 
+R-B-0081 * Surrender: Some casinos offer a fifth option called "Surrender." After
+R-B-0082 the dealer has checked for blackjack, the player may "surrender" by giving
+R-B-0083 up half his bet and not playing out the hand.
+
+Not implemented
+
+R-B-0084 
+R-B-0085 The reason for requiring hand signals is to assist the "eye in the sky,"
+R-B-0086 a person or video camera located above the table but concealed behind 
+R-B-0087 one-way glass. It is used in order to protect the casino against dealers
+R-B-0088 or players who cheat. (It may also be used to protect the casino against
+R-B-0089 card-counters, even though card-counting is not illegal.)
+R-B-0090 
+R-B-0091 The player can take as many hits as he wants as long as the total is not
+R-B-0092 above hard-20. However, if he busts, he loses that hand. After all the
+R-B-0093 players have finished making their decisions, the dealer then reveals 
+R-B-0094 his hole card and plays out his or her hand according to predetermined
+R-B-0095 rules.

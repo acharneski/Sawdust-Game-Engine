@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="sawdust-gae" default="gwt-compile" basedir=".">
+  <!-- Configure path to GWT SDK -->
+
+  <property name="jdk.dir" location="C:\Sun\SDK\jdk" />
+  <property name="gae.version" value="1.2.8"/>
+  <property name="gae.dir" location="C:\Users\Andrew\Documents\Downloads\appengine-java-sdk-1.2.8" />
+  <property name="gwt.version" value="2.0.0"/>
+  <property name="gwt.dir" location="C:\Users\Andrew\Documents\Downloads\gwt-2.0.0" />
+
+  <target name="gwt-compile" description="Compile Javascript">
+    <mkdir dir="${basedir}/war" />
+    <java fork="true" classname="com.google.gwt.dev.Compiler"
+      dir="${basedir}/war" failonerror="true">
+      <classpath>
+        <path refid="maven.compile.classpath" />
+        <pathelement path="${basedir}/src/main/java"></pathelement>
+        <fileset dir="${gwt.dir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+
+      <jvmarg value="-Xmx512m" />
+
+      <!-- 
+      Google Web Toolkit 2.0.0
+      Compiler [-logLevel level] [-workDir dir] [-gen dir] [-style style] [-ea] [-XdisableClassMetadata] [-XdisableCastChecking] 
+      [-vaidateOnly] [-draftCompile] [-compileReport] [-localWorkers count] [-war dir] [-extra dir] module[s]
+      
+      where
+      -logLevel               The level of logging detail: ERROR, WARN, INFO, TRACE, DEBUG, SPAM, or ALL
+      -workDir                The compiler's working directory for internal use (must be writeable; defaults to a system temp dir)
+      -gen                    Debugging: causes normally-transient generated types to be saved in the specified directory
+      -style                  Script output style: OBF[USCATED], PRETTY, or DETAILED (defaults to OBF)
+      -ea                     Debugging: causes the compiled output to check assert statements
+      -XdisableClassMetadata  EXPERIMENTAL: Disables some java.lang.Class methods (e.g. getName())
+      -XdisableCastChecking   EXPERIMENTAL: Disables run-time checking of cast operations
+      -validateOnly           Validate all source code, but do not compile
+      -draftCompile           Enable faster, but less-optimized, compilations
+      -compileReport          Create a compile report that tells the Story of Your Compile
+      -localWorkers           The number of local workers to use when compiling permutations
+      -war                    The directory into which deployable output files will be written (defaults to 'war')
+      -extra                  The directory into which extra files, not intended for deployment, will be written
+      and
+      module[s]               Specifies the name(s) of the module(s) to compile                  
+      -->
+      <arg line="-war ${basedir}/war" />
+      <arg value="com.sawdust.GameClient" />
+      <arg value="com.sawdust.GameCreator" />
+    </java>
+  </target>
+
+  <target name="gae-deploy" description="Deploy to Google AppEngine">
+  	<!-- BUG: The password prompt doesn't show up to prompt for the needed password -->
+  	<java fork="true" classname="com.google.appengine.tools.admin.AppCfg"
+      failonerror="true">
+      <sysproperty key="appengine.sdk.root" value="${gae.dir}" />
+    	<env key="JAVA_HOME" path="${jdk.dir}"/>
+      <classpath>
+        <filelist>
+          <file name="${jdk.dir}/lib/tools.jar"/>
+        </filelist>
+        <fileset dir="${gae.dir}">
+          <include name="**/*.jar" />
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${basedir}/war">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+
+      <!--
+       usage: AppCfg [options] <action> <app-dir> [<output-file>]
+      
+       Action must be one of:
+         help: Print help for a specific action.
+         request_logs: Write request logs in Apache common log format.
+         rollback: Rollback an in-progress update.
+         update: Create or update an app version.
+         update_indexes: Update application indexes.
+         update_cron: Update application cron jobs.
+         update_queues: Update application task queue definitions.
+         version: Prints version information.
+         cron_info: Displays times for the next several runs of each cron job.
+       Use 'help <action>' for a detailed description.
+      
+       options:
+         -h, -.-help            Show the help message and exit.
+         -s SERVER, -.-server=SERVER
+                               The server to connect to.
+         -e EMAIL, -.-email=EMAIL
+                               The username to use. Will prompt if omitted.
+         -H HOST, -.-host=HOST  Overrides the Host header sent with all RPCs.
+         -p PROXYHOST[:PORT], -.-proxy=PROXYHOST[:PORT]
+                               Proxies requests through the given proxy server.
+                               If -.-proxy_https is also set, only HTTP will be
+                               proxied here, otherwise both HTTP and HTTPS will.
+         -.-proxy_https=PROXYHOST[:PORT]
+                               Proxies HTTPS requests through the given proxy server.
+         -.-sdk_root=root       Overrides where the SDK is located.
+         -.-passin              Always read the login password from stdin.
+         -.-enable_jar_splitting
+                               Split large jar files (> 10M) into smaller fragments.
+         -.-retain_upload_dir
+                               Do not delete temporary directory used in uploading.
+         -.-compile_encoding
+                               The character encoding to use when compiling JSPs.
+         -n NUM_DAYS, -.-num_days=NUM_DAYS
+                               Number of days worth of log data to get. The cut-off
+                               point is midnight UTC. Use 0 to get all available
+                               logs. Default is 1.
+         -.-severity=SEVERITY   Severity of app-level log messages to get. The range
+                               is 0 (DEBUG) through 4 (CRITICAL). If omitted, only
+                               request logs are returned.
+         -n NUM_RUNS, -.-num_runs=NUM_RUNS
+                               Number of scheduled execution times to compute
+      -->
+      <arg line="--email=acharneski@gmail.com" />
+    	<arg line="--enable_jar_splitting" />
+    	<arg line="update" />
+      <arg value="${basedir}/war" />
+    </java>
+  </target>
+
+  <target name="dev-mode" description="Start GAE+GWT Development Mode">
+    <java fork="true" classname="com.google.gwt.dev.DevMode"
+      dir="${basedir}/war" failonerror="true">
+      <classpath>
+        <fileset dir="${gae.dir}/lib">
+          <include name="shared/**/*.jar" />
+          <include name="user/**/*.jar" />
+          <include name="appengine-tools-api.jar" />
+        </fileset>
+        <fileset dir="${gwt.dir}">
+          <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${basedir}/war/WEB-INF/lib">
+          <include name="**/*.jar" />
+        </fileset>
+        <pathelement path="${basedir}/war/WEB-INF/classes"></pathelement>
+        <pathelement path="${basedir}/src/main/java"></pathelement>
+      </classpath>
+
+      <jvmarg value="-Xmx512m" />
+      <jvmarg value="-javaagent:${gae.dir}/lib/agent/appengine-agent.jar" />
+      <jvmarg value="-Djava.util.logging.config.file=${basedir}/war/WEB-INF/log.properties" />
+
+      <arg line="-server com.google.appengine.tools.development.gwt.AppEngineLauncher" />
+      <arg line="-startupUrl main.jsp" />
+      <arg line="-war ${basedir}/war" />
+      <arg line="-logLevel ALL" />
+      <arg value="com.sawdust.GameClient" />
+      <arg value="com.sawdust.GameCreator" />
+    </java>
+  </target>
+
+</project>

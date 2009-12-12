@@ -1,0 +1,70 @@
+In casino play the first betting round begins with the player to the left of the big blind, and subsequent rounds begin with the player to the dealer's left. Home games typically use an ante; the first betting round begins with the player to the dealer's left, and the second round begins with the player who opened the first round.
+Play begins with each player being dealt five cards, one at a time, all face down. The remaining deck is placed aside, often protected by placing a chip or other marker on it. Players pick up the cards and hold them in their hands, being careful to keep them concealed from the other players, then a round of betting occurs.
+If more than one player remains after the first round, the "draw" phase begins. Each player specifies how many of their cards they wish to replace and discards them. The deck is retrieved, and each player is dealt in turn from the deck the same number of cards they discarded so that each player again has five cards.
+A second "after the draw" betting round occurs beginning with the player to the dealer's left or else beginning with the player who opened the first round (the latter is common when antes are used instead of blinds). This is followed by a showdown if more than one player remains, in which the player with the best hand wins the pot.
+
+House rules
+
+A common "house rule" in some places is that a player may not replace more than three cards, unless they draw four cards while keeping an ace (or wild card). This rule is only needed for low-stakes social games where many players will stay for the draw, and will help avoid depletion of the deck. In more serious games such as those played in casinos it is unnecessary and generally not used. A rule that is used by many casinos is that a player is not allowed to draw five consecutive cards from the deck. In this case, if a player wishes to replace all five of their cards, that player is given four of them in turn, the other players are given their draws, and then the dealer returns to that player to give the fifth replacement card; if no other player draws it is necessary to deal a burn card first.
+Another common house rule is that the bottom card of the deck is never given as a replacement, to avoid the possibility of someone who might have seen it during the deal using that information. If the deck is depleted during the draw before all players have received their replacements, the last players can receive cards chosen randomly from among those discarded by previous players. For example, if the last player to draw wants three replacements but there are only two cards remaining in the deck, the dealer gives the player the one top card he can give, then shuffles together the bottom card of the deck, the burn card, and the earlier players' discards (but not the player's own discards), and finally deals two more replacements to the last player.
+
+Hand ranking rules
+
+The following general rules apply to evaluating poker hands, whatever set of hand values are used.
+Individual cards are ranked A (high), K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2 (low). Aces can appear low when part of an A-2-3-4-5 straight or straight flush. Individual card ranks are used to compare hands that contain no pairs or other special combinations, or to compare the kickers of otherwise equal hands. The ace plays low only in ace-to-five and ace-to-six lowball games, and plays high only in deuce-to-seven lowball.
+Suits have no value. The suits of the cards are mainly used in determining whether a hand fits a certain category (specifically the flush and straight flush hands). In most variants, if two players have hands that are identical except for suit, then they are tied and split the pot (so 3♠ 4♠ 5♠ 6♠ 7♠ does not beat 3♦ 4♦ 5♦ 6♦ 7♦). Sometimes a ranking called high card by suit is used for randomly selecting a player to deal. Low card by suit usually determines the bring-in bettor in stud games.
+A hand always consists of five cards. In games where more than five cards are available to each player, the best five-card combination of those cards plays.
+Hands are ranked first by category, then by individual card ranks: even the lowest qualifying hand in a certain category defeats all hands in all lower categories. The smallest two pair hand (2♦ 2♠ 3♦ 3♣ 4♠), for example, defeats all hands with just one pair or high card. Only between two hands in the same category are card ranks used to break ties.
+
+Standard ranking
+
+For ease of recognition, poker hands are usually presented with the most important cards on the left, with cards descending in importance towards the right. However, a poker hand still has the same value however it is arranged. There are 311,875,200 ways (permutations) of being dealt five cards from a 52 card deck,[Note 1] but since the order of cards does not matter there are  possible distinct hands (combinations).
+
+Straight flush
+
+"Straight Flush" redirects here. For The World War II bomber, see Straight Flush (B-29).
+
+A straight flush is a poker hand which contains five cards in sequence, all of the same suit, such as Q♣ J♣ 10♣ 9♣ 8♣. Two such hands are compared by their highest card; since suits have no relative value, two otherwise identical straight flushes tie (so 10♣ 9♣ 8♣ 7♣ 6♣ ties with 10♥ 9♥ 8♥ 7♥ 6♥). Aces can play low in straights and straight flushes: 5♦ 4♦ 3♦ 2♦ A♦ is a 5-high straight flush, also known as a "steel wheel".[1][2] An ace-high straight flush such as A♠ K♠ Q♠ J♠ 10♠ is known as a royal flush, and is the highest ranking standard poker hand.
+There are 40 possible straight flushes, including the four royal flushes.  
+
+Four of a kind
+
+Four of a kind, also known as quads, is a poker hand such as 9♣ 9♠ 9♦ 9♥ J♥, which contains four cards of one rank, and an unmatched card of another rank. It ranks above a full house and below a straight flush. Higher ranking quads defeat lower ranking ones. In community-card games (such as Texas Hold 'em) or games with wildcards it is possible for two or more players to obtain the same quad; in this instance, the unmatched card acts as a kicker, so 7♣ 7♠ 7♦ 7♥ J♥ defeats 7♣ 7♠ 7♦ 7♥ 10♣.
+There are 624 possible hands including four of a kind; the probability of being dealt one is 
+
+Full house
+
+A full house, also known as a full boat, is a hand such as 3♣ 3♠ 3♦ 6♣ 6♥, which contains three matching cards of one rank, and two matching cards of another rank. It ranks below a four of a kind and above a flush. Between two full houses, the one with the higher ranking set of three wins, so 7♠ 7♥ 7♦ 4♠ 4♣ defeats 6♠ 6♥ 6♦ A♠ A♣. If two hands have the same set of three (possible in wild card and community card games), the hand with the higher pair wins, so 5♥ 5♦ 5♠ Q♥ Q♣ defeats 5♣ 5♦ 5♠ J♠ J♦. Full houses are described as "Three full of Pair" or occasionally "Three over Pair"; Q♣ Q♦ Q♠ 9♥ 9♣ could be described as "Queens over nines", "Queens full of nines", or simply "Queens full". However, "Queens over nines" is more commonly used to describe the hand containing two pairs, one pair of queens and one pair of nines, as in Q♠ Q♥ 9♣ 9♠ J♦.
+There are 3,744 possible full houses; the probability of being dealt one in a five-card hand is 
+
+Flush
+
+A flush is a poker hand such as Q♣ 10♣ 7♣ 6♣ 4♣, which contains five cards of the same suit, not in rank sequence. It ranks above a straight and below a full house. Two flushes are compared as if they were high card hands; the highest ranking card of each is compared to determine the winner. If both hands have the same highest card, then the second-highest ranking card is compared, and so on until a difference is found. If the two flushes contain the same five ranks of cards, they are tied – suits are not used to differentiate them. Flushes are described by their highest card, as in "queen-high flush" to describe Q♦ 9♦ 7♦ 4♦ 3♦. If the rank of the second card is important, it can also be included: K♠ 10♠ 5♠ 3♠ 2♠ is a "king-ten-high flush" or just a "king-ten flush", while K♥ Q♥ 9♥ 5♥ 4♥ is a "king-queen-high flush".
+There are 5,148 possible flushes, of which 40 are also straight flushes; the probability of being dealt a flush in a five-card hand is 
+
+Straight
+
+A straight is a poker hand such as Q♣ J♠ 10♠ 9♥ 8♥, which contains five cards of sequential rank but in more than one suit. It ranks above three of a kind and below a flush. Two straights are ranked by comparing the highest card of each. Two straights with the same high card are of equal value, suits are not used to separate them. Straights are described by their highest card, as in "ten-high straight" or "straight to the ten" for 10♣ 9♦ 8♥ 7♣ 6♠.
+A hand such as A♣ K♣ Q♦ J♠ 10♠ is an ace-high straight (also known as Broadway), and ranks above a king-high straight such as K♥ Q♠ J♥ 10♥ 9♣. The ace may also be played as a low card in a five-high straight such as 5♠ 4♦ 3♦ 2♠ A♥, which is colloquially known as a wheel. The ace may not "wrap around", or play both high and low: 3♣ 2♦ A♥ K♠ Q♣ is not a straight, just an ace-high high card.
+There are 10,240 possible straights, of which 40 are also straight flushes; the probability of being dealt a straight in a five-card hand is .
+
+Three of a kind
+
+Three of a kind, also called trips, set or a prile (the last of these from its use in three card poker[3]), is a poker hand such as 2♦ 2♠ 2♣ K♠ 6♥, which contains three cards of the same rank, plus two unmatched cards. It ranks above two pair and below a straight. In Texas hold 'em and other flop games, a "set" refers specifically to a three of a kind composed of a pocket pair and one card of matching rank on the board (as opposed to two matching cards on the board and a third in the player's hand).[4] Higher-valued three of a kind defeat lower-valued three of a kind, so Q♠ Q♥ Q♦ 7♠ 4♣ defeats J♠ J♣ J♦ A♦ K♣. If two hands contain threes of a kind of the same value, possible in games with wild cards or community cards, the kickers are compared to break the tie, so 4♦ 4♣ 4♠ 9♦ 2♣ defeats 4♦ 4♣ 4♠ 8♣ 7♦.
+There are 54,912 possible three of a kind hands which are not also full houses; the probability of being dealt one in a five-card hand is 
+
+Two pair
+
+A poker hand such as J♥ J♣ 4♣ 4♠ 9♥, which contains two cards of the same rank, plus two cards of another rank (that match each other but not the first pair), plus one unmatched card, is called two pair. It ranks above one pair and below three of a kind. To rank two hands both containing two pair, the higher ranking pair of each is first compared, and the higher pair wins (so 10♠ 10♣ 8♥ 8♣ 4♠ defeats 8♥ 8♣ 4♠ 4♣ 10♠). If both hands have the same "top pair", then the second pair of each is compared, such that 10♠ 10♣ 8♥ 8♣ 4♠ defeats 10♠ 10♣ 4♠ 4♥ 8♥. Finally, if both hands have the same two pairs, the kicker determines the winner: 10♠ 10♣ 8♥ 8♣ 4♠ loses to 10♠ 10♣ 8♥ 8♣ A♦. Two pair are described by the higher pair first, followed by the lower pair if necessary; K♣ K♦ 9♠ 9♥ 5♥ could be described as "Kings over nines", "Kings and nines" or simply "Kings up" if the nines are not important.
+There are 123,552 possible two pair hands that are not also full houses; the probability of being dealt one in a five-card hand is 
+
+One pair
+
+One pair is a poker hand such as 4♥ 4♠ K♠ 10♦ 5♠, which contains two cards of the same rank, plus three other unmatched cards. It ranks above any high card hand, but below all other poker hands. Higher ranking pairs defeat lower ranking pairs; if two hands have the same pair, the non-paired cards (the kickers) are compared in descending order to determine the winner.
+There are 1,098,240 possible one pair hands; the probability of being dealt one in a five-card hand is 
+
+High card
+
+A high-card or no-pair hand is a poker hand such as K♥ J♣ 8♣ 7♦ 3♠, in which no two cards have the same rank, the five cards are not in sequence, and the five cards are not all the same suit. It is also referred to as "no pair", as well as "nothing", "garbage," and various other derogatory terms. High card ranks below all other poker hands; two such hands are ranked by comparing the highest ranking card. If those are equal, then the next highest ranking card from each hand is compared, and so on until a difference is found. High card hands are described by the one or two highest cards in the hand, such as "king high", "ace-queen high", or by as many cards as are necessary to break a tie.
+The lowest possible high card is seven-high (such as 7♠ 5♣ 4♦ 3♦ 2♣), because a hand such as 6♦ 5♣ 4♠ 3♦ 2♥ would be a straight.
+Of the 2,598,960 possible hands, 1,302,540 do not contain any pairs and are neither straights nor flushes. As such, the probability of being dealt "

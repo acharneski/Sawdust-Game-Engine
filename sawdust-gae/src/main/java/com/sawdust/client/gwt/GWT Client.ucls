@@ -1,0 +1,204 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GoogleAccess" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GoogleAccess.java" binary="false">    
+    <position x="672" y="93" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameClient" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClient.java" binary="false">    
+    <position x="438" y="86" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.LabelWidget" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/LabelWidget.java" binary="false">    
+    <position x="838" y="826" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameWidget" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameWidget.java" binary="false">    
+    <position x="488" y="851" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameClientWidget" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClientWidget.java" 
+    binary="false">    
+    <position x="483" y="409" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.ConsoleWidget" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/ConsoleWidget.java" binary="false">    
+    <position x="763" y="235" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameCreator.BooleanValueMapper" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false">    
+    <position x="162" y="535" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.TokenWidget" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/TokenWidget.java" binary="false">    
+    <position x="155" y="827" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameCreator.PropertyValueMapper" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false">    
+    <position x="160" y="93" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.GameCreator" project="Sawdust Game Engine" 
+    file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false">    
+    <position x="161" y="314" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.EventListener" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/EventListener.java" 
+    binary="false">    
+    <position x="769" y="354" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.CommandExecutor" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" 
+    binary="false">    
+    <position x="947" y="591" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.client.gwt.CommandExecutor.CmdCallback" 
+    project="Sawdust Game Engine" file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" 
+    binary="false">    
+    <position x="1054" y="352" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameClientWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClientWidget.java" binary="false" navigable="false">      
+      <attribute name="cmdService"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.CommandExecutor" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameCreator" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameCreator.BooleanValueMapper" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameWidget.java" binary="false" navigable="false">      
+      <attribute name="tokens"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.TokenWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/TokenWidget.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameCreator" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameCreator.PropertyValueMapper" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameCreator.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameClientWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClientWidget.java" binary="false" navigable="false">      
+      <attribute name="onErrorClose"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.EventListener" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/EventListener.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.CommandExecutor" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" binary="false"/>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.CommandExecutor.CmdCallback" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameWidget.java" binary="false" navigable="false">      
+      <attribute name="labels"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.LabelWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/LabelWidget.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameClient" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClient.java" binary="false" navigable="false">      
+      <attribute name="w"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameClientWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameClientWidget.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.LabelWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/LabelWidget.java" binary="false" navigable="false">      
+      <attribute name="gameWidget"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.GameWidget" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/GameWidget.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Sawdust Game Engine" name="com.sawdust.client.gwt.CommandExecutor.CmdCallback" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/CommandExecutor.java" binary="false" navigable="false">      
+      <attribute name="_post"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Sawdust Game Engine" name="com.sawdust.client.gwt.EventListener" 
+      file="/Sawdust Game Engine/src/com/sawdust/client/gwt/EventListener.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

@@ -1,0 +1,107 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.data.SessionMember" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/data/SessionMember.java" 
+    binary="false">    
+    <position x="580" y="539" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.data.Account" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false">    
+    <position x="483" y="361" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.data.GameSession" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/data/GameSession.java" 
+    binary="false">    
+    <position x="145" y="336" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.data.SessionToken" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/data/SessionToken.java" 
+    binary="false">    
+    <position x="368" y="535" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.Bank" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/common/Bank.java" binary="false">    
+    <position x="128" y="102" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.game.Player" project="Sawdust Game Library" 
+    file="/Sawdust Game Library/src/com/sawdust/engine/game/Player.java" binary="false">    
+    <position x="465" y="123" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.SessionToken" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/SessionToken.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.data.GameSession" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/GameSession.java" binary="false"/>  
+  </dependency>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.Account" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.Bank" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/Bank.java" binary="false"/>  
+  </generalization>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.SessionToken" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/SessionToken.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.data.Account" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.GameSession" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/GameSession.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.game.Player" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/Player.java" binary="false"/>  
+  </dependency>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.GameSession" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/GameSession.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.Bank" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/Bank.java" binary="false"/>  
+  </generalization>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.Account" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.data.GameSession" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/GameSession.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.data.SessionMember" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/SessionMember.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.data.Account" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.game.Player" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/game/Player.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.data.Account" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/data/Account.java" binary="false"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

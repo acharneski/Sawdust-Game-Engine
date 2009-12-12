@@ -1,0 +1,103 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.common.GameException" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/common/GameException.java" 
+    binary="false">    
+    <position x="404" y="127" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.PlatformException" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/PlatformException.java" 
+    binary="false">    
+    <position x="121" y="427" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.InputException" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/InputException.java" 
+    binary="false">    
+    <position x="147" y="581" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.GameLogicException" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/GameLogicException.java" 
+    binary="false">    
+    <position x="191" y="755" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.SawdustSystemError" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/SawdustSystemError.java" 
+    binary="false">    
+    <position x="41" y="37" width="218" height="147"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.DataException" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/DataException.java" 
+    binary="false">    
+    <position x="363" y="566" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.debug.AssertionFail" 
+    project="Sawdust Game Library" file="/Sawdust Game Library/src/com/sawdust/engine/debug/AssertionFail.java" 
+    binary="false">    
+    <position x="41" y="224" width="177" height="115"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <bendpoint x="231" y="365"/>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.debug.PlatformException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/PlatformException.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.GameException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/GameException.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="546" y="710"/>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.debug.GameLogicException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/GameLogicException.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.GameException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/GameException.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.debug.AssertionFail" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/AssertionFail.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.debug.SawdustSystemError" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/SawdustSystemError.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.debug.InputException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/InputException.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.GameException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/GameException.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="Sawdust Game Library" name="com.sawdust.engine.debug.DataException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/debug/DataException.java" binary="false"/>    
+    <target project="Sawdust Game Library" name="com.sawdust.engine.common.GameException" 
+      file="/Sawdust Game Library/src/com/sawdust/engine/common/GameException.java" binary="false"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
