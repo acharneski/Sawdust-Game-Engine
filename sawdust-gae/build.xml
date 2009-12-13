@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="sawdust-gae" default="gwt-compile" basedir=".">
-  <!-- Configure path to GWT SDK -->
+  <import file="../build.xml"/>
 
-  <property name="jdk.dir" location="C:\Sun\SDK\jdk" />
-  <property name="gae.version" value="1.2.8"/>
-  <property name="gae.dir" location="C:\Users\Andrew\Documents\Downloads\appengine-java-sdk-1.2.8" />
-  <property name="gwt.version" value="2.0.0"/>
-  <property name="gwt.dir" location="C:\Users\Andrew\Documents\Downloads\gwt-2.0.0" />
-
-  <target name="gwt-compile" description="Compile Javascript">
+	<target name="gwt-compile" description="Compile Javascript">
     <mkdir dir="${basedir}/war" />
     <java fork="true" classname="com.google.gwt.dev.Compiler"
       dir="${basedir}/war" failonerror="true">
@@ -51,6 +45,11 @@
   </target>
 
   <target name="gae-deploy" description="Deploy to Google AppEngine">
+    <input addproperty="sawdust.gae.version" defaultvalue="beta">Please enter a version identifier to deploy:</input>
+    <replace 
+      value="${sawdust.gae.version}" 
+      token="SGE-GAE-VERSION"
+      file="war/WEB-INF/appengine-web.xml"/>
   	<!-- BUG: The password prompt doesn't show up to prompt for the needed password -->
   	<java fork="true" classname="com.google.appengine.tools.admin.AppCfg"
       failonerror="true">

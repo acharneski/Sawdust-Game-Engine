@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sawdust-game-library</name>
-	<url>http://maven.apache.org</url>
+	<description>Implementations of all the core games.</description>
 	<parent>
 		<artifactId>sawdust-game-engine</artifactId>
 		<groupId>com.sawdust</groupId>

@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sawdust-core</name>
-	<url>http://maven.apache.org</url>
+	<description>Core components to support Sawdust Game Engine - Data Entities, Utilities, Interfaces, Etc.</description>
 	<parent>
 		<artifactId>sawdust-game-engine</artifactId>
 		<groupId>com.sawdust</groupId>

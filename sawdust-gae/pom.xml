@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sawdust-gae</name>
-	<url>http://maven.apache.org</url>
+	<description>Code specific to Google technology: Service and data layers for App Engine, and a client implemented in GWT.</description>
 	<parent>
 		<artifactId>sawdust-game-engine</artifactId>
 		<groupId>com.sawdust</groupId>
@@ -86,16 +86,11 @@
 	</dependencies>
 	<build>
 		<resources>
-		<!-- 
-			<resource>
-				<directory>src/main/java</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/gwt/**</include>
-					<include>**/*.gwt.xml</include>
-				</includes>
-			</resource>
-		 -->
+			<!--
+				<resource> <directory>src/main/java</directory>
+				<filtering>true</filtering> <includes> <include>**/gwt/**</include>
+				<include>**/*.gwt.xml</include> </includes> </resource>
+			-->
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
@@ -150,6 +145,7 @@
 				</executions>
 			</plugin>
 
+
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
@@ -166,24 +162,7 @@
 						<id>appengine-deploy</id>
 						<configuration>
 							<tasks>
-								<java fork="true" classname="com.google.appengine.tools.admin.AppCfg"
-									failonerror="true">
-									<sysproperty key="appengine.sdk.root" value="${gae.dir}" />
-									<classpath>
-                    <fileset dir="${jdk.dir}">
-                      <include name="**/*.jar" />
-                    </fileset>
-                    <fileset dir="${gae.dir}">
-                      <include name="**/*.jar" />
-                    </fileset>
-                    <fileset dir="${basedir}/war">
-                      <include name="**/*.jar" />
-                    </fileset>
-									</classpath>
-									<arg value="--enable_jar_splitting" />
-									<arg value="update" />
-									<arg value="${basedir}/war" />
-								</java>
+								<ant target="gae-deploy" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -192,7 +171,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -201,38 +180,7 @@
 						<id>gwt-development-mode</id>
 						<configuration>
 							<tasks>
-								<java fork="true" classname="com.google.gwt.dev.DevMode"
-									dir="${basedir}/war" failonerror="true">
-									<classpath>
-										<fileset dir="${gae.dir}/lib">
-                      <include name="shared/**/*.jar" />
-                      <include name="user/**/*.jar" />
-                      <include name="appengine-tools-api.jar" />
-										</fileset>
-										<fileset dir="${gwt.dir}">
-											<include name="**/*.jar" />
-										</fileset>
-										<fileset dir="${basedir}/war/WEB-INF/lib">
-											<include name="**/*.jar" />
-										</fileset>
-                    <pathelement path="${basedir}/war/WEB-INF/classes"></pathelement>
-                    <pathelement path="${basedir}/src/main/java"></pathelement>
-									</classpath>
-
-									<!-- 
-									<jvmarg value="-verbose" />
-									 -->
-									<jvmarg value="-Xmx512m" />
-									<jvmarg value="-javaagent:${gae.dir}/lib/agent/appengine-agent.jar" />
-									<jvmarg value="-Djava.util.logging.config.file=${basedir}/war/WEB-INF/log.properties" />
-
-									<arg line="-server com.google.appengine.tools.development.gwt.AppEngineLauncher" />
-									<arg line="-startupUrl main.jsp" />
-									<arg line="-war ${basedir}/war" />
-									<arg line="-logLevel ALL" />
-									<arg value="com.sawdust.GameClient" />
-									<arg value="com.sawdust.GameCreator" />
-								</java>
+								<ant target="dev-mode" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -242,83 +190,23 @@
 				</executions>
 			</plugin>
 
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <id>gwt-compile</id>
-            <configuration>
-              <tasks>
-                <mkdir dir="${basedir}/war" />
-                <java fork="true" classname="com.google.gwt.dev.Compiler"
-                  dir="${basedir}/war" failonerror="true">
-                  <classpath>
-                    <path refid="maven.compile.classpath" />
-                    <pathelement path="${basedir}/src/main/java"></pathelement>
-                    <fileset dir="${gwt.dir}">
-                      <include name="**/*.jar" />
-                    </fileset>
-                  </classpath>
-
-                  <!-- 
-                  <jvmarg value="-verbose" />
-                  <arg line="-help" />
-                  
- Google Web Toolkit 2.0.0
- Compiler [-logLevel level] [-workDir dir] [-gen dir] [-style style] [-ea] [-XdisableClassMetadata] [-XdisableCastChecking] 
- [-vaidateOnly] [-draftCompile] [-compileReport] [-localWorkers count] [-war dir] [-extra dir] module[s]
-
- where
-   -logLevel               The level of logging detail: ERROR, WARN, INFO, TRACE, DEBUG, SPAM, or ALL
-   -workDir                The compiler's working directory for internal use (must be writeable; defaults to a system temp dir)
-   -gen                    Debugging: causes normally-transient generated types to be saved in the specified directory
-   -style                  Script output style: OBF[USCATED], PRETTY, or DETAILED (defaults to OBF)
-   -ea                     Debugging: causes the compiled output to check assert statements
-   -XdisableClassMetadata  EXPERIMENTAL: Disables some java.lang.Class methods (e.g. getName())
-   -XdisableCastChecking   EXPERIMENTAL: Disables run-time checking of cast operations
-   -validateOnly           Validate all source code, but do not compile
-   -draftCompile           Enable faster, but less-optimized, compilations
-   -compileReport          Create a compile report that tells the Story of Your Compile
-   -localWorkers           The number of local workers to use when compiling permutations
-   -war                    The directory into which deployable output files will be written (defaults to 'war')
-   -extra                  The directory into which extra files, not intended for deployment, will be written
- and
-   module[s]               Specifies the name(s) of the module(s) to compile                  
-                   -->
-                  <jvmarg value="-Xmx512m" />
-
-                  <arg line="-war ${basedir}/war" />
-                  <arg value="com.sawdust.GameClient" />
-                  <arg value="com.sawdust.GameCreator" />
-                </java>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-			<!-- 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>1.1</version>
-					<executions> <execution> <phase>prepare-package</phase> <goals>
-					<goal>compile</goal> </goals> </execution> </executions>
-				<configuration>
-					<hostedWebapp>${basedir}/war</hostedWebapp>
-					<runTarget>main.jsp</runTarget>
-					<modules>
-						<module>com.sawdust.GameClient</module>
-						<module>com.sawdust.GameCreator</module>
-					</modules>
-					<module>com.sawdust.GameClient</module>
-				</configuration>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<id>gwt-compile</id>
+						<configuration>
+							<tasks>
+								<ant target="gwt-compile" inheritRefs="true" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-			 -->
 
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -337,6 +225,8 @@
 
 		</plugins>
 		<pluginManagement>
+			<plugins>
+			</plugins>
 		</pluginManagement>
 	</build>
 	<dependencyManagement>
@@ -367,7 +257,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<properties>
-    <jdk.dir>C:\Sun\SDK\jdk</jdk.dir>
+		<jdk.dir>C:\Sun\SDK\jdk</jdk.dir>
 		<gae.version>1.2.8</gae.version>
 		<gae.dir>C:\Users\Andrew\Documents\Downloads\appengine-java-sdk-1.2.8</gae.dir>
 		<gwt.version>2.0.0</gwt.version>
