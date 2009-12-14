@@ -21,15 +21,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.sawdust</groupId>
+			<artifactId>sawdust-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.seleniumhq.selenium.client-drivers</groupId>
 			<artifactId>selenium-java-client-driver</artifactId>
 			<version>1.0.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sawdust</groupId>
-			<artifactId>common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.media.jai</groupId>
@@ -74,11 +74,6 @@
 										<dirset dir="${basedir}/target">
 											<include name="**/classes" />
 										</dirset>
-											<!-- TODO: Take in the *.class files instead 
-										<fileset dir="${basedir}/target">
-											<include name="**/*.jar" />
-										</fileset>
-											-->
 										<fileset dir="${jai.home}">
 											<include name="**/*.jar" />
 										</fileset>
@@ -91,11 +86,6 @@
 										<dirset dir="${basedir}/target">
 											<include name="**/classes" />
 										</dirset>
-											<!-- TODO: Take in the *.class files instead 
-										<fileset dir="${basedir}/target">
-											<include name="**/*.jar" />
-										</fileset>
-											-->
 										<fileset dir="${jai.home}">
 											<include name="**/*.jar" />
 										</fileset>
@@ -115,7 +105,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<jai.home>C:\Users\Andrew\Documents\Downloads\jai-1.1.2</jai.home>
-	</properties>
 </project>

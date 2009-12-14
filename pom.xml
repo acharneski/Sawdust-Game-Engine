@@ -171,4 +171,13 @@
 			<url>${basedir}/target/wwwmvn</url>
 		</site>
 	</distributionManagement>
+	<properties>
+		<source>6</source>
+		<jdk.dir>${env.JAVA_HOME}</jdk.dir>
+		<gae.version>1.2.8</gae.version>
+		<gae.dir>${env.SGDK_HOME}/appengine-java-sdk</gae.dir>
+		<gwt.version>2.0.0</gwt.version>
+		<gwt.dir>${env.SGDK_HOME}/gwt</gwt.dir>
+		<jai.home>${env.SGDK_HOME}//jai</jai.home>
+	</properties>
 </project>

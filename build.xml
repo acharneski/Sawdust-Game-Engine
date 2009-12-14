@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="sawdust-game-engine" basedir="." xmlns:doxygen="antlib:org.doxygen.tools">
-  <property name="jdk.dir" location="C:\Sun\SDK\jdk" />
+  <property environment="env"/>
+  <property name="jdk.dir" location="${env.JAVA_HOME}" />
   <property name="gae.version" value="1.2.8"/>
-  <property name="gae.dir" location="C:\Users\Andrew\Documents\Downloads\appengine-java-sdk-1.2.8" />
+  <property name="gae.dir" location="${env.SGDK_HOME}/appengine-java-sdk" />
   <property name="gwt.version" value="2.0.0"/>
-  <property name="gwt.dir" location="C:\Users\Andrew\Documents\Downloads\gwt-2.0.0" />
+  <property name="gwt.dir" location="${env.SGDK_HOME}/gwt" />
 
 <target name="doxygen">
 	<doxygen:doxygen configFilename="./doxygen.cfg" />

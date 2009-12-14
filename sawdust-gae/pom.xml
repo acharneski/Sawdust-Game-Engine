@@ -22,12 +22,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.sawdust</groupId>
-			<artifactId>game-library</artifactId>
+			<artifactId>sawdust-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sawdust</groupId>
-			<artifactId>common</artifactId>
+			<artifactId>sawdust-game-library</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -256,11 +256,4 @@
 			<url>http://repository.codehaus.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	<properties>
-		<jdk.dir>C:\Sun\SDK\jdk</jdk.dir>
-		<gae.version>1.2.8</gae.version>
-		<gae.dir>C:\Users\Andrew\Documents\Downloads\appengine-java-sdk-1.2.8</gae.dir>
-		<gwt.version>2.0.0</gwt.version>
-		<gwt.dir>C:\Users\Andrew\Documents\Downloads\gwt-2.0.0</gwt.dir>
-	</properties>
 </project>
