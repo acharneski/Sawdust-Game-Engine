@@ -198,6 +198,7 @@
 						<id>gwt-compile</id>
 						<configuration>
 							<tasks>
+							    <property name="compile_classpath" refid="maven.compile.classpath" />
 								<ant target="gwt-compile" inheritRefs="true" />
 							</tasks>
 						</configuration>
@@ -256,4 +257,13 @@
 			<url>http://repository.codehaus.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
+	<distributionManagement>
+		<site>
+			<id>site</id>
+			<name>Maven site</name>
+			<url>/Google</url>
+		</site>
+	</distributionManagement>
+<!--
+-->
 </project>

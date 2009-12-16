@@ -8,7 +8,6 @@
 	<name>sawdust-game-engine</name>
 	<description>An ajax game platform for Google App Engine. Features
 		social network integration and accessibility </description>
-	<url>http://174.143.150.184:9000/</url>
 	<inceptionYear>May 2009</inceptionYear>
 	<issueManagement>
 		<system>JIRA</system>
@@ -43,7 +42,6 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
 					<port>9000</port>
-					<tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -82,26 +80,14 @@
 					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
-				<!-- 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-				 -->
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-				<!-- 
-					<xrefLocation>${project.reporting.outputDirectory}/../xref-test</xrefLocation>
-				 -->
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -109,19 +95,12 @@
 				<configuration>
 					<targetjdk>1.5</targetjdk>
 					<sourceEncoding>utf-8</sourceEncoding>
-					       <!--  
-					<linkXref>true</linkXref>
-					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-					       -->
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<enableRulesSummary>true</enableRulesSummary>
-        <!--  
-					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-        -->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -140,7 +119,16 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 			</plugin>
-	<!--   
+<!-- 
+-->
+<!-- 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-changelog-plugin</artifactId>
 			</plugin>
@@ -161,14 +149,14 @@
 					<jiraPassword>acharneski</jiraPassword>
 				</configuration>
 			</plugin>
-	-->
+-->
 		</plugins>
 	</reporting>
 	<distributionManagement>
 		<site>
 			<id>site</id>
 			<name>Maven site</name>
-			<url>${basedir}/target/wwwmvn</url>
+			<url>/Sawdust-Game-Engine</url>
 		</site>
 	</distributionManagement>
 	<properties>
@@ -178,6 +166,6 @@
 		<gae.dir>${env.SGDK_HOME}/appengine-java-sdk</gae.dir>
 		<gwt.version>2.0.0</gwt.version>
 		<gwt.dir>${env.SGDK_HOME}/gwt</gwt.dir>
-		<jai.home>${env.SGDK_HOME}//jai</jai.home>
+		<jai.home>${env.SGDK_HOME}/jai</jai.home>
 	</properties>
 </project>

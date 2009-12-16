@@ -69,8 +69,10 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<java fork="false" classname="com.sawdust.util.art.CardGenerator1">
+								<property name="compile_classpath" refid="maven.compile.classpath" />
+								<java fork="true" classname="com.sawdust.util.art.CardGenerator1">
 									<classpath>
+										<pathelement path="${compile_classpath}" />
 										<dirset dir="${basedir}/target">
 											<include name="**/classes" />
 										</dirset>
@@ -81,8 +83,9 @@
 									<arg value="${basedir}/src/main/art" />
 									<arg value="${basedir}/target/classes" />
 								</java>
-								<java fork="false" classname="com.sawdust.util.art.LetterGenerator1">
+								<java fork="true" classname="com.sawdust.util.art.LetterGenerator1">
 									<classpath>
+										<pathelement path="${compile_classpath}" />
 										<dirset dir="${basedir}/target">
 											<include name="**/classes" />
 										</dirset>
@@ -105,4 +108,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<site>
+			<id>site</id>
+			<name>Maven site</name>
+			<url>/Game-Library</url>
+		</site>
+	</distributionManagement>
+	<!--
+-->
 </project>

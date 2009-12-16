@@ -54,4 +54,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<site>
+			<id>site</id>
+			<name>Maven site</name>
+			<url>/Core</url>
+		</site>
+	</distributionManagement>
+<!--
+-->
 </project>

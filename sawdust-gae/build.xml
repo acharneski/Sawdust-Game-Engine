@@ -5,9 +5,9 @@
 	<target name="gwt-compile" description="Compile Javascript">
     <mkdir dir="${basedir}/war" />
     <java fork="true" classname="com.google.gwt.dev.Compiler"
-      dir="${basedir}/war" failonerror="true">
+      dir="${basedir}/war" failonerror="false">
       <classpath>
-        <path refid="maven.compile.classpath" />
+        <pathelement path="${compile_classpath}" />
         <pathelement path="${basedir}/src/main/java"></pathelement>
         <fileset dir="${gwt.dir}">
           <include name="**/*.jar" />
