@@ -20,9 +20,10 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.service.data.MoneyAccount;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class MoneyTransaction extends DataObj
+public class MoneyTransaction extends SDDataEntity
 {
 
     private static final int MAX_RECORDS = 10;

@@ -35,11 +35,12 @@ import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
 import com.sawdust.server.datastore.entities.SessionMember.MemberStatus;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameSession extends DataObj implements com.sawdust.engine.service.data.GameSession
+public class GameSession extends SDDataEntity implements com.sawdust.engine.service.data.GameSession
 {
    private static final Logger LOG           = Logger.getLogger(GameSession.class.getName());
    

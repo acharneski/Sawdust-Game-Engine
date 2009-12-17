@@ -14,9 +14,10 @@ import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class TinySession extends DataObj
+public class TinySession extends SDDataEntity
 {
 
     private static int TINYLENGTH = 5;

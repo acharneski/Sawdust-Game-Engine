@@ -16,9 +16,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class MoneyAccount extends DataObj implements com.sawdust.engine.service.data.MoneyAccount
+public class MoneyAccount extends SDDataEntity implements com.sawdust.engine.service.data.MoneyAccount
 {
    private static final Logger LOG = Logger.getLogger(MoneyAccount.class.getName());
 

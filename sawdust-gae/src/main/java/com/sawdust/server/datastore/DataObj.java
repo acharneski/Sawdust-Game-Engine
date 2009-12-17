@@ -14,15 +14,8 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 import com.sawdust.engine.service.debug.AssertionFail;
 
-//@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-//@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class DataObj
 {
-
-//   @PrimaryKey
-//   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-//   private Long id;
-   
    @NotPersistent
    private PersistenceManager entityManager = null;
    

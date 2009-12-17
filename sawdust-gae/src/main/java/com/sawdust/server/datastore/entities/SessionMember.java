@@ -13,9 +13,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.debug.SawdustSystemError;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class SessionMember implements com.sawdust.engine.service.data.SessionMember
+public class SessionMember extends SDDataEntity implements com.sawdust.engine.service.data.SessionMember
 {
 
     public enum MemberStatus
@@ -175,4 +176,10 @@ public class SessionMember implements com.sawdust.engine.service.data.SessionMem
 	protected Date getQueueTime() {
 		return queueTime;
 	}
+
+    @Override
+    public Key getKey()
+    {
+        return id;
+    }
 }

@@ -21,9 +21,10 @@ import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class Account extends DataObj implements com.sawdust.engine.service.data.Account
+public class Account extends SDDataEntity implements com.sawdust.engine.service.data.Account
 {
    public enum InterfacePreference
    {

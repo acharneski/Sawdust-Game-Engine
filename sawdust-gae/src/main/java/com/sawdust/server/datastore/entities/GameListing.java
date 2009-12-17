@@ -24,9 +24,10 @@ import com.sawdust.engine.service.debug.InputException;
 import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.SDDataEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameListing extends DataObj
+public class GameListing extends SDDataEntity
 {
     public enum InviteSearchParam
     {
