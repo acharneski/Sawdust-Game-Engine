@@ -150,7 +150,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
       final Key id2 = session2.getKey();
       if (null == id2)
       {
-         LOG.info("Warning: null key");
+         LOG.warning("Warning: null key");
       }
       sessions.add(id2);
    }
@@ -184,7 +184,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
          }
          else
          {
-            LOG.info("Bad Key: " + bankKey2.toString());
+            LOG.warning("Bad Key: " + bankKey2.toString());
          }
       }
       if (null == moneyAccount)
@@ -282,7 +282,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
       final Key id2 = ((GameSession) gameSession).getKey();
       if (null == id2)
       {
-         LOG.info("Warning: null key");
+    	  LOG.warning("Warning: null key");
       }
       else
       {

@@ -4,8 +4,6 @@
 <%@ page import="com.sawdust.server.logic.User"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();%>
-
 <%
 User.clearCookieLogin(response);
 String redirectUrl = request.getParameter("redirect");

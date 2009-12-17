@@ -159,7 +159,7 @@ public class GameState extends DataObj
         }
         catch (Throwable e)
         {
-            LOG.info(Util.getFullString(e));
+            LOG.warning(Util.getFullString(e));
             return null;
         }
     }

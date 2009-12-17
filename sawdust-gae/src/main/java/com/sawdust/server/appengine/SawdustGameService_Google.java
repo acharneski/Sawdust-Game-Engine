@@ -108,7 +108,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final com.sawdust.server.logic.SessionToken access = getSessionToken2(access2, request, response);
             DataStore.Clear();
             final Account account = access.loadAccount();
@@ -167,7 +166,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final GameLeague l = GameLeague.load(league.name);
             if (null != l) throw new GameLogicException("Name already taken: " + league.name);
             // l = new GameLeague(accessData);
@@ -184,7 +182,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final com.sawdust.server.logic.SessionToken access = getSessionToken(access2);
             DataStore.Clear();
             LOG.info(String.format("Command=%s;\tUser=%s", cmd, access.getUserId()));
@@ -235,7 +232,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final com.sawdust.server.logic.SessionToken access = getSessionToken(access2);
             final GameType<?> gameObj = GameTypes.findById(gameName);
             if (null == gameObj) return null;
@@ -255,7 +251,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final com.sawdust.server.logic.SessionToken access = getSessionToken(accessData);
             DataStore.Clear();
             // System.out.println(String.format("Update=%s;\tUser=%s",
@@ -298,7 +293,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
             final SessionToken access = getSessionToken(access2);
             com.sawdust.engine.service.data.GameSession gameSession;
             gameSession = access.loadSession();

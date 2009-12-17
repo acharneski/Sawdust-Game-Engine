@@ -2,8 +2,6 @@
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
 <%@ page errorPage="/error.jsp"%>
 
-<%com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();%>
-
 <wc:pageTemplate title="Sawdust Privacy Notice">
 	<jsp:body>
 <h1>Sawdust Privacy Notice</h1>

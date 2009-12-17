@@ -91,7 +91,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
             double fitness1 = gameFitness(hypotheticalGame, participant);
             if (n >= _depth)
             {
-               LOG.info((++cnt) + "\t" + n + "\t" + thisMove.getCommandText() + "\t" + fitness1);
+               LOG.fine((++cnt) + "\t" + n + "\t" + thisMove.getCommandText() + "\t" + fitness1);
             }
             boolean isBetter = fitness1 > bestFitness;
             if (null == bestMove || isBetter)

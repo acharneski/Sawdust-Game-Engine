@@ -26,16 +26,16 @@ import com.sawdust.engine.game.state.GameLabel;
 import com.sawdust.engine.game.state.IndexCard;
 import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
+import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.engine.service.debug.InputException;
-import com.sawdust.engine.service.debug.RequestLocalLog;
 
 public abstract class PokerGame extends MultiPlayerCardGame
 {
-    public enum GamePhase
+	public enum GamePhase
     {
         Null, 
         Bidding, 
@@ -487,7 +487,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             }
             catch (final InputException e)
             {
-                RequestLocalLog.Instance.print(e);
+            	LOG.fine(Util.getFullString(e));
             }
         }
 

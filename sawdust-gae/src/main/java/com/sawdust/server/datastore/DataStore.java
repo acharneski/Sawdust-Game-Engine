@@ -43,7 +43,7 @@ public final class DataStore
       }
       catch (Throwable e)
       {
-         LOG.info(Util.getFullString(e));
+         LOG.warning(Util.getFullString(e));
       }
       return _pmfInstance;
    }
@@ -73,10 +73,7 @@ public final class DataStore
             em = create();
             if (null == em) throw new NullPointerException("Could not create PersistenceManager");
             obj.setEntityManager(em);
-            if (DEBUG_LOG)
-            {
-               LOG.info(String.format("Creating new object of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
-            }
+            LOG.info(String.format("Creating new object of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
             Transaction currentTransaction = em.currentTransaction();
             if (ENABLE_TRANSACTIONS)
             {
@@ -108,10 +105,7 @@ public final class DataStore
       if (classCache.containsKey(obj.getKey())) return classCache.get(obj.getKey());
       // throw new AssertionFail("Object already in cache!");
       classCache.put(obj.getKey(), obj);
-      if (DEBUG_LOG)
-      {
-         LOG.info(String.format("Adding to cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
-      }
+      LOG.info(String.format("Adding to cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
       return obj;
    }
    
@@ -148,16 +142,13 @@ public final class DataStore
       }
       catch (Throwable e)
       {
-         LOG.info(Util.getFullString(e));
+         LOG.warning(Util.getFullString(e));
       }
       if (null != returnValue)
       {
          returnValue.setEntityManager(em);
-         if (DEBUG_LOG)
-         {
-            LOG.info(String.format("Loaded object of type %s with key %s", returnValue.getClass().toString(), returnValue.getKey()
-                  .toString()));
-         }
+         LOG.info(String.format("Loaded object of type %s with key %s", returnValue.getClass().toString(), returnValue.getKey()
+        		 .toString()));
       }
       return returnValue;
    }
@@ -182,7 +173,7 @@ public final class DataStore
             }
             else
             {
-               LOG.warning("Persistance manager is closed!");
+               LOG.severe("Persistance manager is closed!");
             }
          }
       }

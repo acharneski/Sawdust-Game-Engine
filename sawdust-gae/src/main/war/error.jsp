@@ -10,7 +10,6 @@
 <%@page import="java.util.logging.Logger"%>
 <%@page import="com.sawdust.server.jsp.JspLib"%>
 <%@page import="java.io.PrintStream"%>
-<%@page import="com.sawdust.engine.service.debug.RequestLocalLog"%>
 <%@page import="com.sawdust.engine.service.debug.GameLogicException"%>
 <%@page import="com.sawdust.server.datastore.DataStore"%>
 <%@page import="com.sawdust.server.logic.ReportedException"%>

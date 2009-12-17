@@ -55,14 +55,12 @@ public class SawdustSystemError extends RuntimeException
         {
             final StringWriter stringWriter = new StringWriter();
             stringWriter.append("Exception: " + Util.getFullString(cause));
-            stringWriter.append("Request Debug Info: " + RequestLocalLog.Instance.getRequestLog());
             LOG.warning(stringWriter.toString());
         }
         else
         {
             final StringWriter stringWriter = new StringWriter();
             stringWriter.append("Exception: " + Util.getFullString(this));
-            stringWriter.append("Request Debug Info: " + RequestLocalLog.Instance.getRequestLog());
             LOG.warning(stringWriter.toString());
         }
     }

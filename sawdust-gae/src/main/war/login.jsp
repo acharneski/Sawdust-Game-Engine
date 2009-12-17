@@ -6,8 +6,6 @@
 <%@ page import="java.util.Map"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();%>
-
 <%
 User u = User.getUser(request, response, null);
 u.setCookieLogin(response);

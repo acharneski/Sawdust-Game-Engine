@@ -15,10 +15,6 @@
 <%@ page import="com.sawdust.engine.common.config.PropertyConfig"%>
 <%@ page import="com.sawdust.engine.common.config.PropertyConfig.PropertyType"%>
 
-<%
-    com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
-%>
-
 <jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" scope="request" />
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 

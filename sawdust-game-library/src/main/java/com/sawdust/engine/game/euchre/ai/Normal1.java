@@ -192,7 +192,7 @@ public class Normal1 extends Agent<EuchreGame>
         // }
         else
         {
-            LOG.info("Failed force move");
+            LOG.warning("Failed force move");
         }
     }
 }

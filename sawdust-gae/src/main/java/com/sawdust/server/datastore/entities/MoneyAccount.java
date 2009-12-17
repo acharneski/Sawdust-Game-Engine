@@ -120,7 +120,7 @@ public class MoneyAccount extends DataObj implements com.sawdust.engine.service.
     @Override
     public void setCurrentBalence(int i)
     {
-        LOG.fine(String.format("Set %s balence = %d", accountId, i));
+        LOG.info(String.format("Set %s balence = %d", accountId, i));
 //        if(i < Account.MIN_CREDITS)
 //        {
 //            LOG.fine(String.format("Override balence to %d", Account.MIN_CREDITS));

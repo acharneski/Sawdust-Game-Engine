@@ -70,7 +70,7 @@ public class LanguageChain
             destiny -= e.getValue();
             if (0 >= destiny) return e.getKey();
         }
-        LOG.warning("Destiny out of bounds!");
+        LOG.severe("Destiny out of bounds!");
         return Util.randomMember(letters);
     }
 }

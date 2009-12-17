@@ -3,8 +3,6 @@
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page errorPage="/error.jsp"%>
 
-<% com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear(); %>
-
 <html>
 <head>
 <title>Request Debug Page</title>

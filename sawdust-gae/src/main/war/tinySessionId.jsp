@@ -4,10 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%
-    com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();
-%>
-
 <%@ page import="com.sawdust.engine.game.BaseGame"%>
 <%@ page import="com.sawdust.engine.service.data.GameSession"%>
 <%@ page import="com.sawdust.server.jsp.JspLib"%>

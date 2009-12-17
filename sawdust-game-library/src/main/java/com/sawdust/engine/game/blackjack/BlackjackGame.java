@@ -551,7 +551,7 @@ public abstract class BlackjackGame extends IndexCardGame
                 }
                 else
                 {
-                    LOG.info("null == card");
+                    LOG.warning("null == card");
                 }
             }
             if (HAND_PLAYER == i)

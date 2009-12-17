@@ -6,8 +6,6 @@
 <%@ page import="com.sawdust.server.logic.FacebookUser"%>
 <%@ page import="java.net.URLEncoder"%>
 
-<%@page import="com.sawdust.engine.service.debug.RequestLocalLog"%>
-
 <div>
 
 <hr/><br>
@@ -50,12 +48,6 @@ if (null != cookies)
 <h2>Facebook Parameters:</h2>
 <pre>
 <%=FacebookUser.getParamsForTrace(request)%>
-</pre>
-
-<hr/><br>
-<h2>Request Log:</h2>
-<pre>
-<%=RequestLocalLog.Instance.getRequestLog()%>
 </pre>
 
 </div>

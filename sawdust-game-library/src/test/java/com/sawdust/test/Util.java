@@ -2,6 +2,7 @@ package com.sawdust.test;
 
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 import com.sawdust.engine.common.game.GameLabel;
 import com.sawdust.engine.common.game.GameState;
@@ -14,10 +15,10 @@ import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.state.Token;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
-import com.sawdust.engine.service.debug.RequestLocalLog;
 
 public class Util
 {
+	private static final Logger LOG = Logger.getLogger(Util.class.getName());
 
     public static void assertEqual(final int actual, final int expected)
     {
@@ -37,7 +38,7 @@ public class Util
                 return;
             }
         }
-        RequestLocalLog.Instance.println("Message not found: " + expected);
+        LOG.fine("Message not found: " + expected);
         throw new AssertionError();
     }
 
@@ -47,7 +48,7 @@ public class Util
         {
             if (cmd.equals(l.command)) return true;
         }
-        RequestLocalLog.Instance.println("No gui button: " + cmd);
+        LOG.fine("No gui button: " + cmd);
         for (com.sawdust.engine.common.game.Token t : gwt.getTokens())
         {
             for (String c : t.getMoveCommands().values())
@@ -55,7 +56,7 @@ public class Util
                 if (cmd.equals(c)) return true;
             }
         }
-        RequestLocalLog.Instance.println("No gui access: " + cmd);
+        LOG.fine("No gui access: " + cmd);
         return false;
     }
 

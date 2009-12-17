@@ -7,8 +7,6 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();%>
-
 <%
 boolean isGameUrl = false;
 if(request.getPathInfo().startsWith("/play"))

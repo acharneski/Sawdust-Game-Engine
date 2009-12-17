@@ -4,8 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%com.sawdust.engine.service.debug.RequestLocalLog.Instance.clear();%>
-
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link type="text/css" rel="stylesheet" href="/gameClient/gwt/sawdust/sawdust.css">

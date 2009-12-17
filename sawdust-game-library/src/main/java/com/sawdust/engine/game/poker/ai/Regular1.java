@@ -52,7 +52,7 @@ public class Regular1 extends Agent<PokerGame>
                 final double targetBet = 1 + Math.log(odds) * _richness;
                 final double neededDelta = targetBet - game.getCurrentBet();
                 final double fear = game.getCurrentBet() / (targetBet);
-                LOG.info(String.format("Hand = %s; Target = %f; Delta = %f; Fear = %f;", playerHand.getName(), targetBet, neededDelta, fear));
+                LOG.fine(String.format("Hand = %s; Target = %f; Delta = %f; Fear = %f;", playerHand.getName(), targetBet, neededDelta, fear));
                 final long amt = Math.round(Math.log(neededDelta) * (1 + (Math.random() * _aggression)));
                 if (amt > 0)
                 {

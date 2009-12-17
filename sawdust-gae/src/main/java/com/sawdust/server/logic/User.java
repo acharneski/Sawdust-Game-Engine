@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.UserService;
 import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.service.Util;
-import com.sawdust.engine.service.debug.RequestLocalLog;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
 import com.sawdust.server.logic.FacebookUser.Site;
@@ -92,13 +91,13 @@ public class User implements Serializable
             if (Long.parseLong(cookieValue_Expire) < new Date().getTime())
             {
                 // Graceful expiry
-                RequestLocalLog.Instance.note("Expired Token: " + cookieValue_Expire);
+                LOG.info("Expired Token: " + cookieValue_Expire);
                 return null;
             }
         }
         catch (final NumberFormatException e)
         {
-            RequestLocalLog.Instance.println(String.format( //
+            LOG.fine(String.format( //
                     "Error parsing sha1 authentication expiry time\n" + // 
                             "Signature = %s\n" + // 
                             "ID = %s\n" + //
@@ -110,13 +109,13 @@ public class User implements Serializable
         }
         if (expectedSignature.equals(cookieValue_Signature))
         {
-            RequestLocalLog.Instance.note("Signed Token: " + cookieValue_Signature);
+            LOG.fine("Signed Token: " + cookieValue_Signature);
             id = Util.unstring(cookieValue_ID, UserToken.class);
             return id.getId();
         }
         else
         {
-            RequestLocalLog.Instance.println(String.format( //
+        	LOG.fine(String.format( //
                     "Error verifying sha1 authentication\n" + //
                             "Expected Signature = %s\n" + //
                             "Calculated Expire = %s\n" + //
@@ -150,7 +149,7 @@ public class User implements Serializable
             final String expectedSignature = Util.md5(id + SECRET);
             if (!signiature.equals(expectedSignature))
             {
-                RequestLocalLog.Instance.println(String.format("Error verifying guest authentication\n" + "Expected Signature = %s\n"
+            	LOG.warning(String.format("Error verifying guest authentication\n" + "Expected Signature = %s\n"
                         + "Calculated Expire = %s" + "ID = %s\n", signiature, expectedSignature, id));
                 id = null;
             }
@@ -183,7 +182,7 @@ public class User implements Serializable
             }
             catch (final Exception e)
             {
-                RequestLocalLog.Instance.print(e);
+            	LOG.fine(Util.getFullString(e));
             }
         }
 
@@ -195,7 +194,7 @@ public class User implements Serializable
             }
             catch (final Exception e)
             {
-                RequestLocalLog.Instance.print(e);
+            	LOG.fine(Util.getFullString(e));
             }
         }
 
@@ -207,7 +206,7 @@ public class User implements Serializable
             }
             catch (final Exception e)
             {
-                RequestLocalLog.Instance.print(e);
+            	LOG.fine(Util.getFullString(e));
             }
         }
 
@@ -233,7 +232,7 @@ public class User implements Serializable
         final String email = getCookieLogin(request);
         if (null != email)
         {
-            RequestLocalLog.Instance.note("Cookie Auth: " + email);
+        	LOG.fine("Cookie Auth: " + email);
             user = new com.sawdust.server.logic.User(UserTypes.Member, email, "/logout.jsp");
         }
         return user;
@@ -339,18 +338,18 @@ public class User implements Serializable
         c = new Cookie("sdge-login-id", userData);
         c.setPath("/");
         response.addCookie(c);
-        RequestLocalLog.Instance.note(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
+        LOG.fine(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
 
         final String expireStr = Long.toString(new Date().getTime() + 8 * 60 * 60 * 1000);
         c = new Cookie("sdge-expire", expireStr);
         c.setPath("/");
         response.addCookie(c);
-        RequestLocalLog.Instance.note(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
+        LOG.fine(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
 
         c = new Cookie("sdge-login-signature", Util.md5(userData + SECRET + expireStr));
         c.setPath("/");
         response.addCookie(c);
-        RequestLocalLog.Instance.note(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
+        LOG.fine(String.format("Set Cookie: %s = %s", c.getName(), c.getValue()));
     }
 
     public void setSite(final String site)

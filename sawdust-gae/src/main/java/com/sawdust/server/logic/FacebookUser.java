@@ -24,7 +24,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.sawdust.engine.service.Util;
-import com.sawdust.engine.service.debug.RequestLocalLog;
 import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
@@ -157,7 +156,7 @@ public class FacebookUser
         final ClientResponse response = fb.getResponse("users.getInfo", tm);
         final Document doc = parseResponse(response);
         final String value = getXPath(doc, "//fb:users_getInfo_response/fb:user/fb:name/text()");
-        LOG.warning("User Name: " + value);
+        LOG.info("User Name: " + value);
         return value;
     }
 
@@ -261,7 +260,7 @@ public class FacebookUser
         final String signature = GetFbParam(request, "fb_sig");
         if (null == signature)
         {
-            RequestLocalLog.Instance.note("Facebook signature field not found");
+        	LOG.warning("Facebook signature field not found");
             return null;
         }
         for (final Site secret : FACEBOOK_SECRET)
@@ -269,7 +268,7 @@ public class FacebookUser
             final String md5 = getCalculatedSignature(request, secret.apiSecretKey);
             if ((null != md5) && md5.equals(signature)) return secret;
         }
-        RequestLocalLog.Instance.println("Facebook authentication failed:\n" + getParamsForTrace(request));
+        LOG.warning("Facebook authentication failed:\n" + getParamsForTrace(request));
         return null;
     }
 

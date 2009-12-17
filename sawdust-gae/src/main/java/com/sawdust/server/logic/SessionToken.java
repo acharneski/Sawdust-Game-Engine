@@ -67,7 +67,7 @@ public class SessionToken implements com.sawdust.engine.service.data.SessionToke
             }
             catch (final Exception e)
             {
-                LOG.info("GameSession load exception: " + e);
+                LOG.warning("GameSession load exception: " + e);
             }
         }
         return _session;
