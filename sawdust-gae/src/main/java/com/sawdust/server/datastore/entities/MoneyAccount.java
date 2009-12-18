@@ -16,10 +16,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.SDDataEntity;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class MoneyAccount extends SDDataEntity implements com.sawdust.engine.service.data.MoneyAccount
+public class MoneyAccount extends DataObj implements com.sawdust.engine.service.data.MoneyAccount
 {
    private static final Logger LOG = Logger.getLogger(MoneyAccount.class.getName());
 
@@ -63,19 +63,14 @@ public class MoneyAccount extends SDDataEntity implements com.sawdust.engine.ser
     @Persistent
     private String displayName;
 
-    @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
-    protected MoneyAccount() {}
+    protected MoneyAccount() {
+        super();
+    }
     
     public MoneyAccount(final String acctId, final Key key)
     {
+        super((KeyFactory.createKey(MoneyAccount.class.getSimpleName(), acctId)));
         accountId = acctId;
-        id = new KeyFactory.Builder(key).addChild(MoneyAccount.class.getSimpleName(), accountId).getKey();
-
-        id = (KeyFactory.createKey(MoneyAccount.class.getSimpleName(), acctId));
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
 
@@ -83,12 +78,6 @@ public class MoneyAccount extends SDDataEntity implements com.sawdust.engine.ser
     {
         if ((displayName == null) || displayName.isEmpty()) return accountId;
         return displayName;
-    }
-
-    @Override
-    public Key getKey()
-    {
-        return id;
     }
 
     public List<MoneyTransaction> getTransactionsSince(final Date time)

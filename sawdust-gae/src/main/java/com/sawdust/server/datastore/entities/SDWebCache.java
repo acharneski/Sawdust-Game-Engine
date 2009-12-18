@@ -25,10 +25,10 @@ import com.google.appengine.api.datastore.Text;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.SDDataEntity;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class SDWebCache extends SDDataEntity
+public class SDWebCache extends DataObj
 {
     private static final Logger LOG = Logger.getLogger(SDWebCache.class.getName());
 
@@ -121,11 +121,6 @@ public class SDWebCache extends SDDataEntity
     private Text content = null;
 
     @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
-    @Persistent
     public int status = 0;
 
     @Persistent
@@ -136,16 +131,15 @@ public class SDWebCache extends SDDataEntity
 
     protected SDWebCache()
     {
+        super();
     }
 
     public SDWebCache(final String purl, final int pstatus, final String pcontent) throws GameException
     {
+        super(KeyFactory.createKey(SDWebCache.class.getSimpleName(), String.format("%s\\%s", purl, DateFormat.getDateTimeInstance().format(new Date()))));
         url = purl;
         status = pstatus;
         setContent(pcontent);
-        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-        final String currentTime = DateFormat.getDateTimeInstance().format(new Date());
-        id = KeyFactory.createKey(this.getClass().getSimpleName(), String.format("%s\\%s", purl, currentTime));
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
 
@@ -159,21 +153,11 @@ public class SDWebCache extends SDDataEntity
      */
     public String getId()
     {
-        return KeyFactory.keyToString(id);
-    }
-
-    /**
-     * @return the _id
-     */
-    @Override
-    public Key getKey()
-    {
-        return id;
+        return KeyFactory.keyToString(getKey());
     }
 
     public void setContent(final String pcontent)
     {
         content = new Text(pcontent);
     }
-
 }

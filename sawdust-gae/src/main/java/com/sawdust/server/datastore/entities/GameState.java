@@ -1,6 +1,5 @@
 package com.sawdust.server.datastore.entities;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,13 +22,14 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
 import com.sawdust.engine.service.Util;
+import com.sawdust.engine.service.data.GameSession.SessionStatus;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.SDDataEntity;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameState extends SDDataEntity
+public class GameState extends DataObj
 {
     private static final Logger LOG = Logger.getLogger(GameState.class.getName());
 
@@ -88,11 +88,6 @@ public class GameState extends SDDataEntity
     private int currentVersion;
 
     @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
-    @Persistent
     private String session = null;
 
     @Persistent
@@ -103,15 +98,15 @@ public class GameState extends SDDataEntity
 
     protected GameState()
     {
+        super();
     }
 
     public GameState(final Blob state2, final int currentVersion2, final String session2)
     {
+        super(KeyFactory.createKey(GameState.class.getSimpleName(), (session2 + "%" + currentVersion2)));
         state = state2;
         currentVersion = currentVersion2;
         session = session2;
-        final String sKey = (session + "%" + currentVersion);
-        id = KeyFactory.createKey(this.getClass().getSimpleName(), sKey);
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
 
@@ -127,26 +122,13 @@ public class GameState extends SDDataEntity
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final GameState other = (GameState) obj;
-        if (id == null)
-        {
-            if (other.id != null) return false;
-        }
-        else if (!id.equals(other.id)) return false;
+        if (!super.equals(other)) return false;
         return true;
     }
 
     public String getId()
     {
-        return KeyFactory.keyToString(id);
-    }
-
-    /**
-     * @return the _id
-     */
-    @Override
-    public Key getKey()
-    {
-        return id;
+        return KeyFactory.keyToString(getKey());
     }
 
     public Game getState(final GameSession _parent)
@@ -171,12 +153,21 @@ public class GameState extends SDDataEntity
     }
 
     @Override
-    public int hashCode()
+    public boolean isValid()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+        try
+        {
+            if(null == session) return false;
+            if(session.isEmpty()) return false;
+            GameSession s = GameSession.load(session, null);
+            if(null == s) return false;
+            if(s.sessionStatus == SessionStatus.Closed) return false;
+            if(s.getLatestVersionNumber() > currentVersion) return false;
+        }
+        catch (Throwable e)
+        {
+            return false;
+        }
+        return super.isValid();
     }
-
 }

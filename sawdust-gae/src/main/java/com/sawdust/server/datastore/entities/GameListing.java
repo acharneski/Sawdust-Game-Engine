@@ -24,10 +24,10 @@ import com.sawdust.engine.service.debug.InputException;
 import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.SDDataEntity;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameListing extends SDDataEntity
+public class GameListing extends DataObj
 {
     public enum InviteSearchParam
     {
@@ -88,8 +88,8 @@ public class GameListing extends SDDataEntity
                 }
                 if (0 == numberOfMembers )
                 {
-                    LOG.info("Removing old invite record: " + gameListing.key);
-                    gameListing.delete();
+                    LOG.info("Removing old invite record: " + gameListing.getKey());
+                    gameListing.delete(true);
                     continue;
                 }
                 else
@@ -121,26 +121,21 @@ public class GameListing extends SDDataEntity
     private String game = "NULL";
 
     @Persistent
-    @PrimaryKey
-    @Id
-    private Key key;
-
-    @Persistent
     private Key sessionKey;
 
     @Persistent
     private Date timeCreated = new Date();;
 
-    protected GameListing() {}
+    protected GameListing() {
+        super();
+    }
     
     public GameListing(final GameSession gameSession, final Player user)
     {
+        super(KeyFactory.createKey(GameListing.class.getSimpleName(), (user.getUserId() + "%" + DateFormat.getDateTimeInstance().format(new Date()))));
         sessionKey = gameSession.getKey();
         ante = gameSession.getAnte();
         game = gameSession.getGame();
-
-        final String sKey = (user.getUserId() + "%" + DateFormat.getDateTimeInstance().format(new Date()));
-        key = KeyFactory.createKey(GameListing.class.getSimpleName(), sKey);
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
 
@@ -160,41 +155,22 @@ public class GameListing extends SDDataEntity
         return game;
     }
 
-    @Override
-    public Key getKey()
-    {
-        return key;
-    }
-
     public GameSession getSession()
     {
         GameSession load = GameSession.load(sessionKey, null);
         if(null == load)
         {
-            delete();
+            delete(true);
         }
         else if(null == load.getLatestState())
         {
             LOG.warning("Removing defunc session");
-            load.delete();
-            delete();
+            load.delete(true);
+            delete(true);
             DataStore.Save();
             return null;
         }
         return load;
-    }
-
-    private void delete()
-    {
-        LOG.info("Deleting GameListting");
-        PersistenceManager entityManager = getEntityManager();
-        if(null == entityManager) 
-        {
-            entityManager = DataStore.create();
-            entityManager.makePersistent(this);
-        }
-        entityManager.deletePersistent(this);
-        entityManager.close();
     }
 
     public Key getSessionKey()
@@ -223,11 +199,6 @@ public class GameListing extends SDDataEntity
     public void setGame(final String pgame)
     {
         game = pgame;
-    }
-
-    private void setKey(Key pkey)
-    {
-        this.key = pkey;
     }
 
     private void setSessionKey(Key psessionKey)

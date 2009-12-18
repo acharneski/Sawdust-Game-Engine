@@ -1,19 +1,29 @@
 package com.sawdust.server.datastore;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOFatalException;
 import javax.jdo.JDOHelper;
+import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 import com.sawdust.engine.service.Util;
+import com.sawdust.engine.service.debug.InputException;
 import com.sawdust.engine.service.debug.SawdustSystemError;
+import com.sawdust.server.datastore.entities.GameListing;
+import com.sawdust.server.datastore.entities.GameSession;
+import com.sawdust.server.datastore.entities.GameListing.InviteSearchParam;
 
 public final class DataStore
 {
@@ -129,6 +139,146 @@ public final class DataStore
          if (classCache.containsKey(key)) return (T) classCache.get(key);
       }
       return null;
+   }
+   
+   public static <T extends DataObj> int Clean(final Class<T> c, Date since, int milliseconds, int maxObjects, DataStats extraResults)
+   {
+       if(null==extraResults) extraResults = new DataStats();
+       Date timeout = new Date(new Date().getTime() + milliseconds);
+       maxObjects -= CleanNulls(c,milliseconds,maxObjects);
+
+       final PersistenceManager entityManager = DataStore.create();
+       assert(!entityManager.isClosed());
+       final Query newQuery = entityManager.newQuery(c);
+       boolean prefixBid = false;
+       if(null != since)
+       {
+           newQuery.setFilter(String.format("(updated <= _time)"));
+           newQuery.declareParameters("java.util.Date _time");
+       }
+       String ordering = "updated asc";
+       newQuery.setOrdering(ordering);
+
+       int count = 0;
+       try
+       {
+           assert(!entityManager.isClosed());
+           final List<T> results = (List<T>) newQuery.execute(since);
+           extraResults.end("Complete");
+           for (final T obj : results)
+           {
+               if(null != obj.getUpdated())
+               {
+                   Date when = obj.getUpdated();
+                   extraResults.registerTime(when);
+                   LOG.info("Object updated at: " + DateFormat.getDateTimeInstance().format(when));
+               }
+               else
+               {
+                   extraResults.registerNullTime();
+                   LOG.info("Object updated at: NULL");
+               }
+               assert(!entityManager.isClosed());
+               if(maxObjects < ++count)
+               {
+                   LOG.info("Object count exceeded");
+                   extraResults.end("Object count");
+                   break;
+               }
+               if(timeout.before(new Date()))
+               {
+                   extraResults.end("Timeout");
+                   LOG.info("Timeout exceeded");
+                   break;
+               }
+               assert(!entityManager.isClosed());
+               obj.setEntityManager(entityManager);
+               assert(!entityManager.isClosed());
+               if (obj.isValid())
+               {
+                   LOG.info("Validated object: " + obj.toString());
+                   obj.update();
+                   extraResults.incrementInspected();
+                   assert(!entityManager.isClosed());
+               }
+               else
+               {
+                   LOG.info("Removing object: " + obj.toString());
+                   obj.delete(false);
+                   extraResults.incrementDeleted();
+                   assert(!entityManager.isClosed());
+               }
+           }
+       }
+       catch (final JDOUserException e)
+       {
+           extraResults.end("Exception");
+           throw new SawdustSystemError(e);
+       }
+       finally
+       {
+           entityManager.close();
+       }
+       return count ;
+   }
+   
+   public static <T extends DataObj> int CleanNulls(final Class<T> c, int milliseconds, int maxObjects)
+   {
+       final PersistenceManager entityManager = DataStore.create();
+       assert(!entityManager.isClosed());
+       final Query newQuery = entityManager.newQuery(c);
+       boolean prefixBid = false;
+       newQuery.setFilter(String.format("updated == null"));
+       String ordering = "updated asc";
+       newQuery.setOrdering(ordering);
+
+       int count = 0;
+       try
+       {
+           assert(!entityManager.isClosed());
+           final List<T> results = (List<T>) newQuery.execute();
+           Date timeout = new Date(new Date().getTime() + milliseconds);
+           for (final T obj : results)
+           {
+               LOG.info("Object updated at: " + ((null==obj.getUpdated())?"NULL":DateFormat.getDateTimeInstance().format(obj.getUpdated())));
+               assert(!entityManager.isClosed());
+               if(maxObjects < ++count)
+               {
+                   LOG.info("Object count exceeded");
+                   break;
+               }
+               if(timeout.before(new Date()))
+               {
+                   LOG.info("Timeout exceeded");
+                   break;
+               }
+               assert(!entityManager.isClosed());
+               obj.setEntityManager(entityManager);
+               assert(!entityManager.isClosed());
+               if (obj.isValid())
+               {
+                   LOG.info("Validated object: " + obj.toString());
+                   obj.update();
+                   obj.setEntityManager(entityManager);
+                   assert(!entityManager.isClosed());
+               }
+               else
+               {
+                   LOG.info("Removing object: " + obj.toString());
+                   obj.delete(false);
+                   assert(!entityManager.isClosed());
+               }
+           }
+       }
+       catch (final JDOUserException e)
+       {
+           throw new SawdustSystemError(e);
+       }
+       finally
+       {
+           entityManager.close();
+       }
+       return count ;
    }
    
    public static <T extends DataObj> T Get(final Class<T> c, final Key key)

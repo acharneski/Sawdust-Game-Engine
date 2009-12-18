@@ -35,12 +35,12 @@ import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.SDDataEntity;
+import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
 import com.sawdust.server.datastore.entities.SessionMember.MemberStatus;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameSession extends SDDataEntity implements com.sawdust.engine.service.data.GameSession
+public class GameSession extends DataObj implements com.sawdust.engine.service.data.GameSession
 {
    private static final Logger LOG           = Logger.getLogger(GameSession.class.getName());
    
@@ -108,11 +108,6 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
    private String                               game           = "NULL";
    
    @Persistent
-   @PrimaryKey
-   @Id
-   private Key                                  id;
-   
-   @Persistent
    private Date                                 lastGameUpdate = new Date();
    
    @NotPersistent
@@ -136,14 +131,12 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
    
    protected GameSession()
    {
+       super();
    }
    
    public GameSession(final Account paccount) throws GameException
    {
-      final DateFormat timeFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-      final String sKey = (paccount.getKey() + "%" + timeFormatter.format(new Date()));
-      id = KeyFactory.createKey(this.getClass().getSimpleName(), sKey);
-      // this.join(account);
+      super(KeyFactory.createKey(GameSession.class.getSimpleName(), (paccount.getKey() + "%" + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()))));
       if (this != DataStore.Add(this)) throw new AssertionError();
    }
    
@@ -194,16 +187,7 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
       if (sessionStatus != SessionStatus.Inviting) throw new GameLogicException("Invalid session status");
       return new GameListing(this, user);
    }
-   
-   void delete()
-   {
-      LOG.info("Deleting GameSession");
-      PersistenceManager entityManager = getEntityManager();
-      if (null == entityManager) entityManager = DataStore.create();
-      entityManager.deletePersistent(this);
-      entityManager.close();
-   }
-   
+      
    private void dropMember(final SessionMember member)
    {
       final Game lgame = getLatestState();
@@ -238,11 +222,7 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
       if (obj == null) return false;
       if (getClass() != obj.getClass()) return false;
       final GameSession other = (GameSession) obj;
-      if (id == null)
-      {
-         if (other.id != null) return false;
-      }
-      else if (!id.equals(other.id)) return false;
+      if (!super.equals(other)) return false;
       return true;
    }
    
@@ -316,16 +296,7 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
    
    public String getId()
    {
-      return KeyFactory.keyToString(id);
-   }
-   
-   /**
-    * @return the _id
-    */
-   @Override
-   public Key getKey()
-   {
-      return id;
+      return KeyFactory.keyToString(getKey());
    }
    
    public Date getLastGameUpdate()
@@ -431,15 +402,6 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
          list.add(state.getState(this));
       }
       return list;
-   }
-   
-   @Override
-   public int hashCode()
-   {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((id == null) ? 0 : id.hashCode());
-      return result;
    }
    
    @Persistent
@@ -639,14 +601,14 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
          if (sessionStatus != SessionStatus.Playing) throw new GameLogicException("Can only idle a playing session");
          if (0 == subscribedPlayers)
          {
-            delete();
+            delete(true);
          }
          break;
       case Finished:
          if (sessionStatus != SessionStatus.Playing) throw new GameLogicException("Can only finish a playing session");
          if (idlePlayers == subscribedPlayers)
          {
-            delete();
+            delete(true);
          }
          else
          {
@@ -908,5 +870,4 @@ public class GameSession extends SDDataEntity implements com.sawdust.engine.serv
       int newBalance = (int) (balance * factor);
       this.withdraw((int) (balance - newBalance), null, msg);
    }
-   
 }
