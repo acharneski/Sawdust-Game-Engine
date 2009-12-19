@@ -14,6 +14,7 @@ import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class TinySession extends DataObj
@@ -23,9 +24,7 @@ public class TinySession extends DataObj
 
     public static TinySession load(final GameSession session)
     {
-        final TinySession returnValue = new TinySession();
-        returnValue.sessionId = session.getId();
-        returnValue.id = KeyFactory.createKey(TinySession.class.getSimpleName(), returnValue.sessionId);
+        final TinySession returnValue = new TinySession(session);
         final String md5 = Util.md5base64(returnValue.sessionId);
         for (int i = 0; i < md5.length() - TINYLENGTH; i++)
         {
@@ -71,12 +70,7 @@ public class TinySession extends DataObj
         }
         return myData;
     }
-
-    @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
+    
     @Persistent
     private String sessionId;
 
@@ -85,6 +79,13 @@ public class TinySession extends DataObj
 
     private TinySession()
     {
+        super();
+    }
+
+    public TinySession(GameSession session)
+    {
+        super(KeyFactory.createKey(TinySession.class.getSimpleName(), session.getId()));
+        sessionId = session.getId();
     }
 
     @Override
@@ -94,11 +95,7 @@ public class TinySession extends DataObj
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final TinySession other = (TinySession) obj;
-        if (id == null)
-        {
-            if (other.id != null) return false;
-        }
-        else if (!id.equals(other.id)) return false;
+        if (!super.equals(other)) return false;
         if (sessionId == null)
         {
             if (other.sessionId != null) return false;
@@ -110,12 +107,6 @@ public class TinySession extends DataObj
         }
         else if (!tinyId.equals(other.tinyId)) return false;
         return true;
-    }
-
-    @Override
-    public Key getKey()
-    {
-        return id;
     }
 
     public String getSessionId()
@@ -132,8 +123,7 @@ public class TinySession extends DataObj
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        int result = super.hashCode();
         result = prime * result + ((sessionId == null) ? 0 : sessionId.hashCode());
         result = prime * result + ((tinyId == null) ? 0 : tinyId.hashCode());
         return result;
@@ -148,5 +138,4 @@ public class TinySession extends DataObj
     {
         tinyId = ptinyId;
     }
-
 }

@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.service.data.MoneyAccount;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class MoneyTransaction extends DataObj
@@ -136,11 +137,6 @@ public class MoneyTransaction extends DataObj
     public String description;
 
     @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
-    @Persistent
     public String recipientId;
     
     @Persistent
@@ -174,6 +170,12 @@ public class MoneyTransaction extends DataObj
 
     private MoneyTransaction(final MoneyAccount sender, final MoneyAccount recipient, final int amount, final String transactionDescription)
     {
+        super((KeyFactory.createKey(MoneyTransaction.class.getSimpleName(), 
+                (null==sender?null:sender.getAccountId()) + 
+                (null==recipient?null:recipient.getAccountId()) + 
+                amount + 
+                DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()) +
+                Integer.toString((int) Math.round(Math.random() * 100)))));
         if (null != sender)
         {
             senderId = sender.getAccountId();
@@ -192,15 +194,6 @@ public class MoneyTransaction extends DataObj
         }
         description = transactionDescription;
         transactionAmount = amount;
-        final DateFormat timeFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-        id = (KeyFactory.createKey(MoneyTransaction.class.getSimpleName(), senderId + recipientId + transactionAmount + timeFormatter.format(time)
-                + Integer.toString((int) Math.round(Math.random() * 100)) + ""));
         if (this != DataStore.Add(this)) throw new AssertionError();
-    }
-
-    @Override
-    public Key getKey()
-    {
-        return id;
     }
 }

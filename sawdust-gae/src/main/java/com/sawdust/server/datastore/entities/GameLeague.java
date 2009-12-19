@@ -20,6 +20,7 @@ import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class GameLeague extends DataObj
@@ -65,35 +66,29 @@ public class GameLeague extends DataObj
     private com.google.appengine.api.datastore.Blob _config = null;
 
     @Persistent
-    @PrimaryKey
-    @Id
-    private Key id;
-
-    @Persistent
     private Key owner;
 
-    protected GameLeague()
+    private GameLeague()
     {
+        super();
     }
 
     public GameLeague(final Account account) throws GameException
     {
-        final DateFormat timeFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-        final String sKey = (account.getKey() + "%" + timeFormatter.format(new Date()));
-        id = KeyFactory.createKey(this.getClass().getSimpleName(), sKey);
-        // this.join(account);
+        super(KeyFactory.createKey(GameLeague.class.getSimpleName(), (account.getKey() + "%" + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()))));
         if (this != DataStore.Add(this)) throw new AssertionError();
+        setOwner(account);
     }
 
     /**
      * @param powner
      * @param name
      * @param _config
+     * @throws GameException 
      */
-    public GameLeague(final Account powner, final LeagueConfig config, final GameConfig game)
+    public GameLeague(final Account powner, final LeagueConfig config, final GameConfig game) throws GameException
     {
-        super();
-        setOwner(powner);
+        this(powner);
         setConfig(game);
         final PersistenceManager entityManager = DataStore.create();
         setEntityManager(entityManager);
@@ -103,12 +98,6 @@ public class GameLeague extends DataObj
     public GameConfig getConfig()
     {
         return Util.fromBytes(_config.getBytes());
-    }
-
-    @Override
-    public Key getKey()
-    {
-        return id;
     }
 
     public Account getOwner()

@@ -13,9 +13,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.debug.SawdustSystemError;
+import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class SessionMember implements com.sawdust.engine.service.data.SessionMember
+public class SessionMember extends DataObj implements com.sawdust.engine.service.data.SessionMember
 {
 
     public enum MemberStatus
@@ -32,11 +33,6 @@ public class SessionMember implements com.sawdust.engine.service.data.SessionMem
     @Persistent(name="gameSession")
     private GameSession gameSession;
 
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY, primaryKey = "true")
-    @Id
-    @PrimaryKey
-    private Key id;
-
     @Persistent
     private Date lastUpdate = new Date();
     
@@ -49,16 +45,16 @@ public class SessionMember implements com.sawdust.engine.service.data.SessionMem
     @Persistent
     private MemberStatus memberStatus = MemberStatus.Playing;
 
-    public SessionMember() {}
+    public SessionMember() {
+        super();
+    }
 
     public SessionMember(final GameSession session2, final Account account2)
     {
-        // super(account2.getEmail(), false);
+        super(new KeyFactory.Builder((session2).getKey()).addChild(SessionMember.class.getSimpleName(), account2.getUserId()).getKey());
         gameSession = session2;
         setAccountKey(account2.getKey());
         if (getAccountKey() == null) throw new SawdustSystemError("Null accountKey ID!");
-        id = new KeyFactory.Builder((session2).getKey()).addChild(SessionMember.class.getSimpleName(), account2.getUserId()).getKey();
-        // DataStore.Add(this);
     }
 
     @Override
@@ -97,14 +93,6 @@ public class SessionMember implements com.sawdust.engine.service.data.SessionMem
     private Key getAccountKey()
     {
         return KeyFactory.stringToKey(encodedAccountKey);
-    }
-
-    /**
-     * @return the _id
-     */
-    public Key getId()
-    {
-        return id;
     }
 
     public Date getLastUpdate()
@@ -147,11 +135,6 @@ public class SessionMember implements com.sawdust.engine.service.data.SessionMem
     private void setAccountKey(final Key accountKey)
     {
         encodedAccountKey = KeyFactory.keyToString(accountKey);
-    }
-
-    protected void setId(final Key pid)
-    {
-        id = pid;
     }
 
     public void setLastUpdate()
