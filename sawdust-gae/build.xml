@@ -121,6 +121,37 @@
     </java>
   </target>
 
+
+  <target name="gae-rollback" description="Deploy to Google AppEngine">
+    <input addproperty="sawdust.gae.version" defaultvalue="beta">Please enter a version identifier to deploy:</input>
+    <replace 
+      value="${sawdust.gae.version}" 
+      token="SGE-GAE-VERSION"
+      file="war/WEB-INF/appengine-web.xml"/>
+  	<!-- BUG: The password prompt doesn't show up to prompt for the needed password -->
+  	<java fork="true" classname="com.google.appengine.tools.admin.AppCfg"
+      failonerror="true">
+      <sysproperty key="appengine.sdk.root" value="${gae.dir}" />
+    	<env key="JAVA_HOME" path="${jdk.dir}"/>
+      <classpath>
+        <filelist>
+          <file name="${jdk.dir}/lib/tools.jar"/>
+        </filelist>
+        <fileset dir="${gae.dir}">
+          <include name="**/*.jar" />
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${basedir}/war">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+
+      <arg line="--email=acharneski@gmail.com" />
+  	<arg line="rollback" />
+      <arg value="${basedir}/war" />
+    </java>
+  </target>
+
   <target name="dev-mode" description="Start GAE+GWT Development Mode">
     <java fork="true" classname="com.google.gwt.dev.DevMode"
       dir="${basedir}/war" failonerror="true">
