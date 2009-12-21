@@ -15,6 +15,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Image;
+import com.sawdust.client.gwt.GameClient;
 import com.sawdust.client.gwt.art.ArtManager;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.EventListener;
@@ -152,7 +153,6 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
                 _startX = getX();
                 _startY = getY();
                 _startZ = getZPosition();
-                setZPosition(50);
                 _dragStartX = getX() - event.getClientX();
                 _dragStartY = getY() - event.getClientY();
                 _dragging = true;
@@ -170,10 +170,12 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
             {
                 final Position centerPos = p.add(new Vector(-(getWidth() / 2), 0));
                 setPosition(centerPos);
+                setZPosition(50);
             }
             else
             {
                 setPosition(new Position(event.getClientX() + _dragStartX, event.getClientY() + _dragStartY));
+                setZPosition(50);
             }
         }
         

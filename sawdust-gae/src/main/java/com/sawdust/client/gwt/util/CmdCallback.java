@@ -61,6 +61,8 @@ final class CmdCallback<T> implements AsyncCallback<T>
         }
         else
         {
+            CmdCallback.this.commandExecutor._isRunningQuery = false;
+            CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, caught);
             if (null != _post)
             {
                 _post.onEvent(caught);

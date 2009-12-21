@@ -45,7 +45,7 @@ public class GameClientWidget
     public static final String CMD_UPDATE = "Update";
     static final int jsWorkaroundDelay = 50;
     private static final int START_TIME = 50;
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     
     private final Button _closeButton = new Button("Close");
