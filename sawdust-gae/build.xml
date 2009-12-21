@@ -178,7 +178,7 @@
       <arg line="-server com.google.appengine.tools.development.gwt.AppEngineLauncher" />
       <arg line="-startupUrl main.jsp" />
       <arg line="-war ${basedir}/war" />
-      <arg line="-logLevel ALL" />
+      <arg line="-logLevel INFO" />
       <arg value="com.sawdust.GameClient" />
       <arg value="com.sawdust.GameCreator" />
     </java>

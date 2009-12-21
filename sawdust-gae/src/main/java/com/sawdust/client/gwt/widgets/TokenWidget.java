@@ -37,6 +37,7 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
     private int _startX;
     private int _startY;
     private Token _state;
+    private int _startZ;
     
     /**
 	 * 
@@ -127,6 +128,7 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
                 setPosition(centerPos);
                 _dragging = false;
                 final String command = _state.getMoveCommands().get(p);
+                setZPosition(_startZ);
                 service.doCommand(command, null);
             }
             else
@@ -149,6 +151,8 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
             {
                 _startX = getX();
                 _startY = getY();
+                _startZ = getZPosition();
+                setZPosition(50);
                 _dragStartX = getX() - event.getClientX();
                 _dragStartY = getY() - event.getClientY();
                 _dragging = true;
@@ -194,7 +198,20 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
     protected void setPosition(final Position position)
     {
         _parent.setWidgetPosition(this, position.getX(), position.getY());
-        DOM.setStyleAttribute(getElement(), "zIndex", Integer.toString(1 + position.getZ()));
+        int z = position.getZ();
+        setZPosition(z);
+    }
+
+    private void setZPosition(int z)
+    {
+        DOM.setStyleAttribute(getElement(), "zIndex", Integer.toString(1 + z));
+    }
+    
+    protected int getZPosition()
+    {
+        String styleAttribute = DOM.getStyleAttribute(getElement(), "zIndex");
+        int i = Integer.parseInt(styleAttribute)-1;
+        return i;
     }
     
     public void setState(final Token state)

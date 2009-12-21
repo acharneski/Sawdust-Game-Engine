@@ -1,9 +1,11 @@
 package com.sawdust.client.gwt.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sawdust.client.gwt.widgets.mylog;
 import com.sawdust.common.gwt.SawdustGameService;
 import com.sawdust.common.gwt.SawdustGameServiceAsync;
 import com.sawdust.engine.common.AccessToken;
@@ -11,13 +13,22 @@ import com.sawdust.engine.common.CommandResult;
 
 public class CommandExecutor
 {
-    public static void onEvent(final ArrayList<EventListener> event, final Object... params)
+
+    public void onEvent(final ArrayList<EventListener> event, final Object... params)
     {
+        if(0 == event.size())
+        {
+            LOG.debug("onEvent had no listeners");
+        }
         for (final EventListener listener : event)
         {
             if (null != listener)
             {
                 listener.onEvent(params);
+            }
+            else
+            {
+                LOG.debug("onEvent had a null listener");
             }
         }
     }
@@ -53,10 +64,12 @@ public class CommandExecutor
     private final ArrayList<EventListener> _onPostSend = new ArrayList<EventListener>();
     private final ArrayList<EventListener> _onPreSend = new ArrayList<EventListener>();
     final ArrayList<EventListener> _onSuccess = new ArrayList<EventListener>();
+    mylog LOG;
 
-    public CommandExecutor()
+    public CommandExecutor(final mylog log)
     {
         super();
+        LOG = log;
         _onComplete.add(new EventListener()
         {
             public void onEvent(final Object... params)
@@ -81,9 +94,9 @@ public class CommandExecutor
         });
     }
 
-    public CommandExecutor(final EventListener initSuccess, final EventListener initError, final EventListener initPostSend, final EventListener initPreSend)
+    public CommandExecutor(final mylog log, final EventListener initSuccess, final EventListener initError, final EventListener initPostSend, final EventListener initPreSend)
     {
-        this();
+        this(log);
         _onError.add(initError);
         _onSuccess.add(initSuccess);
         _onPostSend.add(initPostSend);
@@ -132,6 +145,10 @@ public class CommandExecutor
             }));
             onEvent(_onPostSend);
         }
+        else
+        {
+            LOG.debug("Empty queue at " + new Date().toLocaleString());
+        }
     }
 
     public void doUpdate(final int versionNumber, final EventListener post)
@@ -141,14 +158,20 @@ public class CommandExecutor
             _isRunningQuery = true;
             if (_commandQueue.isEmpty())
             {
+                LOG.debug("doUpdate : Command queue is empty");
                 onEvent(_onPreSend);
                 _gameService.getGameUpdate(_accessKey, versionNumber, new CmdCallback<CommandResult>(this, post));
                 onEvent(_onPostSend);
             }
             else
             {
+                LOG.debug("doUpdate: Executing queue");
                 doQueue();
             }
+        }
+        else
+        {
+            LOG.debug("doUpdate: Currently in query; ignored");
         }
     }
 
@@ -165,7 +188,7 @@ public class CommandExecutor
 
     public void queueCommand(final String cmd, final EventListener post)
     {
-        System.out.println("Queing command: " + cmd);
+        LOG.debug("Queing command: " + cmd);
         _commandQueue.add(new Command(cmd, post));
     }
 
