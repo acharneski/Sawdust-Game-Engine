@@ -82,7 +82,7 @@ public final class DataStore
                 em = create();
                 if (null == em) throw new NullPointerException("Could not create PersistenceManager");
                 obj.setEntityManager(em);
-                LOG.info(String.format("Creating new object of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
+                LOG.info(String.format("Inserting entity of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
                 Transaction currentTransaction = em.currentTransaction();
                 if (ENABLE_TRANSACTIONS)
                 {
@@ -100,6 +100,10 @@ public final class DataStore
                 throw new SawdustSystemError(e);
             }
         }
+        else
+        {
+            LOG.fine("Object already persisted");
+        }
         return obj;
     }
 
@@ -111,11 +115,17 @@ public final class DataStore
             objectCache.put(c, new HashMap<Key, DataObj>());
         }
         final HashMap<Key, DataObj> classCache = objectCache.get(c);
-        if (classCache.containsKey(obj.getKey())) return classCache.get(obj.getKey());
-        // throw new AssertionFail("Object already in cache!");
-        classCache.put(obj.getKey(), obj);
-        LOG.info(String.format("Adding to cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
-        return obj;
+        if (classCache.containsKey(obj.getKey())) 
+        {
+            LOG.fine(String.format("Get from cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
+            return classCache.get(obj.getKey());
+        }
+        else 
+        {
+            LOG.fine(String.format("Adding to cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
+            classCache.put(obj.getKey(), obj);
+            return obj;
+        }
     }
 
     public static void Clear()

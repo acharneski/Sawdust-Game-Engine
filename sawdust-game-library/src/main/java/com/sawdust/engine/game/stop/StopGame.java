@@ -165,7 +165,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          {
             addMessage("%s won by at least %d!", displayName(player), diff);
             _currentState = GamePhase.Complete;
-            if(player instanceof Player)
+            if(player instanceof Player && getSession() != null)
             {
                 ((Player)player).logActivity(new ActivityEvent("Win/Go","I won a game of Stop!"));
             }
