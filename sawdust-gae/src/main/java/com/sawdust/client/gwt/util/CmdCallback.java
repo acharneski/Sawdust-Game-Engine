@@ -34,39 +34,49 @@ final class CmdCallback<T> implements AsyncCallback<T>
         _post = post;
     }
 
-    private void onError(final String type, final Object param)
+    private void onError(final String type, final Object e)
     {
         LOG.debug("onError...");
-        this.commandExecutor.onEvent(this.commandExecutor._onError, param, new EventListener()
+        this.commandExecutor.onEvent(this.commandExecutor._onError, e, new EventListener()
         {
             public void onEvent(final Object... params)
             {
                 LOG.debug("Post-onError onEvent...");
                 CmdCallback.this.commandExecutor._isRunningQuery = false;
-                CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, params);
-                if (null != _post)
+                CmdCallback.this.commandExecutor.doLoad(new EventListener()
                 {
-                    _post.onEvent(type, param);
-                }
+                    @Override
+                    public void onEvent(Object... params)
+                    {
+                        CmdCallback.this.commandExecutor._isRunningQuery = false;
+                        CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, e);
+                        _post.onEvent(e);
+                    }
+                });
             }
         }, type);
     }
 
-    public void onFailure(final Throwable caught)
+    public void onFailure(final Throwable e)
     {
         LOG.debug("onFailure...");
         if (!GameClientWidget.CMD_UPDATE.equals(_command))
         {
-            onError("SYSTEM", caught);
+            onError("SYSTEM", e);
         }
         else
         {
             CmdCallback.this.commandExecutor._isRunningQuery = false;
-            CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, caught);
-            if (null != _post)
+            CmdCallback.this.commandExecutor.doLoad(new EventListener()
             {
-                _post.onEvent(caught);
-            }
+                @Override
+                public void onEvent(Object... params)
+                {
+                    CmdCallback.this.commandExecutor._isRunningQuery = false;
+                    CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, e);
+                    _post.onEvent(e);
+                }
+            });
         }
     }
 

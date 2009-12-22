@@ -112,11 +112,15 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       BoardData boardValue = getBoardData(row, col);
       if (null != boardValue && -1 != boardValue.value) throw new GameLogicException("Can only place tiles at empty nodes");
       setBoardData(row, col, playerIdx);
+      this.advanceTime(500);
+      this.saveState();
+      this.advanceTime(500);
 
       final TokenArray ta = getTokenArray();
       ta.cleanIslands(playerIdx, this, true);
       ta.cleanIslands(-1, this, true);
       finishTurn(player);
+
    }
    
    public void finishTurn(final Participant player) throws com.sawdust.engine.common.GameException
@@ -441,28 +445,32 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          if (null != lastPosition)
          {
             Participant player = _mplayerManager.getPlayerManager().getCurrentPlayer();
-            BoardToken token = new BoardToken(0x1032, "GO1", "GO:HIGHLIGHT", player, null, false, lastPosition);
+            BoardToken token = new BoardToken(0X1001, "GO1", "GO:HIGHLIGHT", player, null, false, lastPosition);
             token.getPosition().setZ(2);
             token.setText("Last-moved piece");
             returnValue.add(token);
          }
          
+         cardIdCounter = 0x3000;
          for (int i = 0; i < NUM_ROWS; i++)
          {
             for (int j = 0; j < NUM_ROWS; j++)
             {
                IndexPosition position = new IndexPosition(i + OFFSET_BOARD, j, 0);
                BoardToken token = new BoardToken(++cardIdCounter, "GO1", "GO:BOARD", null, null, false, position);
+               token.getPosition().setZ(1);
                token.setText("Board Tile");
                returnValue.add(token);
                
+               cardIdCounter++;
                BoardData playerIdx = getBoardData(i, j);
                if (null != playerIdx && -1 != playerIdx.value)
                {
                   position = new IndexPosition(i, j, 3);
                   Participant player = _mplayerManager.getPlayerManager().playerName(playerIdx.value);
                   String tokenType = getPlayerTokenType(playerIdx.value);
-                  token = new BoardToken(++cardIdCounter, "GO1", tokenType, player, null, false, position);
+                  token = new BoardToken(cardIdCounter, "GO1", tokenType, player, null, false, position);
+                  token.getPosition().setZ(3);
                   // token.setText(tokenType + " (placed @ " +
                   // this.versionNumber + ")");
                   returnValue.add(token);
@@ -470,6 +478,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             }
          }
          
+         cardIdCounter = 0x4000;
          ArrayList<IndexPosition> openPos = new ArrayList<IndexPosition>();
          for (int i = 0; i < NUM_ROWS; i++)
          {
@@ -491,6 +500,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                final IndexPosition position = new IndexPosition(ROW_PLAYERTOKEN, 0, 1);
                final String art = getPlayerTokenType(i);
                final BoardToken token = new BoardToken(++cardIdCounter, "GO1", art, p, "", true, position);
+               token.getPosition().setZ(4);
                token.setText("Place this piece on the board to move");
                for (final IndexPosition pos : openPos)
                {
