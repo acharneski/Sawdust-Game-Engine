@@ -37,7 +37,6 @@
 
 
 <h1><%=game.getName()%></h1>
-<div id="gameCreator-quickLaunch"></div>
 <%=game.getDescription()%>
 
 <h2>Learn the game:</h2>
@@ -54,25 +53,3 @@
 <%
 	}
 %>
-
-<h2>Join an open game:</h2>
-<%
-    boolean t1 = null != user.getEmail();
-    String t2 = user.getLoginUrl();
-    try
-	{
-%>
-<div class="sdge-game-listing">
-    <jsp:include page="/jsp/openGameListing.jsp" />
-</div>
-<%
-	}
-    catch(Throwable e)
-    {
-        LOG.warning(Util.getFullString(e));
-        %>Error loading existing games...<%
-    }
-%>
-
-<h2>Create a new game:</h2>
-<div id="gameCreator-main" width="100%" height="500px">Loading Game Creator...</div>

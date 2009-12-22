@@ -1,5 +1,6 @@
 <%@ tag body-content="scriptless" %>
-<%@ attribute name="game" required="true"%>
+<%@ attribute name="game" required="false"%>
+<%@ attribute name="gameObj" required="false" type="com.sawdust.engine.game.GameType"%>
 
 <%@ tag import="com.sawdust.engine.game.GameType"%>
 <%@ tag import="java.util.List"%>
@@ -18,9 +19,18 @@ try {
 %>
 
 <%
-if(null == game) return;
-GameType gameType = GameTypes.findById(game);
+if(null == game && null == gameObj) return;
+GameType gameType = null;
+if(null == gameObj)
+{
+    gameType = GameTypes.findById(game);
+}
+else
+{
+    gameType = gameObj;
+}
 String gameUrl = "/game.jsp?"+ user.getSessonJunk(false,true) + "game="+gameType.getID();
+String tutorialUrl = "/tutorials.jsp?"+ user.getSessonJunk(false,true) + "game="+gameType.getID();
 String quickPlayUrl = "/quickPlay.jsp?"+ user.getSessonJunk(false,true) + "game="+gameType.getID();
 String links = gameType.getLinks();
 if(null == links) links = "";
@@ -28,33 +38,21 @@ if(!links.isEmpty()) links = " - " + links;
 %>
 
 <div class="sdge-game-type">
-	<table border="0">
-	<tr><td colspan="2">
-	    <h3><a href="<%=quickPlayUrl%>" target="_top"><%=gameType.getName()%></a></h3>
-	</td></tr>
-	<tr><td>
-	    <a href="<%=quickPlayUrl%>" target="_top"><img src="<%=gameType.getIcon()%>"></img></a>
-	</td><td>
-	    <%=gameType.getShortDescription()%>
-	    <ol>
-	    <% 
-	    List<GameType> tutorials = gameType.getTutorialSequence();
-	    int index=0;
-	 	// TODO: Re-enable Java 5 support in JSP
-	 	java.util.Iterator i = tutorials.iterator();
-	 	while(i.hasNext()) {
-	 	  GameType t = (GameType) i.next();
-	    //for(GameType t : tutorials) {
-            %><li>
-            <a href="<%=quickPlayUrl%>&tut=<%=index++%>" target="_top"><%=t.getName()%></a>
-            </li><%
-	    }%>
-	    </ol>
-	</td></tr>
+    <table border="0">
     <tr><td colspan="2">
-        <a href="<%=quickPlayUrl%>" target="_top">Play Now</a> - <a href="<%=gameUrl%>">Game Homepage</a><%=links%>
+        <h3><a href="<%=quickPlayUrl%>" target="_top"><%=gameType.getName()%></a></h3>
     </td></tr>
-	</table>
+    <tr><td>
+        <a href="<%=quickPlayUrl%>" target="_top"><img src="<%=gameType.getIcon()%>"></img></a>
+    </td><td>
+        <%=gameType.getShortDescription()%>
+    </td></tr>
+<%if(!gameType.isSubtype()){%>
+    <tr><td colspan="2">
+        <a href="<%=quickPlayUrl%>" target="_top">Play</a> - <a href="<%=tutorialUrl%>">Learn</a> - <a href="<%=gameUrl%>">Customize</a><%=links%>
+    </td></tr>
+<%} %>    
+    </table>
 </div>
 
 <%

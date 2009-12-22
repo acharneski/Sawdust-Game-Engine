@@ -34,4 +34,11 @@ public class Go101_GameType extends GoGameType
     protected Go101_GameType()
     {
     }
+
+    @Override
+    public boolean isSubtype()
+    {
+        return true;
+    }
+    
 }

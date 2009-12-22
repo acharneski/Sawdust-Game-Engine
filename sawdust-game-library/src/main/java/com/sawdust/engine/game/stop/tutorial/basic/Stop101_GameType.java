@@ -34,4 +34,11 @@ public class Stop101_GameType extends StopGameType
     protected Stop101_GameType()
     {
     }
+
+    @Override
+    public boolean isSubtype()
+    {
+        return true;
+    }
+    
 }
