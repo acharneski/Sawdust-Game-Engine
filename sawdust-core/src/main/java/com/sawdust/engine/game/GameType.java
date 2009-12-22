@@ -2,6 +2,7 @@ package com.sawdust.engine.game;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,11 @@ public abstract class GameType<T extends Game> implements IGameType
     public GameModConfig[] getModules()
     {
         return new GameModConfig[] {};
+    }
+
+    public boolean isSubtype()
+    {
+        return false;
     }
 
     public GameConfig getPrototypeConfig(final Account loadAccount)
@@ -100,6 +106,12 @@ public abstract class GameType<T extends Game> implements IGameType
     public abstract Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory);
     
     public List<GameType<?>> getTutorialSequence()
+    {
+        ArrayList<GameType<?>> arrayList = new ArrayList<GameType<?>>();
+        return arrayList;
+    }
+    
+    public Collection<GameType<?>> getScenarios()
     {
         ArrayList<GameType<?>> arrayList = new ArrayList<GameType<?>>();
         return arrayList;
