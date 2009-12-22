@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
@@ -359,5 +360,10 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
             LOG.fine(String.format("Withdrawl: %d (%s) from system to %s", amount, description, getName()));
             MoneyTransaction.Transfer(getAccount(), null, amount, description);
         }
+    }
+    
+    void logActivity(ActivityEvent event)
+    {
+        new ActivityEventRecord(getAccount(),event);
     }
 }

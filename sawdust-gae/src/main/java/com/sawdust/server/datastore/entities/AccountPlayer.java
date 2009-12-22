@@ -3,6 +3,7 @@
  */
 package com.sawdust.server.datastore.entities;
 
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Player;
 
 public final class AccountPlayer extends Player
@@ -18,5 +19,11 @@ public final class AccountPlayer extends Player
     public com.sawdust.engine.service.data.Account loadAccount()
     {
         return Account.Load(getUserId());
+    }
+
+    @Override
+    public void logActivity(ActivityEvent event)
+    {
+        ((Account) loadAccount()).logActivity(event);
     }
 }

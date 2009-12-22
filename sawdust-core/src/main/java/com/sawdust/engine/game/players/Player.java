@@ -28,6 +28,8 @@ public abstract class Player extends Participant implements Serializable
         return _isAdmin;
     }
 
+    public abstract void logActivity(ActivityEvent event);
+
     public abstract Account loadAccount();
 
 }

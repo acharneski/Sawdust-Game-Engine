@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -131,6 +132,13 @@ public abstract class GenericPlayTest extends TestCase
             public Account loadAccount()
             {
                 return access1.loadAccount();
+            }
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
             }
         };
         return player1;

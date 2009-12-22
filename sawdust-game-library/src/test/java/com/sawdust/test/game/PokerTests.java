@@ -11,6 +11,7 @@ import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.LoadedDeck;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.poker.PokerGame;
@@ -57,6 +58,13 @@ public class PokerTests extends TestCase
             {
                 return accessF1.loadAccount();
             }
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
+            }
         };
         access2 = new MockSessionToken("test2", session);
         final MockSessionToken accessF2 = access2;
@@ -66,6 +74,13 @@ public class PokerTests extends TestCase
             public Account loadAccount()
             {
                 return accessF2.loadAccount();
+            }
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
             }
         };
         session.addPlayer(player1);

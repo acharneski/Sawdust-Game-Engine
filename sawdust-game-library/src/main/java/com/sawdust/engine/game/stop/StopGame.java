@@ -13,6 +13,7 @@ import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.MultiPlayerGame;
 import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.MultiPlayer;
 import com.sawdust.engine.game.players.Participant;
@@ -164,6 +165,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          {
             addMessage("%s won by at least %d!", displayName(player), diff);
             _currentState = GamePhase.Complete;
+            if(player instanceof Player)
+            {
+                ((Player)player).logActivity(new ActivityEvent("Win/Go","I won a game of Stop!"));
+            }
             _lastWinner = playerIdx;
             
             final GameSession session = getSession();
@@ -358,6 +363,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             if (p instanceof Agent<?>)
             {
                session.withdraw(-session.getAnte(), null, "Agent Ante Up");
+            }
+            if(p instanceof Player)
+            {
+                ((Player)p).logActivity(new ActivityEvent("Start/Go","I am starting a game of Stop!"));
             }
          }
       }

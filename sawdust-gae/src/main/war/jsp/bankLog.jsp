@@ -34,7 +34,7 @@ if(null == id) id = user.getAccount().getUserId();
     if(person != null)
     {
         %><h3>Personal Account: <%
-        if(false && !person.getUserId().equals(user.getUser().getUserID()))
+        if(true && !person.getUserId().equals(user.getUser().getUserID()))
         {
             if(user.isAdmin())
             {

@@ -12,6 +12,7 @@ import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.data.Account;
@@ -39,6 +40,13 @@ public class BlackjackTests extends TestCase
             public Account loadAccount()
             {
                 return access1.loadAccount();
+            }
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
             }
         };
 
@@ -109,6 +117,13 @@ public class BlackjackTests extends TestCase
             public Account loadAccount()
             {
                 return access1.loadAccount();
+            }
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
             }
         };
 

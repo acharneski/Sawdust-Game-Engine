@@ -13,6 +13,7 @@ import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.euchre.EuchreGame;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.data.Account;
@@ -77,6 +78,13 @@ public class EuchreTests extends TestCase
 			{
 				return access1.loadAccount();
 			}
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
+            }
 		};
 		Player player2 = new Player(access2.getUserId(), false){
 			@Override
@@ -84,6 +92,13 @@ public class EuchreTests extends TestCase
 			{
 				return access2.loadAccount();
 			}
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
+            }
 		};
 		Player player3 = new Player(access3.getUserId(), false){
 			@Override
@@ -91,6 +106,13 @@ public class EuchreTests extends TestCase
 			{
 				return access3.loadAccount();
 			}
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
+            }
 		};
 		Player player4 = new Player(access4.getUserId(), false){
 			@Override
@@ -98,6 +120,13 @@ public class EuchreTests extends TestCase
 			{
 				return access4.loadAccount();
 			}
+
+            @Override
+            public void logActivity(ActivityEvent event)
+            {
+                // TODO Auto-generated method stub
+                
+            }
 		};
 		
 
