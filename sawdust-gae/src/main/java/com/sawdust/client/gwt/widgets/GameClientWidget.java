@@ -45,7 +45,7 @@ public class GameClientWidget
     public static final String CMD_UPDATE = "Update";
     static final int jsWorkaroundDelay = 50;
     private static final int START_TIME = 50;
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     
     private final Button _closeButton = new Button("Close");
@@ -110,7 +110,7 @@ public class GameClientWidget
     {
         public void onEvent(final Object... params)
         {
-            LOG.debug("Update requested at " + new Date().toLocaleString());
+            LOG.debug("Server method called at " + new Date().toLocaleString());
             refocusTimer.schedule(Constants.JS_FOLLOW_UP);
         }
     },
@@ -231,66 +231,62 @@ public class GameClientWidget
         }
         currentTime -= START_TIME;
         final HashMap<Integer, Timer> frameQueue = new HashMap<Integer, Timer>();
-        if (0 < cmdService.getCommandQueue().size())
+        for (final GameState state : stateFrames)
         {
-            System.err.println("Non-increasing version number in the frames!");
+            if (null == state)
+            {
+                break;
+            }
+            final int thisIdx = frameCount++;
+            final Timer timer = new Timer()
+            {
+                @Override
+                public void run()
+                {
+                    LOG.debug("Display frame " + state.versionNumber);
+                    showFrame(state);
+                }
+            };
+            final int timeSpan = state.timeOffset - currentTime;
+            frameQueue.put(timeSpan, timer);
+            LOG.debug("Queing frame " + state.versionNumber + " in " + timeSpan + "ms");
         }
-        else
+        if (1 == frameQueue.size())
         {
-            for (final GameState state : stateFrames)
+            final Timer finalState = frameQueue.get(START_TIME);
+            if (null != finalState)
             {
-                if (null == state)
-                {
-                    break;
-                }
-                final int thisIdx = frameCount++;
-                final Timer timer = new Timer()
-                {
-                    @Override
-                    public void run()
-                    {
-                        showFrame(state);
-                    }
-                };
-                final int timeSpan = state.timeOffset - currentTime;
-                frameQueue.put(timeSpan, timer);
-                System.out.println("Queing frame " + ++framesQueued + " in " + timeSpan + "ms");
+                LOG.debug("Display the returned state.");
+                finalState.run();
             }
-            if (1 == frameQueue.size())
+            else
             {
-                final Timer finalState = frameQueue.get(START_TIME);
-                if (null != finalState)
+                LOG.debug("No new game frame availible to display");
+                String text = "";
+                String timeString = new Date().toLocaleString();
+                text = "Updated at " + timeString;
+                text += "<br/>Current Version: " + _currentState.versionNumber;
+                if(DEBUG)
                 {
-                    finalState.run();
+                    _consoleWidget.addMessage(new Message("Game state reconfirmed at " + timeString + " with version " + _currentState.versionNumber));
                 }
-                else
-                {
-                    String text = "";
-                    String timeString = new Date().toLocaleString();
-                    text = "Updated at " + timeString;
-                    text += "<br/>Current Version: " + _currentState.versionNumber;
-                    if(DEBUG)
-                    {
-                        _consoleWidget.addMessage(new Message("Game state reconfirmed at " + timeString + " with version " + _currentState.versionNumber));
-                    }
-                    _updateStatusLabel.getElement().setInnerHTML(text);
-                }
+                _updateStatusLabel.getElement().setInnerHTML(text);
             }
-            else if (0 < frameQueue.size())
+        }
+        else if (0 < frameQueue.size())
+        {
+            for (final Entry<Integer, Timer> entry : frameQueue.entrySet())
             {
-                for (final Entry<Integer, Timer> entry : frameQueue.entrySet())
+                final int key = entry.getKey();
+                final Timer timer = entry.getValue();
+                LOG.debug("Schedule Frame in " + key + "ms");
+                try
                 {
-                    final int key = entry.getKey();
-                    final Timer timer = entry.getValue();
-                    System.out.println("Schedule Frame in " + key + "ms");
-                    try
-                    {
-                        timer.schedule(key);
-                    }
-                    catch (final Exception e)
-                    {
-                        e.printStackTrace(System.err);
-                    }
+                    timer.schedule(key);
+                }
+                catch (final Exception e)
+                {
+                    e.printStackTrace(System.err);
                 }
             }
         }
@@ -477,31 +473,27 @@ public class GameClientWidget
 
     private void showFrame(final GameState state)
     {
-        if ((null != _currentState) && (state.versionNumber <= _currentState.versionNumber))
+        if (null == state)
         {
-            System.err.println("Non-increasing version number in the frames!");
+            LOG.debug("Null frame!");
             return;
         }
-        if ((null != _currentState) && (state.versionNumber <= _currentState.versionNumber))
+        if (null != _currentState && state.versionNumber < _currentState.versionNumber)
         {
-            System.err.println("Non-increasing version number in the frames!");
+            LOG.debug("Non-increasing version number in the frames!");
             return;
         }
         if ((null != cmdService) && (cmdService.isLocked()))
         {
-            System.err.println("Updates are currently locked down");
+            LOG.debug("Updates are currently locked down");
             return;
         }
-        System.out.println("Output Frame " + state.versionNumber);
+        LOG.debug("Output Frame " + state.versionNumber);
         GameClientWidget.this.setGame(state);
         String text = "";
         String timeString = new Date().toLocaleString();
         text = "Updated at " + timeString;
         text += "<br/>Current Version: " + state.versionNumber;
-        if(DEBUG)
-        {
-            _consoleWidget.addMessage(new Message("Game state reconfirmed at " + timeString + " with version " + state.versionNumber));
-        }
         _updateStatusLabel.getElement().setInnerHTML(text);
     }
 }

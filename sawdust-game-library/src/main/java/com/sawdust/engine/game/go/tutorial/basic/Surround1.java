@@ -42,18 +42,21 @@ public class Surround1 extends Phases
       super.onStartPhase(game);
       game.setAgent(_agent );
       
-      for (int i = 0; i < GoGame.NUM_ROWS; i++)
+
+      game.getInnerGame().resetBoard();
+      setGameLayout(game.getInnerGame(), new char[][]
       {
-         for (int j = 0; j < GoGame.NUM_ROWS; j++)
-         {
-            BoardData boardData = game.getInnerGame().getBoardData(i, j);
-            if (null != boardData && 1 == boardData.value)
-            {
-               game.getInnerGame().resetBoard();
-               game.getInnerGame().setBoardData(i,j,0);
-            }
-         }
-      }
+      // --------1----2----3----4----5----6----7----8----9
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, // 1
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, // 2
+              { ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ' }, // 3
+              { ' ', ' ', ' ', 'w', 'b', ' ', ' ', ' ', ' ' }, // 4
+              { ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ' }, // 5
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, // 6
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, // 7
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, // 8
+              { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' } // 9
+              });
    }
 
    @Override

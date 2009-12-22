@@ -45,4 +45,22 @@ public class Phases implements TutorialPhase<GoGame>
    public void onStartPhase(TutorialGameBase<GoGame> game) throws GameException
    {
    }
+
+protected void setGameLayout(GoGame innerGame, char[][] data)
+{
+    for (int i = 0; i < data.length; i++)
+    {
+        for (int j = 0; j < data[i].length; j++)
+        {
+            if (data[i][j] == 'w')
+            {
+                innerGame.setBoardData(i, j, 1);
+            }
+            else if (data[i][j] == 'b')
+            {
+                innerGame.setBoardData(i, j, 0);
+            }
+        }
+    }
+}
 }

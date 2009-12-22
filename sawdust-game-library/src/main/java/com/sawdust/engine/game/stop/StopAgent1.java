@@ -120,7 +120,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
          @Override
          public GameSession getSession()
          {
-            return session;
+            return null;
          }
       };
    }

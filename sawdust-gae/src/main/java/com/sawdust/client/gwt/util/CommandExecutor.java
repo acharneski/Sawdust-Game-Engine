@@ -116,12 +116,13 @@ public class CommandExecutor
     {
         if (!_commandQueue.isEmpty())
         {
+            _isRunningQuery = true;
             final ArrayList<Command> queue = (ArrayList<Command>) _commandQueue.clone();
             _commandQueue.clear();
             final ArrayList<String> cmds = new ArrayList<String>();
             for (final Command c : queue)
             {
-                System.out.println("Batching command: " + c.command);
+                LOG.debug("Batching command: " + c.command);
                 cmds.add(c.command);
             }
             onEvent(_onPreSend);
@@ -172,6 +173,22 @@ public class CommandExecutor
         else
         {
             LOG.debug("doUpdate: Currently in query; ignored");
+        }
+    }
+
+    public void doLoad(final EventListener post)
+    {
+        if (!_isRunningQuery)
+        {
+            _isRunningQuery = true;
+            LOG.debug("doLoad");
+            onEvent(_onPreSend);
+            _gameService.getState(_accessKey, new CmdCallback<CommandResult>(this, post));
+            onEvent(_onPostSend);
+        }
+        else
+        {
+            LOG.debug("doLoad: Currently in query; ignored");
         }
     }
 
