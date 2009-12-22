@@ -30,9 +30,9 @@
     String gameName = request.getParameter("game");
     GameType game = null;
  	// TODO: Re-enable Java 5 support in JSP
+    //for (GameType thisgame : GameTypes.values()) {
 	for(int i=0;i<GameTypes.values().length;i++) {
 	   GameType thisgame = (GameType) GameTypes.values()[i];
-    //for (GameType thisgame : GameTypes.values()) {
         if (thisgame.getID().equals(gameName))
         {
 		    game = thisgame;

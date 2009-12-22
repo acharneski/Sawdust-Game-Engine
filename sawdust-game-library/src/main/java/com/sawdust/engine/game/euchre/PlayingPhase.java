@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.game.Message.MessageType;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -81,6 +82,18 @@ final class PlayingPhase extends GamePhase
                 game.getPlayerManager().resetCurrentPlayer();
                 game.setCurrentPhase(EuchreGame.COMPLETE);
                 game.addMessage("Enter 'Deal' or 'Quit'.");
+                
+                for(Participant p : game.getTeam(affectedTeam))
+                {
+                    if(p instanceof Player)
+                    {
+                        String type = "Win/Euchre";
+                        String event = String.format("I won a game of Euchre!");
+                        ((Player)p).logActivity(new ActivityEvent(type,event));
+                    }
+                    
+                }
+                
             }
             else
             {

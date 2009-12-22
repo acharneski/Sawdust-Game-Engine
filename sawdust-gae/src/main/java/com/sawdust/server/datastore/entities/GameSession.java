@@ -665,7 +665,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
          }
       }
       
-      LOG.info("Append new state");
+      LOG.fine("Append new state");
       newState.setVersionNumber(++currentVersion);
       if (newState.getTimeOffset() > timeOffset)
       {

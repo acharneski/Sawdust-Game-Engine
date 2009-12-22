@@ -16,6 +16,7 @@ import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.MultiPlayerCardGame;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -84,7 +85,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         @Override
         public void clear()
         {
-            LOG.info("_playerStates cleared");
+            LOG.fine("_playerStates cleared");
             super.clear();
         }
 
@@ -149,11 +150,26 @@ public abstract class PokerGame extends MultiPlayerCardGame
         final Participant winner = winningHand.getOwner();
         this.addMessage("<strong>%s won with %s</strong>", displayName(winner), winningHand.getName());
 
-        if (winner instanceof Player)
+        String displayName = displayName(winner);
+        if(winner instanceof Player)
         {
             final ArrayList<Player> winners = new ArrayList<Player>();
             winners.add((Player) winner);
             gameSession.payOut(winners);
+            String type = "Win/Go";
+            String event = String.format("I won a game of Poker with a !", winningHand.getName());
+            ((Player)winner).logActivity(new ActivityEvent(type,event));
+        }
+        for (int i = 0; i < NUMBER_OF_PLAYERS; i++)
+        {
+            final Participant otherPlayer = getPlayerManager().playerName(i);
+            String opponentName = displayName(otherPlayer);
+            if(otherPlayer instanceof Player)
+            {
+                String type = "Lose/Go";
+                String event = String.format("I lost a game of Poker to %s!", displayName);
+                ((Player)otherPlayer).logActivity(new ActivityEvent(type,event));
+            }
         }
     }
 

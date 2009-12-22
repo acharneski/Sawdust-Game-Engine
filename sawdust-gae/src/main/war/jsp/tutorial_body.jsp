@@ -43,13 +43,14 @@
 <% 
 	List<GameType> tutorials = game.getTutorialSequence();
 	int index=0;
+	int cnt = 0;
 	// TODO: Re-enable Java 5 support in JSP
+	//for(GameType t : tutorials) {
 	java.util.Iterator i = tutorials.iterator();
 	while(i.hasNext()) {
 	  GameType t = (GameType) i.next();
-	   //for(GameType t : tutorials) {
 	   %>
-	   <wc:gameType gameObj="<%=t%>"></wc:gameType>
+	   <wc:gameType gameObj="<%=t%>" tutorialNumber="<%=Integer.toString(cnt++)%>"></wc:gameType>
 <%
 	}
 %>

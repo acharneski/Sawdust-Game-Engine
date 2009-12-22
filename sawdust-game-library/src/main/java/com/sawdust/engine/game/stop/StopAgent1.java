@@ -37,7 +37,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
       {
          GameCommand moveN = move_N(game, _depth);
          String x = (null == moveN) ? "<null>" : moveN.getCommandText();
-         LOG.info("Command: " + x);
+         LOG.fine("Command: " + x);
       }
       catch (CloneNotSupportedException e)
       {

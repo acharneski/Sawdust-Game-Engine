@@ -178,7 +178,7 @@ protected void setCreated(Date created)
 
    public void delete(boolean closeTransaction)
    {
-       LOG.info("Deleting " + this.toString());
+       LOG.fine("Deleting " + this.toString());
        PersistenceManager entityManager = getEntityManager();
        if(null == entityManager) 
        {

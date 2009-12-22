@@ -82,7 +82,7 @@ public final class DataStore
                 em = create();
                 if (null == em) throw new NullPointerException("Could not create PersistenceManager");
                 obj.setEntityManager(em);
-                LOG.info(String.format("Inserting entity of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
+                LOG.fine(String.format("Inserting entity of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
                 Transaction currentTransaction = em.currentTransaction();
                 if (ENABLE_TRANSACTIONS)
                 {
@@ -180,12 +180,12 @@ public final class DataStore
                 {
                     Date when = obj.getUpdated();
                     extraResults.registerTime(when);
-                    LOG.info("Object updated at: " + DateFormat.getDateTimeInstance().format(when));
+                    LOG.fine("Object updated at: " + DateFormat.getDateTimeInstance().format(when));
                 }
                 else
                 {
                     extraResults.registerNullTime();
-                    LOG.info("Object updated at: NULL");
+                    LOG.fine("Object updated at: NULL");
                 }
                 assert (!entityManager.isClosed());
                 if (maxObjects < ++count)
@@ -205,14 +205,14 @@ public final class DataStore
                 assert (!entityManager.isClosed());
                 if (obj.isValid())
                 {
-                    LOG.info("Validated object: " + obj.toString());
+                    LOG.fine("Validated object: " + obj.toString());
                     obj.update();
                     extraResults.incrementInspected();
                     assert (!entityManager.isClosed());
                 }
                 else
                 {
-                    LOG.info("Removing object: " + obj.toString());
+                    LOG.fine("Removing object: " + obj.toString());
                     obj.delete(false);
                     extraResults.incrementDeleted();
                     assert (!entityManager.isClosed());
@@ -268,25 +268,25 @@ public final class DataStore
                 catch (Exception e)
                 {
                     LOG.warning(Util.getFullString(e));
-                    LOG.info("Removing object: " + k.toString());
+                    LOG.fine("Removing object: " + k.toString());
                     delete(c, entityManager, k);
                     continue;
                 }
-                LOG.info("Object updated at: "
+                LOG.fine("Object updated at: "
                         + ((null == obj.getUpdated()) ? "NULL" : DateFormat.getDateTimeInstance().format(obj.getUpdated())));
                 assert (!entityManager.isClosed());
                 obj.setEntityManager(entityManager);
                 assert (!entityManager.isClosed());
                 if (obj.isValid())
                 {
-                    LOG.info("Validated object: " + obj.toString());
+                    LOG.fine("Validated object: " + obj.toString());
                     obj.update();
                     obj.setEntityManager(entityManager);
                     assert (!entityManager.isClosed());
                 }
                 else
                 {
-                    LOG.info("Removing object: " + obj.toString());
+                    LOG.fine("Removing object: " + obj.toString());
                     delete(c, entityManager, k);
                     //obj.delete(false);
                     assert (!entityManager.isClosed());
@@ -328,7 +328,7 @@ public final class DataStore
         if (null != returnValue)
         {
             returnValue.setEntityManager(em);
-            LOG.info(String.format("Loaded object of type %s with key %s", returnValue.getClass().toString(), returnValue.getKey()
+            LOG.fine(String.format("Loaded object of type %s with key %s", returnValue.getClass().toString(), returnValue.getKey()
                     .toString()));
         }
         return returnValue;

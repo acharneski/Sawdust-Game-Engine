@@ -11,6 +11,7 @@ import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.players.PlayerManager;
@@ -187,6 +188,23 @@ public abstract class GoGame extends StopGame
       final GameSession session = getSession();
       if (null != session)
       {
+          String displayName = displayName(p);
+          final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(p);
+          final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
+          Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
+          String opponentName = displayName(otherPlayer);
+          if(p instanceof Player)
+          {
+              String type = "Win/Go";
+              String event = String.format("I won a game of Stop against %s!", opponentName);
+              ((Player)p).logActivity(new ActivityEvent(type,event));
+          }
+          if(otherPlayer instanceof Player)
+          {
+              String type = "Lose/Go";
+              String event = String.format("I lost a game of Stop against %s!", displayName);
+              ((Player)otherPlayer).logActivity(new ActivityEvent(type,event));
+          }
          final ArrayList<Player> collection = new ArrayList<Player>();
          if (winner instanceof Player)
          {

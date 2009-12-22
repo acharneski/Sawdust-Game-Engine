@@ -163,17 +163,28 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          final int diff = score - score2;
          if (diff > 0)
          {
-            addMessage("%s won by at least %d!", displayName(player), diff);
+            String displayName = displayName(player);
+            addMessage("%s won by at least %d!", displayName, diff);
             _currentState = GamePhase.Complete;
-            if(player instanceof Player && getSession() != null)
-            {
-                ((Player)player).logActivity(new ActivityEvent("Win/Go","I won a game of Stop!"));
-            }
             _lastWinner = playerIdx;
             
             final GameSession session = getSession();
             if (null != session)
             {
+                Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
+                String opponentName = displayName(otherPlayer);
+                if(player instanceof Player)
+                {
+                    String type = "Win/Stop";
+                    String event = String.format("I won a game of Stop against %s!", opponentName);
+                    ((Player)player).logActivity(new ActivityEvent(type,event));
+                }
+                if(otherPlayer instanceof Player)
+                {
+                    String type = "Lose/Stop";
+                    String event = String.format("I lost a game of Stop against %s!", displayName);
+                    ((Player)otherPlayer).logActivity(new ActivityEvent(type,event));
+                }
                final ArrayList<Player> collection = new ArrayList<Player>();
                if (player instanceof Player)
                {

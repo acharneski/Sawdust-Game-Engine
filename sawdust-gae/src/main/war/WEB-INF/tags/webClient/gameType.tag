@@ -1,9 +1,10 @@
 <%@ tag body-content="scriptless" %>
 <%@ attribute name="game" required="false"%>
+<%@ attribute name="tutorialNumber" required="false" %>
 <%@ attribute name="gameObj" required="false" type="com.sawdust.engine.game.GameType"%>
 
 <%@ tag import="com.sawdust.engine.game.GameType"%>
-<%@ tag import="java.util.List"%>
+<%@ tag import="java.util.List" %>
 <%@ tag import="com.sawdust.server.logic.GameTypes"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -35,6 +36,10 @@ String quickPlayUrl = "/quickPlay.jsp?"+ user.getSessonJunk(false,true) + "game=
 String links = gameType.getLinks();
 if(null == links) links = "";
 if(!links.isEmpty()) links = " - " + links;
+if(null != tutorialNumber)
+{
+    quickPlayUrl += "&tut=" + tutorialNumber;
+}
 %>
 
 <div class="sdge-game-type">

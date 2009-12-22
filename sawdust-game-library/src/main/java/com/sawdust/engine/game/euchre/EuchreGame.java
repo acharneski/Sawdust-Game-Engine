@@ -475,4 +475,20 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     {
         return _pointGoal;
     }
+
+    public List<Participant> getTeam(int affectedTeam)
+    {
+        
+        ArrayList<Participant> arrayList = new ArrayList<Participant>();
+        for(int i=0;i<4;i++)
+        {
+            Participant p = getPlayerManager().getPlayers().get(i);
+            int team = 1 + (i % 2);
+            if(team == affectedTeam)
+            {
+                arrayList.add(p);
+            }
+        }
+        return arrayList;
+    }
 }

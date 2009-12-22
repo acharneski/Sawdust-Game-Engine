@@ -163,6 +163,7 @@ public abstract class BlackjackGame extends IndexCardGame
             this.addMessage(MessageType.Compact, "<strong><i>Everyone Wins!</i></strong>");
             this.addMessage("");
             _currentPhase = GamePhases.Won;
+            
             gameSession.payOut(gameSession.getMembers());
             return;
         }

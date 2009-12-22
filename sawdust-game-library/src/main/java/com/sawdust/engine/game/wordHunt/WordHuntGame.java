@@ -16,6 +16,7 @@ import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.PersistantTokenGame;
+import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.MultiPlayer;
 import com.sawdust.engine.game.players.Participant;
@@ -533,8 +534,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
             addMessage("<strong>%s won</strong>", displayName(winner));
             final GameSession session = getSession();
             final ArrayList<Player> collection = new ArrayList<Player>();
-            if (winner instanceof Player)
+            if(winner instanceof Player)
             {
+                String type = "Win/WordHunt";
+                String event = String.format("I won a game of WordHunt!");
+                ((Player)winner).logActivity(new ActivityEvent(type,event));
                 collection.add((Player) winner);
             }
             session.payOut(collection);
