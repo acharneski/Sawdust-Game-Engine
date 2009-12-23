@@ -42,17 +42,18 @@
 
 <h2>Learn the game:</h2>
 <% 
-	List<GameType> tutorials = game.getTutorialSequence();
-	int index=0;
-	// TODO: Re-enable Java 5 support in JSP
-	java.util.Iterator i = tutorials.iterator();
-	while(i.hasNext()) {
-	  GameType t = (GameType) i.next();
-	   //for(GameType t : tutorials) {
-	   %>
-	   <wc:gameType gameObj="<%=t%>"></wc:gameType>
+    List<GameType> tutorials = game.getTutorialSequence();
+    int index=0;
+    int cnt = 0;
+    // TODO: Re-enable Java 5 support in JSP
+    //for(GameType t : tutorials) {
+    java.util.Iterator i = tutorials.iterator();
+    while(i.hasNext()) {
+      GameType t = (GameType) i.next();
+       %>
+       <wc:gameType gameObj="<%=t%>" tutorialNumber="<%=Integer.toString(cnt++)%>"></wc:gameType>
 <%
-	}
+    }
 %>
 
 <h2>Join an open game:</h2>

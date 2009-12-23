@@ -39,4 +39,10 @@ public class GameType extends BlackjackGameType
     protected GameType()
     {
     }
+
+    @Override
+    public boolean isSubtype()
+    {
+        return true;
+    }
 }
