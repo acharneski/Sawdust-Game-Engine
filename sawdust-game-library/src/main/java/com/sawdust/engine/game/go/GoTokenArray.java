@@ -14,6 +14,11 @@ public class GoTokenArray extends TokenArray
 {
    private static final Logger LOG = Logger.getLogger(GoTokenArray.class.getName());
    
+   public GoTokenArray()
+   {
+      super();
+   }
+   
    public GoTokenArray(final GoTokenArray obj)
    {
       super(obj);

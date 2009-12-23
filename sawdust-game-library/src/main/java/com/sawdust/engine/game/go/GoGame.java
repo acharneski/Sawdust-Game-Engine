@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.util.Map.Entry;
 
 import com.sawdust.engine.common.config.GameConfig;
@@ -323,13 +325,28 @@ public abstract class GoGame extends StopGame
       playerScore.addPrisoners(islandSize);
    }
 
+   LinkedList<TokenArray> history = new LinkedList<TokenArray>();
+   
    @Override
    public void doMove(IndexPosition position, Participant player) throws com.sawdust.engine.common.GameException
    {
       TokenArray begin = getTokenArray();
+      history.push(begin);
+      while(history.size()>2)
+      {
+          history.removeLast();
+      }
       super.doMove(position, player);
       TokenArray end = getTokenArray();
-      if(begin.equals(end))
+      int playerIdx = getPlayerManager().findPlayer(player);
+      for(TokenArray h : history)
+      {
+          if(end.equals(h))
+          {
+              throw new GameLogicException("Illegal Suicide");
+          }
+      }
+      if(begin.getScore(playerIdx) > end.getScore(playerIdx))
       {
          throw new GameLogicException("Illegal Suicide");
       }

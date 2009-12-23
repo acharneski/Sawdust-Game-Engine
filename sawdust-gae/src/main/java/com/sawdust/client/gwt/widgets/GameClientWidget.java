@@ -177,7 +177,7 @@ public class GameClientWidget
     {
         cmdService.setAccessKey(GoogleAccess.getAccessToken(rootPanel));
         _gameWidget = new GameWidget(cmdService);
-        buildDialog(_dialogBox, _closeButton, _serverResponseLabel, onErrorClose);
+        buildDialog(_dialogBox, _closeButton, _serverResponseLabel);
         final VerticalPanel vPanel = buildMainPanel();
         rootPanel.add(vPanel);
         _oracle.clear();
@@ -326,7 +326,7 @@ public class GameClientWidget
         return commandPanel;
     }
 
-    private void buildDialog(final DialogBox dialogBox, final Button button, final HTML dialogMessage, final EventListener onClose)
+    private void buildDialog(final DialogBox dialogBox, final Button button, final HTML dialogMessage)
     {
         // Setup error dialog
         final VerticalPanel dialogVPanel = new VerticalPanel();
@@ -344,9 +344,9 @@ public class GameClientWidget
             public void onClick(final ClickEvent event)
             {
                 dialogBox.hide();
-                if (null != onClose)
+                if (null != onErrorClose)
                 {
-                    onClose.onEvent(event);
+                    onErrorClose.onEvent(event);
                 }
             }
         });

@@ -107,7 +107,7 @@ public class GameState extends DataObj
         state = state2;
         currentVersion = currentVersion2;
         session = session2;
-        if (this != DataStore.Add(this)) throw new AssertionError();
+        if (this != DataStore.Cache(this)) throw new AssertionError();
     }
 
     public GameState(final GameSession fromSession) throws GameException

@@ -32,7 +32,17 @@ public final class DataStore
     private static final boolean DEBUG_LOG = false;
 
     private static final Logger LOG = Logger.getLogger(DataStore.class.getName());
-    private final static HashMap<Class<? extends DataObj>, HashMap<Key, DataObj>> objectCache = new HashMap<Class<? extends DataObj>, HashMap<Key, DataObj>>();
+    private final static ThreadLocal<HashMap<Class<? extends DataObj>, HashMap<Key, DataObj>>> objectCache = new ThreadLocal<HashMap<Class<? extends DataObj>, HashMap<Key, DataObj>>>()
+    {
+
+        @Override
+        protected HashMap<Class<? extends DataObj>, HashMap<Key, DataObj>> initialValue()
+        {
+            return new HashMap<Class<? extends DataObj>, HashMap<Key,DataObj>>();
+        }
+        
+    };
+    
     private static PersistenceManagerFactory pmfInstance;
 
     private static PersistenceManagerFactory init()
@@ -77,28 +87,7 @@ public final class DataStore
         PersistenceManager em = obj.getEntityManager();
         if (null == em)
         {
-            try
-            {
-                em = create();
-                if (null == em) throw new NullPointerException("Could not create PersistenceManager");
-                obj.setEntityManager(em);
-                LOG.fine(String.format("Inserting entity of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
-                Transaction currentTransaction = em.currentTransaction();
-                if (ENABLE_TRANSACTIONS)
-                {
-                    if (!currentTransaction.isActive())
-                    {
-                        currentTransaction.begin();
-                    }
-                }
-                em.makePersistent(obj);
-            }
-            catch (Throwable e)
-            {
-                LOG.warning("Datastore exception: " + Util.getFullString(e));
-                if (null == e) e = new NullPointerException("Null was thrown!");
-                throw new SawdustSystemError(e);
-            }
+            attachPersistanceManager(obj);
         }
         else
         {
@@ -107,14 +96,42 @@ public final class DataStore
         return obj;
     }
 
+    private static PersistenceManager attachPersistanceManager(DataObj obj)
+    {
+        PersistenceManager em;
+        try
+        {
+            em = create();
+            if (null == em) throw new NullPointerException("Could not create PersistenceManager");
+            obj.setEntityManager(em);
+            LOG.fine(String.format("Inserting entity of type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
+            Transaction currentTransaction = em.currentTransaction();
+            if (ENABLE_TRANSACTIONS)
+            {
+                if (!currentTransaction.isActive())
+                {
+                    currentTransaction.begin();
+                }
+            }
+            em.makePersistent(obj);
+            return em;
+        }
+        catch (Throwable e)
+        {
+            LOG.warning("Datastore exception: " + Util.getFullString(e));
+            if (null == e) e = new NullPointerException("Null was thrown!");
+            throw new SawdustSystemError(e);
+        }
+    }
+
     public static DataObj Cache(final DataObj obj)
     {
         final Class<? extends DataObj> c = obj.getClass();
-        if (!objectCache.containsKey(c))
+        if (!objectCache.get().containsKey(c))
         {
-            objectCache.put(c, new HashMap<Key, DataObj>());
+            objectCache.get().put(c, new HashMap<Key, DataObj>());
         }
-        final HashMap<Key, DataObj> classCache = objectCache.get(c);
+        final HashMap<Key, DataObj> classCache = objectCache.get().get(c);
         if (classCache.containsKey(obj.getKey())) 
         {
             LOG.fine(String.format("Get from cache: type %s with key %s", obj.getClass().toString(), obj.getKey().toString()));
@@ -130,7 +147,7 @@ public final class DataStore
 
     public static void Clear()
     {
-        objectCache.clear();
+        objectCache.get().clear();
     }
 
     public static PersistenceManager create()
@@ -142,9 +159,9 @@ public final class DataStore
 
     public static <T extends DataObj> T GetCache(final Class<T> c, final Key key)
     {
-        if (objectCache.containsKey(c))
+        if (objectCache.get().containsKey(c))
         {
-            final HashMap<Key, DataObj> classCache = objectCache.get(c);
+            final HashMap<Key, DataObj> classCache = objectCache.get().get(c);
             if (classCache.containsKey(key)) return (T) classCache.get(key);
         }
         return null;
@@ -336,13 +353,18 @@ public final class DataStore
 
     public static void Save()
     {
-        for (final Class<?> x : objectCache.keySet())
+        for (final Class<?> x : objectCache.get().keySet())
         {
-            HashMap<Key, DataObj> hashMap = objectCache.get(x);
+            HashMap<Key, DataObj> hashMap = objectCache.get().get(x);
             Collection<DataObj> values = hashMap.values();
             for (final DataObj obj : values)
             {
                 PersistenceManager entityManager = obj.getEntityManager();
+                if (null == entityManager)
+                {
+                    LOG.fine("Delayed insert");
+                    entityManager = attachPersistanceManager(obj);
+                }
                 if (!entityManager.isClosed())
                 {
                     Transaction currentTransaction = entityManager.currentTransaction();
@@ -358,7 +380,7 @@ public final class DataStore
                 }
             }
         }
-        objectCache.clear();
+        objectCache.get().clear();
     }
 
     private DataStore()

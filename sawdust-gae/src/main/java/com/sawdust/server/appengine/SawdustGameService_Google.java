@@ -108,8 +108,8 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            final com.sawdust.server.logic.SessionToken access = getSessionToken2(access2, request, response);
             DataStore.Clear();
+            final com.sawdust.server.logic.SessionToken access = getSessionToken2(access2, request, response);
             final Account account = access.loadAccount();
             
             final GameSession newSession = new com.sawdust.server.datastore.entities.GameSession(account);
@@ -182,8 +182,8 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            final com.sawdust.server.logic.SessionToken access = getSessionToken(access2);
             DataStore.Clear();
+            final com.sawdust.server.logic.SessionToken access = getSessionToken(access2);
             LOG.info(String.format("Command=%s;\tUser=%s", cmd, access.getUserId()));
             
             com.sawdust.engine.service.data.GameSession gameSession;
@@ -251,8 +251,8 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
-            final com.sawdust.server.logic.SessionToken access = getSessionToken(accessData);
             DataStore.Clear();
+            final com.sawdust.server.logic.SessionToken access = getSessionToken(accessData);
             // System.out.println(String.format("Update=%s;\tUser=%s",
             // gameVersion, access.getUserId()));
             
@@ -293,6 +293,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
     {
         try
         {
+            DataStore.Clear();
             final SessionToken access = getSessionToken(access2);
             com.sawdust.engine.service.data.GameSession gameSession;
             gameSession = access.loadSession();

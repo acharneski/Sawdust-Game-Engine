@@ -1,5 +1,6 @@
 package com.sawdust.engine.game.stop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,16 +13,16 @@ import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
 
-public class TokenArray
+public class TokenArray implements Serializable
 {
    private static final Logger     LOG         = Logger.getLogger(TokenArray.class.getName());
    
    public static final int         EMPTY_VALUE = -1;                                           ;
    
-   protected ArrayList<StopIsland> _islands    = null;
+   protected transient ArrayList<StopIsland> _islands    = null;
    protected int                   _boardData[][];
-   protected final int             _numCols;
-   protected final int             _numRows;
+   protected int             _numCols;
+   protected int             _numRows;
    
    public TokenArray(final TokenArray obj)
    {
@@ -62,7 +63,12 @@ public class TokenArray
       }
    }
    
-   public void cleanIslands(final int playerIdx, final StopGame game, final boolean modifyGame)
+   protected TokenArray()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
+public void cleanIslands(final int playerIdx, final StopGame game, final boolean modifyGame)
    {
       ArrayList<StopIsland> islands = getIslands();
       for (final StopIsland i : islands)
