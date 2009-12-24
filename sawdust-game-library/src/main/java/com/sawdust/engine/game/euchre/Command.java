@@ -156,7 +156,7 @@ public enum Command
 			}
 			
 			@Override
-			public boolean doCommand(Participant p) throws GameException, com.sawdust.engine.common.GameException {
+			public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException {
 				Command.this.doCommand(p, game.getSession(), "");
 				return true;
 			}

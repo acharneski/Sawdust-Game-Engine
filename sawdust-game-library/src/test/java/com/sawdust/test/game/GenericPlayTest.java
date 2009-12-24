@@ -89,8 +89,9 @@ public abstract class GenericPlayTest extends TestCase
             GameCommand randomMember = com.sawdust.engine.service.Util.randomMember(moves.toArray(new GameCommand[] {}));
             try
             {
-                System.out.println("Command: " + randomMember.getCommandText());
-                randomMember.doCommand(player);
+                String commandText = randomMember.getCommandText();
+                System.out.println("Command: " + commandText);
+                randomMember.doCommand(player, commandText);
                 break;
             }
             catch (GameException e)

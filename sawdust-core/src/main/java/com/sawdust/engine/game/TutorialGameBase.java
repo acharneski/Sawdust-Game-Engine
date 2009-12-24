@@ -73,10 +73,10 @@ public abstract class TutorialGameBase<S extends Game> implements Game
                   }
                   
                   @Override
-                  public boolean doCommand(Participant p) throws GameException, com.sawdust.engine.common.GameException
+                  public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
                   {
                      setPhase(phase.preCommand(TutorialGameBase.this, m, p));
-                     boolean cmdResult = m.doCommand(p);
+                     boolean cmdResult = m.doCommand(p, commandText);
                      setPhase(phase.postCommand(TutorialGameBase.this, m, p));
                      TutorialGameBase.this.saveState();
                      return cmdResult;

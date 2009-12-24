@@ -1,9 +1,12 @@
 package com.sawdust.client.gwt.widgets;
 
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -81,9 +84,34 @@ public class LabelWidget extends SimplePanel implements MouseUpHandler
         _command = state.command;
         _labelId = state.key;
         clear();
+        String startToken = "<TIMER>";
+        String endToken = "</TIMER>";
+        final String originalText = state.text;
+        int startIdx = -1;
+        int endIdx = -1;
+        if(originalText.contains(startToken) && originalText.contains(endToken))
+        {
+            startIdx = originalText.indexOf(startToken) + startToken.length();
+            endIdx = originalText.lastIndexOf(endToken);
+        }
         if (null == state.command)
         {
-            _innerWidget = new HTML(state.text);
+            _innerWidget = new HTML(originalText);
+            setWidget(_innerWidget);
+            
+            if(0<=startIdx)
+            {
+                final String originalTimer = originalText.substring(startIdx, endIdx);
+                final long originalTimerEnd = new Date().getTime() + 1000*Long.parseLong(originalTimer);
+                new Timer(){
+                    @Override
+                    public void run()
+                    {
+                        long now = new Date().getTime();
+                        int timerValue = Math.round((originalTimerEnd-now)/1000);
+                        ((HTML)_innerWidget).setHTML(originalText.replaceAll(originalTimer, Integer.toString(timerValue)));
+                    }}.scheduleRepeating(1000);
+            }            
             setWidget(_innerWidget);
             _innerWidget.setStylePrimaryName("sdge-play-gamelabel");
             if (state.width > 0)
@@ -94,7 +122,7 @@ public class LabelWidget extends SimplePanel implements MouseUpHandler
         }
         else
         {
-            _innerWidget = new Button(state.text);
+            _innerWidget = new Button(originalText);
             setWidget(_innerWidget);
             _innerWidget.setStylePrimaryName("sdge-play-gamebutton");
             this.ensureDebugId("button_" + state.key);

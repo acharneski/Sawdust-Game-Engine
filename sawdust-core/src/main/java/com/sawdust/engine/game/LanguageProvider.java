@@ -16,5 +16,7 @@ public interface LanguageProvider extends Serializable
     ArrayList<String> getDelimiterCharacterSet();
 
     String normalizeString(String b);
+
+    ArrayList<String> tokens(String commandText);
     
 }

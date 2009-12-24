@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
@@ -232,8 +233,8 @@ public abstract class WordHuntGame extends PersistantTokenGame
             final long ctime = new Date().getTime();
             final long etime = _roundEndTime.getTime();
             final double timeLeft = (etime - ctime) / 1000.0;
-            arrayList.add(new GameLabel("TimeLeft", new IndexPosition(CURVE_CMDS, idx++), Integer.toString((int) Math.ceil(timeLeft))
-                    + " sec left"));
+            arrayList.add(new GameLabel("TimeLeft", new IndexPosition(CURVE_CMDS, idx++), "<TIMER>" + Integer.toString((int) Math.ceil(timeLeft))
+                    + "</TIMER> sec left"));
 
             final String txt = String.format("My Score: %d (%d)", getScore(access), getWordList(access.getUserId()).size());
             arrayList.add(new GameLabel("WordCount", new IndexPosition(CURVE_CMDS, idx++), txt));
@@ -270,6 +271,33 @@ public abstract class WordHuntGame extends PersistantTokenGame
         }
         else if (_currentState == GameState.Playing)
         {
+            arrayList.add(new GameCommand()
+            {
+
+                @Override
+                public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
+                {
+                    ArrayList<ArrayList<IndexPosition>> paths = findWord(p, commandText);
+                    if(null == paths) return false;
+                    currentPath.put(p.getId(), paths.get(0));
+                    enterWord(p,commandText);
+                    return true;
+                    
+                }
+
+                @Override
+                public String getCommandText()
+                {
+                    return ""; // Filter everything
+                }
+
+                @Override
+                public String getHelpText()
+                {
+                    return "";
+                }
+            });
+            
             final HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
             final ArrayList<IndexPosition> path = getPath(access.getId());
             final IndexPosition prevPosition = (0 == path.size()) ? null : path.get(path.size() - 1);
@@ -298,7 +326,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                             }
 
                             @Override
-                            public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                            public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                             {
                                 Player user = (Player) p;
                                 if ((null != prevPosition) && !adjacent(position, prevPosition))
@@ -332,7 +360,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             }
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
@@ -353,7 +381,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p) throws GameException
+                public boolean doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
@@ -374,7 +402,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
@@ -396,6 +424,66 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
         }
         return arrayList;
+    }
+
+    private ArrayList<ArrayList<IndexPosition>> findWord(Participant p, String commandText)
+    {
+        commandText = _language.normalizeString(commandText);
+        if(commandText.contains(" ")) return null;
+        final HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
+        HashMap<String, ArrayList<IndexPosition>> index = new HashMap<String, ArrayList<IndexPosition>>();
+        HashMap<IndexPosition,String> rindex = new HashMap<IndexPosition, String>();
+        for(Entry<IndexPosition, Token> entry : tokenIndexByPosition.entrySet())
+        {
+            BoardToken value = (BoardToken) entry.getValue();
+            rindex.put(entry.getKey(), value.letter);
+
+            if(!index.containsKey(value.letter)) index.put(value.letter, new ArrayList<IndexPosition>());
+            index.get(value.letter).add(entry.getKey());
+
+        }
+        ArrayList<ArrayList<IndexPosition>> paths = new ArrayList<ArrayList<IndexPosition>>();
+        boolean isFirstLetter = true;
+        for(String letter : _language.tokens(commandText))
+        {
+            ArrayList<IndexPosition> matches = index.get(letter);
+            if(null == matches) return null;
+            ArrayList<ArrayList<IndexPosition>> newpaths = new ArrayList<ArrayList<IndexPosition>>();
+            for(IndexPosition match : matches)
+            {
+                
+                if(isFirstLetter)
+                {
+                    ArrayList<IndexPosition> a = new ArrayList<IndexPosition>();
+                    a.add(match);
+                    newpaths.add(a);
+                }
+                else
+                {
+                    for(ArrayList<IndexPosition> path : paths)
+                    {
+                        IndexPosition indexPosition = path.get(path.size()-1);
+                        if(match.is2dAdjacentTo(indexPosition) && !path.contains(match))
+                        {
+                            path = new ArrayList<IndexPosition>(path);
+                            path.add(match);
+                            newpaths.add(path);
+                        }
+                    }
+                }
+            }
+            if(newpaths.size()==0)
+            {
+                return null;
+            }
+            paths = newpaths;
+            isFirstLetter = false;
+        }
+        if(paths.size()==0)
+        {
+            return null;
+        }
+        return paths;
     }
 
     private int getNumberOfPlayers(final GameConfig config)
@@ -429,7 +517,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         else return _mplayerManager.getPosition(key, access);
     }
 
-    private void addWord(Player user, ArrayList<IndexPosition> currentWord)
+    private void addWord(Participant p, ArrayList<IndexPosition> currentWord)
     {
         String word = "";
         HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
@@ -438,8 +526,8 @@ public abstract class WordHuntGame extends PersistantTokenGame
             final BoardToken token = (BoardToken) tokenIndexByPosition.get(l);
             word += token.letter;
         }
-        currentPath.put(user.getUserId(), currentWord);
-        currentWords.get(user.getUserId()).add(word);
+        currentPath.put(p.getId(), currentWord);
+        currentWords.get(p.getId()).add(word);
     }
 
     private int getScore(final Participant p)
@@ -697,32 +785,31 @@ public abstract class WordHuntGame extends PersistantTokenGame
     {
     }
 
-    protected void enterWord(Player user, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
+    protected void enterWord(Participant p, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
     {
-        final ArrayList<String> wordList = getWordList(user.getUserId());
-        final ArrayList<IndexPosition> wordPath = getPath(user.getUserId());
+        final ArrayList<String> wordList = getWordList(p.getId());
+        final ArrayList<IndexPosition> wordPath = getPath(p.getId());
         if (wordList.contains(currentWord))
         {
-            WordHuntGame.this.addMessage("Already Entered: " + currentWord).setTo(user.getUserId());
+            WordHuntGame.this.addMessage("Already Entered: " + currentWord).setTo(p.getId());
             WordHuntGame.this.saveState();
         }
         else if (WordHuntGame.this.verifyWord(currentWord))
         {
-            WordHuntGame.this.addMessage(String.format("New Word: %s (%d points)", currentWord, getWordScore(currentWord))).setTo(
-                    user.getUserId());
-            addWord(user, wordPath);
-            explodeWord(user, wordPath);
+            WordHuntGame.this.addMessage(String.format("%s spelled %s (%d points)", displayName(p), currentWord, getWordScore(currentWord)));
+            addWord(p, wordPath);
+            explodeWord(p, wordPath);
         }
         else
         {
-            WordHuntGame.this.addMessage("Rejected: " + currentWord).setTo(user.getUserId());
+            WordHuntGame.this.addMessage("Rejected: " + currentWord).setTo(p.getId());
         }
-        clearCurrentWord(user.getUserId());
+        clearCurrentWord(p.getId());
         maybeComplete();
         WordHuntGame.this.saveState();
     }
 
-    private void explodeWord(Player user, ArrayList<IndexPosition> wordPath)
+    private void explodeWord(Participant p, ArrayList<IndexPosition> wordPath)
     {
         HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
         for (IndexPosition l : wordPath)

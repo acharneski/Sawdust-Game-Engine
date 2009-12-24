@@ -121,7 +121,7 @@ public class Util
         {
         	if(cmd.startsWith(command.getCommandText()))
         	{
-        		command.doCommand(access);
+        		command.doCommand(access, cmd);
         	}
         }
     }

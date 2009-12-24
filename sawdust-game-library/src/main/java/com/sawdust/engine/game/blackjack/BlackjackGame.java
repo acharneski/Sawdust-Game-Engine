@@ -324,7 +324,7 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                     {
                         o.doCommand(p, BlackjackGame.this, "");
                         return true;
@@ -354,7 +354,7 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                     {
                         doCommand(p, BlackjackGame.this.getSession(), "");
                         return true;

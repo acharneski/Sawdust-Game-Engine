@@ -91,7 +91,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
             returnValue.add(new GameCommand()
             {
                 @Override
-                public boolean doCommand(final Participant p) throws GameException
+                public boolean doCommand(final Participant p, String commandText) throws GameException
                 {
                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
                     game.addMember(f.getAgent("AI " + playerNumber));

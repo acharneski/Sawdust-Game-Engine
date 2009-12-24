@@ -55,7 +55,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             for (final SessionManagementCommands thidcmd : com.sawdust.server.logic.SessionManagementCommands.values())
             {
                 GameCommand gameCommand = thidcmd.getGameCommand(tokenGame);
-                if (cmd.startsWith(gameCommand.getCommandText()) && gameCommand.doCommand(player))
+                if (cmd.startsWith(gameCommand.getCommandText()) && gameCommand.doCommand(player, cmd))
                 {
                     handled = true;
                     break;
@@ -65,7 +65,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             {
                 for (final GameCommand thisCmd : tokenGame.getCommands(player))
                 {
-                    if (cmd.startsWith(thisCmd.getCommandText()) && thisCmd.doCommand(player))
+                    if (cmd.startsWith(thisCmd.getCommandText()) && thisCmd.doCommand(player, cmd))
                     {
                         handled = true;
                     }

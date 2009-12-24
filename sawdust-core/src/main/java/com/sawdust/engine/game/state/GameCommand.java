@@ -7,10 +7,11 @@ import com.sawdust.engine.service.debug.GameException;
 public abstract class GameCommand
 {
     /**
+     * @param commandText TODO
      * @throws com.sawdust.engine.common.GameException 
 	 * 
 	 */
-    public abstract boolean doCommand(final Participant p) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract boolean doCommand(final Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException;
 
     public abstract String getCommandText();
 

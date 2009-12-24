@@ -24,9 +24,10 @@ public class Stupid1 extends com.sawdust.engine.game.stop.Stupid1
          ArrayList<GameCommand> commands = game.getCommands(player);
          for (GameCommand gameCommand : commands)
          {
-            if(gameCommand.getCommandText().equals("Pass"))
+            String commandText = gameCommand.getCommandText();
+            if(commandText.equals("Pass"))
             {
-               gameCommand.doCommand(player);
+               gameCommand.doCommand(player, commandText);
                return;
             }
          }

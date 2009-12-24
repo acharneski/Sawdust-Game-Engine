@@ -147,7 +147,7 @@ public abstract class GoGame extends StopGame
             }
             
             @Override
-            public boolean doCommand(Participant p) throws GameException, com.sawdust.engine.common.GameException
+            public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
             {
                if(GoGame.this._lastPlayerPassed)
                {

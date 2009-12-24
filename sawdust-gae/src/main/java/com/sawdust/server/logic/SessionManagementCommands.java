@@ -234,7 +234,7 @@ public enum SessionManagementCommands
          }
          
          @Override
-         public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+         public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
          {
             com.sawdust.engine.service.data.GameSession session = game.getSession();
             SessionManagementCommands.this.doCommand((Player) p, session, "");

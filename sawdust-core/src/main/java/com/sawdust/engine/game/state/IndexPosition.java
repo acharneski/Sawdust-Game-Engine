@@ -78,4 +78,16 @@ public class IndexPosition implements Serializable
         return (null==_z)?null:new Integer(_z);
     }
 
+    public boolean is2dAdjacentTo(IndexPosition indexPosition)
+    {
+        int dx = _cardIndex - indexPosition._cardIndex;
+        int dy = _curveIndex - indexPosition._curveIndex;
+        if(dx>1) return false;
+        if(dx<-1) return false;
+        if(dy>1) return false;
+        if(dy<-1) return false;
+        if(dx==0 && dy==0) return false;
+        return true;
+    }
+
 }

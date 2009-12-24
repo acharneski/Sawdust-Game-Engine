@@ -75,11 +75,12 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
             S hypotheticalGame = cloneForSimulation(game);
             hypotheticalGame.setSilent(true);
             ArrayList<GameCommand> moves2 = hypotheticalGame.getMoves(participant);
+            String commandText = thisMove.getCommandText();
             for (GameCommand i : moves2)
             {
-               if (i.getCommandText().equals(thisMove.getCommandText()))
+               if (i.getCommandText().equals(commandText))
                {
-                  i.doCommand(participant);
+                  i.doCommand(participant, commandText);
                   break;
                }
             }
@@ -91,7 +92,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
             double fitness1 = gameFitness(hypotheticalGame, participant);
             if (n >= _depth)
             {
-               LOG.fine((++cnt) + "\t" + n + "\t" + thisMove.getCommandText() + "\t" + fitness1);
+               LOG.fine((++cnt) + "\t" + n + "\t" + commandText + "\t" + fitness1);
             }
             boolean isBetter = fitness1 > bestFitness;
             if (null == bestMove || isBetter)
@@ -107,7 +108,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
       }
       if (null != bestMove)
       {
-         bestMove.doCommand(participant);
+         bestMove.doCommand(participant, bestMove.getCommandText());
       }
       return bestMove;
    }

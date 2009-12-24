@@ -103,6 +103,18 @@ public final class EnglishLanguageProvider implements LanguageProvider
 
     private static String _normalizeString(String b)
     {
+        if(null == b) return null;
         return b.toUpperCase();
+    }
+
+    @Override
+    public ArrayList<String> tokens(String commandText)
+    {
+        ArrayList<String> returnValue = new ArrayList<String>();
+        for(char c : commandText.toCharArray())
+        {
+            returnValue.add(new String(new char[]{c}));
+        }
+        return returnValue;
     }
 }

@@ -539,7 +539,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+						public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                             com.sawdust.engine.game.poker.Commands.Drop_Cards.doCommand((Player)p, getSession(), cardNumberStr);
                             return true;
 						}
@@ -560,7 +560,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+					public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                         com.sawdust.engine.game.poker.Commands.Draw_Cards.doCommand((Player) p, getSession(), "");
                         return true;
 					}
@@ -596,7 +596,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+					public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                         com.sawdust.engine.game.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
                         return true;
 					}
@@ -620,7 +620,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+					public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                         com.sawdust.engine.game.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
 						return true;
 					}
@@ -645,7 +645,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+						public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                             com.sawdust.engine.game.poker.Commands.Bet.doCommand(p, getSession(), betAmt);
                             return true;
 						}
@@ -673,7 +673,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+						public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                             com.sawdust.engine.game.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
 							return true;
 						}
@@ -695,7 +695,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException {
+					public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
                         com.sawdust.engine.game.poker.Commands.Fold.doCommand((Player) p, getSession(), "");
                         return true;
 					}

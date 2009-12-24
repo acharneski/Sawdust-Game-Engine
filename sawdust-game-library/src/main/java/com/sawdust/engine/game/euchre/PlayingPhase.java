@@ -142,7 +142,7 @@ final class PlayingPhase extends GamePhase
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
                     {
                         com.sawdust.engine.game.euchre.Command.PlayCards.doCommand((Player) p, game.getSession(), cardStr);
                         return true;

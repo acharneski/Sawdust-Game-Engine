@@ -36,7 +36,7 @@ public final class MoveCommand extends GameCommand
    }
    
    @Override
-   public boolean doCommand(Participant p) throws com.sawdust.engine.common.GameException
+   public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
    {
       final IndexPosition position = new IndexPosition(pos.row, pos.col);
       this.stopGame.doMove(position, p);
