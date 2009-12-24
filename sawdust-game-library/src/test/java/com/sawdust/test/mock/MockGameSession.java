@@ -9,6 +9,7 @@ import java.util.List;
 import com.sawdust.engine.common.Bank;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.MarkovPredictor;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.data.Account;
@@ -181,5 +182,19 @@ public class MockGameSession implements GameSession, Serializable
     public void modifyPayout(double factor, String msg)
     {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public <T extends Serializable> T getResource(Class<T> class1)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <T extends Serializable> void setResource(Class<T> c, T markovChain)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

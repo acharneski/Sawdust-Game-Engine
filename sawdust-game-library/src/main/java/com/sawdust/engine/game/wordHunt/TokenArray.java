@@ -1,13 +1,14 @@
 package com.sawdust.engine.game.wordHunt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TokenArray
+public class TokenArray implements Serializable
 {
-    public class ArrayPosition
+    public class ArrayPosition implements Serializable
     {
         public int col = 0;
         public int row = 0;
@@ -21,6 +22,11 @@ public class TokenArray
             super();
             row = prow;
             col = pcol;
+        }
+        
+        protected ArrayPosition()
+        {
+            super();
         }
 
         @Override
@@ -99,7 +105,7 @@ public class TokenArray
         }
     };
 
-    class ElementState
+    class ElementState implements Serializable
     {
         String state = "";
 
@@ -108,9 +114,14 @@ public class TokenArray
             super();
             state = pstate;
         }
+
+        protected ElementState()
+        {
+            super();
+        }
     }
 
-    private final HashMap<ArrayPosition, ElementState> _map = new HashMap<ArrayPosition, ElementState>();
+    private HashMap<ArrayPosition, ElementState> _map = new HashMap<ArrayPosition, ElementState>();
     private int _numCols = 0;
     private int _numRows = 0;
 
@@ -118,6 +129,11 @@ public class TokenArray
     {
         _numCols = numCols;
         _numRows = numRows;
+    }
+
+    protected TokenArray()
+    {
+        super();
     }
 
     public boolean containsKey(final ArrayPosition n)

@@ -4,6 +4,8 @@ Disallow: /t/*
 Disallow: /f/*
 Disallow: /m/*
 Disallow: /play.jsp
+Disallow: /quickPlay.jsp
+Disallow: /tutorials.jsp
 Disallow: /accountInfo.jsp
 Disallow: /bankLog.jsp
 Disallow: /ad.jsp

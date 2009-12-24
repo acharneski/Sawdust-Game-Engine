@@ -18,6 +18,7 @@ import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.HttpInterface;
 import com.sawdust.engine.game.HttpResponse;
 import com.sawdust.engine.game.LanguageProvider;
+import com.sawdust.engine.game.MarkovPredictor;
 import com.sawdust.engine.game.PersistantTokenGame;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
@@ -60,6 +61,10 @@ public abstract class WordHuntGame extends PersistantTokenGame
     private MultiPlayer _mplayerManager;
 
     private Date _roundEndTime;
+    private HttpInterface httpInterface = null;
+    private TokenArray tokenArray;
+    private static final int chainSize = 3;
+
 
     private HashMap<String, ArrayList<IndexPosition>> currentPath = new HashMap<String, ArrayList<IndexPosition>>();
 
@@ -118,6 +123,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
         {
             ((BoardToken) t).selectedFor.remove(userId);
         }
+    }
+
+    private BoardToken generateToken(final int chainSize, final MarkovPredictor mk, final TokenArray a, final IndexPosition p)
+    {
+        return generateToken(chainSize, mk, a, a.new ArrayPosition(p.getCurveIndex(), p.getCardIndex()));
     }
 
     private BoardToken generateToken(final int chainSize, final MarkovPredictor mk, final TokenArray a, final ArrayPosition p)
@@ -222,7 +232,8 @@ public abstract class WordHuntGame extends PersistantTokenGame
             final long ctime = new Date().getTime();
             final long etime = _roundEndTime.getTime();
             final double timeLeft = (etime - ctime) / 1000.0;
-            arrayList.add(new GameLabel("TimeLeft", new IndexPosition(CURVE_CMDS, idx++), Integer.toString((int) Math.ceil(timeLeft)) + " sec left"));
+            arrayList.add(new GameLabel("TimeLeft", new IndexPosition(CURVE_CMDS, idx++), Integer.toString((int) Math.ceil(timeLeft))
+                    + " sec left"));
 
             final String txt = String.format("My Score: %d (%d)", getScore(access), getWordList(access.getUserId()).size());
             arrayList.add(new GameLabel("WordCount", new IndexPosition(CURVE_CMDS, idx++), txt));
@@ -253,7 +264,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     {
         final int refreshMs = 1000 * 60 * 60;
         final String uniqueTime = Integer.toString((int) (new Date().getTime() / refreshMs));
-        final MarkovPredictor mk = new MarkovPredictor(chainSize + 1);
+        final MarkovPredictor mk = new MarkovPredictor(chainSize + 1, _language);
         final ArrayList<String> trainingData = new ArrayList<String>();
         trainingData.add(getUrl("http://news.google.com/#" + uniqueTime));
         trainingData.add(getUrl("http://slashdot.org/#" + uniqueTime));
@@ -345,24 +356,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
                     final String currentWord = getSpellingBuffer(user.getUserId());
-                    final ArrayList<String> wordList = getWordList(user.getUserId());
-                    if (wordList.contains(currentWord))
-                    {
-                        WordHuntGame.this.addMessage("Already Entered: " + currentWord).setTo(user.getUserId());
-                        WordHuntGame.this.saveState();
-                    }
-                    else if (WordHuntGame.this.verifyWord(currentWord))
-                    {
-                        WordHuntGame.this.addMessage(String.format("New Word: %s (%d points)", currentWord, getWordScore(currentWord))).setTo(user.getUserId());
-                        addWord(user, currentWord);
-                    }
-                    else
-                    {
-                        WordHuntGame.this.addMessage("Rejected: " + currentWord).setTo(user.getUserId());
-                    }
-                    clearCurrentWord(user.getUserId());
-                    maybeComplete();
-                    WordHuntGame.this.saveState();
+                    enterWord(user, currentWord);
                     return true;
                 }
 
@@ -454,13 +448,17 @@ public abstract class WordHuntGame extends PersistantTokenGame
         else return _mplayerManager.getPosition(key, access);
     }
 
-    private void addWord(Player user, String currentWord)
+    private void addWord(Player user, ArrayList<IndexPosition> currentWord)
     {
-        if (!currentWords.containsKey(user.getUserId()))
+        String word = "";
+        HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
+        for (IndexPosition l : currentWord)
         {
-            currentWords.put(user.getUserId(), new ArrayList<String>());
+            final BoardToken token = (BoardToken) tokenIndexByPosition.get(l);
+            word += token.letter;
         }
-        currentWords.get(user.getUserId()).add(currentWord);
+        currentPath.put(user.getUserId(), currentWord);
+        currentWords.get(user.getUserId()).add(word);
     }
 
     private int getScore(final Participant p)
@@ -537,11 +535,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
             addMessage("<strong>%s won</strong>", displayName(winner));
             final GameSession session = getSession();
             final ArrayList<Player> collection = new ArrayList<Player>();
-            if(winner instanceof Player)
+            if (winner instanceof Player)
             {
                 String type = "Win/WordHunt";
                 String event = String.format("I won a game of WordHunt!");
-                ((Player)winner).logActivity(new ActivityEvent(type,event));
+                ((Player) winner).logActivity(new ActivityEvent(type, event));
                 collection.add((Player) winner);
             }
             session.payOut(collection);
@@ -592,14 +590,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
         _roundEndTime = new Date(new Date().getTime() + (1000 * 60 * 5));
 
         clearTokens();
-        final int chainSize = 3;
-        final MarkovPredictor mk = getMarkov(chainSize);
+        setMarkovChain(getMarkov(chainSize));
+        tokenArray = new TokenArray(NUM_ROWS, NUM_COLS);
 
-        final TokenArray a = new TokenArray(NUM_ROWS, NUM_COLS);
-        final ArrayList<ArrayPosition> pos = randomPositions(a);
+        final ArrayList<ArrayPosition> pos = randomPositions(tokenArray);
         for (final ArrayPosition p : pos)
         {
-            final BoardToken token = generateToken(chainSize, mk, a, p);
+            final BoardToken token = generateToken(chainSize, getMarkovChain(), tokenArray, p);
             add(token);
         }
     }
@@ -631,10 +628,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
         return returnValue;
     }
 
-	@Override
-	public Participant getCurrentPlayer() {
-		return _mplayerManager.getPlayerManager().getCurrentPlayer();
-	}
+    @Override
+    public Participant getCurrentPlayer()
+    {
+        return _mplayerManager.getPlayerManager().getCurrentPlayer();
+    }
 
     protected void setCurrentPath(HashMap<String, ArrayList<IndexPosition>> currentPath)
     {
@@ -675,7 +673,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     {
         return spellingBuffer;
     }
-    
+
     @Override
     public void removeMember(Participant agent) throws GameException
     {
@@ -684,13 +682,12 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     private LanguageProvider _language;
-    
+
     public boolean verifyWord(String word)
     {
         return getLanguage().verifyWord(word, httpInterface);
     }
-    
-    private HttpInterface httpInterface = null;
+
     public String getUrl(String urlString)
     {
         return getHttpInterface().getURL(urlString).getContent();
@@ -715,5 +712,61 @@ public abstract class WordHuntGame extends PersistantTokenGame
     {
         return httpInterface;
     }
+
+    protected void attemptWord(Player user, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
+    {
+    }
+
+    protected void enterWord(Player user, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
+    {
+        final ArrayList<String> wordList = getWordList(user.getUserId());
+        final ArrayList<IndexPosition> wordPath = getPath(user.getUserId());
+        if (wordList.contains(currentWord))
+        {
+            WordHuntGame.this.addMessage("Already Entered: " + currentWord).setTo(user.getUserId());
+            WordHuntGame.this.saveState();
+        }
+        else if (WordHuntGame.this.verifyWord(currentWord))
+        {
+            WordHuntGame.this.addMessage(String.format("New Word: %s (%d points)", currentWord, getWordScore(currentWord))).setTo(
+                    user.getUserId());
+            addWord(user, wordPath);
+            explodeWord(user, wordPath);
+        }
+        else
+        {
+            WordHuntGame.this.addMessage("Rejected: " + currentWord).setTo(user.getUserId());
+        }
+        clearCurrentWord(user.getUserId());
+        maybeComplete();
+        WordHuntGame.this.saveState();
+    }
+
+    private void explodeWord(Player user, ArrayList<IndexPosition> wordPath)
+    {
+        HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
+        for (IndexPosition l : wordPath)
+        {
+            final BoardToken token = (BoardToken) tokenIndexByPosition.get(l);
+            final BoardToken newToken = generateToken(chainSize, getMarkovChain(), tokenArray, l);
+            remove(newToken);
+            add(newToken);
+        }
+    }
+
+    private transient MarkovPredictor _markovChain;
     
+    private void setMarkovChain(MarkovPredictor markovChain)
+    {
+        _markovChain = markovChain;
+        getSession().setResource(MarkovPredictor.class, markovChain);
+    }
+
+    private MarkovPredictor getMarkovChain()
+    {
+        if(null != _markovChain) return _markovChain;
+        _markovChain = getSession().getResource(MarkovPredictor.class);
+        return _markovChain;
+    }
+
 }

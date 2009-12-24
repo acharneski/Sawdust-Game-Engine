@@ -1,13 +1,16 @@
 package com.sawdust.server.datastore.entities;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -17,6 +20,7 @@ import javax.jdo.annotations.NullValue;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Serialized;
 import javax.persistence.Id;
 import javax.persistence.OrderBy;
 
@@ -25,6 +29,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.Bank;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.MarkovPredictor;
 import com.sawdust.engine.game.MultiPlayerCardGame;
 import com.sawdust.engine.game.MultiPlayerGame;
 import com.sawdust.engine.game.players.Agent;
@@ -116,6 +121,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
    @Persistent(mappedBy = "gameSession")
    @OrderBy(value = "memberIndex")
    private ArrayList<SessionMember>             members        = new ArrayList<SessionMember>();
+   
+   @Persistent @Serialized
+   private HashMap<Class,Key>             resources        = new HashMap<Class,Key>();
    
    @Persistent
    private int                                  moveTimeout    = 0;
@@ -870,4 +878,24 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       int newBalance = (int) (balance * factor);
       this.withdraw((int) (balance - newBalance), null, msg);
    }
+    
+    @Override
+    public <T extends Serializable> T getResource(Class<T> c)
+    {
+        if(!resources.containsKey(c)) return null;
+        Key key = resources.get(c);
+        SessionResource get = DataStore.Get(SessionResource.class, key);
+        if(null == get)
+        {
+            LOG.warning("null == get");
+            return null;
+        }
+        return get.getData(c);
+    }
+
+    @Override
+    public <T extends Serializable> void setResource(Class<T> c, T markovChain)
+    {
+        resources.put(c, new SessionResource(this, markovChain).getKey());
+    }
 }

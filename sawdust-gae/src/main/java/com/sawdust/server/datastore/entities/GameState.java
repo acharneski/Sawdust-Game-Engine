@@ -137,7 +137,7 @@ public class GameState extends DataObj
         if (null == state) return null;
         try
         {
-            _cachedState = Util.fromBytes(state.getBytes());
+            _cachedState = (Game) Util.fromBytes(state.getBytes());
             return _cachedState;
         }
         catch (Throwable e)

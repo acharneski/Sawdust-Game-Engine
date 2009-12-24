@@ -260,7 +260,7 @@ public class FacebookUser
         final String signature = GetFbParam(request, "fb_sig");
         if (null == signature)
         {
-        	LOG.warning("Facebook signature field not found");
+        	LOG.fine("Facebook signature field not found");
             return null;
         }
         for (final Site secret : FACEBOOK_SECRET)

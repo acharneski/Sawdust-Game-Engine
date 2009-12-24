@@ -97,7 +97,7 @@ public class GameLeague extends DataObj
 
     public GameConfig getConfig()
     {
-        return Util.fromBytes(_config.getBytes());
+        return (GameConfig) Util.fromBytes(_config.getBytes());
     }
 
     public Account getOwner()

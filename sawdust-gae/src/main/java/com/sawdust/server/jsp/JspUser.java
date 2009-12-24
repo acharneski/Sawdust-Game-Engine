@@ -46,7 +46,10 @@ public class JspUser implements Serializable
     public com.sawdust.server.datastore.entities.Account getAccount()
     {
         initUser();
-        if(null == _account) LOG.warning("null == _account");
+        if(null == _account) 
+        {
+            LOG.warning("Could not authenticate user...not even as a guest.");
+        }
         return _account;
     }
 

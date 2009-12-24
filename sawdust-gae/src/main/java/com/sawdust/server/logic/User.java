@@ -213,7 +213,10 @@ public class User implements Serializable
         if (null == user)
         {
             final String email = getGuestId(request, response);
-            if (null == email) return null;
+            if (null == email) 
+            {
+                return null;
+            }
             user = new com.sawdust.server.logic.User(UserTypes.Guest, email, null);
         }
         if (user.getUserID().endsWith("facebook.null"))

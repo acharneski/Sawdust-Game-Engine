@@ -111,6 +111,6 @@ public class ActivityEventRecord extends DataObj
     public ActivityEvent getData()
     {
         if(null == this.state) return null;
-        return Util.fromBytes(this.state.getBytes());
+        return (ActivityEvent) Util.fromBytes(this.state.getBytes());
     }
 }

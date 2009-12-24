@@ -4,6 +4,7 @@
 package com.sawdust.server.appengine;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.game.HttpInterface;
@@ -55,5 +56,53 @@ public final class EnglishLanguageProvider implements LanguageProvider
             return false;
         }
         return true;
+    }
+
+    static final ArrayList<String> __wordLetters = new ArrayList<String>();
+    {
+        String[] strings = new String[]{
+                "a", "b", "c", "d", "e", "f", "g",
+                "h", "i", "j", "k", "l", "m", "n",
+                "o", "p", "q", "r", "s", "t", "u",
+                "v", "w", "x", "y", "z"
+        };
+        for(String s : strings)
+        {
+            __wordLetters.add(_normalizeString(s));
+        }
+    }
+    
+    private static final ArrayList<String> __spaceLetters = new ArrayList<String>();
+    {
+        String[] strings = new String[]{
+                " ", ".", ",", "!", "-", ";", "?"
+        };
+        for(String s : strings)
+        {
+            __spaceLetters.add(_normalizeString(s));
+        }
+    }
+    
+    @Override
+    public ArrayList<String> getDelimiterCharacterSet()
+    {
+        return new ArrayList<String>(__spaceLetters);
+    }
+
+    @Override
+    public ArrayList<String> getWordCharacterSet()
+    {
+        return new ArrayList<String>(__wordLetters);
+    }
+
+    @Override
+    public String normalizeString(String b)
+    {
+        return _normalizeString(b);
+    }
+
+    private static String _normalizeString(String b)
+    {
+        return b.toUpperCase();
     }
 }

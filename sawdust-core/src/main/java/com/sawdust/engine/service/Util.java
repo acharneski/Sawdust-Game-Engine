@@ -19,6 +19,9 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -170,10 +173,16 @@ public class Util
         try
         {
             final ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
-            final ObjectOutputStream out = new ObjectOutputStream(outBuffer);
+            ZipOutputStream z = new ZipOutputStream(outBuffer);
+            z.putNextEntry(new ZipEntry(""));
+            final ObjectOutputStream out = new ObjectOutputStream(z);
             try
             {
                 out.writeObject(obj);
+                out.flush();
+                z.closeEntry();
+                z.flush();
+                LOG.fine(String.format("Serialize object: %s; %d bytes",obj.getClass().getName(), outBuffer.size()));
             }
             catch (Exception e)
             {
@@ -189,24 +198,24 @@ public class Util
         return data;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Serializable> T fromBytes(final byte[] data)
+    public static Object fromBytes(final byte[] data)
     {
-        T copiedObj = null;
+        Object copiedObj = null;
         try
         {
             final ByteArrayInputStream inBuffer = new ByteArrayInputStream(data);
-            final ObjectInputStream in = new ObjectInputStream(inBuffer);
-            copiedObj = (T) in.readObject();
+            ZipInputStream z = new ZipInputStream(inBuffer);
+            z.getNextEntry();
+            final ObjectInputStream in = new ObjectInputStream(z);
+            copiedObj = (Object) in.readObject();
+            LOG.fine(String.format("Deserialize object: %s; %d bytes",copiedObj.getClass().getName(), data.length));
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
             throw new SawdustSystemError(e);
         }
         catch (final ClassNotFoundException e)
         {
-            e.printStackTrace();
             throw new SawdustSystemError(e);
         }
         return copiedObj;

@@ -1,6 +1,7 @@
 package com.sawdust.engine.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public interface LanguageProvider extends Serializable
@@ -9,5 +10,11 @@ public interface LanguageProvider extends Serializable
     String getUrl(String urlString, HttpInterface theInternet);
 
     boolean verifyWord(String word, HttpInterface theInternet);
+
+    ArrayList<String> getWordCharacterSet();
+
+    ArrayList<String> getDelimiterCharacterSet();
+
+    String normalizeString(String b);
     
 }
