@@ -41,7 +41,7 @@ final class DealingPhase extends GamePhase
         game.getTeamStatus(1).currentHandCount = 0;
         game.clearTokens();
         game._winningCard = null;
-        game.getDeck().clearMemory();
+        game.getDeck().setReshuffleEnabled(true);
         game.setCurrentPhase(EuchreGame.DEALING);
 
         game.getPlayerManager().setCurrentPlayer(0);

@@ -821,7 +821,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         boolean isntNull = getCurrentPhase() != GamePhase.Null;
         if (isntNull && isntComplete) throw new GameLogicException("Invalid state: " + getCurrentPhase());
         clearTokens();
-        getDeck().clearMemory();
+        getDeck().setReshuffleEnabled(true);
         for (int player = 0; player < NUMBER_OF_PLAYERS; player++)
         {
             final Participant thisPlayer = getPlayerManager().playerName(player);

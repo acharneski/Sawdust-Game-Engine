@@ -170,7 +170,10 @@ public class Genetic_Go extends GenericPlayTest
         while (population.size() < populationSize)
         {
             GoEntity newEntity = randomMember(population);
-            if (null != newEntity) population.add(newEntity);
+            if (null != newEntity && !population.contains(newEntity)) 
+            {
+                population.add(newEntity);
+            }
         }
         
         int generation = 0;

@@ -7,6 +7,7 @@ import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.euchre.EuchreGame;
 import com.sawdust.engine.game.euchre.ai.Normal1;
 import com.sawdust.engine.game.go.GoAgent1;
+import com.sawdust.engine.game.go.GoGame;
 import com.sawdust.engine.game.poker.PokerGame;
 import com.sawdust.engine.game.poker.ai.Regular1;
 import com.sawdust.engine.game.stop.StopGame;
@@ -50,7 +51,7 @@ public class AI_Normal_Dual extends GenericPlayTest {
 	@Test(timeout = 10000)
 	public void testGo() throws Exception {
 		System.out.println("\n testGo() \n");
-		StopGame game = new StopGame(new GameConfig()) {
+		StopGame game = new GoGame(new GameConfig()) {
 			MockGameSession session;
 
 			@Override
