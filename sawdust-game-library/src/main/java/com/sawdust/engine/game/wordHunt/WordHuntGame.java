@@ -15,6 +15,9 @@ import com.sawdust.engine.common.game.Notification;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.GameType;
+import com.sawdust.engine.game.HttpInterface;
+import com.sawdust.engine.game.HttpResponse;
+import com.sawdust.engine.game.LanguageProvider;
 import com.sawdust.engine.game.PersistantTokenGame;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
@@ -684,12 +687,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
     
     public boolean verifyWord(String word)
     {
-        return getLanguage().verifyWord(word);
+        return getLanguage().verifyWord(word, httpInterface);
     }
     
+    private HttpInterface httpInterface = null;
     public String getUrl(String urlString)
     {
-        return getLanguage().getUrl(urlString);
+        return getHttpInterface().getURL(urlString).getContent();
     }
 
     public void setLanguage(LanguageProvider _language)
@@ -700,6 +704,16 @@ public abstract class WordHuntGame extends PersistantTokenGame
     public LanguageProvider getLanguage()
     {
         return _language;
+    }
+
+    public void setHttpInterface(HttpInterface httpInterface)
+    {
+        this.httpInterface = httpInterface;
+    }
+
+    public HttpInterface getHttpInterface()
+    {
+        return httpInterface;
     }
     
 }

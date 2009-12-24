@@ -16,23 +16,21 @@ import javax.jdo.Query;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
+import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class SDWebCache extends DataObj
 {
     private static final Logger LOG = Logger.getLogger(SDWebCache.class.getName());
 
-    public static SDWebCache getURL(final String urlString)
+    public static SDWebCache getURL(final String urlString) throws GameException
     {
         final PersistenceManager entityManager = DataStore.create();
         final Query newQuery = entityManager.newQuery(SDWebCache.class);
@@ -76,26 +74,31 @@ public class SDWebCache extends DataObj
                 if (!string.isEmpty() || (responseCode > 200))
                 {
                     queryResult = new SDWebCache(urlString, responseCode, string);
-                    System.out.println(String.format("Status code %d from http request %s", responseCode, urlString));
+                    LOG.info(String.format("Status code %d from http request %s", responseCode, urlString));
+                }
+                else if (responseCode > 200)
+                {
+                    queryResult = new SDWebCache(urlString, responseCode, String.format("ERROR%d", responseCode));
+                    LOG.info(String.format("HTTP ERROR: Status code %d from http request %s", responseCode, urlString));
+                }
+                else
+                {
+                    queryResult = new SDWebCache(urlString, 900, "FUBAR");
+                    LOG.warning(String.format("ERROR: Status code %d from http request %s", responseCode, urlString));
                 }
             }
             catch (final MalformedURLException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                queryResult = new SDWebCache(urlString, 901, "MalformedURLException");
+                LOG.warning(String.format("ERROR: MalformedURLException: %s", Util.getFullString(e)));
             }
             catch (final IOException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (final GameException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                queryResult = new SDWebCache(urlString, 901, "IOException");
+                LOG.info(String.format("ERROR: IOException: %s", Util.getFullString(e)));
             }
         }
-        return (queryResult.status == 200) ? queryResult : null;
+        return (queryResult.getStatus() == 200) ? queryResult : null;
     }
 
     public static SDWebCache load(final Key key)
@@ -121,7 +124,7 @@ public class SDWebCache extends DataObj
     private Text content = null;
 
     @Persistent
-    public int status = 0;
+    private int status = 0;
 
     @Persistent
     public Date time = new Date();
@@ -138,7 +141,7 @@ public class SDWebCache extends DataObj
     {
         super(KeyFactory.createKey(SDWebCache.class.getSimpleName(), String.format("%s\\%s", purl, DateFormat.getDateTimeInstance().format(new Date()))));
         url = purl;
-        status = pstatus;
+        setStatus(pstatus);
         setContent(pcontent);
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
@@ -159,5 +162,15 @@ public class SDWebCache extends DataObj
     public void setContent(final String pcontent)
     {
         content = new Text(pcontent);
+    }
+
+    public void setStatus(int status)
+    {
+        this.status = status;
+    }
+
+    public int getStatus()
+    {
+        return status;
     }
 }
