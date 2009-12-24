@@ -260,25 +260,6 @@ public abstract class WordHuntGame extends PersistantTokenGame
         return arrayList;
     }
 
-    private MarkovPredictor getMarkov(final int chainSize)
-    {
-        final int refreshMs = 1000 * 60 * 60;
-        final String uniqueTime = Integer.toString((int) (new Date().getTime() / refreshMs));
-        final MarkovPredictor mk = new MarkovPredictor(chainSize + 1, _language);
-        final ArrayList<String> trainingData = new ArrayList<String>();
-        trainingData.add(getUrl("http://news.google.com/#" + uniqueTime));
-        trainingData.add(getUrl("http://slashdot.org/#" + uniqueTime));
-        for (final String latestNews : trainingData)
-        {
-            if (null == latestNews)
-            {
-                continue;
-            }
-            mk.learn(latestNews.toUpperCase().replaceAll("</?[^>]+>", "").replaceAll("[^A-Z]", ""));
-        }
-        return mk;
-    }
-
     @Override
     public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
     {
@@ -590,7 +571,6 @@ public abstract class WordHuntGame extends PersistantTokenGame
         _roundEndTime = new Date(new Date().getTime() + (1000 * 60 * 5));
 
         clearTokens();
-        setMarkovChain(getMarkov(chainSize));
         tokenArray = new TokenArray(NUM_ROWS, NUM_COLS);
 
         final ArrayList<ArrayPosition> pos = randomPositions(tokenArray);
@@ -766,7 +746,31 @@ public abstract class WordHuntGame extends PersistantTokenGame
     {
         if(null != _markovChain) return _markovChain;
         _markovChain = getSession().getResource(MarkovPredictor.class);
+        if(null == _markovChain) 
+        {
+            setMarkovChain(createMarkovChain());
+        }
         return _markovChain;
+    }
+
+    private MarkovPredictor createMarkovChain()
+    {
+        final int refreshMs = 1000 * 60 * 60;
+        final String uniqueTime = Integer.toString((int) (new Date().getTime() / refreshMs));
+        final MarkovPredictor mk = new MarkovPredictor(chainSize + 1, _language);
+        final ArrayList<String> trainingData = new ArrayList<String>();
+        trainingData.add(getUrl("http://news.google.com/#" + uniqueTime));
+        trainingData.add(getUrl("http://slashdot.org/#" + uniqueTime));
+        mk.learn("THISISASAMPLEENGLISHSENTANCETOGETYOUSTARTED");
+        for (final String latestNews : trainingData)
+        {
+            if (null == latestNews)
+            {
+                continue;
+            }
+            mk.learn(latestNews.toUpperCase().replaceAll("</?[^>]+>", " ").replaceAll("[^A-Z]", " "));
+        }
+        return mk;
     }
 
 }

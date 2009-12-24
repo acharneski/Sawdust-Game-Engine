@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -36,8 +37,16 @@ public class SDWebCache extends DataObj
         final Query newQuery = entityManager.newQuery(SDWebCache.class);
         newQuery.setFilter("url == _url");
         newQuery.declareParameters("String _url");
-        newQuery.setUnique(true);
-        SDWebCache queryResult = (SDWebCache) newQuery.execute(urlString);
+        SDWebCache queryResult = null;
+        try
+        {
+            List execute = (List)newQuery.execute(urlString);
+            if(0 < execute.size()) queryResult = (SDWebCache) execute.get(0);
+        }
+        catch (Throwable e)
+        {
+            LOG.warning(Util.getFullString(e));
+        }
         if (null == queryResult)
         {
             try
