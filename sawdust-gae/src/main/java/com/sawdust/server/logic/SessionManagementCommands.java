@@ -3,10 +3,7 @@
  */
 package com.sawdust.server.logic;
 
-import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
-import com.sawdust.engine.game.euchre.Command;
-import com.sawdust.engine.game.euchre.EuchreGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;

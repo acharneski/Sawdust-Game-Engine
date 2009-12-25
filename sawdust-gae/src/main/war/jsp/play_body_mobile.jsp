@@ -9,9 +9,9 @@
 <%@ page import="com.sawdust.engine.common.game.Message"%>
 <%@ page import="com.sawdust.engine.common.game.ClientCommand"%>
 <%@ page import="java.util.*"%>
-<%@page import="com.sawdust.engine.service.debug.GameException"%>
-<%@page import="com.sawdust.server.datastore.entities.GameSession"%>
-<%@page import="java.net.URLEncoder"%>
+<%@ page import="com.sawdust.engine.service.debug.GameException"%>
+<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
+<%@ page import="java.net.URLEncoder"%>
 <%@ page import="com.sawdust.engine.game.Game" %>
 
 <jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
@@ -31,7 +31,7 @@
         Game game = s.getLatestState();
         if (null != game)
         {
-    gameDesc = game.getConfig().getGameDescription();
+            gameDesc = game.getConfig().getGameDescription();
         }
     }
 %>
@@ -61,7 +61,13 @@
 			}
 		}
 		%>
+        
+        <%=game.renderToHtml()%><br/>
+        
         <%
+        
+        
+        
      	// TODO: Re-enable Java 5 support in JSP
      	java.util.Iterator i = game.getMajorCommands().iterator();
      	while(i.hasNext()) {

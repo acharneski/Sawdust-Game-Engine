@@ -24,6 +24,7 @@ public class GameState implements Serializable
     public int timeOffset = 0;
     public int updateTime = 5;
     public int versionNumber = 0;
+    public String html = "";
 
     public GameState()
     {

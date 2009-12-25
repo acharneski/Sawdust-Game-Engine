@@ -36,6 +36,7 @@ import com.sawdust.engine.service.debug.GameException;
 
 public abstract class WordHuntGame extends PersistantTokenGame
 {
+    
     public enum GameState
     {
         Complete, Lobby, Playing
@@ -424,6 +425,38 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
         }
         return arrayList;
+    }
+
+
+    @Override
+    public String renderBasicHtml()
+    {
+        StringBuilder sb = new StringBuilder();
+        final HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
+        sb.append("<table>");
+        for (int i = 0; i < NUM_ROWS; i++)
+        {
+            sb.append("<tr>");
+            for (int j = 0; j < NUM_COLS; j++)
+            {
+                sb.append("<td>");
+                final IndexPosition position = new IndexPosition(i, j);
+                if (tokenIndexByPosition.containsKey(position))
+                {
+                    final BoardToken token = (BoardToken) tokenIndexByPosition.get(position);
+                    sb.append(token.letter);
+                }
+                else
+                {
+                    sb.append("?");
+                }
+                sb.append("</td>");
+            }
+            sb.append("</tr>");
+        }
+        sb.append("</table>");
+
+        return sb.toString();
     }
 
     private ArrayList<ArrayList<IndexPosition>> findWord(Participant p, String commandText)

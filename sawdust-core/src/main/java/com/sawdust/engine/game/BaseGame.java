@@ -386,6 +386,7 @@ public abstract class BaseGame implements Game
         returnValue.setHeight(_height);
         returnValue.setWidth(_width);
         returnValue.updateTime = updateTime;
+        returnValue.html = renderBasicHtml();
         returnValue.setNotification(_notification );
 
 //        for (final GameCommand s : _commands)
@@ -407,6 +408,11 @@ public abstract class BaseGame implements Game
             }
         }
         return returnValue;
+    }
+
+    public String renderBasicHtml()
+    {
+        return "";
     }
 
     @Override
