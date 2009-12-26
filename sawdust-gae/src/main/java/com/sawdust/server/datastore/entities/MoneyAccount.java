@@ -41,7 +41,7 @@ public class MoneyAccount extends DataObj implements com.sawdust.engine.service.
             newQuery.declareParameters("String param1");
             myData = (MoneyAccount) newQuery.execute(accountId);
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             myData = null;
         }

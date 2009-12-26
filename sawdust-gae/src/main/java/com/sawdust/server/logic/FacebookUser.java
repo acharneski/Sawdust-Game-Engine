@@ -34,29 +34,12 @@ import org.apache.xpath.jaxp.XPathFactoryImpl;
 
 public class FacebookUser
 {
-    public static class Site
+    protected static final FacebookSite FACEBOOK_SECRET[] = new FacebookSite[]
     {
-        public final String apiSecretKey;
-        public final String facebookSite;
-        public final String jspGatewaySite;
-        public final String subVersion;
-
-        public Site(final String papiSecretKey, final String pjspGatewaySite, final String pfacebookSite, final String v)
-        {
-            super();
-            apiSecretKey = papiSecretKey;
-            jspGatewaySite = pjspGatewaySite;
-            facebookSite = pfacebookSite;
-            subVersion = v;
-        }
-    }
-
-    protected static final FacebookUser.Site FACEBOOK_SECRET[] = new FacebookUser.Site[]
-    {
-            new Site("48ac90f59799edc11e332278b0f88488", "http://sawdust-games.appspot.com", "http://apps.facebook.com/sawdust-games", "facebook.null"),
-            new Site("ca6de3f83ee41af6e8e0204991b01400", "http://beta.latest.sawdust-games.appspot.com", "http://apps.facebook.com/sawdust-games-beta",
+            new FacebookSite("48ac90f59799edc11e332278b0f88488", "http://sawdust-games.appspot.com", "http://apps.facebook.com/sawdust-games", "facebook.null"),
+            new FacebookSite("ca6de3f83ee41af6e8e0204991b01400", "http://beta.latest.sawdust-games.appspot.com", "http://apps.facebook.com/sawdust-games-beta",
                     "facebook.beta")
-    };;
+    };
 
     private static final Logger LOG = Logger.getLogger(FacebookUser.class.getName());
 
@@ -71,19 +54,40 @@ public class FacebookUser
 
     public static String getFacebookId(final HttpServletRequest request)
     {
-        final Site facebookId = verifyFacebookSignature(request);
-        if (null == facebookId) return null;
+        final FacebookSite facebookId = verifyFacebookSignature(request);
+        if (null == facebookId) 
+        {
+            LOG.fine("Facebook id not found");
+            return null;
+        }
         final String userId = GetFbParam(request, "fb_sig_user");
-        if (null == userId) return null;
+        if (null == userId) 
+        {
+            LOG.fine("Facebook user id");
+            return null;
+        }
         final String id = "x" + userId + "@" + facebookId.subVersion;
 
-        final com.sawdust.server.datastore.entities.Account account = Account.Load(id);
+        final com.sawdust.server.datastore.entities.Account account = com.sawdust.server.datastore.entities.Account.Load(id);
         final String userName = getUserName(request, userId, facebookId.apiSecretKey);
         if ((null != userName) && !userName.equals(account.getName()))
         {
             account.setName(userName);
+            account.setLogic(new UserLogic()
+            {
+                @Override
+                public void publishActivity(String message)
+                {
+                    postUserActivity(request, userId, facebookId.apiSecretKey, message);
+                }
+            });
             account.setInterfacePreference(InterfacePreference.Facebook);
+            LOG.info(String.format("Creating new facebook login: %s (%s)", userName, userId));
             DataStore.Save();
+        }
+        else
+        {
+            LOG.fine(String.format("Using existing facebook login: %s (%s)", userName, userId));
         }
 
         return id;
@@ -111,7 +115,7 @@ public class FacebookUser
             }
             sigString.append(sig);
         }
-        for (final Site secret : FACEBOOK_SECRET)
+        for (final FacebookSite secret : FACEBOOK_SECRET)
         {
             if (sigString.length() > 0)
             {
@@ -143,8 +147,27 @@ public class FacebookUser
         return fb;
     }
 
+    protected static String postUserActivity(HttpServletRequest request, String userId, String apiSecretKey, String message)
+    {
+        LOG.fine("Posting activity for facebook user: " + userId);
+        final TinyFBClient fb = getProxy(request, apiSecretKey);
+        if (null == fb) throw new SawdustSystemError("Cannot connect to facebook");
+        fb.setFormat("XML");
+
+        final TreeMap<String,String> tm = new TreeMap<String, String>();
+        tm.put("uid", userId);
+        tm.put("message", message);
+
+        final ClientResponse response = fb.getResponse("stream.publish", tm);
+        final Document doc = parseResponse(response);
+        final String value = getXPath(doc, "//fb:users_getInfo_response/fb:user/fb:name/text()");
+        LOG.info("User Name: " + value);
+        return value;
+    }
+
     public static String getUserName(final HttpServletRequest request, final String uid, final String facebookId)
     {
+        LOG.fine("Requesting user id from facebook for user: " + uid);
         final TinyFBClient fb = getProxy(request, facebookId);
         if (null == fb) throw new SawdustSystemError("Cannot connect to facebook");
         fb.setFormat("XML");
@@ -163,9 +186,7 @@ public class FacebookUser
     private static String getXPath(final Document doc, final String path)
     {
         if (null == doc) return null;
-        // XPathFactory xpathFactory = new javax.xml.xpath.XPathFactory();
         final XPathFactory xpathFactory = new org.apache.xpath.jaxp.XPathFactoryImpl();
-        // XPathFactory xpathFactory = XPathFactory.newInstance();
         final XPath xpath = xpathFactory.newXPath();
         xpath.setNamespaceContext(new NamespaceContext()
         {
@@ -208,22 +229,22 @@ public class FacebookUser
         try
         {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-            factory.setNamespaceAware(true); // never forget this!
+            factory.setNamespaceAware(true);
             builder = factory.newDocumentBuilder();
             doc = builder.parse(response.getEntityInputStream());
+            LOG.finer("Facebook API Response: " + doc.toString());
         }
         catch (final ParserConfigurationException e)
         {
-            e.printStackTrace();
+            LOG.warning(Util.getFullString(e));
         }
         catch (final SAXException e)
         {
-            e.printStackTrace();
+            LOG.warning(Util.getFullString(e));
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            LOG.warning(Util.getFullString(e));
         }
         return doc;
     }
@@ -237,17 +258,18 @@ public class FacebookUser
             final String key = (String) e.nextElement();
             String values[];
             values = request.getParameterValues(key);
-            final boolean overescapedSign = key.startsWith("amp;fb_sig_"); // Facebook overescape bug
-            final boolean sign = key.startsWith("fb_sig_");
-            if (sign || overescapedSign)
+            for(String value : values)
             {
-                if (1 != values.length)
+                String longPrefix = "amp;fb_sig_";
+                final boolean overescapedSign = key.startsWith(longPrefix); // Facebook overescape bug
+                String prefix = "fb_sig_";
+                final boolean sign = key.startsWith(prefix);
+                if (sign || overescapedSign)
                 {
-                    continue;
-                }
-                else
-                {
-                    sigs.add(key.substring(overescapedSign ? 11 : 7) + "=" + values[0]);
+                    String fbKey = key.substring(overescapedSign ? longPrefix.length() : prefix.length());
+                    LOG.finer(String.format("Facebook Param: %s = %s",fbKey,value));
+                    sigs.add(fbKey + "=" + value);
+                    break;
                 }
             }
         }
@@ -255,7 +277,7 @@ public class FacebookUser
         return sigs;
     }
 
-    public static Site verifyFacebookSignature(final HttpServletRequest request)
+    public static FacebookSite verifyFacebookSignature(final HttpServletRequest request)
     {
         final String signature = GetFbParam(request, "fb_sig");
         if (null == signature)
@@ -263,10 +285,14 @@ public class FacebookUser
         	LOG.fine("Facebook signature field not found");
             return null;
         }
-        for (final Site secret : FACEBOOK_SECRET)
+        for (final FacebookSite secret : FACEBOOK_SECRET)
         {
             final String md5 = getCalculatedSignature(request, secret.apiSecretKey);
-            if ((null != md5) && md5.equals(signature)) return secret;
+            if ((null != md5) && md5.equals(signature)) 
+            {
+                LOG.fine("Facebook verified with signature: " + secret.toString().substring(0, 3));
+                return secret;
+            }
         }
         LOG.warning("Facebook authentication failed:\n" + getParamsForTrace(request));
         return null;

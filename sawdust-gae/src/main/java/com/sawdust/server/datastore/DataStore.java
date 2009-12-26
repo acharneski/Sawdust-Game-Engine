@@ -282,7 +282,7 @@ public final class DataStore
                 {
                     obj = entityManager.getObjectById(c, k);
                 }
-                catch (Exception e)
+                catch (Throwable e)
                 {
                     LOG.warning(Util.getFullString(e));
                     LOG.fine("Removing object: " + k.toString());

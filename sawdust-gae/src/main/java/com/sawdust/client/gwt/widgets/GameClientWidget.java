@@ -284,7 +284,7 @@ public class GameClientWidget
                 {
                     timer.schedule(key);
                 }
-                catch (final Exception e)
+                catch (final Throwable e)
                 {
                     e.printStackTrace(System.err);
                 }

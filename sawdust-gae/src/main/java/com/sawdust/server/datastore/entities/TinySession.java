@@ -25,10 +25,10 @@ public class TinySession extends DataObj
     public static TinySession load(final GameSession session)
     {
         final TinySession returnValue = new TinySession(session);
-        final String md5 = Util.md5base64(returnValue.sessionId);
-        for (int i = 0; i < md5.length() - TINYLENGTH; i++)
+        final String md5 = Util.md5hex(returnValue.sessionId);
+        for (int i = 3; i < md5.length(); i++)
         {
-            returnValue.tinyId = md5.substring(i, TINYLENGTH);
+            returnValue.tinyId = md5.substring(0, i);
             final TinySession existing = load(returnValue.tinyId);
             if (null != existing)
             {
@@ -60,7 +60,7 @@ public class TinySession extends DataObj
             newQuery.declareParameters("String tinyIdParam");
             myData = (TinySession) newQuery.execute(tinyId);
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             myData = null;
         }

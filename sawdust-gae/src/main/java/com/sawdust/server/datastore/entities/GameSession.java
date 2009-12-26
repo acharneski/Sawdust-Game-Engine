@@ -144,9 +144,18 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
    
    public GameSession(final Account paccount) throws GameException
    {
-      super(KeyFactory.createKey(GameSession.class.getSimpleName(), (paccount.getKey() + "%" + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()))));
+      super(getKey(paccount));
       if (this != DataStore.Add(this)) throw new AssertionError();
    }
+
+    private static Key getKey(final Account paccount)
+    {
+        String timeString = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG).format(new Date());
+        String accountString = paccount.getKey().toString();
+        String randomNumber = Integer.toString((int) (Math.random()*50));
+        String keyString = String.format("User=%s<br/>Time=%s<br/>Rand=%s",accountString,timeString,randomNumber);
+        return KeyFactory.createKey(GameSession.class.getSimpleName(), keyString);
+    }
    
    public void addPlayer(final Participant p) throws GameException
    {

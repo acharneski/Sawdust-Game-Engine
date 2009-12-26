@@ -14,7 +14,6 @@ import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.service.Util;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
-import com.sawdust.server.logic.FacebookUser.Site;
 
 public class User implements Serializable
 {
@@ -31,6 +30,7 @@ public class User implements Serializable
 
     public static void clearCookieLogin(final HttpServletResponse response)
     {
+        LOG.fine(String.format("Sending 'clear cookie' directives to client"));
         Util.clearCookie(response, "sdge-login-id");
         Util.clearCookie(response, "sdge-login-time");
         Util.clearCookie(response, "sdge-login-signature");
@@ -66,6 +66,7 @@ public class User implements Serializable
                 if (c.getName().equals(cookieName))
                 {
                     cookieValue = c.getValue();
+                    LOG.finer(String.format("Found cookie %s = %s", cookieName, cookieValue));
                 }
             }
         }
@@ -94,6 +95,10 @@ public class User implements Serializable
                 LOG.info("Expired Token: " + cookieValue_Expire);
                 return null;
             }
+            else
+            {
+                LOG.finer(String.format("Expired cookie is not expiered: %s", cookieValue_Expire));
+            }
         }
         catch (final NumberFormatException e)
         {
@@ -110,7 +115,12 @@ public class User implements Serializable
         if (expectedSignature.equals(cookieValue_Signature))
         {
             LOG.fine("Signed Token: " + cookieValue_Signature);
-            id = Util.unstring(cookieValue_ID, UserToken.class);
+            id = Util.unstring(cookieValue_ID);
+            if(null == id) 
+            {
+                LOG.warning("Unserializable Token: " + cookieValue_ID);
+                return null;
+            }
             return id.getId();
         }
         else
@@ -178,11 +188,12 @@ public class User implements Serializable
         {
             try
             {
+                LOG.finer(String.format("Attempting google authorization..."));
                 user = getUser_Google(request, accessData, user);
             }
-            catch (final Exception e)
+            catch (final Throwable e)
             {
-            	LOG.fine(Util.getFullString(e));
+            	LOG.warning(Util.getFullString(e));
             }
         }
 
@@ -190,11 +201,12 @@ public class User implements Serializable
         {
             try
             {
+                LOG.finer(String.format("Attempting facebook authorization..."));
                 user = getUser_Facebook(request, user);
             }
-            catch (final Exception e)
+            catch (final Throwable e)
             {
-            	LOG.fine(Util.getFullString(e));
+            	LOG.warning(Util.getFullString(e));
             }
         }
 
@@ -202,16 +214,18 @@ public class User implements Serializable
         {
             try
             {
+                LOG.finer(String.format("Attempting signed-cookie authorization..."));
                 user = getUser_Cookied(request, user);
             }
-            catch (final Exception e)
+            catch (final Throwable e)
             {
-            	LOG.fine(Util.getFullString(e));
+            	LOG.warning(Util.getFullString(e));
             }
         }
 
         if (null == user)
         {
+            LOG.finer(String.format("Using guest authorization..."));
             final String email = getGuestId(request, response);
             if (null == email) 
             {
@@ -219,6 +233,7 @@ public class User implements Serializable
             }
             user = new com.sawdust.server.logic.User(UserTypes.Guest, email, null);
         }
+        LOG.fine(String.format("User is %s", user.getId()));
         if (user.getUserID().endsWith("facebook.null"))
         {
             user.setSite("http://apps.facebook.com/sawdust-games/");
@@ -246,9 +261,10 @@ public class User implements Serializable
         final String email = FacebookUser.getFacebookId(request);
         if (null != email)
         {
-            final Site facebookId = FacebookUser.verifyFacebookSignature(request);
             user = new com.sawdust.server.logic.User(UserTypes.Member, email, null);
+            final FacebookSite facebookId = FacebookUser.verifyFacebookSignature(request);
             user.setSite(facebookId.facebookSite);
+            LOG.fine("User authenticated via Facebook");
         }
         return user;
     }
@@ -261,6 +277,7 @@ public class User implements Serializable
         {
             if (userService.isUserAdmin())
             {
+                LOG.fine(String.format("User is google-authenticated administrator: %s", email));
                 final Account load = Account.Load(email);
                 load.setAdmin(true);
                 String userOverride = request.getParameter("user");
@@ -270,6 +287,7 @@ public class User implements Serializable
                 }
                 if ((null != userOverride) && !userOverride.isEmpty())
                 {
+                    LOG.fine(String.format("User override: %s (from %s)", userOverride, user));
                     user = new com.sawdust.server.logic.User(UserTypes.Admin, userOverride, null);
                 }
                 else
@@ -279,6 +297,7 @@ public class User implements Serializable
             }
             else
             {
+                LOG.fine(String.format("User is google-authenticated: %s", email));
                 user = new com.sawdust.server.logic.User(UserTypes.Member, email, userService.createLogoutURL("/"));
             }
         }

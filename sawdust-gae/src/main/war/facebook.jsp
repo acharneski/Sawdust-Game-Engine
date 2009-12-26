@@ -1,10 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.logic.User"%>
 <%@ page import="com.sawdust.server.logic.FacebookUser"%>
+<%@ page import="com.sawdust.server.logic.FacebookSite"%>
+<%@ page import="com.sawdust.server.logic.User.UserTypes"%>
 <%@ page import="java.net.URLEncoder"%>
+
 <%@ page errorPage="/error.jsp"%>
 
 <%
@@ -17,8 +21,11 @@ if(request.getPathInfo().startsWith("/f/"))
 {
 	isGameUrl = true;
 }
-FacebookUser.Site facebookSite = FacebookUser.verifyFacebookSignature(request);
 %>
+
+<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:setProperty name="user" property="request" value="<%=request%>"/>
+<jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 
 <c:choose>
@@ -50,6 +57,9 @@ FacebookUser.Site facebookSite = FacebookUser.verifyFacebookSignature(request);
 
 </c:choose>
 
+<%
+    FacebookSite facebookSite = FacebookUser.verifyFacebookSignature(request);
+%>
 <fb:iframe src="<%=JspLib.getIFrameUrl(request, facebookSite)%>" width="760px" height="2600px" style="overflow: hidden;">
 <p>Your browser does not support iframes.</p>
 </fb:iframe>

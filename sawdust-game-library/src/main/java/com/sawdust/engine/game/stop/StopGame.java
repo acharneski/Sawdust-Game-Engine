@@ -362,7 +362,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    {
       if (2 > _mplayerManager.getPlayerManager().getPlayerCount())
       {
-         throw new GameLogicException();
+         throw new GameLogicException("Two players are required in order to play a game");
       }
       
       final GameSession session = getSession();
@@ -594,5 +594,51 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    public GamePhase getCurrentState()
    {
       return _currentState;
+   }
+
+   @Override
+   public String renderBasicHtml()
+   {
+       StringBuilder sb = new StringBuilder();
+       final HashMap<IndexPosition, Token> tokenIndexByPosition = getTokenIndexByPosition();
+       sb.append("<table>");
+       for (int i = 0; i < NUM_ROWS; i++)
+       {
+           sb.append("<tr>");
+           for (int j = 0; j < NUM_ROWS; j++)
+           {
+               sb.append("<td>");
+               final IndexPosition position = new IndexPosition(i, j);
+               BoardData boardData = getBoardData(i, j);
+               if (null == boardData)
+               {
+                   if(null == boardData || -1 == boardData.value)
+                   {
+                       final String cmd = String.format("Move %d, %d", i, j);
+                       sb.append(String.format("<command txt=\"%s\">.</command>", cmd));
+                   }
+                   else if(0 == boardData.value)
+                   {
+                       sb.append("X");
+                   }
+                   else if(1 == boardData.value)
+                   {
+                       sb.append("O");
+                   }
+                   else 
+                   {
+                       sb.append("?");
+                   }
+               }
+               else
+               {
+                   sb.append("?");
+               }
+               sb.append("</td>");
+           }
+           sb.append("</tr>");
+       }
+       sb.append("</table>");
+       return sb.toString();
    }
 }

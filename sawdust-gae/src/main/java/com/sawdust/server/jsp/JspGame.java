@@ -74,7 +74,7 @@ public class JspGame implements Serializable
     {
         final String token1 = "<command txt=\"";
         final String token2 = "\">";
-        final String token3 = "</CMD>";
+        final String token3 = "</command>";
         int index1 = sb.indexOf(token1, start );
         if(0 > index1) return index1;
         int index2 = sb.indexOf(token2, index1);

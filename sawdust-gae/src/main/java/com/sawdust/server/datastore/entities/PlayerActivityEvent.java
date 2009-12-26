@@ -69,7 +69,7 @@ public class PlayerActivityEvent extends DataObj
             final PlayerActivityEvent returnValue = DataStore.Get(PlayerActivityEvent.class, key);
             return returnValue;
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             e.printStackTrace(System.out);
             return null;

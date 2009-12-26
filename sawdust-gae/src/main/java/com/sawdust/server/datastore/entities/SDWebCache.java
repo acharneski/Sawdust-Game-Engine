@@ -117,7 +117,7 @@ public class SDWebCache extends DataObj
             final SDWebCache returnValue = DataStore.Get(SDWebCache.class, key);
             return returnValue;
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             e.printStackTrace(System.out);
             return null;

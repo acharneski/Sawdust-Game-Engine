@@ -25,7 +25,7 @@ import com.sawdust.server.datastore.entities.GameSession;
 import com.sawdust.server.datastore.entities.TinySession;
 import com.sawdust.server.datastore.entities.GameListing.InviteSearchParam;
 import com.sawdust.server.logic.FacebookUser;
-import com.sawdust.server.logic.FacebookUser.Site;
+import com.sawdust.server.logic.FacebookSite;
 
 public class JspLib
 {
@@ -139,11 +139,10 @@ public class JspLib
         }
     }
 
-    public static String getIFrameUrl(final HttpServletRequest request, final Site s)
+    public static String getIFrameUrl(final HttpServletRequest request, final FacebookSite s)
     {
         final String iframeUrl = s.jspGatewaySite + "/login" + getRedirectUrl(request);
-        // iframeUrl += (iframeUrl.contains("?")?"&":"?") + "a=b";
-        // String iframeUrl = "login" + getRedirectUrl(request);
+        LOG.fine(String.format("Crafting iframe url for site %s: %s",s.toString(),iframeUrl));
         return iframeUrl;
 
     }
@@ -210,61 +209,6 @@ public class JspLib
 
     private JspLib()
     {
-    }
-
-    private void dumpFacebook(final StringBuilder out, final HttpServletRequest request)
-    {
-        final Site facebookId = FacebookUser.verifyFacebookSignature(request);
-        out.append(String.format("<h2>Facebook</h2>"));
-
-        final String user = FacebookUser.getFacebookId(request);
-        if (null != user)
-        {
-            out.append(String.format("User ID: %s<br/>", user));
-        }
-        else
-        {
-            out.append(String.format("Error: No User ID<br/>"));
-        }
-
-        final String sigString = FacebookUser.getParamsToSign(request);
-        out.append(String.format("Cannonical Signature Input: <input type=\"text\" value=\"" + sigString.toString() + "\" /><br/>"));
-
-        final String md5 = FacebookUser.getCalculatedSignature(request, facebookId.apiSecretKey);
-        if (null != md5)
-        {
-            out.append(String.format("Calculated Signature: %s<br/>", md5));
-        }
-        else
-        {
-            out.append(String.format("Error: No signature could be calculated<br/>"));
-        }
-
-        if (null != facebookId)
-        {
-            out.append(String.format("Valid Request<br/>"));
-        }
-        else
-        {
-            out.append(String.format("Invalid Request<br/>"));
-        }
-    }
-
-    public final String dumpRequest(final HttpServletRequest _request)
-    {
-        final StringBuilder out = new StringBuilder();
-
-        out.append("<h1>");
-        out.append("Dump Form  Servlet");
-        out.append("</h1>");
-
-        dump_server_variables(out, _request);
-        dump_headers(out, _request);
-        dumpFormData(out, _request);
-        dumpCookies(out, _request);
-        dumpFacebook(out, _request);
-
-        return out.toString();
     }
 
     public com.sawdust.engine.service.data.Account getAccount(final JspUser accessData)

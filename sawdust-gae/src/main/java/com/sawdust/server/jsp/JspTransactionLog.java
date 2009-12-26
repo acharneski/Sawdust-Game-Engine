@@ -48,8 +48,9 @@ public class JspTransactionLog implements Serializable
                     KeyFactory.stringToKey(accountId);
                     _account = MoneyAccount.Load(accountId, GameSession.load(accountId, null).getKey());
                 }
-                catch (Exception e)
+                catch (Throwable e)
                 {
+                    // TODO Log something
                 }
             }
             if (null == _account)
@@ -58,8 +59,9 @@ public class JspTransactionLog implements Serializable
                 {
                     _account = MoneyAccount.Load(accountId, Account.Load(accountId).getKey());
                 }
-                catch (Exception e)
+                catch (Throwable e)
                 {
+                    // TODO Log something
                 }
             }
             // DataStore.Save();

@@ -80,6 +80,89 @@ public class Util
         return Integer.toHexString(h);
     }
 
+    public static byte[] unhexString(final String stringData)
+    {
+        assert(0 == (stringData.length() % 2));
+        byte[] buffer = new byte[(int)(stringData.length()/2)];
+        char[] charArray = stringData.toCharArray();
+        for(int i=0;i<buffer.length;i++)
+        {
+            char byteOne = charArray[i*2];
+            char byteTwo = charArray[i*2+1];
+            buffer[i] = (byte) (hexCharToInt(byteOne)*16+hexCharToInt(byteTwo));
+        }
+        return buffer;
+    }
+
+    private static byte hexCharToInt(char c)
+    {
+        if(c == '0')
+        {
+            return 0;
+        }
+        else if(c == '1')
+        {
+            return 1;
+        }
+        else if(c == '2')
+        {
+            return 2;
+        }
+        else if(c == '3')
+        {
+            return 3;
+        }
+        else if(c == '4')
+        {
+            return 4;
+        }
+        else if(c == '5')
+        {
+            return 5;
+        }
+        else if(c == '6')
+        {
+            return 6;
+        }
+        else if(c == '7')
+        {
+            return 7;
+        }
+        else if(c == '8')
+        {
+            return 8;
+        }
+        else if(c == '9')
+        {
+            return 9;
+        }
+        else if(c == 'A' || c == 'a')
+        {
+            return 10;
+        }
+        else if(c == 'B' || c == 'b')
+        {
+            return 11;
+        }
+        else if(c == 'C' || c == 'c')
+        {
+            return 12;
+        }
+        else if(c == 'D' || c == 'd')
+        {
+            return 13;
+        }
+        else if(c == 'E' || c == 'e')
+        {
+            return 14;
+        }
+        else if(c == 'F' || c == 'f')
+        {
+            return 15;
+        }
+        throw new NumberFormatException("Unrecognized Symbol: " + c);
+    }
+
     public static String hexString(final byte[] bytes)
     {
         final StringBuilder sb = new StringBuilder();
@@ -88,29 +171,6 @@ public class Util
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
-    }
-
-    public static String md5(final String id)
-    {
-        if (null == id) return null;
-        if (id.isEmpty()) return null;
-        String expectedSignature = null;
-        try
-        {
-            final byte[] bytes = id.getBytes("UTF-8");
-            final MessageDigest md = MessageDigest.getInstance("MD5");
-            final byte[] digest = md.digest(bytes);
-            expectedSignature = hexString(digest);
-        }
-        catch (final NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
-        catch (final UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
-        return expectedSignature;
     }
 
     public static <T> T randomMember(final T[] values)
@@ -122,49 +182,14 @@ public class Util
 
     public static String string(final Serializable obj)
     {
-        try
-        {
-            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            OutputStream out = byteArrayOutputStream;
-
-            out = new DeflaterOutputStream(out, new Deflater(1, true), 1);
-
-            final ObjectOutputStream objOut = new ObjectOutputStream(out);
-            objOut.writeObject(obj);
-            objOut.close();
-            final byte[] byteArray = byteArrayOutputStream.toByteArray();
-            return Base64.encodeBase64(byteArray).toString();
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-            // throw new RuntimeException(e);
-            return null;
-        }
+        final byte[] byteArray = Util.toBytes(obj);
+        return hexString(byteArray);
     }
 
-    public static <T extends Serializable> T unstring(final String s, final Class<T> c)
+    public static <T extends Serializable> T unstring(final String s)
     {
-        try
-        {
-            byte[] decode;
-             decode = Base64.decodeBase64(s.getBytes());
-            InputStream in = new ByteArrayInputStream(decode);
-
-            in = new InflaterInputStream(in, new Inflater(true));
-
-            final ObjectInputStream inObj = new ObjectInputStream(in);
-            final T copiedObj = (T) inObj.readObject();
-            return copiedObj;
-        }
-        catch (final IOException e)
-        {
-            return null;
-        }
-        catch (final ClassNotFoundException e)
-        {
-            return null;
-        }
+        final T copiedObj = (T) Util.fromBytes(unhexString(s));
+        return copiedObj;
     }
 
     public static <T extends Serializable> byte[] toBytes(final T obj)
@@ -184,7 +209,7 @@ public class Util
                 z.flush();
                 LOG.fine(String.format("Serialize object: %s; %d bytes",obj.getClass().getName(), outBuffer.size()));
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
                 LOG.warning(e.toString());
             }
@@ -198,16 +223,16 @@ public class Util
         return data;
     }
 
-    public static Object fromBytes(final byte[] data)
+    public static Serializable fromBytes(final byte[] data)
     {
-        Object copiedObj = null;
+        Serializable copiedObj = null;
         try
         {
             final ByteArrayInputStream inBuffer = new ByteArrayInputStream(data);
             ZipInputStream z = new ZipInputStream(inBuffer);
             z.getNextEntry();
             final ObjectInputStream in = new ObjectInputStream(z);
-            copiedObj = (Object) in.readObject();
+            copiedObj = (Serializable) in.readObject();
             LOG.fine(String.format("Deserialize object: %s; %d bytes",copiedObj.getClass().getName(), data.length));
         }
         catch (final IOException e)
@@ -234,22 +259,67 @@ public class Util
         if (null == id) return null;
         if (id.isEmpty()) return null;
         String expectedSignature = null;
+        byte[] digest;
         try
         {
-            final byte[] bytes = id.getBytes("UTF-8");
-            final MessageDigest md = MessageDigest.getInstance("MD5");
-            final byte[] digest = md.digest(bytes);
-            expectedSignature = Base64.encodeBase64(digest).toString();
-        }
-        catch (final NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
+            digest = md5(id.getBytes("UTF-8"));
         }
         catch (final UnsupportedEncodingException e)
         {
-            e.printStackTrace();
+            LOG.severe(Util.getFullString(e));
+            throw new RuntimeException(e);
+        }
+        expectedSignature = Base64.encodeBase64(digest).toString();
+        return expectedSignature;
+    }
+
+    public static String md5(final String id)
+    {
+        if (null == id) return null;
+        if (id.isEmpty()) return null;
+        String expectedSignature = null;
+        try
+        {
+            final byte[] digest = md5(id.getBytes("UTF-8"));
+            expectedSignature = hexString(digest);
+        }
+        catch (final UnsupportedEncodingException e)
+        {
+            LOG.severe(Util.getFullString(e));
+            throw new RuntimeException(e);
         }
         return expectedSignature;
+    }
+
+    public static byte[] md5(final byte bytes[])
+    {
+        MessageDigest md;
+        try
+        {
+            md = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            LOG.severe(Util.getFullString(e));
+            throw new RuntimeException(e);
+        }
+        final byte[] digest = md.digest(bytes);
+        return digest;
+    }
+
+    public static String md5hex(String sessionId)
+    {
+        byte[] bytes;
+        try
+        {
+            bytes = sessionId.getBytes("UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            LOG.severe(Util.getFullString(e));
+            throw new RuntimeException(e);
+        }
+        return hexString(md5(bytes));
     }
 
     public static String getFullString(Throwable e)

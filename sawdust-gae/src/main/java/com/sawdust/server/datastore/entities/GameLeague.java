@@ -32,7 +32,7 @@ public class GameLeague extends DataObj
             final GameLeague returnValue = DataStore.Get(GameLeague.class, key);
             return returnValue;
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             e.printStackTrace(System.out);
             return null;
@@ -51,7 +51,7 @@ public class GameLeague extends DataObj
             newQuery.declareParameters("String pName");
             myData = (GameLeague) newQuery.execute(pName);
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             myData = null;
         }

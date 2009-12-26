@@ -13,6 +13,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.persistence.Id;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.Bank;
@@ -24,6 +25,7 @@ import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.DataObj;
+import com.sawdust.server.logic.UserLogic;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class Account extends DataObj implements com.sawdust.engine.service.data.Account
@@ -32,6 +34,9 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     {
         Facebook, Mobile, Standard
     }
+
+    @Persistent
+    private Blob logicProvider;
 
     private static final Logger LOG = Logger.getLogger(Account.class.getName());
 
@@ -94,7 +99,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
                 newQuery.declareParameters("String emailParam");
                 myData = (Account) newQuery.execute(userId);
             }
-            catch (final Exception e)
+            catch (final Throwable e)
             {
                 LOG.warning(Util.getFullString(e));
                 myData = null;
@@ -364,6 +369,22 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     
     void logActivity(ActivityEvent event)
     {
+        if(displayName.toLowerCase().contains("andrew charneski"))
+        {
+            LOG.warning(String.format("Publishing Facebook event: %s", event.event));
+            getLogic().publishActivity(event.event);
+        }
         new ActivityEventRecord(getAccount(),event);
+    }
+
+    public void setLogic(UserLogic userLogic)
+    {
+        this.logicProvider = new Blob(Util.toBytes(userLogic));
+    }
+
+    public <T extends UserLogic> T getLogic()
+    {
+        T fromBytes = (T) Util.fromBytes(this.logicProvider.getBytes());
+        return fromBytes;
     }
 }

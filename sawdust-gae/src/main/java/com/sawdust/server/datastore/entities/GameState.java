@@ -69,7 +69,7 @@ public class GameState extends DataObj
             final GameState returnValue = DataStore.Get(GameState.class, key);
             return returnValue;
         }
-        catch (final Exception e)
+        catch (final Throwable e)
         {
             e.printStackTrace(System.out);
             return null;
