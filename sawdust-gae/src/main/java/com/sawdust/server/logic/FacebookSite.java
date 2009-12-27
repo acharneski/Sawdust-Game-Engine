@@ -3,8 +3,13 @@
  */
 package com.sawdust.server.logic;
 
-public class FacebookSite
+import java.io.Serializable;
+
+public class FacebookSite implements Serializable
 {
+    protected FacebookSite() {
+        
+    }
     
     @Override
     public String toString()
@@ -12,10 +17,10 @@ public class FacebookSite
         return "Site [facebookSite=" + facebookSite + ", jspGatewaySite=" + jspGatewaySite + ", subVersion=" + subVersion + "]";
     }
 
-    public final String apiSecretKey;
-    public final String facebookSite;
-    public final String jspGatewaySite;
-    public final String subVersion;
+    public String apiSecretKey;
+    public String facebookSite;
+    public String jspGatewaySite;
+    public String subVersion;
 
     public FacebookSite(final String papiSecretKey, final String pjspGatewaySite, final String pfacebookSite, final String v)
     {

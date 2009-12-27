@@ -371,8 +371,9 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     {
         if(displayName.toLowerCase().contains("andrew charneski"))
         {
-            LOG.warning(String.format("Publishing Facebook event: %s", event.event));
-            getLogic().publishActivity(event.event);
+            LOG.fine(String.format("Publishing Facebook event: %s", event.event));
+            UserLogic logic = getLogic();
+            if(null != logic) logic.publishActivity(event.event);
         }
         new ActivityEventRecord(getAccount(),event);
     }
@@ -384,7 +385,16 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
 
     public <T extends UserLogic> T getLogic()
     {
-        T fromBytes = (T) Util.fromBytes(this.logicProvider.getBytes());
+        T fromBytes = null;
+        try
+        {
+            fromBytes = (T) Util.fromBytes(this.logicProvider.getBytes());
+            LOG.fine(String.format("Get UserLogic: %d bytes: %s", this.logicProvider.getBytes().length, fromBytes.toString()));
+        }
+        catch (Exception e)
+        {
+            LOG.warning(String.format("Get UserLogic: %s", Util.getFullString(e)));
+        }
         return fromBytes;
     }
 }

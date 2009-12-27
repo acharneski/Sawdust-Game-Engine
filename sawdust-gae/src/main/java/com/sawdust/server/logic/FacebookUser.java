@@ -1,6 +1,9 @@
 package com.sawdust.server.logic;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -70,25 +73,26 @@ public class FacebookUser
 
         final com.sawdust.server.datastore.entities.Account account = com.sawdust.server.datastore.entities.Account.Load(id);
         final String userName = getUserName(request, userId, facebookId.apiSecretKey);
-        if ((null != userName) && !userName.equals(account.getName()))
+
+        account.setName(userName);
+        account.setLogic(new UserLogic()
         {
-            account.setName(userName);
-            account.setLogic(new UserLogic()
+            
+            @Override
+            public String toString()
             {
-                @Override
-                public void publishActivity(String message)
-                {
-                    postUserActivity(request, userId, facebookId.apiSecretKey, message);
-                }
-            });
-            account.setInterfacePreference(InterfacePreference.Facebook);
-            LOG.info(String.format("Creating new facebook login: %s (%s)", userName, userId));
-            DataStore.Save();
-        }
-        else
-        {
-            LOG.fine(String.format("Using existing facebook login: %s (%s)", userName, userId));
-        }
+                return "Facebook#"+userId;
+            }
+            
+            @Override
+            public void publishActivity(String message)
+            {
+                postUserActivity(request, userId, facebookId.apiSecretKey, message);
+            }
+        });
+        account.setInterfacePreference(InterfacePreference.Facebook);
+        LOG.info(String.format("Creating new facebook login: %s (%s)", userName, userId));
+        DataStore.Save();
 
         return id;
     }
@@ -151,7 +155,10 @@ public class FacebookUser
     {
         LOG.fine("Posting activity for facebook user: " + userId);
         final TinyFBClient fb = getProxy(request, apiSecretKey);
-        if (null == fb) throw new SawdustSystemError("Cannot connect to facebook");
+        if (null == fb) 
+        {
+            throw new SawdustSystemError("Cannot connect to facebook");
+        }
         fb.setFormat("XML");
 
         final TreeMap<String,String> tm = new TreeMap<String, String>();
@@ -231,8 +238,9 @@ public class FacebookUser
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             builder = factory.newDocumentBuilder();
-            doc = builder.parse(response.getEntityInputStream());
-            LOG.finer("Facebook API Response: " + doc.toString());
+            InputStream entityInputStream = response.getEntityInputStream();
+            doc = builder.parse(entityInputStream);
+            LOG.info("Facebook API Response: " + documentString(doc));
         }
         catch (final ParserConfigurationException e)
         {
@@ -247,6 +255,11 @@ public class FacebookUser
             LOG.warning(Util.getFullString(e));
         }
         return doc;
+    }
+
+    private static String documentString(Document doc)
+    {
+        return doc.getDocumentElement().getTextContent();
     }
 
     private static ArrayList<String> sigParams(final HttpServletRequest request)
