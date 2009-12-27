@@ -1,0 +1,10 @@
+<!-- Indices written at Sun, 27 Dec 2009 13:30:52 PST -->
+
+<datastore-indexes>
+
+    <!-- Used 50 times in query history -->
+    <datastore-index kind="SessionMember" ancestor="true" source="auto">
+        <property name="members_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

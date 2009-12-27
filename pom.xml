@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sawdust</groupId>
 	<artifactId>sawdust-game-engine</artifactId>
@@ -68,10 +68,11 @@
 		<url>http://sawdust-games.appspot.com</url>
 	</organization>
 	<modules>
-		<module>sawdust-core</module>
-		<module>sawdust-game-library</module>
-		<module>sawdust-gae</module>
-	</modules>
+        <module>sawdust-core</module>
+        <module>sawdust-game-library</module>
+        <module>sawdust-gae</module>
+        <module>sawdust-gwt</module>
+  </modules>
 	<reporting>
 		<plugins>
 			<plugin>
