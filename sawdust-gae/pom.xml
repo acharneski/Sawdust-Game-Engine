@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sawdust</groupId>
 	<artifactId>sawdust-gae</artifactId>
-	<packaging>war</packaging>
+    <packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sawdust-gae</name>
 	<description>Code specific to Google technology: Service and data layers for App Engine, and a client implemented in GWT.</description>
@@ -31,18 +31,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.datanucleus</groupId>
-			<artifactId>datanucleus-core</artifactId>
-			<version>1.1.5</version>
-			<scope>runtime</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>transaction-api</artifactId>
-					<groupId>javax.transaction</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>javax.jdo</groupId>
 			<artifactId>jdo2-api</artifactId>
 			<version>2.3-eb</version>
@@ -52,11 +40,6 @@
 					<groupId>javax.transaction</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.google</groupId>
-			<artifactId>appengine-api</artifactId>
-			<version>${gae.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -83,14 +66,59 @@
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+        <dependency>
+            <groupId>com.google</groupId>
+            <artifactId>datanucleus-core-1.1.5</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google</groupId>
+            <artifactId>appengine-api</artifactId>
+            <version>${gae.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>appengine-api-stubs</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>appengine-local-runtime</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>appengine-local-runtime-shared</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>datanucleus-appengine-1.0.4.final</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>datanucleus-jpa-1.1.5</artifactId>
+			<version>1.2.8</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>1.2.8</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
-			<!--
-				<resource> <directory>src/main/java</directory>
-				<filtering>true</filtering> <includes> <include>**/gwt/**</include>
-				<include>**/*.gwt.xml</include> </includes> </resource>
-			-->
+			<resource> <directory>src/main/java</directory>
+			<filtering>true</filtering> <includes> <include>**/gwt/**</include>
+			<include>**/*.gwt.xml</include> </includes> </resource>
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
@@ -144,86 +172,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceDirectory>${basedir}/src/main/war</warSourceDirectory>
-					<webappDirectory>${basedir}/war</webappDirectory>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<id>appengine-deploy</id>
-						<configuration>
-							<tasks>
-								<ant target="gae-deploy" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<id>gwt-development-mode</id>
-						<configuration>
-							<tasks>
-								<ant target="dev-mode" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<id>gwt-compile</id>
-						<configuration>
-							<tasks>
-							    <property name="compile_classpath" refid="maven.compile.classpath" />
-								<ant target="gwt-compile" inheritRefs="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.22</version>
-				<executions>
-					<execution>
-						<goals>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<webAppSourceDirectory>${basedir}/target/${project.artifactId}-${project.version}</webAppSourceDirectory>
-				</configuration>
-			</plugin>
-
 		</plugins>
 		<pluginManagement>
 			<plugins>

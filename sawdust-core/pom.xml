@@ -59,6 +59,7 @@
                 <configuration>
                     <includes>
                         <include>**/UtilTests.java</include>
+                        <include>**/SerializationTests.java</include>
                     </includes>
                 </configuration>
             </plugin>
