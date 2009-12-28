@@ -10,6 +10,11 @@ import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.service.Util;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStats;
@@ -47,13 +52,27 @@ public class DataAdhocBean implements Serializable
         _response = response;
     }
 
-    public String doQuery(String query, String operation, int maxRows)
+    public String doQuery(String query, String operation, int maxRows) throws EntityNotFoundException
     {
+
+        // Get a handle on the datastore itself
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        for(String token : query.split(" "))
+        {
+            com.google.appengine.api.datastore.Query qu = new com.google.appengine.api.datastore.Query("Task");
+            for (Entity entity : datastore.prepare(qu).asIterable())
+            {
+                datastore.delete(entity.getKey());
+            }
+            
+        }
+
         try
         {
             PersistenceManager pm = DataStore.create();
-            Query q = pm.newQuery(query);
-            if(operation.equals("DELETE"))
+            Query q = pm.newQuery(qu);
+            if (operation.equals("DELETE"))
             {
                 long deleteCount = q.deletePersistentAll();
                 return String.format("%d entities deleted", deleteCount);
