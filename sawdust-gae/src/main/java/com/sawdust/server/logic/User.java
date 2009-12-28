@@ -14,6 +14,8 @@ import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.service.Util;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
+import com.sawdust.server.facebook.FacebookSite;
+import com.sawdust.server.facebook.FacebookUser;
 
 public class User implements Serializable
 {

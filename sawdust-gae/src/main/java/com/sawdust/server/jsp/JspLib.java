@@ -24,8 +24,8 @@ import com.sawdust.server.datastore.entities.GameListing;
 import com.sawdust.server.datastore.entities.GameSession;
 import com.sawdust.server.datastore.entities.TinySession;
 import com.sawdust.server.datastore.entities.GameListing.InviteSearchParam;
-import com.sawdust.server.logic.FacebookUser;
-import com.sawdust.server.logic.FacebookSite;
+import com.sawdust.server.facebook.FacebookSite;
+import com.sawdust.server.facebook.FacebookUser;
 
 public class JspLib
 {

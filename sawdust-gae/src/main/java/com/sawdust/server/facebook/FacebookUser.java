@@ -1,4 +1,4 @@
-package com.sawdust.server.logic;
+package com.sawdust.server.facebook;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -31,8 +31,8 @@ import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
-import com.sawdust.server.facebook.ClientResponse;
-import com.sawdust.server.facebook.TinyFBClient;
+import com.sawdust.server.logic.UserLogic;
+
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 
 public class FacebookUser

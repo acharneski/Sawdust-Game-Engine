@@ -5,14 +5,14 @@
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.logic.User"%>
 <%@ page import="com.sawdust.server.logic.FacebookUser"%>
-<%@ page import="com.sawdust.server.logic.FacebookSite"%>
+<%@ page import="com.sawdust.server.facebook.FacebookSite"%>
 <%@ page import="com.sawdust.server.logic.User.UserTypes"%>
 <%@ page import="java.net.URLEncoder"%>
 
 <%@ page errorPage="/error.jsp"%>
 
 <%
-boolean isGameUrl = false;
+    boolean isGameUrl = false;
 if(request.getPathInfo().startsWith("/play"))
 {
 	isGameUrl = true;

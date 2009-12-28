@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.sawdust.server.logic;
+package com.sawdust.server.facebook;
 
 import java.io.Serializable;
 
