@@ -4,7 +4,7 @@
 
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.logic.User"%>
-<%@ page import="com.sawdust.server.logic.FacebookUser"%>
+<%@ page import="com.sawdust.server.facebook.FacebookUser"%>
 <%@ page import="com.sawdust.server.facebook.FacebookSite"%>
 <%@ page import="com.sawdust.server.logic.User.UserTypes"%>
 <%@ page import="java.net.URLEncoder"%>
@@ -30,20 +30,41 @@ if(request.getPathInfo().startsWith("/f/"))
 
 <c:choose>
 
+
+<c:when test="<%=new String(FacebookUser.GetFbParam(request, "fb_sig_ext_perms")).contains("publish_stream")%>">
+    <%-- User has authorized this application --%>
+    <fb:js-string var="chatInvite">  
+        <fb:chat-invite 
+            msg="Let's play a game: http://apps.facebook.com/sawdust-games<%=JspLib.getRedirectUrl(request)%>" 
+            condensed="false"
+        />
+    </fb:js-string> 
+    
+    <fb:dashboard>
+    <c:if test="<%=isGameUrl%>">
+        <fb:create-button href="#" onclick="(new Dialog()).showMessage('Invite Player', chatInvite);">Invite Players</fb:create-button> 
+    </c:if> 
+    </fb:dashboard>
+</c:when>
+
 <c:when test="<%="1".equals(FacebookUser.GetFbParam(request, "fb_sig_added"))%>">
-	<%-- User has authorized this application --%>
-	<fb:js-string var="chatInvite">  
-		<fb:chat-invite 
-			msg="Let's play a game: http://apps.facebook.com/sawdust-games<%=JspLib.getRedirectUrl(request)%>" 
-			condensed="false"
-		/>
-	</fb:js-string> 
-	
-	<fb:dashboard>
-	<c:if test="<%=isGameUrl%>">
-		<fb:create-button href="#" onclick="(new Dialog()).showMessage('Invite Player', chatInvite);">Invite Players</fb:create-button> 
-	</c:if> 
-	</fb:dashboard>
+    <%-- User has authorized this application --%>
+    <fb:js-string var="chatInvite">  
+        <fb:chat-invite 
+            msg="Let's play a game: http://apps.facebook.com/sawdust-games<%=JspLib.getRedirectUrl(request)%>" 
+            condensed="false"
+        />
+    </fb:js-string> 
+    
+    <%-- User has authorized this application, but not to publish to the stream --%>
+    <fb:prompt-permission perms="publish_stream">We'd like permission to tell your freinds about your victories at Sawdust Games.</fb:prompt-permission>
+
+    <fb:dashboard>
+    <c:if test="<%=isGameUrl%>">
+        <fb:create-button href="#" onclick="(new Dialog()).showMessage('Invite Player', chatInvite);">Invite Players</fb:create-button> 
+    </c:if> 
+    </fb:dashboard>
+
 </c:when>
 
 <c:when test="<%=null == FacebookUser.GetFbParam(request, "fb_sig_logged_out_facebook")%>">

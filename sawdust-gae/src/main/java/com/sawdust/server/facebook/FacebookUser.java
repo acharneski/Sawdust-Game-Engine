@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -31,7 +32,6 @@ import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
-import com.sawdust.server.logic.UserLogic;
 
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 
@@ -75,21 +75,9 @@ public class FacebookUser
         final String userName = getUserName(request, userId, facebookId.apiSecretKey);
 
         account.setName(userName);
-        account.setLogic(new UserLogic()
-        {
-            
-            @Override
-            public String toString()
-            {
-                return "Facebook#"+userId;
-            }
-            
-            @Override
-            public void publishActivity(String message)
-            {
-                postUserActivity(request, userId, facebookId.apiSecretKey, message);
-            }
-        });
+        final String sessionKey = GetFbParam(request, "fb_sig_session_key");
+        final String apiKey = GetFbParam(request, "fb_sig_api_key");
+        account.setLogic(new FacebookUserLogic(sessionKey, apiKey, userId, facebookId.apiSecretKey));
         account.setInterfacePreference(InterfacePreference.Facebook);
         LOG.info(String.format("Creating new facebook login: %s (%s)", userName, userId));
         DataStore.Save();
@@ -142,19 +130,31 @@ public class FacebookUser
         return sigString.toString();
     }
 
-    public static TinyFBClient getProxy(final HttpServletRequest request, final String facebookId)
+    public static TinyFBClient getProxy(final HttpServletRequest request, final String apiSecret)
     {
         final String sessionKey = GetFbParam(request, "fb_sig_session_key");
         final String apiKey = GetFbParam(request, "fb_sig_api_key");
+        return getProxy(sessionKey, apiKey, apiSecret);
+    }
+
+    private static TinyFBClient getProxy(final String sessionKey, final String apiKey, final String apiSecret)
+    {
         if ((null == sessionKey) || (null == apiKey)) return null;
-        final TinyFBClient fb = new TinyFBClient(apiKey, facebookId, sessionKey);
+        final TinyFBClient fb = new TinyFBClient(apiKey, apiSecret, sessionKey);
         return fb;
     }
 
-    protected static String postUserActivity(HttpServletRequest request, String userId, String apiSecretKey, String message)
+    public static String getUserName(final HttpServletRequest request, final String uid, final String facebookId)
+    {
+        final String sessionKey = GetFbParam(request, "fb_sig_session_key");
+        final String apiKey = GetFbParam(request, "fb_sig_api_key");
+        return getUserName(sessionKey, apiKey, uid, facebookId);
+    }
+
+    protected static String postUserActivity(final String sessionKey, final String apiKey, String userId, String apiSecretKey, String message)
     {
         LOG.fine("Posting activity for facebook user: " + userId);
-        final TinyFBClient fb = getProxy(request, apiSecretKey);
+        final TinyFBClient fb = getProxy(sessionKey, apiKey, apiSecretKey);
         if (null == fb) 
         {
             throw new SawdustSystemError("Cannot connect to facebook");
@@ -167,15 +167,15 @@ public class FacebookUser
 
         final ClientResponse response = fb.getResponse("stream.publish", tm);
         final Document doc = parseResponse(response);
-        final String value = getXPath(doc, "//fb:users_getInfo_response/fb:user/fb:name/text()");
-        LOG.info("User Name: " + value);
-        return value;
+        //final String value = getXPath(doc, "//fb:users_getInfo_response/fb:user/fb:name/text()");
+        //LOG.info("User Name: " + value);
+        return "?";
     }
 
-    public static String getUserName(final HttpServletRequest request, final String uid, final String facebookId)
+    public static String getUserName(final String sessionKey, final String apiKey, final String uid, final String apiSecretKey)
     {
         LOG.fine("Requesting user id from facebook for user: " + uid);
-        final TinyFBClient fb = getProxy(request, facebookId);
+        final TinyFBClient fb = getProxy(sessionKey, apiKey, apiSecretKey);
         if (null == fb) throw new SawdustSystemError("Cannot connect to facebook");
         fb.setFormat("XML");
 

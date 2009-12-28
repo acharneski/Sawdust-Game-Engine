@@ -14,14 +14,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class TinyFBClient
 {
+    private static final Logger LOG = Logger.getLogger(TinyFBClient.class.getName());
+
     String apiKey;
     String callId;
     String facebookRestServer = "http://api.facebook.com/restserver.php";
-    String format = "JSON";
-    Client restClient;
+    String format = "XML";
+    Client restClient = Client.create();
     ClientResponse restResponse;
     String secretKey;
 
@@ -33,9 +36,8 @@ public class TinyFBClient
 
     public TinyFBClient()
     {
-        standardParms.put("v", version);
+        //standardParms.put("v", version);
         standardParms.put("format", format);
-        restClient = Client.create();
     }
 
     public TinyFBClient(final String appIdParm, final String appSecretParm)
@@ -43,11 +45,8 @@ public class TinyFBClient
         this();
         apiKey = appIdParm;
         secretKey = appSecretParm;
-        standardParms.put("secret_key", secretKey);
         standardParms.put("api_key", apiKey);
-        // standardParms.put("v", version);
-        // standardParms.put("format", format);
-        // restClient = Client.create();
+        //standardParms.put("secret_key", secretKey);
     }
 
     public TinyFBClient(final String appIdParm, final String appSecretParm, final String sessionParm)
@@ -62,7 +61,7 @@ public class TinyFBClient
         this(appIdParm, appSecretParm, sessionParm);
         version = versionParm;
         format = formatParm;
-        standardParms.put("v", version);
+        //standardParms.put("v", version);
         standardParms.put("format", format);
 
     }
@@ -88,17 +87,18 @@ public class TinyFBClient
 
     public String generateSignature(String requestString, final String psecretKey)
     {
-        requestString = requestString + psecretKey;
         final StringBuilder result = new StringBuilder();
         try
         {
             final MessageDigest md = MessageDigest.getInstance("MD5");
-            for (final byte b : md.digest(requestString.toString().getBytes()))
+            for (final byte b : md.digest((requestString + psecretKey).getBytes()))
             {
                 result.append(Integer.toHexString((b & 0xf0) >>> 4));
                 result.append(Integer.toHexString(b & 0x0f));
             }
-            return (result.toString());
+            String signiatureString = result.toString();
+            LOG.info(String.format("generateSignature(\n\"%s\",\n\"%s\")=\n\"%s\"", requestString, psecretKey, signiatureString));
+            return signiatureString;
         }
         catch (final NoSuchAlgorithmException e)
         {
@@ -136,17 +136,9 @@ public class TinyFBClient
         {
             currentKey = itr.next();
             currentValue = restParms.get(currentKey);
+            encodedParm = UriComponent.contextualEncode(restParms.get(currentKey), UriComponent.Type.QUERY_PARAM, false);
+            ub.queryParam(currentKey, encodedParm);
             sigParms = sigParms + currentKey + "=" + currentValue;
-            if ((currentValue.indexOf("{") >= 0) || (currentValue.indexOf("}") >= 0))
-            { // if passing JSON Array, encode the {}
-                encodedParm = UriComponent.contextualEncode(restParms.get(currentKey), UriComponent.Type.QUERY_PARAM, false);
-                ub.queryParam(currentKey, encodedParm);
-            }
-            else
-            {
-                ub.queryParam(currentKey, currentValue);
-            }
-
         }
         final String signature = generateSignature(sigParms, secretKey);
 
