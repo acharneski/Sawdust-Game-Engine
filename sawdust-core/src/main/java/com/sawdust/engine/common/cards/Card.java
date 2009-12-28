@@ -9,7 +9,7 @@ public class Card implements Serializable
     private SpecialCard special = SpecialCard.Null;
     private Suits suit = Suits.Spades;
 
-    public Card()
+    private Card()
     {
     }
 

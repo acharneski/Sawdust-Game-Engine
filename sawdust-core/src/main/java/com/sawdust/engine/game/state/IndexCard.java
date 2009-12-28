@@ -1,12 +1,16 @@
 package com.sawdust.engine.game.state;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.game.players.Player;
 
 public class IndexCard extends Token
 {
     private Card _card;
-
+    
     protected IndexCard()
     {
         super();

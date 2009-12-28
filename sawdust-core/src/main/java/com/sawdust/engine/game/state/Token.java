@@ -1,10 +1,15 @@
 package com.sawdust.engine.game.state;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.game.TokenGame;
 import com.sawdust.engine.game.players.Participant;
@@ -14,17 +19,69 @@ import com.sawdust.engine.service.debug.GameException;
 public class Token implements Serializable
 {
     private static final Logger LOG = Logger.getLogger(Token.class.getName());
+
+    private final HashMap<IndexPosition, String> _moveCommands = new HashMap<IndexPosition, String>();
+    
     protected String _art = "";
-    private String _text = "";
     protected int _id = 0;
     protected boolean _movable = false;
-    private final HashMap<IndexPosition, String> _moveCommands = new HashMap<IndexPosition, String>();
     protected Participant _owner = null;
     private IndexPosition _position = null;
+
+    public String _text = "";
     public String imageLibraryId = null;
     public String baseImageId = null;
     public String toggleImageId = null;
     public String toggleCommand = null;
+
+    private static class SerialForm implements Serializable
+    {
+        private HashMap<IndexPosition, String> _moveCommands;
+        protected String _art = "";
+        private String _text = "";
+        protected int _id = 0;
+        protected boolean _movable = false;
+        protected Participant _owner = null;
+        private IndexPosition _position = null;
+        public String imageLibraryId = null;
+        public String baseImageId = null;
+        public String toggleImageId = null;
+        public String toggleCommand = null;
+
+        
+        SerialForm(){}
+        SerialForm(Token obj)
+        {
+            _moveCommands = obj._moveCommands;
+            _art = obj._art;
+            _text = obj._text;
+            _id = obj._id;
+            _movable = obj._movable;
+            _owner = obj._owner;
+            _position = obj._position;
+            imageLibraryId = obj.imageLibraryId;
+            baseImageId = obj.baseImageId;
+            toggleImageId = obj.toggleImageId;
+            toggleCommand = obj.toggleCommand;
+        }
+        private Object readResolve()
+        {
+            Token token = new Token(_id,imageLibraryId,_art,_owner,baseImageId, _movable,_position);
+            token._text = _text;
+            token._moveCommands.putAll(_moveCommands);
+            return token;
+        }
+    }
+    
+    private Object writeReplace()
+    {
+        return new SerialForm(this);
+    }
+    
+    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
+    {
+        throw new NotSerializableException();
+    }
 
     public Token()
     {
@@ -55,7 +112,14 @@ public class Token implements Serializable
         }
         else if (!_art.equals(other._art)) return false;
         if (_id != other._id) return false;
-        if (baseImageId.equals(other.baseImageId)) return false;
+        if ((null != baseImageId) || (null != other.baseImageId))
+        {
+            if ((null == baseImageId) || (null == other.baseImageId))
+            {
+                return false;
+            }
+            if (baseImageId.equals(other.baseImageId)) return false;
+        }
         if (_movable != other._movable) return false;
         if (_owner == null)
         {
