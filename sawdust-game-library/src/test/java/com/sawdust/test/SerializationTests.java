@@ -6,10 +6,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.common.cards.CardDeck;
-import com.sawdust.engine.common.cards.SpecialCard;
-import com.sawdust.engine.game.state.IndexCard;
+import com.sawdust.engine.game.wordHunt.BoardToken;
 import com.sawdust.engine.service.Util;
 
 
@@ -18,22 +16,9 @@ public class SerializationTests extends TestCase
 {
 
     @Test(timeout = 10000)
-    public void testCardDeck() throws Exception
+    public void testBoardToken() throws Exception
     {
-        CardDeck obj = new CardDeck();
-        serializationTests(obj);
-    }
-
-    @Test(timeout = 10000)
-    public void testToken() throws Exception
-    {
-        serializationTests(new com.sawdust.engine.game.state.Token());
-    }
-
-    @Test(timeout = 10000)
-    public void testIndexToken() throws Exception
-    {
-        serializationTests(new IndexCard(1,null,null,false,null,new Card(SpecialCard.FaceDown)));
+        serializationTests(new BoardToken(1,"fakelib", "noart", null, null, false, null));
     }
 
     private <T extends Serializable> void serializationTests(T obj)

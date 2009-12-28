@@ -610,27 +610,20 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                sb.append("<td>");
                final IndexPosition position = new IndexPosition(i, j);
                BoardData boardData = getBoardData(i, j);
-               if (null == boardData)
+               if(null == boardData || -1 == boardData.value)
                {
-                   if(null == boardData || -1 == boardData.value)
-                   {
-                       final String cmd = String.format("Move %d, %d", i, j);
-                       sb.append(String.format("<command txt=\"%s\">.</command>", cmd));
-                   }
-                   else if(0 == boardData.value)
-                   {
-                       sb.append("X");
-                   }
-                   else if(1 == boardData.value)
-                   {
-                       sb.append("O");
-                   }
-                   else 
-                   {
-                       sb.append("?");
-                   }
+                   final String cmd = String.format("Move %d, %d", i, j);
+                   sb.append(String.format("<command txt=\"%s\">-</command>", cmd));
                }
-               else
+               else if(0 == boardData.value)
+               {
+                   sb.append("B");
+               }
+               else if(1 == boardData.value)
+               {
+                   sb.append("W");
+               }
+               else 
                {
                    sb.append("?");
                }

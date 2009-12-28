@@ -34,23 +34,23 @@ public class Token implements Serializable
     public String toggleImageId = null;
     public String toggleCommand = null;
 
-    private static class SerialForm implements Serializable
+    protected static class SerialForm implements Serializable
     {
-        private HashMap<IndexPosition, String> _moveCommands;
-        protected String _art = "";
-        private String _text = "";
-        protected int _id = 0;
-        protected boolean _movable = false;
-        protected Participant _owner = null;
-        private IndexPosition _position = null;
-        public String imageLibraryId = null;
-        public String baseImageId = null;
-        public String toggleImageId = null;
-        public String toggleCommand = null;
+        HashMap<IndexPosition, String> _moveCommands;
+        String _art = "";
+        String _text = "";
+        int _id = 0;
+        boolean _movable = false;
+        Participant _owner = null;
+        IndexPosition _position = null;
+        String imageLibraryId = null;
+        String baseImageId = null;
+        String toggleImageId = null;
+        String toggleCommand = null;
 
         
-        SerialForm(){}
-        SerialForm(Token obj)
+        protected SerialForm(){}
+        protected SerialForm(Token obj)
         {
             _moveCommands = obj._moveCommands;
             _art = obj._art;
@@ -66,10 +66,7 @@ public class Token implements Serializable
         }
         private Object readResolve()
         {
-            Token token = new Token(_id,imageLibraryId,_art,_owner,baseImageId, _movable,_position);
-            token._text = _text;
-            token._moveCommands.putAll(_moveCommands);
-            return token;
+            return new Token(this);
         }
     }
     
@@ -81,6 +78,21 @@ public class Token implements Serializable
     private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
     {
         throw new NotSerializableException();
+    }
+
+    public Token(SerialForm obj)
+    {
+        _moveCommands.putAll(obj._moveCommands);
+        _art = obj._art;
+        _text = obj._text;
+        _id = obj._id;
+        _movable = obj._movable;
+        _owner = obj._owner;
+        _position = obj._position;
+        imageLibraryId = obj.imageLibraryId;
+        baseImageId = obj.baseImageId;
+        toggleImageId = obj.toggleImageId;
+        toggleCommand = obj.toggleCommand;
     }
 
     public Token()

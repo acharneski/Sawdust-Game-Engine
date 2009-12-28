@@ -32,7 +32,7 @@ import com.sawdust.server.logic.User.UserTypes;
 
 public class DataLifecycleTest extends TestCase
 {
-    private static final String DEV_SERVER_ROOT = "test/load-1";
+    private static final String DEV_SERVER_ROOT = "target/testData/load-1";
     private ApiProxyLocalImpl apiProxyLocalImpl;
     
     @Override

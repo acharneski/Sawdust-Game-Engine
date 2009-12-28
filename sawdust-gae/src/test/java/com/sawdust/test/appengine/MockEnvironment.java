@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.google.apphosting.api.ApiProxy;
 
-class MockEnvironment implements ApiProxy.Environment
+public class MockEnvironment implements ApiProxy.Environment
 {
    public String getAppId()
    {

@@ -35,7 +35,7 @@ import com.sawdust.server.logic.User.UserTypes;
 
 public class DataStorePerfTest extends TestCase
 {
-    private static final String DEV_SERVER_ROOT = "test/perf-1";
+    private static final String DEV_SERVER_ROOT = "target/testData/perf-1";
 
     static final String USER_ID_1 = "test1";
 

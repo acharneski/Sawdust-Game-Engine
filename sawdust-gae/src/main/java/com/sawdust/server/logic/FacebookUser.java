@@ -266,6 +266,7 @@ public class FacebookUser
     {
         final Enumeration<?> e = request.getParameterNames();
         final ArrayList<String> sigs = new ArrayList<String>();
+        
         while (e.hasMoreElements())
         {
             final String key = (String) e.nextElement();
@@ -280,7 +281,7 @@ public class FacebookUser
                 if (sign || overescapedSign)
                 {
                     String fbKey = key.substring(overescapedSign ? longPrefix.length() : prefix.length());
-                    LOG.finer(String.format("Facebook Param: %s = %s",fbKey,value));
+                    LOG.info(String.format("Facebook Param: %s = %s",fbKey,value));
                     sigs.add(fbKey + "=" + value);
                     break;
                 }

@@ -40,7 +40,7 @@ public class BlackjackTests extends TestCase
     {
         DataStore.Clear();
         ApiProxy.setEnvironmentForCurrentThread(new MockEnvironment());
-        ApiProxy.setDelegate(new ApiProxyLocalImpl(new File("test/empty")){});
+        ApiProxy.setDelegate(new ApiProxyLocalImpl(new File("target/testData/empty")){});
         
         System.out.println("\ntestGameWin()\n");
         LoadedDeck deck = new LoadedDeck();

@@ -54,38 +54,34 @@ public class DataAdhocBean implements Serializable
 
     public String doQuery(String query, String operation, int maxRows) throws EntityNotFoundException
     {
-
-        // Get a handle on the datastore itself
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+        Date endTime = new Date(new Date().getTime()+1000*30);
+        boolean isDelete = "DELETE".equals(operation);
+        String message = "";
         for(String token : query.split(" "))
         {
-            com.google.appengine.api.datastore.Query qu = new com.google.appengine.api.datastore.Query("Task");
+            int objDeletionCount = 0;
+            com.google.appengine.api.datastore.Query qu = new com.google.appengine.api.datastore.Query(token);
             for (Entity entity : datastore.prepare(qu).asIterable())
             {
-                datastore.delete(entity.getKey());
+                objDeletionCount++;
+                if(isDelete) 
+                {
+                    datastore.delete(entity.getKey());
+                    if(objDeletionCount > maxRows) 
+                    {
+                        message += "Ended via row limit<br/>";
+                        break;
+                    }
+                }
+                if(endTime.before(new Date())) 
+                {
+                    message += "Ended via timeout<br/>";
+                    break;
+                }
             }
-            
+            message += String.format(isDelete?"%d %s objects deleted<br/>":"%d %s objects found<br/>", objDeletionCount, token);
         }
-
-        try
-        {
-            PersistenceManager pm = DataStore.create();
-            Query q = pm.newQuery(qu);
-            if (operation.equals("DELETE"))
-            {
-                long deleteCount = q.deletePersistentAll();
-                return String.format("%d entities deleted", deleteCount);
-            }
-            else
-            {
-                List execute = (List) q.execute();
-                return String.format("%d entities found", execute.size());
-            }
-        }
-        catch (Throwable e)
-        {
-            return Util.getFullString(e);
-        }
+        return message;
     }
 }

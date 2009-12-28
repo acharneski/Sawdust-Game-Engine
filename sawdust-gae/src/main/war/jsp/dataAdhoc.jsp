@@ -20,7 +20,7 @@ if(null == maxRows) maxRows = "10";
 
 <form action="dataAdhoc.jsp" method="get">
 Query: <input type="text" name="query" value="<%=query%>"><br/>
-Max Rows: <input type="text" name="confirm" value="<%=maxRows%>"><br/>
+Max Rows: <input type="text" name="max" value="<%=maxRows%>"><br/>
 <input type="submit" name="action" value="DELETE">
 <input type="submit" name="action" value="QUERY"><br/>
 </form>
