@@ -20,6 +20,8 @@ public class Message implements Serializable
     protected Date _time;
     private String _to = ALL;
     private MessageType _type = MessageType.Normal;
+    public boolean isSocialActivity = false;
+    public String fbAttachment = "{}";
 
     @Deprecated
     public Message()
@@ -133,6 +135,12 @@ public class Message implements Serializable
     public Message setType(final MessageType type)
     {
         _type = type;
+        return this;
+    }
+
+    public Message setSocialActivity(boolean b)
+    {
+        isSocialActivity = b;
         return this;
     }
 }

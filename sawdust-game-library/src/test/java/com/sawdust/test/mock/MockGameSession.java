@@ -197,4 +197,10 @@ public class MockGameSession implements GameSession, Serializable
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public String getUrl()
+    {
+        return "http://com.sawdust.test.mock/MockGameSession";
+    }
 }

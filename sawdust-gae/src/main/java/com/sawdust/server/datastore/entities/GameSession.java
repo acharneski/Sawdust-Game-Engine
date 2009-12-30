@@ -128,6 +128,12 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
    @Persistent
    private int                                  timeOffset;
    
+   @Persistent
+   private int requiredPlayers = Integer.MAX_VALUE;
+
+   @Persistent
+   private String _url;
+
    protected GameSession()
    {
        super();
@@ -421,9 +427,6 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       }
       return list;
    }
-   
-   @Persistent
-   private int requiredPlayers = Integer.MAX_VALUE;
    
    public int getReadyPlayers()
    {
@@ -907,5 +910,16 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     public <T extends Serializable> void setResource(Class<T> c, T markovChain)
     {
         resources.put(c, new SessionResource(this, markovChain).getKey());
+    }
+
+    @Override
+    public String getUrl()
+    {
+        return _url;
+    }
+
+    public void setUrl(String url)
+    {
+        _url = url;
     }
 }

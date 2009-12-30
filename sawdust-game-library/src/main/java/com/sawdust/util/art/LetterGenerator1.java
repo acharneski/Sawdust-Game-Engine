@@ -36,8 +36,8 @@ public class LetterGenerator1
        basePath = args[1];
         for(String letter : letters)
         {
-            createSubLetter(letter, Color.BLACK, "1");
-            createSubLetter(letter, Color.RED, "2");
+            createSubLetter(letter, Color.WHITE, "1");
+            createSubLetter(letter, Color.GREEN, "2");
         }
         
         
@@ -75,11 +75,11 @@ public class LetterGenerator1
         BufferedImage image = new BufferedImage(psize,psize,BufferedImage.TYPE_INT_RGB);
         
         Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(-1, -1, 2*psize, 2*psize);
-        graphics.setColor(Color.LIGHT_GRAY);
-        int w = (int)(psize*0.05);
-        graphics.fillRect(w, w, psize - 2*w, psize - 2*w);
+//        graphics.setColor(Color.BLACK);
+//        graphics.fillRect(-1, -1, 2*psize, 2*psize);
+//        graphics.setColor(Color.LIGHT_GRAY);
+//        int w = (int)(psize*0.05);
+//        graphics.fillRect(w, w, psize - 2*w, psize - 2*w);
 
         graphics.setFont(new Font("Canarsie Slab JL", Font.BOLD, (int)(psize*0.90)));
         graphics.setColor(color);

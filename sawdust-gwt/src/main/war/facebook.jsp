@@ -28,10 +28,13 @@ if(request.getPathInfo().startsWith("/f/"))
 <jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 
+<%
+  String perm = FacebookUser.GetFbParam(request, "fb_sig_ext_perms");
+  if(null == perm) perm = "";
+%>
 <c:choose>
 
-
-<c:when test="<%=new String(FacebookUser.GetFbParam(request, "fb_sig_ext_perms")).contains("publish_stream")%>">
+<c:when test="<%=perm.contains("publish_stream")%>">
     <%-- User has authorized this application --%>
     <fb:js-string var="chatInvite">  
         <fb:chat-invite 

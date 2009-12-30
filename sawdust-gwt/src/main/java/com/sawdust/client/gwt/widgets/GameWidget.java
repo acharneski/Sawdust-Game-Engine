@@ -34,6 +34,7 @@ import com.sawdust.engine.common.game.ClientCommand;
 import com.sawdust.engine.common.game.GameLabel;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.game.Token;
 
 /**
@@ -230,6 +231,19 @@ public class GameWidget extends AbsolutePanel
         final String width = state.getWidth() + "px";
         final String height = state.getHeight() + "px";
         _tabPanel.setSize(width, height);
+        if(null != state.canvas)
+        {
+            if(state.canvas instanceof SolidColorGameCanvas)
+            {
+                this.getElement().getStyle().setBackgroundColor(((SolidColorGameCanvas)state.canvas).color);
+                this.getElement().getStyle().setColor(((SolidColorGameCanvas)state.canvas).textColor);
+            }
+            else
+            {
+                // Unknown canvas type!
+            }
+        }
+        
         GameWidget.this.setSize(width, height);
 
         setLabels(state);

@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
+import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.MultiPlayerGame;
 import com.sawdust.engine.game.TokenGame;
@@ -72,6 +74,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    
    protected StopGame(StopGame obj)
    {
+       super(obj);
       _currentState = obj._currentState;
       _lastPosition = obj._lastPosition;
       _mplayerManager = Util.Copy(obj._mplayerManager);
@@ -87,6 +90,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    public StopGame(final GameConfig config)
    {
       super(config);
+      setCanvas(new SolidColorGameCanvas("tan", "black"));
       _mplayerManager = new MultiPlayer(NUMBER_OF_PLAYERS);
       GameSession session = getSession();
       if (null != session) session.setRequiredPlayers(NUMBER_OF_PLAYERS);
@@ -375,12 +379,9 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             {
                session.withdraw(-session.getAnte(), null, "Agent Ante Up");
             }
-            if(p instanceof Player)
-            {
-                ((Player)p).logActivity(new ActivityEvent("Start/Go","I am starting a game of Stop!"));
-            }
          }
       }
+      
       
       resetBoard();
       _mplayerManager.getPlayerManager();
@@ -395,7 +396,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       }
       _currentState = GamePhase.Playing;
    }
-   
+
    public void resetBoard()
    {
       for (int i = 0; i < NUM_ROWS; i++)
@@ -443,7 +444,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    @Override
    public Object clone() throws CloneNotSupportedException
    {
-      final StopGame runtimeAncestor = this;
+      final BaseGame runtimeAncestor = this;
       return new StopGame(this)
       {
          @Override

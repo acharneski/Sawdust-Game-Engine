@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.sawdust.engine.common.GameException;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.TutorialGameBase;
 import com.sawdust.engine.game.TutorialPhase;
 import com.sawdust.engine.game.go.GoAgent1;
@@ -15,6 +16,7 @@ import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.stop.StopIsland;
 import com.sawdust.engine.game.stop.StopAgent1;
 import com.sawdust.engine.game.stop.StopGame;
+import com.sawdust.engine.game.stop.StopGame.GamePhase;
 import com.sawdust.engine.service.debug.GameLogicException;
 
 public class Stop1 extends Phases
@@ -86,7 +88,7 @@ public class Stop1 extends Phases
    @Override
    public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
-      if (game.getInnerGame().getCurrentPhase() == StopGame.GamePhase.Playing)
+      if (game.getInnerGame().getCurrentPhase() == GamePhase.Playing)
       {
          LOG.fine("Post-command: Still in GoBang1 phase");
          return super.postCommand(game, m, p);

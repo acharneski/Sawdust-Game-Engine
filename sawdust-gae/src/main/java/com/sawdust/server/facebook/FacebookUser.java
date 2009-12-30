@@ -27,12 +27,14 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.SawdustSystemError;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Account;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 
 public class FacebookUser
@@ -151,7 +153,7 @@ public class FacebookUser
         return getUserName(sessionKey, apiKey, uid, facebookId);
     }
 
-    protected static String postUserActivity(final String sessionKey, final String apiKey, String userId, String apiSecretKey, String message)
+    protected static void postUserActivity(final String sessionKey, final String apiKey, String userId, String apiSecretKey, Message message)
     {
         LOG.fine("Posting activity for facebook user: " + userId);
         final TinyFBClient fb = getProxy(sessionKey, apiKey, apiSecretKey);
@@ -163,13 +165,16 @@ public class FacebookUser
 
         final TreeMap<String,String> tm = new TreeMap<String, String>();
         tm.put("uid", userId);
-        tm.put("message", message);
+        String text = message.getText();
+        text = StringEscapeUtils.escapeHtml(text);
+        tm.put("message", text);
+        tm.put("attachment", message.fbAttachment);
 
         final ClientResponse response = fb.getResponse("stream.publish", tm);
         final Document doc = parseResponse(response);
         //final String value = getXPath(doc, "//fb:users_getInfo_response/fb:user/fb:name/text()");
         //LOG.info("User Name: " + value);
-        return "?";
+        documentString(doc);
     }
 
     public static String getUserName(final String sessionKey, final String apiKey, final String uid, final String apiSecretKey)

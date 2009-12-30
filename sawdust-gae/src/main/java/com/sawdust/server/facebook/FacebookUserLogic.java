@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sawdust.engine.common.game.Message;
 import com.sawdust.server.logic.UserLogic;
 
 public final class FacebookUserLogic extends UserLogic
@@ -34,7 +35,7 @@ public final class FacebookUserLogic extends UserLogic
     }
 
     @Override
-    public void publishActivity(String message)
+    public void publishActivity(Message message)
     {
         FacebookUser.postUserActivity(sessionKey, apiKey, userId, apiSecretId, message);
     }

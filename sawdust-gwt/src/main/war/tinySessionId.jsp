@@ -70,7 +70,7 @@ catch(Throwable t)
 	</c:when>
 	<c:when test="<%=request.getServletPath().equals("/f")%>">
 		<%-- There is a game to play --%>
-		<wc:pageTemplate title="<%=title%>" css="/gameClient/gwt/sawdust/sawdust.css" keywords="<%=keywords%>" supressLeft="true">
+		<wc:pageTemplate title="<%=title%>" keywords="<%=keywords%>">
 			<jsp:attribute name="headerInclude">
                 <script type="text/javascript" language="javascript" src="/gameClient/gameClient.nocache.js"></script>
             </jsp:attribute>

@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.EventListener;
+import com.sawdust.client.gwt.util.FacebookLogic;
 import com.sawdust.client.gwt.util.GoogleAccess;
 import com.sawdust.engine.common.CommandResult;
 import com.sawdust.engine.common.game.ClientCommand;
@@ -466,6 +467,13 @@ public class GameClientWidget
         {
             for (final Message m : newMessages)
             {
+                if(m.isSocialActivity)
+                {
+                    if(-1 != messagesSince) // Only post activity on "live" messages
+                    {
+                        FacebookLogic.postActivity(m);
+                    }
+                }
                 _consoleWidget.addMessage(m);
             }
         }

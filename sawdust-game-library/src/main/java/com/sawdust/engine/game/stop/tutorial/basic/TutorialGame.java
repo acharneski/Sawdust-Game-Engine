@@ -41,7 +41,9 @@ public class TutorialGame extends TutorialGameBase<StopGame>
          public GameSession getSession()
          {
             return sessionF.getSession();
-         }});
+         }
+         
+      });
    }
 
    @Override

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;
@@ -72,7 +73,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
          if (0 > --maxLoop1) break;
          try
          {
-            S hypotheticalGame = cloneForSimulation(game);
+            S hypotheticalGame = (S) cloneForSimulation(game);
             hypotheticalGame.setSilent(true);
             ArrayList<GameCommand> moves2 = hypotheticalGame.getMoves(participant);
             String commandText = thisMove.getCommandText();
@@ -113,16 +114,22 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
       return bestMove;
    }
    
-   protected S cloneForSimulation(final S game) throws CloneNotSupportedException
+   protected BaseGame cloneForSimulation(final BaseGame game) throws CloneNotSupportedException
    {
       final GameSession session = game.getSession();
-      return (S) new StopGame(game)
+      return (BaseGame) new StopGame((StopGame) game)
       {
          @Override
          public GameSession getSession()
          {
             return null;
          }
+
+        @Override
+        public void postStartActivity()
+        {
+        }
+         
       };
    }
    

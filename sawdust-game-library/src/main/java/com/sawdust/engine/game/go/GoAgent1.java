@@ -6,6 +6,7 @@ package com.sawdust.engine.game.go;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.stop.ArrayPosition;
@@ -33,7 +34,7 @@ public class GoAgent1 extends StopAgent1<GoGame>
    }
    
    @Override
-   protected GoGame cloneForSimulation(GoGame game) throws CloneNotSupportedException
+   protected BaseGame cloneForSimulation(BaseGame game) throws CloneNotSupportedException
    {
       return new GoGame((GoGame) game)
       {

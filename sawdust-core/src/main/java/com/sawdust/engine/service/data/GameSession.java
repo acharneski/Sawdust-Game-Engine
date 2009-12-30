@@ -90,4 +90,6 @@ public interface GameSession extends Bank
 
     <T extends Serializable> T getResource(Class<T> c);
 
+    String getUrl();
+
 }

@@ -15,6 +15,7 @@ import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
+import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
@@ -37,8 +38,8 @@ import com.sawdust.server.logic.User.UserTypes;
 
 public class FacebookTests extends TestCase
 {
-    private static final String sessionKey = "2.lkW4_ehkkcms3Fg1AdqHzg__.86400.1262070000-1816987893";
-    private static final String userId = "1816987893";
+    private static final String sessionKey = "2.tZAXZasyRH_sUnVMw9lQCw__.86400.1262257200-100000080240659";
+    private static final String userId = "100000080240659";
 
     private static final String apiKey = "5edf837a505a788ed8fabdb3a2d42143";
     private static final String apiSecretId = "48ac90f59799edc11e332278b0f88488";
@@ -54,7 +55,20 @@ public class FacebookTests extends TestCase
     @Test(timeout = 10000)
     public void testActivityPost() throws Exception
     {
-        logic.publishActivity("Hello World");
+        Message message = new Message("Visit us at http://sawdust-games.appspot.com/");
+        String mediaData = String.format("[{'type':'image','src':'%s','href':'%s'}]",
+                "http://sawdust-games.appspot.com/media/go.png",
+                "http://apps.facebook.com/sawdust-games/quickPlay.jsp?game=Go");
+        
+        //String attachmentData = "{}";
+        //String attachmentData = "{'name':'Google','href':'http://www.google.com/','description':'Google Home Page'}";
+        //String attachmentData = String.format("{'name':'Join My Game','href':'%s','media':%s,'description':'%s'}", 
+        String attachmentData = String.format("{\"name\":\"Join My Game\",\"href\":\"%s\",\"media\":%s,\"description\":\"%s\"}", 
+                "http://apps.facebook.com/sawdust-games/",
+                mediaData,
+                "This is a unit test. Is contains lots of text and should be somewhat long.");
+        message.fbAttachment = attachmentData;
+        logic.publishActivity(message);
     }
 
     @Test(timeout = 10000)

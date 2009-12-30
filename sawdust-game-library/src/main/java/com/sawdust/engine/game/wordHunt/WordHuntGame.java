@@ -13,6 +13,7 @@ import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.GameType;
@@ -91,6 +92,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     public WordHuntGame(final GameConfig config)
     {
         super(config);
+        setCanvas(new SolidColorGameCanvas("black","white"));
         int numberOfPlayers = getNumberOfPlayers(config);
         _mplayerManager = new MultiPlayer(numberOfPlayers);
         getSession().setRequiredPlayers(numberOfPlayers);

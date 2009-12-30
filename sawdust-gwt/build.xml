@@ -8,10 +8,14 @@
       dir="${basedir}/war" failonerror="false">
       <classpath>
         <pathelement path="${compile_classpath}" />
-        <pathelement path="${basedir}/src/main/java"></pathelement>
+        <pathelement path="${basedir}/src/main/java" />
         <fileset dir="${gwt.dir}">
           <include name="**/*.jar" />
         </fileset>
+        <fileset dir="${env.SGDK_HOME}">
+          <include name="gwt-facebook-1.0-BETA9.jar" />
+        </fileset>
+      	
       </classpath>
 
       <jvmarg value="-Xmx512m" />

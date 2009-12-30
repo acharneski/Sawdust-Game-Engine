@@ -5,7 +5,8 @@
 	<inherits name="com.google.gwt.user.Debug" />
     <set-property name="gwt.enableDebugId" value="true" />
 
-    <inherits name="com.google.gwt.user.theme.dark.DarkResources"/>
+    <inherits name="com.gwittit.GwtFacebook"/>
+
 	<!--  
 	   <stylesheet src="gwt/sawdust/sawdust.css" />
 	 -->

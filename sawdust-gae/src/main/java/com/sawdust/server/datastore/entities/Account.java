@@ -369,11 +369,18 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     
     void logActivity(ActivityEvent event)
     {
-        if(displayName.toLowerCase().contains("andrew charneski"))
+        UserLogic logic = getLogic();
+        if(null != logic) 
         {
             LOG.fine(String.format("Publishing Facebook event: %s", event.event));
-            UserLogic logic = getLogic();
-            if(null != logic) logic.publishActivity(event.event);
+            try
+            {
+                logic.publishActivity(event.event);
+            }
+            catch (Exception e)
+            {
+                LOG.warning(Util.getFullString(e));
+            }
         }
         new ActivityEventRecord(getAccount(),event);
     }

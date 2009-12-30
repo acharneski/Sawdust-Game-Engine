@@ -3,7 +3,9 @@ package com.sawdust.client.gwt;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sawdust.client.gwt.util.FacebookLogic;
 import com.sawdust.client.gwt.widgets.GameClientWidget;
 
 /**
@@ -25,6 +27,8 @@ public class GameClient implements EntryPoint
             rootPanel.getElement().setInnerHTML("");
             w.add(new GameClientWidget(rootPanel));
         }
+        //Window.alert("onModuleLoad");
+        FacebookLogic.init();
     }
 
 }

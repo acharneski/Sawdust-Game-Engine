@@ -36,6 +36,7 @@
 <%@page import="com.sawdust.server.datastore.entities.GameSession"%>
 <c:choose>
 	<c:when test="<%=isSessionDefined%>">
+        <script type="text/javascript" language="javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"></script>  
 		<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 		<div id="cardTable" width="100%" height="500px" session="<%=tsession.getSessionId()%>">
 		  Game Client Loading...

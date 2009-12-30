@@ -42,7 +42,15 @@ public class TutorialGame extends TutorialGameBase<GoGame>
          public GameSession getSession()
          {
             return sessionF.getSession();
-         }});
+         }
+
+        @Override
+        public void postStartActivity()
+        {
+            // Supress
+        }
+         
+      });
    }
 
    @Override
