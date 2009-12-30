@@ -30,6 +30,7 @@ import com.sawdust.engine.game.state.Token;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.data.GameSession.SessionStatus;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.engine.service.debug.InputException;
@@ -508,6 +509,13 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
 
         return returnValue;
+    }
+
+    @Override
+    public int getUpdateTime()
+    {
+        if (GamePhase.Null == _currentPhase) return 15;
+        return super.getUpdateTime();
     }
 
     @Override

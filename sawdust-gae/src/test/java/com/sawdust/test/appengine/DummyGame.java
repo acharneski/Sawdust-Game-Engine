@@ -17,6 +17,7 @@ import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
+import com.sawdust.engine.game.stop.StopGame.GamePhase;
 import com.sawdust.engine.service.debug.GameException;
 
 final class DummyGame implements Game, Serializable
@@ -203,5 +204,10 @@ final class DummyGame implements Game, Serializable
     @Override
     public void addMember(Participant agent) throws GameException
     {
+    }
+
+    public int getUpdateTime()
+    {
+        return 90;
     }
 }

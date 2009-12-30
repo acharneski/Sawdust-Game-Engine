@@ -10,27 +10,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
-import javax.jdo.annotations.NullValue;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Serialized;
-import javax.persistence.Id;
 import javax.persistence.OrderBy;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.Bank;
-import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
-import com.sawdust.engine.game.MarkovPredictor;
-import com.sawdust.engine.game.MultiPlayerCardGame;
 import com.sawdust.engine.game.MultiPlayerGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -40,7 +32,6 @@ import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.entities.Account.InterfacePreference;
 import com.sawdust.server.datastore.entities.SessionMember.MemberStatus;
 
@@ -50,7 +41,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
    private static final Logger LOG           = Logger.getLogger(GameSession.class.getName());
    
    @Persistent
-   public int                  playerTimeout = 90;
+   private int                  playerTimeout = 90;
    
    public static GameSession load(final Key key, Player whosAsking)
    {
@@ -301,7 +292,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       sb.append(String.format("Game: %s<br/>", game));
       sb.append(String.format("Ante: %d<br/>", ante));
       sb.append(String.format("Number of Players: %d<br/>", (null == members) ? 0 : members.size()));
-      sb.append(String.format("Timeout: %d<br/>", playerTimeout));
+      sb.append(String.format("Timeout: %d<br/>", getPlayerTimeout()));
       sb.append("</div>");
       return sb.toString();
    }
@@ -376,7 +367,17 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
    
    public int getPlayerTimeout()
    {
-      return playerTimeout;
+       Game latestState = getLatestState();
+       if(null != latestState)
+       {
+           int updateTime = latestState.getUpdateTime() * 2;
+           if(updateTime > playerTimeout)
+           {
+               return updateTime;
+           }
+           
+       }
+       return playerTimeout;
    }
    
    /**
@@ -713,7 +714,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
             final long lastUpdate = member.getLastUpdate().getTime();
             final long elapsedMilliseconds = now - lastUpdate;
             final Player memberEmail = member.getPlayer();
-            if (elapsedMilliseconds > (playerTimeout * 1000))
+            if (elapsedMilliseconds > (getPlayerTimeout() * 1000))
             {
                if (member.getMemberStatus() != MemberStatus.Timeout)
                {
@@ -764,7 +765,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                final long lastUpdate = member.getLastUpdate().getTime();
                final long elapsedMilliseconds = now - lastUpdate;
                final Player memberEmail = member.getPlayer();
-               if (elapsedMilliseconds > (playerTimeout * 1000))
+               if (elapsedMilliseconds > (getPlayerTimeout() * 1000))
                {
                   if (null != lgame)
                   {

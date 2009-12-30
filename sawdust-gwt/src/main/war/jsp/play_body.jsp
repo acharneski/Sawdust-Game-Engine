@@ -33,13 +33,14 @@
 %>
 
 
-<%@page import="com.sawdust.server.datastore.entities.GameSession"%><c:choose>
+<%@page import="com.sawdust.server.datastore.entities.GameSession"%>
+<c:choose>
 	<c:when test="<%=isSessionDefined%>">
 		<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 		<div id="cardTable" width="100%" height="500px" session="<%=tsession.getSessionId()%>">
 		  Game Client Loading...
 		</div>
-          <div style="display:none;"><%=gameDesc%></div>
+        <div style="display:none;"><%=gameDesc%></div>
 	</c:when>
 	<c:otherwise>
 		ERROR: No session id found

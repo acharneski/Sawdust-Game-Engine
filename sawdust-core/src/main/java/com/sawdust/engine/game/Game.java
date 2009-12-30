@@ -87,5 +87,7 @@ public interface Game extends Serializable, Cloneable
    Game getParentGame();
 
    public void advanceTime(int milliseconds);
+
+   int getUpdateTime();
    
 }

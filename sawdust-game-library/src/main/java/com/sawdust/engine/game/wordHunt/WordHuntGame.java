@@ -30,6 +30,7 @@ import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.state.GameLabel;
 import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
+import com.sawdust.engine.game.stop.StopGame.GamePhase;
 import com.sawdust.engine.game.wordHunt.TokenArray.ArrayPosition;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
@@ -891,6 +892,15 @@ public abstract class WordHuntGame extends PersistantTokenGame
             mk.learn(latestNews.toUpperCase().replaceAll("</?[^>]+>", " ").replaceAll("[^A-Z]", " "));
         }
         return mk;
+    }
+
+    public int getUpdateTime()
+    {
+        if (_currentState == GameState.Lobby)
+        {
+            return 15;
+        }
+        return _mplayerManager.isSinglePlayer()?90:5;
     }
 
 }

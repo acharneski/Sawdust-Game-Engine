@@ -244,4 +244,17 @@ public class MultiPlayer implements IMultiPlayer, Serializable
             currentPlayer = nextPlayer;
         }
     }
+
+    public boolean isSinglePlayer()
+    {
+        int numPlayers = 0;
+        for(Participant p : _playerManager.getPlayers())
+        {
+            if(p instanceof Player)
+            {
+                numPlayers++;
+            }
+        }
+        return (1==numPlayers);
+    }
 }

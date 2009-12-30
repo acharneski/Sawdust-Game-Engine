@@ -179,4 +179,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         }
         return returnValue;
     }
+
+    public int getUpdateTime()
+    {
+        return _mplayerManager.isSinglePlayer()?90:5;
+    }
 }

@@ -10,7 +10,7 @@
 
 <%
 String className = request.getParameter("class");
-if(null == className) throw new JspException("Parameter Required: class");
+if(null == className) throw new RuntimeException("Parameter Required: class");
 String n = request.getParameter("since");
 Date since = (null==n)?null:new Date(Long.parseLong(n));
 %>

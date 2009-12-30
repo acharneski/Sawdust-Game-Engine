@@ -63,7 +63,6 @@ public abstract class BlackjackGame extends IndexCardGame
     public BlackjackGame(final GameConfig config)
     {
         super(config);
-        updateTime = 90;
         this.getSession().setPlayerTimeout(900);
         if (config.getProperties().containsKey(GameConfig.RANDOM_SEED))
         {
@@ -605,5 +604,10 @@ public abstract class BlackjackGame extends IndexCardGame
     public GamePhases getCurrentPhase()
     {
         return _currentPhase;
+    }
+
+    public int getUpdateTime()
+    {
+        return 90;
     }
 }

@@ -241,7 +241,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public GameType<StopGame> getGameType()
+   public GameType<?> getGameType()
    {
       return StopGameType.INSTANCE;
    }
@@ -633,5 +633,14 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
        }
        sb.append("</table>");
        return sb.toString();
+   }
+
+   public int getUpdateTime()
+   {
+       if (_currentState == GamePhase.Lobby)
+       {
+           return 15;
+       }
+       return _mplayerManager.isSinglePlayer()?90:5;
    }
 }

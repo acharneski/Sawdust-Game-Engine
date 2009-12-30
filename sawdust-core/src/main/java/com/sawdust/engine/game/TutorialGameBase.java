@@ -306,4 +306,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    {
       _innerGame.advanceTime(milliseconds);
    }
+
+   public int getUpdateTime()
+   {
+       return 90;
+   }
 }

@@ -7,11 +7,11 @@
 
 <%
     TinySession tsession = JspLib.Instance.getTinySession(request);
-boolean isSessionDefined = false;
-if(null != tsession && null != tsession.getSessionId())
-{
-	isSessionDefined = true;
-}
+	boolean isSessionDefined = false;
+	if(null != tsession && null != tsession.getSessionId())
+	{
+		isSessionDefined = true;
+	}
 %>
 
 <c:choose>

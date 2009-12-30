@@ -5,9 +5,9 @@
 <%@ attribute name="keywords"%>
 <%@ attribute name="css"%>
 <%@ attribute name="supressLeft"%>
-<%@ attribute name="isMobile"%>
+<%@ attribute name="isMobile" %>
+<%@ attribute name="headerOverride" fragment="true" %>
 <%@ attribute name="rightColumn" fragment="true"%>
-<%@ attribute name="leftColumn" fragment="true"%>
 <%@ attribute name="topColumn" fragment="true"%>
 <%@ attribute name="headerInclude" fragment="true"%>
 
@@ -16,6 +16,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ tag import="java.util.logging.Logger" %>
+
 <%
 final Logger LOG = Logger.getLogger("pageTemplate");
 %>
@@ -80,23 +81,19 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 		}
 	%></title>
 	<c:if test="<%=null != headerInclude%>">
-
-
-    <%
-    try
-    {
-        %>
-    		<jsp:invoke fragment="headerInclude" />
-        <%
-    }
-    catch(Throwable e)
-    {
-        LOG.warning("Exception rendering header inclusion: " + Util.getFullString(e));
-        %> <!-- ERROR: headerInclude2 --> <%
-    }
-    %>
-
-
+	    <%
+	    try
+	    {
+	        %>
+	    		<jsp:invoke fragment="headerInclude" />
+	        <%
+	    }
+	    catch(Throwable e)
+	    {
+	        LOG.warning("Exception rendering header inclusion: " + Util.getFullString(e));
+	        %> <!-- ERROR: headerInclude2 --> <%
+	    }
+	    %>
 	</c:if>
     <!-- Sawdust Game Engine v1.0.1 -->
 </head>
@@ -105,85 +102,66 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 		<div class="sdge-site-accountinfo">
 			<jsp:include page="/jsp/accountHeader.jsp" />
 		</div>
-
-		<h1 align="left"><a href="<%=gatewayLink%>">
-		<%
-		if(null == isMobile)
-		{
-		        if(header.isEmpty())
-		        {
-		            %>Sawdust Game Engine<sub>Beta</sub><%
-		        }
-		        else
-		        {
-		            %>SGE<sub>Beta</sub> <%=header%><%
-		        }
-		}
-		else
-		{
-		        if(header.isEmpty())
-		        {
-		            %>Sawdust Game Engine<sub>Mobile Beta</sub><%
-		        }
-		        else
-		        {
-		            %>SGE<sub>Mobile Beta</sub> <%=header%><%
-		        }
-		}
-		%>
-		</a></h1>
-		
-        <c:choose>
-            <c:when test="<%=null != topColumn%>">
-			    <%
-			    try
-			    {
-			        %>
-	                    <jsp:invoke fragment="topColumn" />
-			        <%
-			    }
-			    catch(Throwable e)
-			    {
-			        LOG.warning("Exception rendering top column: " + Util.getFullString(e));
-			        %>Now with more BETA!<%
-			    }
-			    %>
-            </c:when>
-            <c:when test="<%=null != isMobile%>">
-                <jsp:include page="/jsp/gameBanner_mobile.jsp" />
-            </c:when>
-            <c:otherwise>
-                <div><a href="http://apps.facebook.com/sawdust-games/">Social</a> and <a href="/mobile.jsp">Mobile</a> Gaming; Customizable.</div>
-            </c:otherwise>
-        </c:choose>
-		
+		<c:choose>
+			<c:when test="<%=null != headerOverride%>">
+                <jsp:invoke fragment="headerOverride" />
+			</c:when>
+	
+			<c:otherwise>
+				<h1 align="left"><a href="<%=gatewayLink%>">
+				<%
+				if(null == isMobile)
+				{
+				        if(null == header || header.isEmpty())
+				        {
+				            %>Sawdust Game Engine<sub>Beta</sub><%
+				        }
+				        else
+				        {
+				            %>SGE<sub>Beta</sub>&nbsp;&lt;&nbsp;<%=header%><%
+				        }
+				}
+				else
+				{
+				        if(header.isEmpty())
+				        {
+				            %>Sawdust Game Engine<sub>Mobile Beta</sub><%
+				        }
+				        else
+				        {
+		                    %>SGE<sub>Beta</sub>&nbsp;&lt;&nbsp;<%=header%><%
+				        }
+				}
+				%>
+				</a></h1>
+		        <div>
+			        <c:choose>
+			            <c:when test="<%=null != topColumn%>">
+						    <%
+						    try
+						    {
+						        %>
+				                    <jsp:invoke fragment="topColumn" />
+						        <%
+						    }
+						    catch(Throwable e)
+						    {
+						        LOG.warning("Exception rendering top column: " + Util.getFullString(e));
+						        %>Now with more BETA!<%
+						    }
+						    %>
+			            </c:when>
+		                <c:when test="<%=null != isMobile%>">
+		                    <jsp:include page="/jsp/gameBanner_mobile.jsp" />
+		                </c:when>
+			            <c:otherwise>
+			                <jsp:include page="/jsp/gameBanner.jsp" />
+			            </c:otherwise>
+			        </c:choose>
+		        </div>
+			</c:otherwise>
+		</c:choose>
 	</div>
-	<c:if test="<%=(null == supressLeft) && (null == isMobile)%>">
-		<div class="sdge-site-navbar">
-			<c:choose>
-				<c:when test="<%=(null == leftColumn)%>">
-					<jsp:include page="/jsp/gameListing.jsp" />
-				</c:when>
-				<c:otherwise>
-				    <%
-				    try
-				    {
-				        %>
-							<jsp:invoke fragment="leftColumn" />
-				        <%
-				    }
-				    catch(Throwable e)
-				    {
-				        LOG.warning("Exception rendering left column: " + Util.getFullString(e));
-				        %>
-						<jsp:include page="/jsp/gameListing.jsp" />
-				        <%
-				    }
-				    %>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</c:if>
 
 	<div class="sdge-site-body">
 	<%
@@ -217,6 +195,7 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 	<div class="sdge-site-adbar">
 		<c:choose>
             <c:when test="<%=(null != isMobile)%>">
+                <!-- Normal ads excluded: Mobile page -->
             </c:when>
 			<c:when test="<%=null == rightColumn%>">
 			<c:choose>

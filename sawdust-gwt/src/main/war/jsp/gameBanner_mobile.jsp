@@ -6,17 +6,23 @@
 <jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
+<jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
+
 <div>
 <%
     boolean isFirst = true;
-// TODO: Re-enable Java 5 support in JSP
-for(int i=0;i<GameTypes.values().length;i++) {
-   GameType game = (GameType) GameTypes.values()[i];
-//for (GameType game : GameTypes.values()) {
-    if(!isFirst) {
-%> - <%}
-	%><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a><%
-	isFirst = false;
-}
+	for(int i=0;i<GameTypes.values().length;i++) {
+	   GameType game = (GameType) GameTypes.values()[i];
+	    if(!isFirst) {%> - <%}
+        if(requestData.get("game").equals(game.getName()))
+        {
+            %><span class="current-game"><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a></span><%
+        }
+        else
+        {
+            %><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a><%
+        }
+		isFirst = false;
+	}
 %>
 </div>

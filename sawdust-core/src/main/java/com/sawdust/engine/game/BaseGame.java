@@ -63,7 +63,6 @@ public abstract class BaseGame implements Game
     
     public int messageNumber = 0;
     public int _timeOffset = 0;
-    public int updateTime = 5;
     public int _versionNumber = 0;
 
 
@@ -82,7 +81,6 @@ public abstract class BaseGame implements Game
     	_width = obj._width;
     	messageNumber = obj.messageNumber;
     	_timeOffset = obj._timeOffset;
-    	updateTime = obj.updateTime;
     	_versionNumber = obj._versionNumber;
     }
 
@@ -96,17 +94,6 @@ public abstract class BaseGame implements Game
     {
         _config = config;
     }
-
-//    /**
-//     * @param c
-//     */
-//    public void addCommand(final GameCommand c)
-//    {
-//        if (!_commands.contains(c))
-//        {
-//            _commands.add(c);
-//        }
-//    }
 
     /* (non-Javadoc)
     * @see com.sawdust.engine.game.Game#addMember(com.sawdust.engine.game.players.Participant)
@@ -385,7 +372,7 @@ public abstract class BaseGame implements Game
         returnValue.timeOffset = _timeOffset;
         returnValue.setHeight(_height);
         returnValue.setWidth(_width);
-        returnValue.updateTime = updateTime;
+        returnValue.updateTime = getUpdateTime();
         returnValue.html = renderBasicHtml();
         returnValue.setNotification(_notification );
 
@@ -409,6 +396,8 @@ public abstract class BaseGame implements Game
         }
         return returnValue;
     }
+
+    public abstract int getUpdateTime();
 
     public String renderBasicHtml()
     {

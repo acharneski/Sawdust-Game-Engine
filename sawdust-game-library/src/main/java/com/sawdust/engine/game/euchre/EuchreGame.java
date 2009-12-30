@@ -254,6 +254,13 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
+    public int getUpdateTime()
+    {
+        if (getSession().getSessionStatus() == SessionStatus.Inviting) return 15;
+        return super.getUpdateTime();
+   }
+
+    @Override
     public Collection<GameLabel> getLabels(final Player access)
     {
         try

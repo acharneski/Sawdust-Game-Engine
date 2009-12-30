@@ -6,6 +6,8 @@
 <jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" scope="request" />
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
+<jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
+
 <%
 	boolean isGameValid = true;
 	if (null == request.getParameter("game"))
@@ -14,6 +16,10 @@
 	} else if (request.getParameter("game").isEmpty())
 	{
 		isGameValid = false;
+	}
+	else
+	{
+	    requestData.put("game", request.getParameter("game"));
 	}
 %>
 

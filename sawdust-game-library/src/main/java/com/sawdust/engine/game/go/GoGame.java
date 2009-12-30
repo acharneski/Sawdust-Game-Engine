@@ -13,6 +13,7 @@ import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
+import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -21,6 +22,7 @@ import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.state.GameLabel;
 import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.stop.StopGame;
+import com.sawdust.engine.game.stop.StopGameType;
 import com.sawdust.engine.game.stop.StopIsland;
 import com.sawdust.engine.game.go.Stupid1;
 import com.sawdust.engine.game.stop.TokenArray;
@@ -352,6 +354,12 @@ public abstract class GoGame extends StopGame
             s.clear();
         }
         super.resetBoard();
+    }
+    
+    @Override
+    public GameType<?> getGameType()
+    {
+       return GoGameType.INSTANCE;
     }
 
 }
