@@ -469,12 +469,12 @@ public class GameClientWidget
             {
                 if(m.isSocialActivity)
                 {
-                    if(-1 != messagesSince) // Only post activity on "live" messages
-                    {
-                        FacebookLogic.postActivity(m);
-                    }
+                    FacebookLogic.postActivity(m);
                 }
-                _consoleWidget.addMessage(m);
+                else
+                {
+                    _consoleWidget.addMessage(m);
+                }
             }
         }
     }

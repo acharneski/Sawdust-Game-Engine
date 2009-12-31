@@ -15,7 +15,9 @@ import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.service.Util;
+import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.data.SessionMember;
 import com.sawdust.engine.service.debug.GameException;
 
 public abstract class BaseGame implements Game
@@ -510,8 +512,18 @@ public abstract class BaseGame implements Game
 
     public void postStartActivity()
     {
-        this.addMessage(
-                String.format("I am playing %s at Sawdust Games. You can join my game at %s", getGameType().getName(), getSession()
+        GameSession session = getSession();
+        Message message = this.addMessage(
+                String.format("I am playing %s at Sawdust Games. You can join my game at %s", getGameType().getName(), session
                         .getUrl())).setSocialActivity(true);
+
+        SessionMember owner = session.getOwner();
+        String ownerId = "";
+        if(null != owner)
+        {
+            Account account = owner.getAccount();
+            ownerId = account.getUserId();
+            message.setTo(ownerId);
+        }
     }
 }
