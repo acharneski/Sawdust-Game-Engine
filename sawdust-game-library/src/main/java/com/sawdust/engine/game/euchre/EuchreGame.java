@@ -112,7 +112,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         _roundCardCount = 0;
     }
 
-    public void doCommand(final EuchreCommand cmd, final Object... params) throws com.sawdust.engine.common.GameException
+    public void doCommand(final EuchreCommand cmd, final Object... params) throws GameException
     {
         getCurrentPhase().doCommand(this, cmd, params);
     }
@@ -405,7 +405,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return (compareTo < 0);
     }
 
-    protected void payToTeam(final int teamNumber) throws com.sawdust.engine.common.GameException
+    protected void payToTeam(final int teamNumber) throws GameException
     {
         final GameSession session = getSession();
         final int award = session.getBalance() / 2;
@@ -443,7 +443,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void start() throws com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
         final GameSession session = getSession();
         session.anteUp();

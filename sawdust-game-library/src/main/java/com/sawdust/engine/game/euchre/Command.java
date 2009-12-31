@@ -14,18 +14,26 @@ import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.data.GameSession.SessionStatus;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
+import com.sawdust.engine.service.debug.SawdustSystemError;
 
 public enum Command
 {
     CallSuit
     {
 
-        public void doCommand(final Participant user, final GameSession game, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             final Game baseGame = game.getLatestState();
             final EuchreGame euchreGame = (EuchreGame) baseGame;
             if (!user.equals(euchreGame.getCurrentPlayer())) throw new GameLogicException("It is not your turn");
-            euchreGame.doCommand(EuchreCommand.Call, Suits.getSuitFromFullString(param));
+            try
+            {
+                euchreGame.doCommand(EuchreCommand.Call, Suits.getSuitFromFullString(param));
+            }
+            catch (com.sawdust.engine.common.GameException e)
+            {
+                throw new SawdustSystemError(e);
+            }
             baseGame.saveState();
         }
 
@@ -68,7 +76,7 @@ public enum Command
     PassSuit
     {
 
-        public void doCommand(final Participant user, final GameSession game, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             final Game baseGame = game.getLatestState();
             final EuchreGame euchreGame = (EuchreGame) baseGame;
@@ -92,7 +100,7 @@ public enum Command
     PlayCards
     {
 
-        public void doCommand(final Participant user, final GameSession game, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             final GameSession gameSession = game;
             final Game baseGame = gameSession.getLatestState();
@@ -136,7 +144,7 @@ public enum Command
         }
     };
 
-    public abstract void doCommand(final Participant user, final GameSession game, final String param) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void doCommand(final Participant user, final GameSession game, final String param) throws GameException;
 
     public abstract String getCommandText();
 
@@ -156,7 +164,7 @@ public enum Command
 			}
 			
 			@Override
-			public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException {
+			public boolean doCommand(Participant p, String commandText) throws GameException {
 				Command.this.doCommand(p, game.getSession(), "");
 				return true;
 			}

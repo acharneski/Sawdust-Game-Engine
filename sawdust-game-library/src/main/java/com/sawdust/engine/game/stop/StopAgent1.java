@@ -32,7 +32,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
    }
    
    @Override
-   public void Move(S game, Participant participant) throws com.sawdust.engine.common.GameException
+   public void Move(S game, Participant participant) throws GameException
    {
       try
       {
@@ -60,7 +60,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
       return moves;
    }
    
-   protected GameCommand move_N(S game, int n) throws CloneNotSupportedException, com.sawdust.engine.common.GameException
+   protected GameCommand move_N(S game, int n) throws CloneNotSupportedException, GameException
    {
       Participant participant = game.getPlayerManager().getCurrentPlayer();
       ArrayList<GameCommand> moves = intuition(game, participant);

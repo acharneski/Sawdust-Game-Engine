@@ -1,6 +1,6 @@
 package com.sawdust.engine.game;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.PlayerManager;
 

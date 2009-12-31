@@ -21,7 +21,7 @@ public class Stupid1 extends Agent<StopGame>
     }
 
     @Override
-    public void Move(final StopGame game, final Participant player) throws com.sawdust.engine.common.GameException
+    public void Move(final StopGame game, final Participant player) throws GameException
     {
         if (game.getCurrentPhase() == GamePhase.Playing)
         {

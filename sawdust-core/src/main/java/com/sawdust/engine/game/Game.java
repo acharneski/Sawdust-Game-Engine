@@ -68,11 +68,11 @@ public interface Game extends Serializable, Cloneable
    
    void setWidth(final int width);
    
-   void start() throws GameException, com.sawdust.engine.common.GameException;
+   void start() throws GameException;
    
    GameState toGwt(final Player access) throws GameException;
    
-   void update() throws GameException, com.sawdust.engine.common.GameException;
+   void update() throws GameException;
 
    void setVersionNumber(int i);
 

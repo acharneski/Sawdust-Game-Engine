@@ -146,7 +146,7 @@ public abstract class GoGame extends StopGame
                 }
 
                 @Override
-                public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws GameException
                 {
                     if (GoGame.this._lastPlayerPassed)
                     {
@@ -168,7 +168,7 @@ public abstract class GoGame extends StopGame
         return moves;
     }
 
-    protected void finishGame(Participant p) throws com.sawdust.engine.common.GameException
+    protected void finishGame(Participant p) throws GameException
     {
         int winningScore = 0;
         Participant winner = null;
@@ -230,7 +230,7 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void start() throws com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
         for (PlayerScore s : _scores.values())
         {
@@ -327,7 +327,7 @@ public abstract class GoGame extends StopGame
     LinkedList<TokenArray> history = new LinkedList<TokenArray>();
 
     @Override
-    public void doMove(IndexPosition position, Participant player) throws com.sawdust.engine.common.GameException
+    public void doMove(IndexPosition position, Participant player) throws GameException
     {
         TokenArray begin = getTokenArray();
         history.push(begin);

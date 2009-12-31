@@ -21,7 +21,7 @@ import javax.persistence.OrderBy;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.MultiPlayerGame;
 import com.sawdust.engine.game.players.Agent;
@@ -182,10 +182,11 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       {
          _game.addMember(p);
          _game.saveState();
+         updateStatus();
       }
    }
    
-   public void anteUp() throws com.sawdust.engine.common.GameException
+   public void anteUp() throws GameException
    {
       final ArrayList<com.sawdust.engine.service.data.Account> toSave = new ArrayList<com.sawdust.engine.service.data.Account>();
       for (final Player member : getMembers())
@@ -514,7 +515,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       return null;
    }
    
-   public void payOut(final Collection<Player> winners) throws com.sawdust.engine.common.GameException
+   public void payOut(final Collection<Player> winners) throws GameException
    {
       if ((null != winners) && (0 < winners.size()))
       {
@@ -527,7 +528,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       withdraw(getBalance(), null, "End of Game");
    }
    
-   public void payOut(final Player member, final int winningPer) throws com.sawdust.engine.common.GameException
+   public void payOut(final Player member, final int winningPer) throws GameException
    {
       final com.sawdust.engine.service.data.Account laccount = member.loadAccount();
       withdraw(winningPer, laccount, "Pay Out");
@@ -704,7 +705,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       localStates.add(gameState);
    }
    
-   public void updateStatus() throws com.sawdust.engine.common.GameException
+   public void updateStatus() throws GameException
    {
       final Game lgame = getLatestState();
       final long now = new Date().getTime();
@@ -826,7 +827,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       return true;
    }
    
-   public void start(Collection<Participant> players) throws com.sawdust.engine.common.GameException
+   public void start(Collection<Participant> players) throws GameException
    {
       if (getReadyPlayers() < requiredPlayers) return;
       // if (isPlaying()) { throw new GameLogicException(""); }
@@ -840,7 +841,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       }
    }
    
-   public void withdraw(final int amount, final Bank from, final String description) throws com.sawdust.engine.common.GameException
+   public void withdraw(final int amount, final Bank from, final String description) throws GameException
    {
       if (null != from)
       {
@@ -885,7 +886,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
       aiList.add(name);
    }
    
-   public void modifyPayout(double factor, String msg) throws com.sawdust.engine.common.GameException
+   public void modifyPayout(double factor, String msg) throws GameException
    {
       double balance = getBalance();
       int newBalance = (int) (balance * factor);

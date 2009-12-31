@@ -28,7 +28,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public void update() throws GameException, com.sawdust.engine.common.GameException
+    public void update() throws GameException
     {
     }
 
@@ -39,7 +39,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public void start() throws GameException, com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
     }
 

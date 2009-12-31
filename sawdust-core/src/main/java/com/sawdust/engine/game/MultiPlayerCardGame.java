@@ -84,7 +84,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         return newCard;
     }
 
-    public void doForceMove(final Participant participant) throws com.sawdust.engine.common.GameException
+    public void doForceMove(final Participant participant) throws GameException
     {
         try
         {
@@ -154,7 +154,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void update() throws com.sawdust.engine.common.GameException
+    public void update() throws GameException
     {
         _mplayerManager.update(this);
     }

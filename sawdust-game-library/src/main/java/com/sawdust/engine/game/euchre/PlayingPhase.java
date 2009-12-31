@@ -24,7 +24,7 @@ final class PlayingPhase extends GamePhase
     public static final GamePhase INSTANCE = new PlayingPhase();
     
     @Override
-    public void doCommand(final EuchreGame game, final EuchreCommand cmd, final Object... params) throws com.sawdust.engine.common.GameException
+    public void doCommand(final EuchreGame game, final EuchreCommand cmd, final Object... params) throws GameException
     {
         switch (cmd)
         {
@@ -36,7 +36,7 @@ final class PlayingPhase extends GamePhase
         }
     }
     
-    protected void endRound(final EuchreGame game) throws com.sawdust.engine.common.GameException
+    protected void endRound(final EuchreGame game) throws GameException
     {
         final Participant winner = game._winningCard.getOwner();
         final int teamNumber = game.getTeamNumber(winner)-1;
@@ -142,7 +142,7 @@ final class PlayingPhase extends GamePhase
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws GameException
                     {
                         com.sawdust.engine.game.euchre.Command.PlayCards.doCommand((Player) p, game.getSession(), cardStr);
                         return true;
@@ -153,7 +153,7 @@ final class PlayingPhase extends GamePhase
         return returnValue;
     }
     
-    protected void playCard(final EuchreGame game, final Participant participant, final int cardIndexToPlay) throws com.sawdust.engine.common.GameException
+    protected void playCard(final EuchreGame game, final Participant participant, final int cardIndexToPlay) throws GameException
     {
         /*
          * R-E-0146: Play continues in clockwise order; each player must follow

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.MarkovPredictor;
@@ -49,7 +49,7 @@ public class MockGameSession implements GameSession, Serializable
         }
     }
 
-    public void anteUp() throws com.sawdust.engine.common.GameException
+    public void anteUp() throws GameException
     {
         for (Player s : _members)
         {
@@ -83,7 +83,7 @@ public class MockGameSession implements GameSession, Serializable
         return _currentState;
     }
 
-    public void payOut(Collection<Player> winners) throws com.sawdust.engine.common.GameException
+    public void payOut(Collection<Player> winners) throws GameException
     {
         if (null != winners && 0 < winners.size())
         {
@@ -108,7 +108,7 @@ public class MockGameSession implements GameSession, Serializable
         _currentState = baseGame;
     }
 
-    public void withdraw(int amount, Bank from, String description) throws com.sawdust.engine.common.GameException
+    public void withdraw(int amount, Bank from, String description) throws GameException
     {
         bank -= amount;
         if(null != from) from.withdraw(-amount, null, description);
@@ -156,7 +156,7 @@ public class MockGameSession implements GameSession, Serializable
         
     }
 
-    public void start(Collection<Participant> collection) throws com.sawdust.engine.common.GameException
+    public void start(Collection<Participant> collection) throws GameException
     {
         _currentState.start();
     }

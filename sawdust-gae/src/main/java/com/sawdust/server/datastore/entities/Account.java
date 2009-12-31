@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.Util;
@@ -322,7 +322,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
         displayName = pdisplayName;
     }
 
-    public void withdraw(int amount, final Bank depositTarget, final String description) throws com.sawdust.engine.common.GameException
+    public void withdraw(int amount, final Bank depositTarget, final String description) throws GameException
     {
         final int finalAmt = getBalance() - amount;
         super.update();

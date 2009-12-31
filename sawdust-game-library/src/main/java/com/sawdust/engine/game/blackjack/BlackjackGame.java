@@ -94,7 +94,7 @@ public abstract class BlackjackGame extends IndexCardGame
     
     HashMap<Integer, PlayerHandStatus> playerHandStatus = new HashMap<Integer, PlayerHandStatus>();
     
-    public void doStay() throws com.sawdust.engine.common.GameException
+    public void doStay() throws GameException
     {
         if (GamePhases.Playing != _currentPhase) throw new GameLogicException("Game is not in progress");
         for (final Token newCard : getCurveCards(HAND_DEALER))
@@ -125,7 +125,7 @@ public abstract class BlackjackGame extends IndexCardGame
         endTurn();
     }
     
-    private void lose(int i, GameSession gameSession) throws GameException, com.sawdust.engine.common.GameException
+    private void lose(int i, GameSession gameSession) throws GameException
     {
         
         this.addMessage("Player busts... ").setType(MessageType.Compact);
@@ -144,7 +144,7 @@ public abstract class BlackjackGame extends IndexCardGame
         }
     }
     
-    private void endTurn() throws GameException, com.sawdust.engine.common.GameException
+    private void endTurn() throws GameException
     {
         final GameSession gameSession = getSession();
         int dealerScore = getScore(HAND_DEALER);
@@ -323,7 +323,7 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws GameException
                     {
                         o.doCommand(p, BlackjackGame.this, "");
                         return true;
@@ -336,7 +336,7 @@ public abstract class BlackjackGame extends IndexCardGame
                 returnValue.add(new GameCommand()
                 {
                     public void doCommand(final Participant user, final GameSession gameSession, final String param)
-                            throws com.sawdust.engine.common.GameException
+                            throws GameException
                     {
                         BlackjackGame.this.doHit(i);
                         BlackjackGame.this.saveState();
@@ -353,7 +353,7 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                    public boolean doCommand(Participant p, String commandText) throws GameException
                     {
                         doCommand(p, BlackjackGame.this.getSession(), "");
                         return true;
@@ -426,7 +426,7 @@ public abstract class BlackjackGame extends IndexCardGame
         return totalScore;
     }
     
-    public void doHit(int i) throws com.sawdust.engine.common.GameException
+    public void doHit(int i) throws GameException
     {
         final GameSession gameSession = getSession();
         if (GamePhases.Playing != _currentPhase) throw new GameLogicException("Game is not in progress");
@@ -462,7 +462,7 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public void start() throws com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
         if (GamePhases.Playing != _currentPhase) 
         {

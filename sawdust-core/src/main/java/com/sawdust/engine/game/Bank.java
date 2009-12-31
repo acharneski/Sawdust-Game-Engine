@@ -1,6 +1,6 @@
-package com.sawdust.engine.common;
+package com.sawdust.engine.game;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 
 public interface Bank
 {

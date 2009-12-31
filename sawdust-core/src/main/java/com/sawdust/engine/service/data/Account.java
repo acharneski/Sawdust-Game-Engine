@@ -1,6 +1,6 @@
 package com.sawdust.engine.service.data;
 
-import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.players.ActivityEvent;
 
 public interface Account extends Bank

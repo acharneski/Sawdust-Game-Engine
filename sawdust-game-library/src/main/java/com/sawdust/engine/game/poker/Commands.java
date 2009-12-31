@@ -18,7 +18,7 @@ public enum Commands
     Bet
     {
 
-        public void doCommand(final Participant user, final GameSession game, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             int bet;
             try
@@ -49,7 +49,7 @@ public enum Commands
     Draw_Cards
     {
 
-        public void doCommand(final Participant user, final GameSession game, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             final Game baseGame = game.getLatestState();
             final PokerGame pokerGame = (PokerGame) baseGame;
@@ -131,7 +131,7 @@ public enum Commands
         }
     };
     
-    public abstract void doCommand(final Participant user, final GameSession game, final String param) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void doCommand(final Participant user, final GameSession game, final String param) throws GameException;
     public abstract String getCommandText();
     public abstract String getHelpText();
     

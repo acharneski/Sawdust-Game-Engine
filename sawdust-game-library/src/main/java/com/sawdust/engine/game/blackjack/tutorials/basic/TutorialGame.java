@@ -30,7 +30,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     protected LoadedDeck _deck = null;
 
     @Override
-    public void start() throws com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
        if(null == _deck)
        {

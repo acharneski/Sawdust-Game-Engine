@@ -86,7 +86,7 @@ final class OpenMakingPhase extends GamePhase
 				}
 				
 				@Override
-				public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException {
+				public boolean doCommand(Participant p, String commandText) throws GameException {
                     com.sawdust.engine.game.euchre.Command.CallSuit.doCommand((Player) p, game.getSession(), suit.fullString());
 					return true;
 				}

@@ -64,7 +64,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
 //        }
     }
 
-    public void doForceMove(final BaseGame game, final Participant participant) throws com.sawdust.engine.common.GameException
+    public void doForceMove(final BaseGame game, final Participant participant) throws GameException
     {
         if (participant instanceof Agent<?>)
         {
@@ -222,7 +222,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         return returnValue;
     }
 
-    public void update(final BaseGame game) throws com.sawdust.engine.common.GameException
+    public void update(final BaseGame game) throws GameException
     {
         Participant currentPlayer = _playerManager.getCurrentPlayer();
         while (currentPlayer instanceof Agent<?>)

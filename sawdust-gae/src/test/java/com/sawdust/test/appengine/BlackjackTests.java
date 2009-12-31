@@ -82,7 +82,7 @@ public class BlackjackTests extends TestCase
         DataStore.Save();
     }
 
-    private BlackjackGame getGame(com.sawdust.engine.service.data.GameSession session, AccessToken access, Account account)
+    private BlackjackGame getGame(com.sawdust.engine.service.data.GameSession session, AccessToken access, Account account) throws GameException
     {
         GameConfig prototypeConfig = BlackjackGameType.INSTANCE.getPrototypeConfig(account);
         return (BlackjackGame) Games.NewGame(BlackjackGameType.INSTANCE, prototypeConfig, session, access);

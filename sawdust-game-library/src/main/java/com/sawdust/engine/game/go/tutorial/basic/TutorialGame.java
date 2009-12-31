@@ -68,7 +68,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
    }
    
    @Override
-   public void start() throws com.sawdust.engine.common.GameException
+   public void start() throws GameException
    {
       super.start();
       setPhase(Welcome1.INSTANCE);
@@ -102,7 +102,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
             }
             
             @Override
-            public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
+            public boolean doCommand(Participant p, String commandText) throws GameException
             {
                getPhase().onStartPhase(TutorialGame.this);
                TutorialGame.this.saveState();
@@ -121,7 +121,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
       return new Agent<GoGame>("Instructor")
       {
          @Override
-         public void Move(GoGame game, Participant participant) throws GameException, com.sawdust.engine.common.GameException
+         public void Move(GoGame game, Participant participant) throws GameException
          {
             if(null != _agent) 
             {

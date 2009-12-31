@@ -1,5 +1,6 @@
 package com.sawdust.engine.game;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -385,7 +386,7 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#start()
      */
-    public abstract void start() throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void start() throws GameException;
 
     /*
      * (non-Javadoc)
@@ -441,7 +442,7 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#update()
      */
-    public abstract void update() throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void update() throws GameException;
 
     private boolean visible(final Message s, final Player access)
     {

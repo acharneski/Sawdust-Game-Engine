@@ -81,7 +81,7 @@ public abstract class GenericPlayTest extends TestCase
         return sessionTimers;
     }
 
-    private static <T extends Game> void doRandomMove(T game, Participant player) throws com.sawdust.engine.common.GameException
+    private static <T extends Game> void doRandomMove(T game, Participant player) throws GameException
     {
         ArrayList<GameCommand> moves = game.getMoves(player);
         while (true)
@@ -117,7 +117,7 @@ public abstract class GenericPlayTest extends TestCase
         return new Agent<T>(userId)
         {
             @Override
-            public void Move(T game, Participant participant) throws com.sawdust.engine.common.GameException
+            public void Move(T game, Participant participant) throws GameException
             {
                 doRandomMove(game, this);
             }

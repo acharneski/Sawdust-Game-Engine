@@ -18,7 +18,7 @@ final class FormingPhase extends GamePhase
     public static final GamePhase INSTANCE = new FormingPhase();
 
     @Override
-    public void doCommand(final EuchreGame game, final EuchreCommand cmd, final Object... params) throws com.sawdust.engine.common.GameException
+    public void doCommand(final EuchreGame game, final EuchreCommand cmd, final Object... params) throws GameException
     {
         switch (cmd)
         {

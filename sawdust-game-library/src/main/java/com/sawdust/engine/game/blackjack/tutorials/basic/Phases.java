@@ -1,6 +1,6 @@
 package com.sawdust.engine.game.blackjack.tutorials.basic;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.game.GameState;
