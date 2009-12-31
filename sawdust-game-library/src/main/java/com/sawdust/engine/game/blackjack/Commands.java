@@ -19,7 +19,7 @@ public enum Commands
 {
     Stay
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
             baseGame.doStay();
             baseGame.saveState();
@@ -37,7 +37,7 @@ public enum Commands
     },
     DoubleDown
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
             baseGame.getSession().anteUp();
             baseGame.doHit(0);
@@ -66,7 +66,7 @@ public enum Commands
     },
     SplitPair
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws com.sawdust.engine.common.GameException
+        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
             ArrayList<Token> cards = baseGame.getCurveCards(BlackjackGame.HAND_PLAYER);
             int curve = BlackjackGame.HAND_DEALER+1;
@@ -100,7 +100,7 @@ public enum Commands
         }
     };
     
-    public abstract void doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException;
     
     public abstract String getCommandText();
     

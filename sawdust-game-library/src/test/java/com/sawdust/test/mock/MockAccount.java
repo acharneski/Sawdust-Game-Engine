@@ -1,6 +1,6 @@
 package com.sawdust.test.mock;
 
-import com.sawdust.engine.common.Bank;
+import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
@@ -47,7 +47,7 @@ public class MockAccount implements Account
         this.name = displayName;
     }
 
-    public void withdraw(int amount, Bank from, String description) throws com.sawdust.engine.common.GameException
+    public void withdraw(int amount, Bank from, String description) throws GameException
     {
         this.bank -= amount;
         if (null != from) from.withdraw(-amount, null, description);

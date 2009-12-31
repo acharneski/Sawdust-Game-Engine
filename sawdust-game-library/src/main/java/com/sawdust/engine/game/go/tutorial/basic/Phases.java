@@ -1,6 +1,6 @@
 package com.sawdust.engine.game.go.tutorial.basic;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Notification;
 import com.sawdust.engine.game.TutorialGameBase;

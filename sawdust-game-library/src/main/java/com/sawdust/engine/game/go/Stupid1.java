@@ -2,7 +2,7 @@ package com.sawdust.engine.game.go;
 
 import java.util.ArrayList;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.stop.StopGame;

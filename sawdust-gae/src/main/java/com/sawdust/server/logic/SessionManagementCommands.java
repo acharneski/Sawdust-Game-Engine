@@ -21,7 +21,7 @@ public enum SessionManagementCommands
    {
       
       public void doCommand(final Player user, final com.sawdust.engine.service.data.GameSession gameSession, final String param)
-            throws com.sawdust.engine.common.GameException
+            throws GameException
       {
          com.sawdust.engine.service.data.SessionMember sessionOwner = gameSession.getOwner();
          if (null == sessionOwner) throw new GameLogicException("The owner has disconnected from the game");
@@ -180,7 +180,7 @@ public enum SessionManagementCommands
    Util_Update
    {
       public void doCommand(final Player user, final com.sawdust.engine.service.data.GameSession game, final String param)
-            throws com.sawdust.engine.common.GameException
+            throws GameException
       {
          final Game state = game.getLatestState();
          state.update();
@@ -207,7 +207,7 @@ public enum SessionManagementCommands
    };
    
    public abstract void doCommand(final Player user, final com.sawdust.engine.service.data.GameSession game, final String param)
-         throws GameException, com.sawdust.engine.common.GameException;
+         throws GameException;
    
    public abstract String getCommandText();
    
@@ -231,7 +231,7 @@ public enum SessionManagementCommands
          }
          
          @Override
-         public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+         public boolean doCommand(Participant p, String commandText) throws GameException
          {
             com.sawdust.engine.service.data.GameSession session = game.getSession();
             SessionManagementCommands.this.doCommand((Player) p, session, "");

@@ -6,13 +6,14 @@ import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.blackjack.BlackjackGameType;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.debug.GameException;
 
 public class GameType extends BlackjackGameType
 {
     public static final GameType INSTANCE = new GameType();
 
     @Override
-    public Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory)
+    public Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
     {
       return new TutorialGame(c, sessionFactory)
         {

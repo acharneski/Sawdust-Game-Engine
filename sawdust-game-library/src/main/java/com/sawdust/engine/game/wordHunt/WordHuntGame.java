@@ -279,7 +279,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             {
 
                 @Override
-                public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws GameException
                 {
                     ArrayList<ArrayList<IndexPosition>> paths = findWord(p, commandText);
                     if(null == paths) return false;
@@ -330,7 +330,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                             }
 
                             @Override
-                            public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                            public boolean doCommand(Participant p, String commandText) throws GameException
                             {
                                 Player user = (Player) p;
                                 if ((null != prevPosition) && !adjacent(position, prevPosition))
@@ -364,7 +364,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             }
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
@@ -406,7 +406,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p, String commandText) throws com.sawdust.engine.common.GameException
+                public boolean doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
@@ -601,7 +601,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         return _currentState == GameState.Playing;
     }
 
-    public void maybeComplete() throws com.sawdust.engine.common.GameException
+    public void maybeComplete() throws GameException
     {
         boolean isEveryoneDone = true;
         for (final Participant p : _mplayerManager.getPlayerManager().getPlayers())
@@ -676,7 +676,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void start() throws com.sawdust.engine.common.GameException
+    public void start() throws GameException
     {
         final GameSession session = getSession();
         session.anteUp();
@@ -706,7 +706,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void update() throws com.sawdust.engine.common.GameException
+    public void update() throws GameException
     {
         _mplayerManager.update(this);
     }
@@ -794,7 +794,10 @@ public abstract class WordHuntGame extends PersistantTokenGame
 
     public String getUrl(String urlString)
     {
-        return getHttpInterface().getURL(urlString).getContent();
+        HttpInterface xface = getHttpInterface();
+        HttpResponse url = xface.getURL(urlString);
+        String content = url.getContent();
+        return content;
     }
 
     public void setLanguage(LanguageProvider _language)
@@ -817,11 +820,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
         return httpInterface;
     }
 
-    protected void attemptWord(Player user, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
+    protected void attemptWord(Player user, final String currentWord) throws GameException
     {
     }
 
-    protected void enterWord(Participant p, final String currentWord) throws GameException, com.sawdust.engine.common.GameException
+    protected void enterWord(Participant p, final String currentWord) throws GameException
     {
         final ArrayList<String> wordList = getWordList(p.getId());
         final ArrayList<IndexPosition> wordPath = getPath(p.getId());

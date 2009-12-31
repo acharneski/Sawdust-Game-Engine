@@ -73,7 +73,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
                   }
                   
                   @Override
-                  public boolean doCommand(Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException
+                  public boolean doCommand(Participant p, String commandText) throws GameException
                   {
                      setPhase(phase.preCommand(TutorialGameBase.this, m, p));
                      boolean cmdResult = m.doCommand(p, commandText);
@@ -96,7 +96,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
    
    @Override
-   public void start() throws com.sawdust.engine.common.GameException
+   public void start() throws GameException
    {
       getInnerGame().start();
       _isFirstPlay = false;
@@ -121,7 +121,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
       return _agent;
    }
    
-   protected void setPhase(TutorialPhase<S> phase) throws com.sawdust.engine.common.GameException
+   protected void setPhase(TutorialPhase<S> phase) throws GameException
    {
       if (null != phase && _phase != phase)
       {
@@ -160,7 +160,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
 
    @Override
-   public void update() throws GameException, com.sawdust.engine.common.GameException
+   public void update() throws GameException
    {
       getInnerGame().update();
    }

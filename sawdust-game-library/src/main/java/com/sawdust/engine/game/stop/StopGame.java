@@ -103,7 +103,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       _mplayerManager.addMember(this, agent);
    }
    
-   public void doMove(final IndexPosition position, final Participant player) throws com.sawdust.engine.common.GameException
+   public void doMove(final IndexPosition position, final Participant player) throws GameException
    {
       _moves = null;
       if (!_mplayerManager.getPlayerManager().isCurrentPlayer(player)) throw new GameLogicException("Not your turn!");
@@ -128,7 +128,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
 
    }
    
-   public void finishTurn(final Participant player) throws com.sawdust.engine.common.GameException
+   public void finishTurn(final Participant player) throws GameException
    {
       final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(player);
       final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
@@ -362,7 +362,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void start() throws com.sawdust.engine.common.GameException
+   public void start() throws GameException
    {
       if (2 > _mplayerManager.getPlayerManager().getPlayerCount())
       {
@@ -412,7 +412,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void update() throws com.sawdust.engine.common.GameException
+   public void update() throws GameException
    {
       _mplayerManager.update(this);
    }
@@ -556,7 +556,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void doForceMove(Participant currentPlayer) throws com.sawdust.engine.common.GameException
+   public void doForceMove(Participant currentPlayer) throws GameException
    {
       try
       {

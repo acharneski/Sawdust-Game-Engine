@@ -2,7 +2,7 @@ package com.sawdust.engine.game;
 
 import java.io.Serializable;
 
-import com.sawdust.engine.common.GameException;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;

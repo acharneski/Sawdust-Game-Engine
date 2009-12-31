@@ -15,7 +15,7 @@ import com.sawdust.engine.service.debug.GameException;
 
 public abstract class GamePhase implements Serializable
 {
-    public abstract void doCommand(EuchreGame game, EuchreCommand cmd, Object... params) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void doCommand(EuchreGame game, EuchreCommand cmd, Object... params) throws GameException;
 
     @Override
     public boolean equals(final Object obj)

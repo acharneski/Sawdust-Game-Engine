@@ -29,7 +29,7 @@ public class Regular1 extends Agent<PokerGame>
     }
 
     @Override
-    public void Move(final PokerGame game, final Participant player) throws com.sawdust.engine.common.GameException
+    public void Move(final PokerGame game, final Participant player) throws GameException
     {
         final int playerIdx = game.getPlayerManager().findPlayer(player);
 

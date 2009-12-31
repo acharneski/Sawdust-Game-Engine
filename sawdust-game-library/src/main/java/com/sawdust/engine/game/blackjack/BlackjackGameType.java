@@ -7,6 +7,7 @@ import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.SessionFactory;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.debug.GameException;
 
 public class BlackjackGameType extends com.sawdust.engine.game.GameType<BlackjackGame>
 {
@@ -50,7 +51,7 @@ public class BlackjackGameType extends com.sawdust.engine.game.GameType<Blackjac
     }
 
     @Override
-    public Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory)
+    public Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
     {
         return new BlackjackGame(c)
         {

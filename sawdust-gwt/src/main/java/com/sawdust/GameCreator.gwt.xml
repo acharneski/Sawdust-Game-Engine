@@ -4,8 +4,9 @@
 
 	<inherits name="com.google.gwt.user.Debug" />
 	<set-property name="gwt.enableDebugId" value="true" />
-
+<!-- 
     <inherits name="com.gwittit.GwtFacebook"/>
+ -->
 
 	<inherits name='com.sawdust.engine.SawdustEngine' />
 	<stylesheet src="gwt/sawdust/sawdust.css" />

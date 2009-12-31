@@ -19,7 +19,7 @@ public class Stupid1 extends Agent<EuchreGame>
     }
 
     @Override
-    public void Move(final EuchreGame game, final Participant player) throws com.sawdust.engine.common.GameException
+    public void Move(final EuchreGame game, final Participant player) throws GameException
     {
         if (game.getCurrentPhase().equals(EuchreGame.INITIAL_MAKING))
         {

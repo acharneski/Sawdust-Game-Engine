@@ -1,7 +1,5 @@
 package com.sawdust.server.datastore;
 
-
-
 import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Game;
@@ -10,6 +8,7 @@ import com.sawdust.engine.game.LanguageProvider;
 import com.sawdust.engine.game.SessionFactory;
 import com.sawdust.engine.game.wordHunt.WordHuntGame;
 import com.sawdust.engine.game.wordHunt.WordHuntGameType;
+import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.appengine.EnglishLanguageProvider;
 
 public class Games
@@ -17,7 +16,7 @@ public class Games
     static final LanguageProvider ENGLISH = new EnglishLanguageProvider();
 
     public static Game NewGame(final GameType<?> gameToCreate, final GameConfig config, final com.sawdust.engine.service.data.GameSession session,
-            final AccessToken access2)
+            final AccessToken access2) throws GameException
     {
         final String id = session.getId();
         SessionFactory sessionFactory = new MySessionFactory(id);

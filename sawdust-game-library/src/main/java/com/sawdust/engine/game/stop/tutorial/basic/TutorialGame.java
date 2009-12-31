@@ -61,7 +61,7 @@ public class TutorialGame extends TutorialGameBase<StopGame>
    }
    
    @Override
-   public void start() throws com.sawdust.engine.common.GameException
+   public void start() throws GameException
    {
       super.start();
       setPhase(Welcome1.INSTANCE);
@@ -73,7 +73,7 @@ public class TutorialGame extends TutorialGameBase<StopGame>
       return new Agent<StopGame>("Instructor")
       {
          @Override
-         public void Move(StopGame game, Participant participant) throws GameException, com.sawdust.engine.common.GameException
+         public void Move(StopGame game, Participant participant) throws GameException
          {
             if(null != _agent) 
             {

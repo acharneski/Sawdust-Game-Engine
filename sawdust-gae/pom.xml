@@ -66,6 +66,8 @@
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<!-- 
+		 -->
         <dependency>
             <groupId>com.google</groupId>
             <artifactId>datanucleus-core-1.1.5</artifactId>
@@ -101,6 +103,8 @@
 			<version>${gae.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!--  
+		-->
 		<dependency>
 			<groupId>com.google</groupId>
 			<artifactId>datanucleus-jpa-1.1.5</artifactId>

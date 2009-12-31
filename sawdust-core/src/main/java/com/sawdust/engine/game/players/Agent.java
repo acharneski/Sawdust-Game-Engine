@@ -14,5 +14,5 @@ public abstract class Agent<G extends Game> extends Participant
         super(s);
     }
 
-    public abstract void Move(G game, Participant participant) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract void Move(G game, Participant participant) throws GameException;
 }

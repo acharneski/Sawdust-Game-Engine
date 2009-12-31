@@ -11,7 +11,7 @@ public abstract class GameCommand
      * @throws com.sawdust.engine.common.GameException 
 	 * 
 	 */
-    public abstract boolean doCommand(final Participant p, String commandText) throws GameException, com.sawdust.engine.common.GameException;
+    public abstract boolean doCommand(final Participant p, String commandText) throws GameException;
 
     public abstract String getCommandText();
 

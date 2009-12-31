@@ -14,6 +14,7 @@ import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.PlayerManager;
 import com.sawdust.engine.game.state.IndexCard;
 import com.sawdust.engine.game.state.IndexPosition;
+import com.sawdust.engine.service.debug.GameException;
 
 public class Normal1 extends Agent<EuchreGame>
 {
@@ -26,7 +27,7 @@ public class Normal1 extends Agent<EuchreGame>
         super(s);
     }
 
-    private void doMaking(final EuchreGame game, final boolean isInitMaking) throws com.sawdust.engine.common.GameException
+    private void doMaking(final EuchreGame game, final boolean isInitMaking) throws GameException
     {
         final HashMap<Suits, Integer> suitMap = new HashMap<Suits, Integer>();
         final PlayerManager playerManager = game.getPlayerManager();
@@ -65,7 +66,7 @@ public class Normal1 extends Agent<EuchreGame>
         }
     }
 
-    private void doPlayCards(final EuchreGame game, final Participant player) throws com.sawdust.engine.common.GameException
+    private void doPlayCards(final EuchreGame game, final Participant player) throws GameException
     {
         // Record state
         final PlayerManager playerManager = game.getPlayerManager();
@@ -165,7 +166,7 @@ public class Normal1 extends Agent<EuchreGame>
     }
 
     @Override
-    public void Move(final EuchreGame game, final Participant player) throws com.sawdust.engine.common.GameException
+    public void Move(final EuchreGame game, final Participant player) throws GameException
     {
         final GamePhase currentPhase = game.getCurrentPhase();
         final boolean isInitMaking = currentPhase.equals(EuchreGame.INITIAL_MAKING);
