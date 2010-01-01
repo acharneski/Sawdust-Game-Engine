@@ -308,8 +308,8 @@ div.sdge-game-listing {
 
 .sdge-site-header {
 	float: right;
-	background-color: #023B53;
-	color: white;
+	background-color: #395C24;
+	color: #82B4C7;
 	margin: 0 auto;
 	padding: 0;
 	width: 100%;
@@ -325,7 +325,7 @@ div.sdge-game-listing {
 }
 
 div.sdge-site-header {
-	border-bottom: 3px double #3896BF;
+	border-bottom: 3px double #9AEC52;
 }
 
 .sdge-site-header a {
@@ -337,15 +337,16 @@ div.sdge-site-header {
 }
 
 .sdge-site-header a:hover {
-	color: #CCFFEE;
+	color: #D79600;
 }
 
-#openGames {
+#bank, #openGames {
     font-size: 1.2em;
-}
-
-#bank {
-    font-size: 1.2em;
+    background-color: #5AC000;
+    text-decoration: none;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 0;
 }
 
 .sdge-site-header h1 {
@@ -357,14 +358,18 @@ div.sdge-site-header {
 	padding: 0;
 }
 
+.sdge-site-account * {
+    color: black;
+}
+
 .sdge-site-account {
+    color: black;
+	background-color: #9AEC52;
 	float: right;
 	width: auto;
 	text-align: right;
 	padding-left: 10px;
 	padding-right: 10px;
-	color: white;
-	background-color: grey;
 	font-size: 1.25em;
 	font-weight: bold;
 }
@@ -377,7 +382,7 @@ div.sdge-site-header {
 	text-align: center;
 	padding-left: 10px;
 	padding-right: 10px;
-	color: white;
+	color: #DBDB8C;
 	font-size: 1.25em;
 	font-weight: bold;
 	white-space: nowrap;
@@ -412,7 +417,7 @@ div.sdge-site-header {
 	font-weight: bold;
 	text-align: left;
 	border-right: 1px solid black;
-	background-color: #023B53;
+	background-color: #D7D000;
 	color: white;
 	height: 1280px;
 }
@@ -425,7 +430,7 @@ div.sdge-site-header {
 	font-weight: bold;
 	text-align: left;
 	border-right: 1px solid black;
-	background-color: #023B53;
+	background-color: #D7D000;
 }
 
 .sdge-game-listing {
@@ -506,7 +511,7 @@ div.sdge-game-type {
 div.sdge-game-type h3 {
 	text-align: center;
 	width: 100%;
-	background-color: #1B4A5F;
+	background-color: #10495F;
 }
 
 div.sdge-game-type h3 * {
@@ -558,10 +563,10 @@ span.subtitle {
 
 *.sdge-site-header *.tabs *.tab-other * {
 	color: white;
-	background-color: #844601;
+	background-color: #815A00;
 }
 
 *.sdge-site-header *.tabs *.tab-current * {
 	color: black;
-	background-color: #E3A969;
+	background-color: #F3EE54;
 }

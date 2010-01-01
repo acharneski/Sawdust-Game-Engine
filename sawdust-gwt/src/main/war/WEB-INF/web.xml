@@ -37,21 +37,29 @@
 		<servlet-name>login_wrapper</servlet-name>
 		<jsp-file>/login.jsp</jsp-file>
 	</servlet>
-	<servlet>
-		<servlet-name>tinySession_redirect</servlet-name>
-		<jsp-file>/tinySessionId.jsp</jsp-file>
-	</servlet>
+    <servlet>
+        <servlet-name>tinySession_redirect</servlet-name>
+        <jsp-file>/tinySessionId.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ad_data</servlet-name>
+        <jsp-file>/ad.jsp</jsp-file>
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>GameServlet</servlet-name>
 		<url-pattern>/gameClient/gwtService</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>tinySession_redirect</servlet-name>
-		<url-pattern>/p/*</url-pattern>
-		<url-pattern>/f/*</url-pattern>
-		<url-pattern>/m/*</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>tinySession_redirect</servlet-name>
+        <url-pattern>/p/*</url-pattern>
+        <url-pattern>/f/*</url-pattern>
+        <url-pattern>/m/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ad_data</servlet-name>
+        <url-pattern>/ad/*</url-pattern>
+    </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GameServlet</servlet-name>
 		<url-pattern>/gameCreator/gwtService</url-pattern>

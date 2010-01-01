@@ -188,7 +188,7 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 			<c:when test="<%=null == rightColumn%>">
 				<c:choose>
 				    <c:when test="<%=(null != adTargetId) && (!adTargetId.isEmpty())%>">
-	                    <iframe src="/ad.jsp?t=<%=adTargetId%>" width = "120px" height = "600px" style="overflow:hidden;"></iframe>
+	                    <iframe src="/ad/<%=adTargetId%>" width = "120px" height = "600px" style="overflow:hidden;"></iframe>
 				    </c:when>
 				    <c:otherwise>
 	                    <jsp:include page="/jsp/ad.jsp" />
