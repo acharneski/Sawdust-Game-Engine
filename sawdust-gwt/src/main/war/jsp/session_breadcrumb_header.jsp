@@ -17,6 +17,4 @@
 
 <jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
 
-<h1>
-<a href="/game.jsp?game=<%=requestData.getGameTypeId()%>"><%=requestData.getGameType()%></a>&nbsp;&gt;&nbsp;<%=requestData.getGameSessionName()%>
-</h1>
+<h1><a href="/game.jsp?game=<%=requestData.getGameTypeId()%>"><%=requestData.getGameType()%></a><span class="breadcrumb-delimiter">&nbsp;&gt;&nbsp;</span><span class="subtitle"><%=requestData.getGameSessionName()%></span></h1>

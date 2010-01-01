@@ -22,7 +22,7 @@
 
 <%
 String title = "Play";
-String keywords = "Sawdust Game Engine - Go, Poker, Blackjack, and more games!";
+String adTargetId = "";
 GameSession gSession = null;
 try
 {
@@ -34,13 +34,13 @@ try
         if (null != g) 
         {
             requestData.put("game",g.getGameType().getName());
-            requestData.put("keywords",keywords);
             requestData.setGameType(g.getGameType().getName());
             requestData.setGameTypeId(g.getGameType().getID());
             requestData.setSessionId(gSession.getId());
             requestData.setGameSessionName(gSession.getName());
-            LOG.info(String.format("Game %s keywords: %s", g.getGameType().getName(), keywords));
-            keywords = g.getKeywords();
+            LOG.info(String.format("Game %s adTargetId: %s", g.getGameType().getName(), adTargetId));
+            adTargetId = g.getGameType().getID();
+            requestData.put("adTargetId",adTargetId);
         }
     }
 }
@@ -54,7 +54,7 @@ catch(Throwable t)
 <c:choose>
 	<c:when test="<%=request.getServletPath().equals("/p")%>">
 		<%-- There is a game to play --%>
-		<wc:pageTemplate title="<%=title%>" keywords="<%=keywords%>">
+		<wc:pageTemplate title="<%=title%>" adTargetId="<%=adTargetId%>">
 			<jsp:attribute name="headerInclude">
                 <jsp:include page="/jsp/play_header.jsp" />
 			    <script type="text/javascript" language="javascript" src="/gameClient/gameClient.nocache.js"></script>
@@ -70,7 +70,7 @@ catch(Throwable t)
 	</c:when>
 	<c:when test="<%=request.getServletPath().equals("/f")%>">
 		<%-- There is a game to play --%>
-		<wc:pageTemplate title="<%=title%>" keywords="<%=keywords%>">
+		<wc:pageTemplate title="<%=title%>" adTargetId="<%=adTargetId%>">
 			<jsp:attribute name="headerInclude">
                 <script type="text/javascript" language="javascript" src="/gameClient/gameClient.nocache.js"></script>
             </jsp:attribute>
@@ -88,7 +88,7 @@ catch(Throwable t)
 	</c:when>
 	<c:when test="<%=request.getServletPath().equals("/m")%>">
 		<%-- There is a game to play --%>
-		<wc:pageTemplate title="<%=title%>" css="/gameClient/gwt/sawdust/sawdust.css" keywords="<%=keywords%>" supressLeft="true" isMobile="true">
+		<wc:pageTemplate title="<%=title%>" css="/gameClient/gwt/sawdust/sawdust.css" adTargetId="<%=adTargetId%>" supressLeft="true" isMobile="true">
 			<jsp:attribute name="headerInclude">
                 <script type="text/javascript" language="javascript" src="/gameClient/gameClient.nocache.js"></script>
             </jsp:attribute>

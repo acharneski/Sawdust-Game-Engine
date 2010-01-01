@@ -8,19 +8,19 @@
 
 <jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
 
-<div>
+<div class="tabs">
 <%
     boolean isFirst = true;
 	for(int i=0;i<GameTypes.values().length;i++) {
 	   GameType game = (GameType) GameTypes.values()[i];
-	    if(!isFirst) {%> - <%}
+	    if(!isFirst) {%> <%}
         if(requestData.get("game").equals(game.getName()))
         {
-            %><span class="current-game"><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a></span><%
+            %><span class="tab-current"><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a></span><%
         }
         else
         {
-            %><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a><%
+            %><span class="tab-other"><a class="game" href="/game_mobile.jsp?<%=user.getSessonJunk(false,true)%>game=<%=game.getID()%>"><%=game.getName()%></a></span><%
         }
 		isFirst = false;
 	}

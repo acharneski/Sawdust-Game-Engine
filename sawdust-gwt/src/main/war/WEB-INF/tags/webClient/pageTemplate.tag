@@ -2,7 +2,7 @@
 <%@ attribute name="title" required="true"%>
 <%@ attribute name="header"%>
 <%@ attribute name="gatewayLink"%>
-<%@ attribute name="keywords"%>
+<%@ attribute name="adTargetId"%>
 <%@ attribute name="css"%>
 <%@ attribute name="supressLeft"%>
 <%@ attribute name="isMobile" %>
@@ -46,23 +46,6 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 	{
 		cssFile = css;
 	}
-	if(null != keywords)
-	{
-	    StringBuilder sb = new StringBuilder();
-	 	// TODO: Re-enable Java 5 support in JSP
-
-	 	String values[] = keywords.split("\\s+");
-		for(int i=0;i<values.length;i++) {
-		   String w = (String) values[i];
-	    //for(String w : keywords.split("\\s+")) {
-	        if(w.length() > 3 && 0 > sb.indexOf(w))
-	        {
-	            if(sb.length() > 0) sb.append("+");
-	            sb.append(w);
-	        }
-	    }
-	    keywords = sb.toString();
-	}
 %>
 
 <html>
@@ -99,9 +82,10 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 </head>
 <body>
 	<div class="sdge-site-header">
-		<div class="sdge-site-accountinfo">
-			<jsp:include page="/jsp/accountHeader.jsp" />
-		</div>
+        <div class="sdge-site-account">
+            <jsp:include page="/jsp/accountHeader.jsp" />
+        </div>
+        <div class="sdge-site-title">
 		<c:choose>
 			<c:when test="<%=null != headerOverride%>">
                 <jsp:invoke fragment="headerOverride" />
@@ -161,6 +145,10 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 		        </div>
 			</c:otherwise>
 		</c:choose>
+        </div>
+        <div class="sdge-site-dashboard">
+            <jsp:include page="/jsp/dashboard.jsp" />
+        </div>
 	</div>
 
 	<div class="sdge-site-body">
@@ -198,14 +186,14 @@ final Logger LOG = Logger.getLogger("pageTemplate");
                 <!-- Normal ads excluded: Mobile page -->
             </c:when>
 			<c:when test="<%=null == rightColumn%>">
-			<c:choose>
-			    <c:when test="<%=null != keywords%>">
-                    <iframe src="/ad.jsp?k=<%=keywords%>" width = "120px" height = "600px"></iframe>
-			    </c:when>
-			    <c:otherwise>
-                    <jsp:include page="/jsp/ad.jsp" />
-			    </c:otherwise>
-			</c:choose>
+				<c:choose>
+				    <c:when test="<%=(null != adTargetId) && (!adTargetId.isEmpty())%>">
+	                    <iframe src="/ad.jsp?t=<%=adTargetId%>" width = "120px" height = "600px" style="overflow:hidden;"></iframe>
+				    </c:when>
+				    <c:otherwise>
+	                    <jsp:include page="/jsp/ad.jsp" />
+				    </c:otherwise>
+				</c:choose>
 			</c:when>
 			<c:otherwise>
 			    <%
