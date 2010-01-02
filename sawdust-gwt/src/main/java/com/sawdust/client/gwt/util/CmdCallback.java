@@ -42,13 +42,13 @@ final class CmdCallback<T> implements AsyncCallback<T>
             public void onEvent(final Object... params)
             {
                 LOG.debug("Post-onError onEvent...");
-                CmdCallback.this.commandExecutor._isRunningQuery = false;
+                CmdCallback.this.commandExecutor.unlockQuery();
                 CmdCallback.this.commandExecutor.doLoad(new EventListener()
                 {
                     @Override
                     public void onEvent(Object... params)
                     {
-                        CmdCallback.this.commandExecutor._isRunningQuery = false;
+                        CmdCallback.this.commandExecutor.unlockQuery();
                         CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, e);
                         _post.onEvent(e);
                     }
@@ -66,13 +66,13 @@ final class CmdCallback<T> implements AsyncCallback<T>
         }
         else
         {
-            CmdCallback.this.commandExecutor._isRunningQuery = false;
+            CmdCallback.this.commandExecutor.unlockQuery();
             CmdCallback.this.commandExecutor.doLoad(new EventListener()
             {
                 @Override
                 public void onEvent(Object... params)
                 {
-                    CmdCallback.this.commandExecutor._isRunningQuery = false;
+                    CmdCallback.this.commandExecutor.unlockQuery();
                     CmdCallback.this.commandExecutor.onEvent(CmdCallback.this.commandExecutor._onComplete, e);
                     _post.onEvent(e);
                 }
@@ -85,7 +85,7 @@ final class CmdCallback<T> implements AsyncCallback<T>
         LOG.debug("onSuccess...");
         if (result instanceof CommandResult)
         {
-            this.commandExecutor._isRunningQuery = false;
+            this.commandExecutor.unlockQuery();
             final String exception = ((CommandResult) result).getException();
             if ((null == exception) || exception.isEmpty())
             {
@@ -94,7 +94,7 @@ final class CmdCallback<T> implements AsyncCallback<T>
                     _post.onEvent(result);
                 }
                 this.commandExecutor.onEvent(this.commandExecutor._onSuccess, result);
-                this.commandExecutor._isRunningQuery = false;
+                this.commandExecutor.unlockQuery();
             }
             else
             {
@@ -115,7 +115,7 @@ final class CmdCallback<T> implements AsyncCallback<T>
         }
         else
         {
-            this.commandExecutor._isRunningQuery = false;
+            this.commandExecutor.unlockQuery();
             if (null != _post)
             {
                 _post.onEvent();

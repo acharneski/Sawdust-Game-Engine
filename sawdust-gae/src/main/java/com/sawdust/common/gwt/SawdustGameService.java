@@ -23,6 +23,8 @@ public interface SawdustGameService extends RemoteService
 
     CommandResult gameCmd(AccessToken accessData, String cmd);
 
+    void updateGameConfig(AccessToken accessData, GameConfig game) throws GameException;
+
     CommandResult gameCmds(AccessToken accessData, ArrayList<String> cmd);
 
     GameConfig getGameTemplate(AccessToken accessData, String game);

@@ -210,4 +210,10 @@ final class DummyGame implements Game, Serializable
     {
         return 90;
     }
+
+    @Override
+    public void updateConfig(GameConfig newConfig) throws GameException
+    {
+    }
+
 }

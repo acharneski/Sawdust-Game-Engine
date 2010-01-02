@@ -311,4 +311,10 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    {
        return 90;
    }
+
+   @Override
+   public void updateConfig(GameConfig newConfig) throws GameException
+   {
+   }
+
 }

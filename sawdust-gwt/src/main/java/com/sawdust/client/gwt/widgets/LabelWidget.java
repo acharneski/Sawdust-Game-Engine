@@ -25,12 +25,12 @@ public class LabelWidget extends SimplePanel implements MouseUpHandler
     private String _command = null;
     private Widget _innerWidget;
     private String _labelId = null;
-    private final GameWidget gameWidget;
+    private final PlayAreaWidget gameWidget;
     
     /**
 	 * 
 	 */
-    public LabelWidget(final GameWidget parentP)
+    public LabelWidget(final PlayAreaWidget parentP)
     {
         super();
         gameWidget = parentP;

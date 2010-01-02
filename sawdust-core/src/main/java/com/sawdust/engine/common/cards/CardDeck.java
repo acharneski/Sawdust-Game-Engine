@@ -134,7 +134,7 @@ public class CardDeck implements Serializable
         return values[i];
     }
 
-    public void removeCardFromMemory(final Card card)
+    public void discard(final Card card)
     {
         _inPlay.remove(card);
         _discards.add(card);

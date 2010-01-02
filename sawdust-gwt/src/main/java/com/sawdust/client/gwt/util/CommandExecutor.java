@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sawdust.client.gwt.widgets.mylog;
 import com.sawdust.common.gwt.SawdustGameService;
 import com.sawdust.common.gwt.SawdustGameServiceAsync;
 import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.common.CommandResult;
+import com.sawdust.engine.common.config.GameConfig;
 
 public class CommandExecutor
 {
@@ -35,12 +38,10 @@ public class CommandExecutor
 
     private AccessToken _accessKey = null;
     private final ArrayList<Command> _commandQueue = new ArrayList<Command>();
-
     private final SawdustGameServiceAsync _gameService = GWT.create(SawdustGameService.class);
-
-    boolean _isRunningQuery = false;
+    private boolean _isRunningQuery = false;
     int _locks = 0;
-    
+
     public boolean isLocked()
     {
         assert(0 <= _locks) : "Negative lock index";
@@ -59,11 +60,12 @@ public class CommandExecutor
     }
     
 
-    final ArrayList<EventListener> _onComplete = new ArrayList<EventListener>();
-    final ArrayList<EventListener> _onError = new ArrayList<EventListener>();
-    private final ArrayList<EventListener> _onPostSend = new ArrayList<EventListener>();
-    private final ArrayList<EventListener> _onPreSend = new ArrayList<EventListener>();
-    final ArrayList<EventListener> _onSuccess = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _onComplete = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _onError = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _onPostSend = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _onPreSend = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _onSuccess = new ArrayList<EventListener>();
+    public final ArrayList<EventListener> _preCommand = new ArrayList<EventListener>();
     mylog LOG;
 
     public CommandExecutor(final mylog log)
@@ -106,24 +108,33 @@ public class CommandExecutor
     public void doCommand(final String cmd, final EventListener post)
     {
         queueCommand(cmd, post);
-        if (!_isRunningQuery)
+        if (!isQueryLocked())
         {
             doQueue();
         }
     }
 
-    private void doQueue()
+    public void doQueue()
     {
         if (!_commandQueue.isEmpty())
         {
-            _isRunningQuery = true;
+            lockQuery();
             final ArrayList<Command> queue = (ArrayList<Command>) _commandQueue.clone();
             _commandQueue.clear();
             final ArrayList<String> cmds = new ArrayList<String>();
             for (final Command c : queue)
             {
-                LOG.debug("Batching command: " + c.command);
-                cmds.add(c.command);
+                onEvent(_preCommand, c);
+                if(c.supress)
+                {
+                    LOG.debug("Command delayed: " + c.command);
+                    _commandQueue.add(c);
+                }
+                else
+                {
+                    LOG.debug("Batching command: " + c.command);
+                    cmds.add(c.command);
+                }
             }
             onEvent(_onPreSend);
             _gameService.gameCmds(_accessKey, cmds, new CmdCallback<CommandResult>(this, "BATCH", new EventListener()
@@ -154,9 +165,9 @@ public class CommandExecutor
 
     public void doUpdate(final int versionNumber, final EventListener post)
     {
-        if (!_isRunningQuery)
+        if (!isQueryLocked())
         {
-            _isRunningQuery = true;
+            lockQuery();
             if (_commandQueue.isEmpty())
             {
                 LOG.debug("doUpdate : Command queue is empty");
@@ -178,9 +189,9 @@ public class CommandExecutor
 
     public void doLoad(final EventListener post)
     {
-        if (!_isRunningQuery)
+        if (!isQueryLocked())
         {
-            _isRunningQuery = true;
+            lockQuery();
             LOG.debug("doLoad");
             onEvent(_onPreSend);
             _gameService.getState(_accessKey, new CmdCallback<CommandResult>(this, post));
@@ -195,9 +206,9 @@ public class CommandExecutor
     public void getGame(final EventListener post)
     {
         onEvent(_onPreSend);
-        if (!_isRunningQuery)
+        if (!isQueryLocked())
         {
-            _isRunningQuery = true;
+            lockQuery();
         }
         _gameService.getState(_accessKey, new CmdCallback<CommandResult>(this, "", post));
         onEvent(_onPostSend);
@@ -218,5 +229,40 @@ public class CommandExecutor
     public ArrayList<Command> getCommandQueue()
     {
         return _commandQueue;
+    }
+    public ArrayList<EventListener> getPreCommand()
+    {
+        return _preCommand;
+    }
+    public void lockQuery()
+    {
+        this._isRunningQuery = true;
+    }
+    public void unlockQuery()
+    {
+        this._isRunningQuery = false;
+    }
+    public boolean isQueryLocked()
+    {
+        return _isRunningQuery;
+    }
+    public void setGameConfig(GameConfig config, final EventListener onComplete)
+    {
+        _gameService.updateGameConfig(_accessKey, config, new AsyncCallback<Void>()
+        {
+            
+            @Override
+            public void onSuccess(Void result)
+            {
+                onComplete.onEvent();
+            }
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Failed to update configuration");
+                onComplete.onEvent();
+            }
+        });
     }
 }

@@ -39,14 +39,6 @@ public class StopGameType extends com.sawdust.engine.game.GameType<StopGame>
     }
 
     @Override
-    public GameConfig getPrototypeConfig(final Account account)
-    {
-        final GameConfig gameTemplate = super.getPrototypeConfig(account);
-
-        return gameTemplate;
-    }
-
-    @Override
     public String getIcon()
     {
         return "/media/go.png";

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+
+<%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.datastore.entities.Account"%>
 <%@ page import="java.net.URLEncoder"%>

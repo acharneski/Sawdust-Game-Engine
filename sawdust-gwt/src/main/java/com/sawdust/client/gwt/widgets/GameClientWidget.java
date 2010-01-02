@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.sawdust.client.gwt.util.Command;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,22 +19,27 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sawdust.client.gwt.GameConfigWidget;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.EventListener;
 import com.sawdust.client.gwt.util.FacebookLogic;
 import com.sawdust.client.gwt.util.GoogleAccess;
 import com.sawdust.engine.common.CommandResult;
+import com.sawdust.engine.common.config.GameConfig;
+import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.game.ClientCommand;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Message;
@@ -52,7 +58,7 @@ public class GameClientWidget
     private final Button _closeButton = new Button("Close");
     private final ConsoleWidget _consoleWidget = new ConsoleWidget();
     private final DialogBox _dialogBox = new DialogBox();
-    private final GameWidget _gameWidget;
+    private final PlayAreaWidget _gameWidget;
     private final MultiWordSuggestOracle _oracle = new MultiWordSuggestOracle();
     private final HTML _serverResponseLabel = new HTML();
     private final SuggestBox _suggestBox = new SuggestBox(_oracle);
@@ -173,15 +179,59 @@ public class GameClientWidget
             cmdService.doUpdate(versionNumber, null);
         }
     };
+    
+    
+    static final String FILTER_KEY = "TurnConfig";
 
     public GameClientWidget(final RootPanel rootPanel)
     {
         cmdService.setAccessKey(GoogleAccess.getAccessToken(rootPanel));
-        _gameWidget = new GameWidget(cmdService);
+        _gameWidget = new PlayAreaWidget(cmdService);
         buildDialog(_dialogBox, _closeButton, _serverResponseLabel);
         final VerticalPanel vPanel = buildMainPanel();
         rootPanel.add(vPanel);
         _oracle.clear();
+        setupAjaxLoader();
+        cmdService.getPreCommand().add(new EventListener()
+        {
+            
+            @Override
+            public void onEvent(Object... params)
+            {
+                final Command command = (Command) params[0];
+                if(command.supress) return;
+                if(command.filterStatus.containsKey(FILTER_KEY)) return;
+                command.filterStatus.put(FILTER_KEY,false);
+                if(command.command.equals("Deal"))
+                {
+                    final GameConfigWidget gameConfigWidget = new GameConfigWidget(_currentState.getConfig(), DetailLevel.Spam);
+                    final SawdustDialogBox configDialog = new SawdustDialogBox(gameConfigWidget, new EventListener()
+                    {
+                        @Override
+                        public void onEvent(Object... params)
+                        {
+                            GameConfig config = gameConfigWidget.getConfig();
+                            cmdService.setGameConfig(config, new EventListener()
+                            {
+                                @Override
+                                public void onEvent(Object... params)
+                                {
+                                    command.filterStatus.put(FILTER_KEY,true);
+                                    command.supress = false;
+                                    cmdService.doQueue();
+                                }
+                            });
+                        }
+                    });
+                    configDialog.center();
+                    configDialog.setTitle("Confirm Game Configuration");
+                    configDialog.setText("Please confirm game settings:");
+                    configDialog.show();
+                    configDialog.buttonOk.setFocus(true);
+                    command.supress = true;
+                }
+            }
+        });
         cmdService.getGame(new EventListener()
         {
             public void onEvent(Object... params)
@@ -189,6 +239,27 @@ public class GameClientWidget
                 refreshTimer.scheduleRepeating(refreshDelayMillis);
             }
         });
+    }
+
+    final Image image = new Image("/media/ajax-loader.gif");
+    private void setupAjaxLoader()
+    {
+        _gameWidget.add(image, 0, 0);
+        DOM.setStyleAttribute(image.getElement(), "zIndex", Integer.toString(100));
+        image.setVisible(false);
+        cmdService.getPreCommand().add(new EventListener(){
+            @Override
+            public void onEvent(Object... params)
+            {
+                image.setVisible(true);
+            }});
+        cmdService._onComplete.add(new EventListener(){
+
+            @Override
+            public void onEvent(Object... params)
+            {
+                image.setVisible(false);
+            }});
     }
 
     private VerticalPanel buildMainPanel()

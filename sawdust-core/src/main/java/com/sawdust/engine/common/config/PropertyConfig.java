@@ -9,6 +9,18 @@ public class PropertyConfig implements Serializable
         Boolean, Null, Number, Text
     }
 
+    public enum DetailLevel
+    {
+        Startup(1),
+        Runtime(2),
+        Spam(3);
+        public final int value;
+        DetailLevel(int i)
+        {
+            value = i;
+        }
+    }
+
     public static final String FALSE = "false";
 
     public static final String TRUE = "true";
@@ -18,6 +30,7 @@ public class PropertyConfig implements Serializable
     public String suffix = null;
 
     public PropertyType type = PropertyType.Null;;
+    public DetailLevel levelOfDetail = DetailLevel.Startup;
     public String value = "";
 
     public PropertyConfig()

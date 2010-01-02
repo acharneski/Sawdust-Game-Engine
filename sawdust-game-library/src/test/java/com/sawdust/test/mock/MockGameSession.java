@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.Game;
@@ -202,5 +203,25 @@ public class MockGameSession implements GameSession, Serializable
     public String getUrl()
     {
         return "http://com.sawdust.test.mock/MockGameSession";
+    }
+
+    @Override
+    public void updateConfig(GameConfig game)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setAnte(int anteInteger)
+    {
+        ante = anteInteger;
+    }
+
+    @Override
+    public int getActiveMembers() throws GameException
+    {
+        assert(false);
+        return 1;
     }
 }

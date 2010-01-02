@@ -89,5 +89,7 @@ public interface Game extends Serializable, Cloneable
    public void advanceTime(int milliseconds);
 
    int getUpdateTime();
+
+   void updateConfig(GameConfig newConfig) throws GameException;
    
 }

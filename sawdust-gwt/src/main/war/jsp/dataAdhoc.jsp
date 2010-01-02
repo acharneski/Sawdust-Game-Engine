@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+
+<%@ page import="com.google.appengine.api.datastore.EntityNotFoundException"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="com.sawdust.engine.service.Util" %>
 

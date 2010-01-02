@@ -352,7 +352,8 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 this.addMessage("Warning: No card found at index %d", cardSlot);
                 continue;
             }
-            remove(card);
+            removeToken(card);
+            getDeck().discard(((IndexCard) card).getCard());
             cardCount++;
         }
     }

@@ -1,13 +1,14 @@
 package com.sawdust.engine.game;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.GameModConfig;
+import com.sawdust.engine.common.config.PropertyConfig;
 import com.sawdust.engine.common.game.GameCanvas;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Message;
@@ -527,4 +528,18 @@ public abstract class BaseGame implements Game
             message.setTo(ownerId);
         }
     }
+
+    @Override
+    public void updateConfig(GameConfig newConfig) throws GameException
+    {
+        HashMap<String, PropertyConfig> thisProperties = getConfig().getProperties();
+        HashMap<String, PropertyConfig> newProperties = newConfig.getProperties();
+        String anteString = newProperties.get(GameConfig.ANTE).value;
+        int anteInteger = Integer.parseInt(anteString);
+        thisProperties.get(GameConfig.ANTE).value = anteString;
+        thisProperties.get(GameConfig.ANTE).defaultValue = anteString;
+        this.getSession().setAnte(anteInteger);
+        saveState();
+    }
+
 }

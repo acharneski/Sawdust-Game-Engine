@@ -27,4 +27,6 @@ public interface SawdustGameServiceAsync
     void getGameUpdate(AccessToken accessData, int gameVersion, AsyncCallback<CommandResult> callback);
 
     void getState(AccessToken accessData, AsyncCallback<CommandResult> callback);
+
+    void updateGameConfig(AccessToken accessData, GameConfig game, AsyncCallback<Void> callback);
 }

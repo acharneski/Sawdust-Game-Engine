@@ -135,12 +135,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
                 ((BaseGame) gameObj).postStartActivity();
             }
 
-            newSession.setGame(game.getGameName());
-            newSession.setMoveTimeout(Integer.parseInt(game.getProperties().get(GameConfig.MOVE_TIMEOUT).value));
-            newSession.setAnte(Integer.parseInt(game.getProperties().get(GameConfig.ANTE).value));
-            String name = game.getProperties().get(GameConfig.GAME_NAME).value;
-            name = name.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-            newSession.setName(name);
+            newSession.updateConfig(game);
             gameObj.saveState();
             final Player player = account.getPlayer();
             newSession.addPlayer(player);
@@ -333,6 +328,28 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             commandResult = new CommandResult(new GameException("Fatal Exception"));
         }
         return commandResult;
+    }
+
+    @Override
+    public void updateGameConfig(AccessToken accessData, GameConfig game) throws GameException
+    {
+        try
+        {
+            DataStore.Clear();
+            final com.sawdust.server.logic.SessionToken access = getSessionToken(accessData);
+            LOG.info(String.format("ConfigUpdate\tUser=%s", access.getUserId()));
+
+            com.sawdust.engine.service.data.GameSession gameSession;
+            gameSession = access.loadSession();
+            if (null == gameSession) throw new InputException("Cannot load session");
+
+            gameSession.updateConfig(game);
+            DataStore.Save();
+        }
+        catch (GameException e)
+        {
+            throw new GameException(e);
+        }
     }
 
 }

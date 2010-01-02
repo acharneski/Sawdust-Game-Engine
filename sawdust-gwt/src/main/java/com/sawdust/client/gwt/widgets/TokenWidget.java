@@ -34,7 +34,7 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
     private int _dragStartX = 0;
     private int _dragStartY = 0;
     private final int _id;
-    private final GameWidget _parent;
+    private final PlayAreaWidget _parent;
     private int _startX;
     private int _startY;
     private Token _state;
@@ -43,7 +43,7 @@ public class TokenWidget extends Image implements MouseMoveHandler, MouseDownHan
     /**
 	 * 
 	 */
-    public TokenWidget(final GameWidget parent, final int id)
+    public TokenWidget(final PlayAreaWidget parent, final int id)
     {
         super();
         _id = id;

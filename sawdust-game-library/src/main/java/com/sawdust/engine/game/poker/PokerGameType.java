@@ -2,6 +2,7 @@ package com.sawdust.engine.game.poker;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
+import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.GameType;
@@ -45,6 +46,7 @@ public class PokerGameType extends com.sawdust.engine.game.GameType<PokerGame>
 
         final PropertyConfig value = new PropertyConfig(PropertyType.Number, GameConfig.NUM_PLAYERS);
         value.description = "Number of players to play poker (including you)";
+        value.levelOfDetail = DetailLevel.Runtime;
         value.defaultValue = "2";
         gameTemplate.addProperty(value);
 

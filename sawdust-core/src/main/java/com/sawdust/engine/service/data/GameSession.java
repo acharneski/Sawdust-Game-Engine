@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.players.Participant;
@@ -88,5 +89,11 @@ public interface GameSession extends Bank
     <T extends Serializable> T getResource(Class<T> c);
 
     String getUrl();
+
+    void updateConfig(GameConfig game) throws GameException;
+
+    void setAnte(int anteInteger) throws GameException;
+
+    int getActiveMembers() throws GameException;
 
 }

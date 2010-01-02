@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.EventListener;
+import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.game.ClientCommand;
 import com.sawdust.engine.common.game.GameLabel;
 import com.sawdust.engine.common.game.GameState;
@@ -40,7 +41,7 @@ import com.sawdust.engine.common.game.Token;
 /**
  * @author Administrator
  */
-public class GameWidget extends AbsolutePanel
+public class PlayAreaWidget extends AbsolutePanel
 {
     private final VerticalPanel _descriptionWidget = new VerticalPanel();
     private final VerticalPanel _helpWidget = new VerticalPanel();
@@ -49,7 +50,7 @@ public class GameWidget extends AbsolutePanel
         @Override
         public void run()
         {
-            GameWidget.this.setState(_state);
+            PlayAreaWidget.this.setState(_state);
         }
     };
     private final VerticalPanel _rulesWidget = new VerticalPanel();
@@ -59,7 +60,7 @@ public class GameWidget extends AbsolutePanel
     private final DecoratedTabPanel _tabPanel = new DecoratedTabPanel();
     private final HorizontalPanel notifyPanel = new HorizontalPanel();
 
-    public GameWidget(final CommandExecutor cmdService)
+    public PlayAreaWidget(final CommandExecutor cmdService)
     {
         super();
         _service = cmdService;
@@ -175,7 +176,7 @@ public class GameWidget extends AbsolutePanel
             else
             {
                 final LabelWidget newLabel = new LabelWidget(this);
-                GameWidget.this.add(newLabel);
+                PlayAreaWidget.this.add(newLabel);
                 newLabel.setState(label);
                 lookup.put(label.key, newLabel);
             }
@@ -192,10 +193,11 @@ public class GameWidget extends AbsolutePanel
         _state = state;
 
         _descriptionWidget.clear();
-        _descriptionWidget.add(new HTML(state.getConfig().getGameDescription()));
+        GameConfig config = state.getConfig();
+        _descriptionWidget.add(new HTML(config.getGameDescription()));
 
         _rulesWidget.clear();
-        _rulesWidget.add(new HTML(state.getConfig().getRules()));
+        _rulesWidget.add(new HTML(config.getRules()));
 
         _helpWidget.clear();
         
@@ -244,7 +246,7 @@ public class GameWidget extends AbsolutePanel
             }
         }
         
-        GameWidget.this.setSize(width, height);
+        PlayAreaWidget.this.setSize(width, height);
 
         setLabels(state);
         setTokens(state);

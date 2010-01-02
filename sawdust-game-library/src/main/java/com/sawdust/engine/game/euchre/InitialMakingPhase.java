@@ -44,7 +44,8 @@ final class InitialMakingPhase extends GamePhase
          */
         final IndexCard playCard = (IndexCard) game.getToken(new IndexPosition(EuchreLayout.POS_IN_PLAY, 0));
         final Suits suit = playCard.getCard().getSuit();
-        game.remove(playCard);
+        game.removeToken(playCard);
+        game.getDeck().discard(playCard.getCard());
         game._trumpSuit = suit;
         game._maker = game.getPlayerManager().getCurrentPlayer();
         game.addMessage(MessageType.Compact, "<strong>Trump suit is called %s.</strong>", game._trumpSuit.fullString());

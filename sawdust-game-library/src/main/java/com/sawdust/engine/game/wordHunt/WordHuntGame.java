@@ -855,7 +855,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         {
             final BoardToken token = (BoardToken) tokenIndexByPosition.get(l);
             final BoardToken newToken = generateToken(chainSize, getMarkovChain(), tokenArray, l);
-            remove(newToken);
+            removeToken(newToken);
             add(newToken);
         }
     }

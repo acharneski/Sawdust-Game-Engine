@@ -2,6 +2,7 @@ package com.sawdust.engine.game.wordHunt;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
+import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.GameType;
@@ -45,6 +46,7 @@ public class WordHuntGameType extends com.sawdust.engine.game.GameType<WordHuntG
         final PropertyConfig value = new PropertyConfig(PropertyType.Number, GameConfig.NUM_PLAYERS);
         value.description = "Number of players to play (including you)";
         value.defaultValue = "1";
+        value.levelOfDetail = DetailLevel.Runtime;
         gameTemplate.addProperty(value);
 
         return gameTemplate;

@@ -165,10 +165,27 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         final GameState returnValue = super.toGwt(access);
         if(!getPlayerManager().isMember(access))
         {
-            Notification notification = new Notification();
-            notification.notifyText = "You are currently observing this game.";
-            notification.add("Join Table", "Join Game");
-            returnValue.setNotification(notification);
+            if(this.isInPlay())
+            {
+                Notification notification = new Notification();
+                notification.notifyText = "You are currently observing a game in progress.";
+                notification.add("Join Table", "Join Game");
+                returnValue.setNotification(notification);
+            }
+            else if(this.getSession().getActiveMembers() > 0)
+            {
+                Notification notification = new Notification();
+                notification.notifyText = "This game is currently forming.";
+                notification.add("Join Table", "Join Game");
+                returnValue.setNotification(notification);
+            }
+            else
+            {
+                Notification notification = new Notification();
+                notification.notifyText = "This is a potentially stale game.";
+                notification.add("Join Table", "Join Game");
+                returnValue.setNotification(notification);
+            }
         }
         else if(!isInPlay())
         {

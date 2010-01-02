@@ -10,6 +10,7 @@ import com.sawdust.engine.common.IGameType;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.GameModConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
+import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
@@ -76,11 +77,13 @@ public abstract class GameType<T extends Game> implements IGameType
         final PropertyConfig ante = new PropertyConfig(PropertyType.Number, GameConfig.ANTE);
         ante.suffix = "credits";
         ante.defaultValue = "1";
+        ante.levelOfDetail = DetailLevel.Spam;
         configs.add(ante);
 
         final PropertyConfig timeout = new PropertyConfig(PropertyType.Number, GameConfig.MOVE_TIMEOUT);
         timeout.suffix = "seconds";
         timeout.defaultValue = "0";
+        timeout.levelOfDetail = DetailLevel.Runtime;
         timeout.description = "If positive, this game will force moves after the game has been stale for the specified number of seconds.";
         configs.add(timeout);
 

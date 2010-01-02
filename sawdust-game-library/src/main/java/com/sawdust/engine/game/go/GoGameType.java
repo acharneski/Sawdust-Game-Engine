@@ -43,14 +43,6 @@ public class GoGameType extends com.sawdust.engine.game.GameType<GoGame>
     }
 
     @Override
-    public GameConfig getPrototypeConfig(final Account account)
-    {
-        final GameConfig gameTemplate = super.getPrototypeConfig(account);
-
-        return gameTemplate;
-    }
-
-    @Override
     public String getIcon()
     {
         return "/media/go.png";

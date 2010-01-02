@@ -41,7 +41,7 @@ public abstract class PersistantTokenGame extends TokenGame
         _tokens.clear();
     }
 
-    public void remove(final Token state)
+    public void removeToken(final Token state)
     {
         final int cardId = state.getId();
         final ArrayList<Token> cardsToRemove = new ArrayList<Token>();

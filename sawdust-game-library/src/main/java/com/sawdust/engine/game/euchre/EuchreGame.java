@@ -107,7 +107,8 @@ public abstract class EuchreGame extends MultiPlayerCardGame
             {
                 continue;
             }
-            remove(card);
+            removeToken(card);
+            getDeck().discard(((IndexCard) card).getCard());
         }
         _roundCardCount = 0;
     }
