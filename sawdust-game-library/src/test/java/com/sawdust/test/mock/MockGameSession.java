@@ -213,7 +213,7 @@ public class MockGameSession implements GameSession, Serializable
     }
 
     @Override
-    public void setAnte(int anteInteger)
+    public void setValue(int anteInteger)
     {
         ante = anteInteger;
     }

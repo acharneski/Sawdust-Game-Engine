@@ -540,6 +540,7 @@ public class GameClientWidget
             {
                 if(m.isSocialActivity)
                 {
+                    LOG.debug("Posting social activity: " + m.getText());
                     FacebookLogic.postActivity(m);
                 }
                 else

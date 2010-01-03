@@ -1,6 +1,8 @@
 package com.sawdust.server.datastore.entities;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -11,6 +13,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Serialized;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Blob;
@@ -403,5 +406,29 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
             LOG.warning(String.format("Get UserLogic: %s", Util.getFullString(e)));
         }
         return fromBytes;
+    }
+
+    @Persistent
+    @Serialized
+    private HashMap<Class, Key> resources = new HashMap<Class, Key>();
+
+    @Override
+    public <T extends Serializable> T getResource(Class<T> c)
+    {
+        if (!resources.containsKey(c)) return null;
+        Key key = resources.get(c);
+        SessionResource get = DataStore.Get(SessionResource.class, key);
+        if (null == get)
+        {
+            LOG.warning("null == get");
+            return null;
+        }
+        return get.getData(c);
+    }
+
+    @Override
+    public <T extends Serializable> void setResource(Class<T> c, T markovChain)
+    {
+        resources.put(c, new SessionResource(this, markovChain).getKey());
     }
 }

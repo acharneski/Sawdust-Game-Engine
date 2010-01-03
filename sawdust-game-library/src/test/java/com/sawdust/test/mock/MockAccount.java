@@ -1,5 +1,7 @@
 package com.sawdust.test.mock;
 
+import java.io.Serializable;
+
 import com.sawdust.engine.game.Bank;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
@@ -60,6 +62,18 @@ public class MockAccount implements Account
 
     public void setAdmin(boolean isAdmin)
     {
+    }
+
+    @Override
+    public <T extends Serializable> T getResource(Class<T> c)
+    {
+        throw new RuntimeException("Not Implemented");
+    }
+
+    @Override
+    public <T extends Serializable> void setResource(Class<T> c, T markovChain)
+    {
+        throw new RuntimeException("Not Implemented");
     }
 
 }

@@ -92,7 +92,7 @@ public interface GameSession extends Bank
 
     void updateConfig(GameConfig game) throws GameException;
 
-    void setAnte(int anteInteger) throws GameException;
+    void setValue(int anteInteger) throws GameException;
 
     int getActiveMembers() throws GameException;
 

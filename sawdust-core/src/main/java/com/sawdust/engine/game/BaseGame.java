@@ -538,7 +538,7 @@ public abstract class BaseGame implements Game
         int anteInteger = Integer.parseInt(anteString);
         thisProperties.get(GameConfig.ANTE).value = anteString;
         thisProperties.get(GameConfig.ANTE).defaultValue = anteString;
-        this.getSession().setAnte(anteInteger);
+        this.getSession().setValue(anteInteger);
         saveState();
     }
 

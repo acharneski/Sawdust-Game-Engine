@@ -35,7 +35,7 @@ public class SessionResource extends DataObj
         super();
     }
 
-    public SessionResource(final GameSession session2, Serializable resource)
+    public SessionResource(final DataObj session2, Serializable resource)
     {
         super(new KeyFactory.Builder((session2).getKey()).addChild(SessionResource.class.getSimpleName(), resource.getClass().getName()).getKey());
         gameSession = session2.getKey();
@@ -48,13 +48,5 @@ public class SessionResource extends DataObj
     {
         T fromBytes = (T) Util.fromBytes(data.getBytes());
         return fromBytes;
-    }
-
-    /**
-     * @return the gameSession
-     */
-    public GameSession getGameSession()
-    {
-        return DataStore.Get(GameSession.class, gameSession);
     }
 }

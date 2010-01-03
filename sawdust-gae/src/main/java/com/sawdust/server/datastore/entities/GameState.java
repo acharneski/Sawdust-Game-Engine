@@ -54,7 +54,6 @@ public class GameState extends DataObj
         final List<GameState> queryResult = (List<GameState>) newQuery.execute(keyToString, version);
         for (final GameState transaction : queryResult)
         {
-            // finalResult.add((MoneyTransaction) DataStore.Add(transaction));
             finalResult.add(transaction);
         }
 
@@ -143,6 +142,7 @@ public class GameState extends DataObj
         catch (Throwable e)
         {
             LOG.warning(Util.getFullString(e));
+            this.delete(true);
             return null;
         }
     }

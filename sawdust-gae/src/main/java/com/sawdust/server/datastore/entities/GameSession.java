@@ -328,7 +328,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         if (null == currentState) return null;
         try
         {
-            _cachedState = GameState.load(currentState).getState(this);
+            GameState load = GameState.load(currentState);
+            if(null == load)
+            {
+                this.delete(true);
+                return null;
+            }
+            _cachedState = load.getState(this);
             return _cachedState;
         }
         catch (Throwable e)
@@ -539,7 +545,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
      *            the ante to set
      * @throws GameException
      */
-    public void setAnte(final int pante) throws GameException
+    public void setValue(final int pante) throws GameException
     {
         if (0 > pante) throw new GameLogicException(String.format("Cannot set the ante to %d", pante));
         ante = pante;
@@ -935,7 +941,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         }
         this.setGame(newConfig.getGameName());
         this.setMoveTimeout(Integer.parseInt(newConfig.getProperties().get(GameConfig.MOVE_TIMEOUT).value));
-        this.setAnte(Integer.parseInt(newConfig.getProperties().get(GameConfig.ANTE).value));
+        this.setValue(Integer.parseInt(newConfig.getProperties().get(GameConfig.ANTE).value));
         String name = newConfig.getProperties().get(GameConfig.GAME_NAME).value;
         name = name.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
         this.setName(name);
