@@ -934,7 +934,12 @@ public abstract class WordHuntGame extends PersistantTokenGame
 
     private void learnWords(final MarkovPredictor mk, final String latestNews)
     {
-        mk.learn(latestNews.toUpperCase().replaceAll("</?[^>]+>", " ").replaceAll("[^A-Z]", " ").replaceAll(" [A-Z]{0,2} ", " "));
+        String textToLearn = latestNews.toUpperCase().replaceAll("</?[^>]+>", " ").replaceAll("[^A-Z]", " ");
+        for(String word : textToLearn.split(" "))
+        {
+            if(word.length() < 3) continue;
+            mk.learn(word);
+        }
     }
 
     public int getUpdateTime()
