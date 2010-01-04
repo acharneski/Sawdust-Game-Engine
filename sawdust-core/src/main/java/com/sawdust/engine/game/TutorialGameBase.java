@@ -190,7 +190,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
 
    @Override
-   public List<AgentFactory<?>> getAgentFactories()
+   public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
    {
       return _innerGame.getAgentFactories();
    }

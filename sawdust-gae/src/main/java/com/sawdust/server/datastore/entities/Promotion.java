@@ -18,6 +18,8 @@ import javax.persistence.OrderBy;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.sawdust.engine.common.game.Message;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
@@ -28,7 +30,7 @@ import com.sawdust.server.datastore.entities.Account.InterfacePreference;
 import com.sawdust.server.datastore.entities.PromoRedemption.MemberStatus;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class Promotion extends DataObj
+public class Promotion extends DataObj implements com.sawdust.engine.service.data.Promotion
 {
     private static final Logger LOG = Logger.getLogger(Promotion.class.getName());
 
@@ -88,6 +90,12 @@ public class Promotion extends DataObj
     @Persistent
     private Key _owner;
 
+    @Persistent
+    private String _message;
+
+    @Persistent
+    private String _attachment;
+
     protected Promotion()
     {
         super();
@@ -116,9 +124,9 @@ public class Promotion extends DataObj
         return myData;
     }
 
-    public static Promotion load(final Account paccount, int pValue, int redemtions, String pName) throws GameException
+    public static Promotion load(final Account paccount, PromotionConfig p) throws GameException
     {
-        Promotion self = new Promotion(paccount, pValue, redemtions, pName);
+        Promotion self = new Promotion(paccount, p);
         final String md5 = Util.md5hex(KeyFactory.keyToString(self.getKey()));
         for (int i = 3; i < md5.length(); i++)
         {
@@ -141,13 +149,23 @@ public class Promotion extends DataObj
         return self;
     }
 
-    protected Promotion(final Account paccount, int pValue, int redemtions, String pName) throws GameException
+
+    protected Promotion(final Account paccount, PromotionConfig p) throws GameException
     {
         super(getKey(paccount));
-        name = pName;
+        name = p._name;
         _owner = paccount.getKey();
-        _maxRedemption = redemtions;
-        this.value = pValue;
+        _maxRedemption = p._maxRedemption;
+        _attachment = p._attachment;
+        this.value = p._value;
+        this._message = p._msg;
+        _attachment = _attachment.replaceAll("PROMOLINK", getFullUrl());
+        
+        final PromoRedemption sessionMember = new PromoRedemption(this, (com.sawdust.server.datastore.entities.Account) paccount);
+        sessionMember.memberIndex = members.size();
+        sessionMember.setMemberStatus(MemberStatus.Waiting);
+        LOG.info(String.format("Adding Owner to Promotion: %s", sessionMember.getAccount().getUserId()));
+        members.add(sessionMember);
     }
 
     private static Key getKey(final Account paccount)
@@ -162,11 +180,18 @@ public class Promotion extends DataObj
     public void addAccount(final com.sawdust.engine.service.data.Account _account) throws GameLogicException
     {
         if(_maxRedemption <= members.size()) throw new GameLogicException(String.format("This promotion has already been redeemed %d times", members.size()));
+        for (final PromoRedemption member : members)
+        {
+            if (member.getAccount().getUserId().equals(_account.getUserId())) 
+            {
+                throw new GameLogicException("You have already redeemed this gift");
+            }
+        }
+        
         final PromoRedemption sessionMember = new PromoRedemption(this, (com.sawdust.server.datastore.entities.Account) _account);
         sessionMember.memberIndex = members.size();
         sessionMember.setMemberStatus(MemberStatus.Waiting);
-        
-        LOG.info(String.format("Adding Member to Session: %s", sessionMember.getAccount().getUserId()));
+        LOG.info(String.format("Adding Member to Promotion: %s", sessionMember.getAccount().getUserId()));
         members.add(sessionMember);
 
         LOG.fine(String.format("Withdrawl: %d (%s) from account %s to session %s", getValue(), getName(), ((Account) _account).getName(),
@@ -223,7 +248,7 @@ public class Promotion extends DataObj
         sb.append("<div class='sdge-game-listing'>");
         sb.append(String.format("<strong>Name: <a href='/c/%s'>%s</a></strong><br/>", _url, name));
         sb.append(String.format("Value: %d<br/>", value));
-        sb.append(String.format("Number of Players: %d<br/>", (null == members) ? 0 : members.size()));
+        sb.append(String.format("Times redeemed: %d<br/>", (null == members) ? 0 : members.size()));
         sb.append("</div>");
         return sb.toString();
     }
@@ -310,6 +335,13 @@ public class Promotion extends DataObj
         resources.put(c, new SessionResource(this, markovChain).getKey());
     }
 
+    @Override
+    public String getFullUrl()
+    {
+        return "http://sawdust-games.appspot.com/r/" + _url;
+    }
+
+    @Override
     public String getUrl()
     {
         return _url;
@@ -318,5 +350,13 @@ public class Promotion extends DataObj
     public void setUrl(String url)
     {
         _url = url;
+    }
+
+    @Override
+    public Message getMessage()
+    {
+        Message msg = new Message(_message).setSocialActivity(true);
+        msg.fbAttachment = _attachment;
+        return msg;
     }
 }

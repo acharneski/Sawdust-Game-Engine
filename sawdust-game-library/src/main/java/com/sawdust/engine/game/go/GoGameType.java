@@ -24,10 +24,7 @@ public class GoGameType extends com.sawdust.engine.game.GameType<GoGame>
     @Override
     public String getDescription()
     {
-        return "The game of Go is played with white and black stones, " 
-           + "which are places on the grid so as to surround the opponent. "
-           + "Detailed information can be found on <a href='http://en.wikipedia.org/wiki/Go_%28game%29' target=\"_new\">Wikipedia</a>. "
-           + "This particular version is currently limited to a 9x9 board.";
+        return "Go (碁) is a board game for two players who alternately place black and white stones  on a grid. The object of the game is to control the board  by surrounding territory and stones of the opposing color.";
     }
 
     @Override

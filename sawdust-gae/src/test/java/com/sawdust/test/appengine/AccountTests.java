@@ -2,6 +2,7 @@ package com.sawdust.test.appengine;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -12,12 +13,13 @@ import com.google.appengine.tools.development.ApiProxyLocalImpl;
 import com.google.apphosting.api.ApiProxy;
 import com.sawdust.engine.common.AccessToken;
 import com.sawdust.server.datastore.DataStore;
+import com.sawdust.server.datastore.entities.Account;
 import com.sawdust.server.datastore.entities.Promotion;
 import com.sawdust.server.logic.SessionToken;
 import com.sawdust.server.logic.User;
 import com.sawdust.server.logic.User.UserTypes;
 
-public class AccountTests extends TestCase
+public class AccountTests extends TestCase implements Serializable
 {
     public class MyTestData implements Serializable
     {
@@ -28,10 +30,10 @@ public class AccountTests extends TestCase
     @Test(timeout = 10000)
     public void testPersist() throws Exception
     {
-        File dbFile = new File("target/testData/PromotionTests");
+        File dbFile = new File("target/testData/AccountTests");
         if(dbFile.exists())
         {
-            dbFile.delete();
+            dbFile.renameTo(new File("target/testData/" + dbFile.getName() + "." + Long.toHexString(new Date().getTime()) + ".bak"));
         }
         
         ApiProxy.setEnvironmentForCurrentThread(new MockEnvironment());
@@ -49,20 +51,22 @@ public class AccountTests extends TestCase
         com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
         Assert.assertEquals(10, account.getBalance());
         MyTestData resource = account.getResource(MyTestData.class);
-        
-        
-        Promotion p = Promotion.load(account, 100, 3, "P");
-        String url = p.getUrl();
+        Assert.assertEquals(null, resource);
         DataStore.Save();
         DataStore.Clear();
-
         
-        com.sawdust.server.datastore.entities.Account r2 = com.sawdust.server.datastore.entities.Account.LoadIfExists(id1);
-        Assert.assertEquals(account, r2);
-        Assert.assertEquals(10, r2.getBalance());
-        Promotion p1 = Promotion.load(url);
-        p1.addAccount(r2);
-        Assert.assertEquals(110, r2.getBalance());
+        Account ac1 = Account.Load(id1);
+        MyTestData obj1 = new MyTestData();
+        obj1.flag = true;
+        ac1.setResource(MyTestData.class, obj1);
+        DataStore.Save();
         DataStore.Clear();
+        
+        Account ac2 = Account.Load(id1);
+        MyTestData obj2 = ac1.getResource(MyTestData.class);
+        Assert.assertEquals(obj1.flag, obj1.flag);
+        DataStore.Save();
+        DataStore.Clear();
+        
     }
 }

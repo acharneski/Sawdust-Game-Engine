@@ -46,7 +46,7 @@ public class FacebookLogic
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed posting activity");
+                //Window.alert("Failed posting activity");
             }
         };
         apiClient.streamPublish(m.getText(), attachment, actionLinks, targetId, userMessagePrompt, autoPublish, actorId, showDialog, callback);

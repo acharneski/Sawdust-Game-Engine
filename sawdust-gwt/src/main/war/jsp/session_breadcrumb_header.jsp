@@ -17,4 +17,18 @@
 
 <jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
 
-<h1><a href="/game.jsp?game=<%=requestData.getGameTypeId()%>"><%=requestData.getGameType()%></a><span class="breadcrumb-delimiter">&nbsp;&gt;&nbsp;</span><span class="subtitle"><%=requestData.getGameSessionName()%></span></h1>
+<%
+if(requestData.getGameType().isEmpty())
+{
+    %>
+        <h1><a href="/">Sawdust Game Engine<sub>Beta</sub></a></h1>
+        <jsp:include page="/jsp/gameBanner.jsp"></jsp:include>
+    <%
+}
+else
+{
+    %>
+        <h1><a href="/game.jsp?game=<%=requestData.getGameTypeId()%>"><%=requestData.getGameType()%></a><span class="breadcrumb-delimiter">&nbsp;&gt;&nbsp;</span><span class="subtitle"><%=requestData.getGameSessionName()%></span></h1>
+    <%
+}
+%>

@@ -152,27 +152,27 @@ final Logger LOG = Logger.getLogger("pageTemplate");
 	</div>
 
 	<div class="sdge-site-body">
-	<%
-	try
-	{
-	    %>
-			<jsp:doBody />
-	    <%
-	}
-	catch(Throwable e)
-	{
-	    LOG.warning("Exception rendering body: " + Util.getFullString(e));
-	    %>We're sorry, there was an error serving your request. Please try again, or come back later. Thank you for your patience!<%
-	}
-	%>
+		<%
+		try
+		{
+		    %>
+				<jsp:doBody />
+		    <%
+		}
+		catch(Throwable e)
+		{
+		    LOG.warning("Exception rendering body: " + Util.getFullString(e));
+		    %>We're sorry, there was an error serving your request. Please try again, or come back later. Thank you for your patience!<%
+		}
+		%>
 		<hr/>
-        <c:choose>
-            <c:when test="<%=null != isMobile%>">
-                <div style="float:right;valign=top;"><jsp:include page="/jsp/ad_mobile.jsp" /></div>
-            </c:when>
-            <c:otherwise>
-            </c:otherwise>
-        </c:choose>
+	    <c:choose>
+	        <c:when test="<%=null != isMobile%>">
+	            <div style="float:right;valign=top;"><jsp:include page="/jsp/ad_mobile.jsp" /></div>
+	        </c:when>
+	        <c:otherwise>
+	        </c:otherwise>
+	    </c:choose>
 		<div class="sdge-site-footer">
 			Do you like our site? We would love to hear from you. 
 			Please email us at <a href="mailto:sawdustgames@gmail.com" target="_blank">sawdustgames@gmail.com</a> 

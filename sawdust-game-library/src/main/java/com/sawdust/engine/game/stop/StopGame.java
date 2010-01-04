@@ -14,7 +14,9 @@ import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.MultiPlayerGame;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.go.GoLoot;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.MultiPlayer;
@@ -27,7 +29,9 @@ import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
 import com.sawdust.engine.game.wordHunt.BoardToken;
 import com.sawdust.engine.service.Util;
+import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.data.Promotion;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 import com.sawdust.engine.service.debug.SawdustSystemError;
@@ -182,6 +186,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                     String type = "Win/Stop";
                     String event = String.format("I won a game of Stop against %s!", opponentName);
                     ((Player)player).logActivity(new ActivityEvent(type,event));
+                    rollForLoot(player);
                 }
                 if(otherPlayer instanceof Player)
                 {
@@ -202,11 +207,32 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
       addMessage("It is now %s's turn", displayName(gotoNextPlayer));
    }
+
+   private void rollForLoot(Participant p) throws GameException
+   {
+       Account account = ((Player) p).loadAccount();
+       StopLoot resource = account.getResource(StopLoot.class);
+       if(null == resource)
+       {
+           resource = new StopLoot();
+       }
+       PromotionConfig promoConfig = resource.getLoot();
+       if(null != promoConfig)
+       {
+           Promotion awardPromotion = account.awardPromotion(promoConfig);
+           addMessage(
+                   "I won some loot playing Go at Sawdust Games, and I'd like to share... "+
+                   "The first 5 players to visit %s will get 50 free credits!", 
+                   awardPromotion.getFullUrl()
+           ).setSocialActivity(true).setTo(p.getId());
+       }
+       account.setResource(StopLoot.class, resource);
+   }
    
    @Override
-   public List<AgentFactory<?>> getAgentFactories()
+   public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
    {
-      final List<AgentFactory<?>> agentFactories = super.getAgentFactories();
+      final List<AgentFactory<? extends Agent<?>>> agentFactories = super.getAgentFactories();
       final PlayerManager playerManager = getPlayerManager();
       agentFactories.add(new AgentFactory<Stupid1>()
       {
@@ -381,7 +407,6 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             }
          }
       }
-      
       
       resetBoard();
       _mplayerManager.getPlayerManager();

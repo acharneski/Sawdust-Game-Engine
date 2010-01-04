@@ -10,7 +10,7 @@
 <%@ page import="com.sawdust.engine.service.Util"%>
 <%@ page import="com.sawdust.server.logic.GameTypes"%>
 
-<html>
+<html style="overflow:hidden;">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link type="text/css" rel="stylesheet" href="/gameClient/gwt/sawdust/sawdust.css">
@@ -60,7 +60,7 @@
 			
 		    <h1><%=game.getName()%></h1>
 		    <h2><%=game.getShortDescription()%></h2>
-		    <%=game.getDescription()%>
+		    <div><%=game.getDescription()%></div>
 	    <%
     }
 	else
@@ -84,5 +84,11 @@
     <%
 	}
     %>
+    <h2>Sawdust Game Engine</h2>
+    <div>
+    Sawdust Game Engine is an online gaming website focusing on card and board games. Our games are turn-based and tend to focus on strategy, chance, and skill. We are accessible via Facebook or directly via your Google account. 
+    
+    We offer free play, no download games which can be enjoyed with your existing Facebook friends on any HTML 5 browser such as Firefox, IE, and Chrome. We also have a mobile version which can be viewed on nearly any web-enabled phone, although for devices with full featured browsers such as the iPhone should use the main site.
+    </div>
 </body>
 </html>

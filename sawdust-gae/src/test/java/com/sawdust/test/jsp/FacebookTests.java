@@ -38,7 +38,7 @@ import com.sawdust.server.logic.User.UserTypes;
 
 public class FacebookTests extends TestCase
 {
-    private static final String sessionKey = "2.tZAXZasyRH_sUnVMw9lQCw__.86400.1262257200-100000080240659";
+    private static final String sessionKey = "2.TcXFza3o9UEae_By1ahldQ__.86400.1262656800-100000080240659";
     private static final String userId = "100000080240659";
 
     private static final String apiKey = "5edf837a505a788ed8fabdb3a2d42143";
@@ -53,19 +53,23 @@ public class FacebookTests extends TestCase
     
     
     @Test(timeout = 10000)
+    public void testTextbookPost() throws Exception
+    {
+        Message message = new Message("Visit us at http://sawdust-games.appspot.com/");
+        message.fbAttachment = "{'name':'Google','href':'http://www.google.com/','description':'Google Home Page'}";
+        logic.publishActivity(message);
+    }
+    
+    @Test(timeout = 10000)
     public void testActivityPost() throws Exception
     {
         Message message = new Message("Visit us at http://sawdust-games.appspot.com/");
         String mediaData = String.format("[{'type':'image','src':'%s','href':'%s'}]",
-                "http://sawdust-games.appspot.com/media/go.png",
+                "http://sawdust-games.appspot.com/media/poker.png",
                 "http://apps.facebook.com/sawdust-games/quickPlay.jsp?game=Go");
-        
-        //String attachmentData = "{}";
-        //String attachmentData = "{'name':'Google','href':'http://www.google.com/','description':'Google Home Page'}";
-        //String attachmentData = String.format("{'name':'Join My Game','href':'%s','media':%s,'description':'%s'}", 
-        String attachmentData = String.format("{\"name\":\"Join My Game\",\"href\":\"%s\",\"media\":%s,\"description\":\"%s\"}", 
-                "http://apps.facebook.com/sawdust-games/",
+        String attachmentData = String.format("{'name':'Join My Game','media':%s,'href':'%s','description':'%s'}", 
                 mediaData,
+                "http://apps.facebook.com/sawdust-games/",
                 "This is a unit test. Is contains lots of text and should be somewhat long.");
         message.fbAttachment = attachmentData;
         logic.publishActivity(message);

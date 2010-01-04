@@ -1,6 +1,7 @@
 package com.sawdust.test.appengine;
 
 import java.io.File;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -10,6 +11,7 @@ import org.junit.Test;
 import com.google.appengine.tools.development.ApiProxyLocalImpl;
 import com.google.apphosting.api.ApiProxy;
 import com.sawdust.engine.common.AccessToken;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.entities.Promotion;
 import com.sawdust.server.logic.SessionToken;
@@ -25,7 +27,7 @@ public class PromotionTests extends TestCase
         File dbFile = new File("target/testData/PromotionTests");
         if(dbFile.exists())
         {
-            dbFile.delete();
+            dbFile.renameTo(new File("target/testData/" + dbFile.getName() + "." + Long.toHexString(new Date().getTime()) + ".bak"));
         }
         
         ApiProxy.setEnvironmentForCurrentThread(new MockEnvironment());
@@ -44,7 +46,7 @@ public class PromotionTests extends TestCase
         final SessionToken access1 = new SessionToken(accessData, user);
         com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
         Assert.assertEquals(10, account.getBalance());
-        Promotion p = Promotion.load(account, 100, 3, "P");
+        Promotion p = Promotion.load(account, new PromotionConfig(3, "P", 100,"",""));
         String url = p.getUrl();
         DataStore.Save();
         DataStore.Clear();

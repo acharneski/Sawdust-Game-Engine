@@ -136,9 +136,10 @@ public class TinyFBClient
         {
             currentKey = itr.next();
             currentValue = restParms.get(currentKey);
-            encodedParm = UriComponent.contextualEncode(restParms.get(currentKey), UriComponent.Type.QUERY_PARAM, false);
+            encodedParm = currentValue;
+            encodedParm = UriComponent.contextualEncode(currentValue, UriComponent.Type.QUERY_PARAM, false);
             ub.queryParam(currentKey, encodedParm);
-            sigParms = sigParms + currentKey + "=" + currentValue;
+            sigParms += currentKey + "=" + currentValue;
         }
         final String signature = generateSignature(sigParms, secretKey);
 

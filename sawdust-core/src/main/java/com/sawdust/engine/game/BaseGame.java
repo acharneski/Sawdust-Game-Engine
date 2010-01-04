@@ -13,6 +13,7 @@ import com.sawdust.engine.common.game.GameCanvas;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -110,11 +111,13 @@ public abstract class BaseGame implements Game
         this.addMessage("%s joined the room", displayName(agent));
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.sawdust.engine.game.Game#addMessage(com.sawdust.engine.common.game.Message.MessageType,
-     * java.lang.String, java.lang.Object)
-     */
+    public Message addMessage(final Message m)
+    {
+        m.setId(++messageNumber);
+        if (null != _newMessages) _newMessages.add(m);
+        return m;
+    }
+
     public Message addMessage(final Message.MessageType type, final String msg, final Object... params)
     {
         if (null == _newMessages) return new Message("");
@@ -181,9 +184,9 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#getAgentFactories()
      */
-    public List<AgentFactory<?>> getAgentFactories()
+    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
-        return new ArrayList<AgentFactory<?>>();
+        return new ArrayList<AgentFactory<? extends Agent<?>>>();
     }
 
     /*

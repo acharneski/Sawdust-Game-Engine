@@ -86,7 +86,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
     public ArrayList<GameCommand> getMoves(final BaseGame game, final Participant access) throws GameException
     {
         final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
-        for (final AgentFactory<?> f : game.getAgentFactories())
+        for (final AgentFactory<? extends Agent<?>> f : game.getAgentFactories())
         {
             returnValue.add(new GameCommand()
             {
@@ -94,7 +94,8 @@ public class MultiPlayer implements IMultiPlayer, Serializable
                 public boolean doCommand(final Participant p, String commandText) throws GameException
                 {
                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
-                    game.addMember(f.getAgent("AI " + playerNumber));
+                    Agent<?> agent = f.getAgent("AI " + playerNumber);
+                    game.getSession().addPlayer(agent);
                     GameSession session = game.getSession();
                     if(null != session)
                     {

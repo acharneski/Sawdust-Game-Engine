@@ -102,9 +102,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public List<AgentFactory<?>> getAgentFactories()
+    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
-        return new ArrayList<AgentFactory<?>>();
+        return new ArrayList<AgentFactory<? extends Agent<?>>>();
     }
 
     @Override

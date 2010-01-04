@@ -359,9 +359,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public List<AgentFactory<?>> getAgentFactories()
+    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
-        final List<AgentFactory<?>> agentFactories = super.getAgentFactories();
+        final List<AgentFactory<? extends Agent<?>>> agentFactories = super.getAgentFactories();
         agentFactories.add(new AgentFactory<Stupid1>()
         {
 

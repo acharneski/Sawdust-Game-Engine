@@ -59,8 +59,9 @@ if(request.getPathInfo().startsWith("/f/"))
         />
     </fb:js-string> 
     
-    <%-- User has authorized this application, but not to publish to the stream --%>
+    <%-- User has authorized this application, but not to publish to the stream 
     <fb:prompt-permission perms="publish_stream">We'd like permission to tell your freinds about your victories at Sawdust Games.</fb:prompt-permission>
+    --%>
 
     <fb:dashboard>
     <c:if test="<%=isGameUrl%>">
@@ -84,6 +85,6 @@ if(request.getPathInfo().startsWith("/f/"))
 <%
     FacebookSite facebookSite = FacebookUser.verifyFacebookSignature(request);
 %>
-<fb:iframe src="<%=JspLib.getIFrameUrl(request, facebookSite)%>" width="760px" height="2600px" style="overflow: hidden;">
+<fb:iframe src="<%=JspLib.getIFrameUrl(request, facebookSite)%>" width="760px" height="1000px" style="overflow: scroll;">
 <p>Your browser does not support iframes.</p>
 </fb:iframe>

@@ -45,6 +45,10 @@
         <servlet-name>ad_data</servlet-name>
         <jsp-file>/ad.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>promotion_servelet</servlet-name>
+        <jsp-file>/promotion.jsp</jsp-file>
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>GameServlet</servlet-name>
@@ -55,6 +59,10 @@
         <url-pattern>/p/*</url-pattern>
         <url-pattern>/f/*</url-pattern>
         <url-pattern>/m/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>promotion_servelet</servlet-name>
+        <url-pattern>/r/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ad_data</servlet-name>

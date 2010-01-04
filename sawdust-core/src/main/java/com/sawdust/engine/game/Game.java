@@ -7,6 +7,7 @@ import java.util.List;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.game.GameState;
 import com.sawdust.engine.common.game.Message;
+import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -26,7 +27,7 @@ public interface Game extends Serializable, Cloneable
    
    String displayName(Participant userId);
    
-   List<AgentFactory<?>> getAgentFactories();
+   List<AgentFactory<? extends Agent<?>>> getAgentFactories();
    
    /**
     * @param access2

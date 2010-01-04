@@ -194,7 +194,7 @@ public class Util
 
     public static <T extends Serializable> byte[] toBytes(final T obj)
     {
-        byte[] data;
+        byte[] data = new byte[0];
         try
         {
             final ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
@@ -208,12 +208,12 @@ public class Util
                 z.closeEntry();
                 z.flush();
                 LOG.fine(String.format("Serialize object: %s; %d bytes",obj.getClass().getName(), outBuffer.size()));
+                data = outBuffer.toByteArray();
             }
             catch (Throwable e)
             {
                 LOG.warning(e.toString());
             }
-            data = outBuffer.toByteArray();
         }
         catch (final IOException e)
         {

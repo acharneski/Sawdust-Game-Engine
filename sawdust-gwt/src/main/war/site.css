@@ -98,7 +98,7 @@
 
 .sdge-site-header h1 {
 	color: white;
-	font-size: 3.4em;
+	font-size: 2.3em;
 	font-weight: bold;
 	text-align: left;
 	margin: 0 auto;
@@ -308,8 +308,8 @@ div.sdge-game-listing {
 
 .sdge-site-header {
 	float: right;
-	background-color: #395C24;
-	color: #82B4C7;
+	background-color: #1D5057;
+	color: white;
 	margin: 0 auto;
 	padding: 0;
 	width: 100%;
@@ -342,7 +342,7 @@ div.sdge-site-header {
 
 #bank, #openGames {
     font-size: 1.2em;
-    background-color: #5AC000;
+    background-color: #8B2F34;
     text-decoration: none;
     padding-left: 2px;
     padding-right: 2px;
@@ -351,7 +351,7 @@ div.sdge-site-header {
 
 .sdge-site-header h1 {
 	color: white;
-	font-size: 3.4em;
+	font-size: 2.3em;
 	font-weight: bold;
 	text-align: left;
 	margin: 0 auto;
@@ -364,7 +364,7 @@ div.sdge-site-header {
 
 .sdge-site-account {
     color: black;
-	background-color: #9AEC52;
+	background-color: #007383;
 	float: right;
 	width: auto;
 	text-align: right;
@@ -417,7 +417,7 @@ div.sdge-site-header {
 	font-weight: bold;
 	text-align: left;
 	border-right: 1px solid black;
-	background-color: #D7D000;
+	background-color: #007383;
 	color: white;
 	height: 1280px;
 }
@@ -430,7 +430,7 @@ div.sdge-site-header {
 	font-weight: bold;
 	text-align: left;
 	border-right: 1px solid black;
-	background-color: #D7D000;
+	background-color: #007383;
 }
 
 .sdge-game-listing {
@@ -511,7 +511,7 @@ div.sdge-game-type {
 div.sdge-game-type h3 {
 	text-align: center;
 	width: 100%;
-	background-color: #10495F;
+	background-color: #6F0006;
 }
 
 div.sdge-game-type h3 * {
@@ -563,10 +563,10 @@ span.subtitle {
 
 *.sdge-site-header *.tabs *.tab-other * {
 	color: white;
-	background-color: #815A00;
+	background-color: #6F0006;
 }
 
 *.sdge-site-header *.tabs *.tab-current * {
 	color: black;
-	background-color: #F3EE54;
+	background-color: #D3000B;
 }
