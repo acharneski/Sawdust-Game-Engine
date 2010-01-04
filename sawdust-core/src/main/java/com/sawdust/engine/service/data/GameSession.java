@@ -52,7 +52,7 @@ public interface GameSession extends Bank
 
     void doSplitWagerPool(Collection<Player> collection) throws GameException;
 
-    void doStart(Collection<Participant> players) throws GameException;
+    void doStart() throws GameException;
 
     void doUnitWager() throws GameException;
 

@@ -143,6 +143,6 @@ public class WordHuntTests extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);
-        session.doStart(players);
+        session.doStart();
     }
 }

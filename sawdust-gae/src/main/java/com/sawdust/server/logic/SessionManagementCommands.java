@@ -28,7 +28,7 @@ public enum SessionManagementCommands
          final Player owner = sessionOwner.getPlayer();
          if (owner.equals(user))
          {
-            gameSession.doStart(null);
+            gameSession.doStart();
          }
          else
          {

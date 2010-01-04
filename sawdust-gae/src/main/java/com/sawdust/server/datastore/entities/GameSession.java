@@ -464,37 +464,6 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return false;
     }
 
-    public int getMemberQueuePosition(final String email)
-    {
-        if (null == email) return -1;
-        SessionMember m = findMember(email);
-        if (null == m) return -1;
-        ArrayList<SessionMember> arrayList = getPlayerQueue();
-        return arrayList.indexOf(m);
-    }
-
-    private ArrayList<SessionMember> getPlayerQueue()
-    {
-        ArrayList<SessionMember> arrayList = new ArrayList<SessionMember>();
-        for (SessionMember s : members)
-        {
-            if (MemberStatus.Waiting == s.getMemberStatus())
-            {
-                arrayList.add(s);
-            }
-        }
-        Collections.sort(arrayList, new Comparator<SessionMember>()
-        {
-
-            public int compare(SessionMember o1, SessionMember o2)
-            {
-                // TODO Auto-generated method stub
-                return 0;
-            }
-        });
-        return arrayList;
-    }
-
     public SessionMember findMember(final String email)
     {
         SessionMember m = null;
@@ -809,14 +778,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
             }
             else
             {
-                // pick playing players ...
-                ArrayList<Participant> players = new ArrayList<Participant>();
-                for (final SessionMember m : getPlayerQueue())
-                {
-                    if (players.size() >= requiredPlayers) break;
-                    players.add(m.getPlayer());
-                }
-                doStart(players);
+                doStart();
             }
         }
         if (_dirtyGame)
@@ -832,7 +794,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return true;
     }
 
-    public void doStart(Collection<Participant> players) throws GameException
+    public void doStart() throws GameException
     {
         if (getReadyPlayers() < requiredPlayers) return;
         // if (isPlaying()) { throw new GameLogicException(""); }

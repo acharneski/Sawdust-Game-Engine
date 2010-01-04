@@ -1,6 +1,5 @@
 package com.sawdust.test.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,7 +13,6 @@ import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.euchre.EuchreGame;
 import com.sawdust.engine.game.players.ActivityEvent;
-import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
@@ -138,7 +136,7 @@ public class EuchreTests extends TestCase
 		game.addPlayer(player3);
 		session.addPlayer(player4);
 		game.addPlayer(player4);
-		session.doStart(new ArrayList<Participant>(session.getPlayers()));
+		session.doStart();
 
 		Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
 		Util.assertEqual(access2.doLoadAccount().getBalance(), 9);

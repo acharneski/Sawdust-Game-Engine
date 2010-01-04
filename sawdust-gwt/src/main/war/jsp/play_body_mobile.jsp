@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
-<%@ page import="com.sawdust.engine.game.BaseGame"%>
+<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
 <%@ page import="com.sawdust.engine.common.game.Message.MessageType"%>
@@ -12,7 +12,7 @@
 <%@ page import="com.sawdust.engine.service.debug.GameException"%>
 <%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
 <%@ page import="java.net.URLEncoder"%>
-<%@ page import="com.sawdust.engine.game.Game" %>
+<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
 
 <jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
@@ -28,7 +28,7 @@
     GameSession s = GameSession.load(tsession.getSessionId(), user.getAccount().getPlayer());
     if (null != s)
     {
-        Game game = s.getLatestState();
+        GameState game = s.getState();
         if (null != game)
         {
             gameDesc = game.getConfig().getGameDescription();

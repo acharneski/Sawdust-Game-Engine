@@ -4,11 +4,11 @@
 <%@ page errorPage="/error.jsp"%>
 
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.BaseGame"%>
+<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
 <%@ page import="com.sawdust.engine.service.data.GameSession"%>
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.game.Game" %>
+<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
 
 <%@ page import="com.sawdust.engine.service.Util"%>
 <%@ page import="java.util.logging.Logger" %>

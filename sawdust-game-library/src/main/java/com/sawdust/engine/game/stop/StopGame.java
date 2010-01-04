@@ -220,11 +220,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
        if(null != promoConfig)
        {
            Promotion awardPromotion = account.doAwardPromotion(promoConfig);
-           addMessage(
-                   "I won some loot playing Go at Sawdust Games, and I'd like to share... "+
-                   "The first 5 players to visit %s will get 50 free credits!", 
-                   awardPromotion.getFullUrl()
-           ).setSocialActivity(true).setTo(p.getId());
+           addMessage(awardPromotion.getMessage()).setTo(p.getId());
        }
        account.setResource(StopLoot.class, resource);
    }

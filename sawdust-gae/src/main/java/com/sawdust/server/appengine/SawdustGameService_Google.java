@@ -144,7 +144,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             {
                 if (newSession.getReadyPlayers() >= newSession.getRequiredPlayers())
                 {
-                    newSession.doStart(null);
+                    newSession.doStart();
                 }
                 else
                 {

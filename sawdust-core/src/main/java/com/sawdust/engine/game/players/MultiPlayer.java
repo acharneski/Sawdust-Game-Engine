@@ -95,11 +95,10 @@ public class MultiPlayer implements IMultiPlayer, Serializable
                 {
                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
                     Agent<?> agent = f.getAgent("AI " + playerNumber);
-                    game.getSession().addPlayer(agent);
                     GameSession session = game.getSession();
                     if(null != session)
                     {
-                        session.addAgent(f.getName());
+                        session.addPlayer(agent);
                         game.saveState();
                     }
                     return true;

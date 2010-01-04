@@ -157,7 +157,7 @@ public class MockGameSession implements GameSession, Serializable
         
     }
 
-    public void doStart(Collection<Participant> collection) throws GameException
+    public void doStart() throws GameException
     {
         _currentState.start();
     }

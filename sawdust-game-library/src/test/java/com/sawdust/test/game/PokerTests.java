@@ -1,6 +1,5 @@
 package com.sawdust.test.game;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -12,7 +11,6 @@ import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.players.ActivityEvent;
-import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.poker.PokerGame;
 import com.sawdust.engine.service.data.Account;
@@ -87,7 +85,7 @@ public class PokerTests extends TestCase
         game.addPlayer(player1);
         session.addPlayer(player2);
         game.addPlayer(player2);
-        session.doStart(new ArrayList<Participant>(session.getPlayers()));
+        session.doStart();
         return player1;
     }
 

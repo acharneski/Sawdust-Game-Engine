@@ -5,11 +5,11 @@
 <%@ page errorPage="/error.jsp"%>
 
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.BaseGame"%>
+<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
 <%@ page import="com.sawdust.engine.service.data.GameSession"%>
 <%@ page import="com.sawdust.server.jsp.JspLib"%>
 <%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.game.Game" %>
+<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
 <%@ page import="com.sawdust.engine.service.Util"%>
 <%@ page import="java.util.logging.Logger" %>
 
@@ -30,13 +30,13 @@ try
     if (null != gSession)
     {
         title = gSession.getName();
-        Game g = gSession.getLatestState();
+        GameState g = gSession.getState();
         if (null != g) 
         {
             requestData.put("game",g.getGameType().getName());
             requestData.setGameType(g.getGameType().getName());
             requestData.setGameTypeId(g.getGameType().getID());
-            requestData.setSessionId(gSession.getId());
+            requestData.setSessionId(gSession.getStringId());
             requestData.setGameSessionName(gSession.getName());
             LOG.info(String.format("Game %s adTargetId: %s", g.getGameType().getName(), adTargetId));
             adTargetId = g.getGameType().getID();

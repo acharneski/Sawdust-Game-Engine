@@ -42,7 +42,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     public static final GamePhase FORMING = FormingPhase.INSTANCE;
     public static final GamePhase INITIAL_MAKING = InitialMakingPhase.INSTANCE;
     public static final int NUMBER_OF_CARDS = 5;
-    public static final int NUMBER_OF_PLAYERS = 4;;
+    public static final int NUMBER_OF_PLAYERS = 4;
 
     public static final int NUMBER_OF_POINTS = 5;
     public static final GamePhase OPEN_MAKING = OpenMakingPhase.INSTANCE;
