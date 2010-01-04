@@ -41,7 +41,7 @@ import com.sawdust.engine.common.CommandResult;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.game.ClientCommand;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 
 /**
@@ -68,7 +68,7 @@ public class GameClientWidget
     private int _commandCursorPos;
     private boolean _isFocused = false;
     private boolean _wasFocused;
-    private GameState _currentState = null;
+    private GameFrame _currentState = null;
     private String _previousText;
     
     private final mylog LOG = new mylog(){
@@ -174,7 +174,7 @@ public class GameClientWidget
                 String timeString = new Date().toLocaleString();
                 _consoleWidget.addMessage(new Message("Refresh poll at " + timeString));
             }
-            final GameState state = _currentState;
+            final GameFrame state = _currentState;
             final int versionNumber = (null == state) ? 0 : state.versionNumber;
             cmdService.doUpdate(versionNumber, null);
         }
@@ -284,17 +284,17 @@ public class GameClientWidget
     private void defaultOnSuccess(final CommandResult result)
     {
         int frameCount = 0;
-        final List<GameState> stateFrames = result.getStateFrames();
-        Collections.sort(stateFrames, new Comparator<GameState>()
+        final List<GameFrame> stateFrames = result.getStateFrames();
+        Collections.sort(stateFrames, new Comparator<GameFrame>()
         {
-            public int compare(final GameState o1, final GameState o2)
+            public int compare(final GameFrame o1, final GameFrame o2)
             {
                 return ((Integer) o1.versionNumber).compareTo(o2.versionNumber);
             }
         });
         int framesQueued = 0;
         int currentTime = Integer.MAX_VALUE;
-        for (final GameState state : stateFrames)
+        for (final GameFrame state : stateFrames)
         {
             if (state != null && state.timeOffset < currentTime)
             {
@@ -303,7 +303,7 @@ public class GameClientWidget
         }
         currentTime -= START_TIME;
         final HashMap<Integer, Timer> frameQueue = new HashMap<Integer, Timer>();
-        for (final GameState state : stateFrames)
+        for (final GameFrame state : stateFrames)
         {
             if (null == state)
             {
@@ -372,7 +372,7 @@ public class GameClientWidget
         }
     }
 
-    public GameState getGame()
+    public GameFrame getGame()
     {
         _currentState = _gameWidget.getState();
         return _currentState;
@@ -506,7 +506,7 @@ public class GameClientWidget
         onErrorClose = post;
     }
 
-    public void setGame(final GameState game)
+    public void setGame(final GameFrame game)
     {
         if (null == game) return;
         int messagesSince = -1;
@@ -551,7 +551,7 @@ public class GameClientWidget
         }
     }
 
-    private void showFrame(final GameState state)
+    private void showFrame(final GameFrame state)
     {
         if (null == state)
         {

@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.sawdust.engine.common.AccessToken;
 import com.sawdust.engine.common.game.ClientCommand;
 import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
@@ -28,9 +28,9 @@ public class JspGame implements Serializable
 {
     private static final Logger LOG = Logger.getLogger(JspGame.class.getName());
 
-    private volatile Game _game;
+    private volatile GameState _game;
     private volatile com.sawdust.engine.service.data.GameSession _gameSession;
-    private volatile GameState _gwtGame = null;
+    private volatile GameFrame _gwtGame = null;
     private volatile boolean _isInitialized = false;
     private volatile HttpServletRequest _request = null;
 
@@ -157,10 +157,10 @@ public class JspGame implements Serializable
             _isInitialized = true;
             //DataStore.Clear();
             final SessionToken sessionToken = getSessionToken();
-            _gameSession = sessionToken.loadSession();
+            _gameSession = sessionToken.doLoadSession();
             if (null == _gameSession) throw new InputException("Unknown session id");
-            _game = _gameSession.getLatestState();
-            _player = (sessionToken.loadAccount()).getPlayer();
+            _game = _gameSession.getState();
+            _player = (sessionToken.doLoadAccount()).getPlayer();
             setGame((null == _game) ? null : _game.toGwt(_player));
             // DataStore.Save();
         }
@@ -181,12 +181,12 @@ public class JspGame implements Serializable
         _sessionId = sessionId;
     }
 
-    private void setGame(GameState _gwtGame)
+    private void setGame(GameFrame _gwtGame)
     {
         this._gwtGame = _gwtGame;
     }
 
-    private GameState getGame()
+    private GameFrame getGame()
     {
         if(null == _gwtGame && null != _game && null != _player) 
         {

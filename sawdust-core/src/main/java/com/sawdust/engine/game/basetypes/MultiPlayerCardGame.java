@@ -1,4 +1,4 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,10 +7,11 @@ import java.util.List;
 import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.common.cards.CardDeck;
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Notification;
 import com.sawdust.engine.common.geometry.Position;
+import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.MultiPlayer;
 import com.sawdust.engine.game.players.Participant;
@@ -43,7 +44,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     {
         super();
         _mplayerManager = new MultiPlayer(nPlayers);
-        getSession().setRequiredPlayers(nPlayers);
+        getSession().setMinimumPlayers(nPlayers);
     }
 
     protected MultiPlayerCardGame(final int nPlayers, final GameConfig config)
@@ -56,11 +57,11 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
             getDeck().setSeed(seed);
         }
         _mplayerManager = new MultiPlayer(nPlayers);
-        getSession().setRequiredPlayers(nPlayers);
+        getSession().setMinimumPlayers(nPlayers);
     }
 
     @Override
-    public void addMember(final Participant agent) throws GameException
+    public void addPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -70,7 +71,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         {
             _displayFilter.put(agent, ((Agent<?>) agent).getId());
         }
-        super.addMember(agent);
+        super.addPlayer(agent);
         _mplayerManager.addMember(this, agent);
     }
 
@@ -132,9 +133,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void removeMember(final Participant email) throws GameException
+    public void doRemoveMember(final Participant email) throws GameException
     {
-        super.removeMember(email);
+        super.doRemoveMember(email);
         _mplayerManager.removeMember(this, email);
     }
 
@@ -160,9 +161,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public GameState toGwt(Player access) throws GameException
+    public GameFrame toGwt(Player access) throws GameException
     {
-        final GameState returnValue = super.toGwt(access);
+        final GameFrame returnValue = super.toGwt(access);
         if(!getPlayerManager().isMember(access))
         {
             if(this.isInPlay())
@@ -172,7 +173,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
                 notification.add("Join Table", "Join Game");
                 returnValue.setNotification(notification);
             }
-            else if(this.getSession().getActiveMembers() > 0)
+            else if(this.getSession().getActivePlayers() > 0)
             {
                 Notification notification = new Notification();
                 notification.notifyText = "This game is currently forming.";

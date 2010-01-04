@@ -1,6 +1,8 @@
 package com.sawdust.engine.game;
 
-public abstract class GameModification<T extends Game>
+import com.sawdust.engine.game.basetypes.GameState;
+
+public abstract class GameModification<T extends GameState>
 {
     public abstract void apply(T game);
 }

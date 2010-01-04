@@ -66,7 +66,7 @@ public class DataStorePerfTest extends TestCase
         _accessData = new AccessToken(USER_ID_1);
         _user = new User(UserTypes.Member, USER_ID_1, null);
         _access1 = new SessionToken(_accessData, _user);
-        _account = _access1.loadAccount();
+        _account = _access1.doLoadAccount();
         _session = new GameSession(_account);
         _blackjackGame = getGame(_session, _accessData, _account);
         _blackjackGame.saveState();
@@ -99,11 +99,11 @@ public class DataStorePerfTest extends TestCase
         _accessData = new AccessToken(USER_ID_1);
         _user = new User(UserTypes.Member, USER_ID_1, null);
         _access1 = new SessionToken(_accessData, _user);
-        _account = _access1.loadAccount();
+        _account = _access1.doLoadAccount();
         _player1 = _account.getPlayer();
         _session = GameSession.load(id, _player1);
         if(null == _session) throw new RuntimeException("Unknown Session: " + id);
-        _blackjackGame = (BlackjackGame) _session.getLatestState();
+        _blackjackGame = (BlackjackGame) _session.getState();
     }
     
     @Override
@@ -123,7 +123,7 @@ public class DataStorePerfTest extends TestCase
     private void down()
     {
         DataStore.Save();
-        _id = _session.getId();
+        _id = _session.getStringId();
         DataStore.Clear();
 
         LocalDatastoreService lds = (LocalDatastoreService) apiProxyLocalImpl.getService("datastore_v3");
@@ -144,7 +144,7 @@ public class DataStorePerfTest extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);
-        session.start(players);
+        session.doStart(players);
     }
     
     @Test(timeout = 10000)
@@ -158,7 +158,7 @@ public class DataStorePerfTest extends TestCase
         _deck.addCard(Ranks.Jack, Suits.Hearts);
         _deck.addCard(Ranks.Five, Suits.Clubs);
         _deck.addCard(Ranks.Four, Suits.Clubs);
-        Util.assertEqual(_access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(_access1.doLoadAccount().getBalance(), 10);
         reset();
         
         _session.addPlayer(_player1);
@@ -167,7 +167,7 @@ public class DataStorePerfTest extends TestCase
         reset();
         
         now = Util.printNewMessages(_blackjackGame, now);
-        Util.assertEqual(_access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(_access1.doLoadAccount().getBalance(), 10);
         
         Util.testGuiCommand(_session, _player1, "Hit Me");
         reset();
@@ -182,7 +182,7 @@ public class DataStorePerfTest extends TestCase
 
         now = Util.printNewMessages(_blackjackGame, now);
         Util.assertMessageFound(_blackjackGame, "You Lose.");
-        Util.assertEqual(_access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(_access1.doLoadAccount().getBalance(), 10);
     }
     
 }

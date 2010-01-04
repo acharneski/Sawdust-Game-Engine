@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -32,18 +32,18 @@ public abstract class GenericPlayTest extends TestCase
         super(name);
     }
 
-    public static <T extends Game> HashMap<Participant, Double> testGame(T game, Participant... players) throws Exception
+    public static <T extends GameState> HashMap<Participant, Double> testGame(T game, Participant... players) throws Exception
     {
         return testGame(game, null, players);
         
     }
-    public static <T extends Game> HashMap<Participant, Double> testGame(T game, HashMap<Participant, Double> timeouts, Participant... players) throws Exception
+    public static <T extends GameState> HashMap<Participant, Double> testGame(T game, HashMap<Participant, Double> timeouts, Participant... players) throws Exception
     {
         HashMap<Participant,Double> sessionTimers = new HashMap<Participant,Double>(); 
         for (Participant p : players)
         {
             sessionTimers.put(p, 0.0);
-            game.addMember(p);
+            game.addPlayer(p);
             game.getSession().addPlayer(p);
         }
         startGame(game.getSession(), players[0]);
@@ -81,7 +81,7 @@ public abstract class GenericPlayTest extends TestCase
         return sessionTimers;
     }
 
-    private static <T extends Game> void doRandomMove(T game, Participant player) throws GameException
+    private static <T extends GameState> void doRandomMove(T game, Participant player) throws GameException
     {
         ArrayList<GameCommand> moves = game.getMoves(player);
         while (true)
@@ -101,7 +101,7 @@ public abstract class GenericPlayTest extends TestCase
         }
     }
 
-    public <T extends Game> void testGame(T game, int nPlayers) throws Exception
+    public <T extends GameState> void testGame(T game, int nPlayers) throws Exception
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         for (int i = 0; i < nPlayers; i++)
@@ -112,7 +112,7 @@ public abstract class GenericPlayTest extends TestCase
         testGame(game, players.toArray(new Participant[] {}));
     }
 
-    protected <T extends Game> Participant newAgent(String userId)
+    protected <T extends GameState> Participant newAgent(String userId)
     {
         return new Agent<T>(userId)
         {
@@ -124,7 +124,7 @@ public abstract class GenericPlayTest extends TestCase
         };
     }
 
-    protected <T extends Game> Participant newPlayer(T game, String userId)
+    protected <T extends GameState> Participant newPlayer(T game, String userId)
     {
         final MockSessionToken access1 = new MockSessionToken(userId, game.getSession());
         Player player1 = new Player(access1.getUserId(), false)
@@ -132,7 +132,7 @@ public abstract class GenericPlayTest extends TestCase
             @Override
             public Account loadAccount()
             {
-                return access1.loadAccount();
+                return access1.doLoadAccount();
             }
 
             @Override
@@ -149,7 +149,7 @@ public abstract class GenericPlayTest extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(players2);
-        session.start(players);
+        session.doStart(players);
     }
 
 }

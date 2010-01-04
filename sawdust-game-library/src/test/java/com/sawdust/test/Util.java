@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.game.Game;
-import com.sawdust.engine.game.PersistantTokenGame;
-import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.basetypes.GameState;
+import com.sawdust.engine.game.basetypes.PersistantTokenGame;
+import com.sawdust.engine.game.basetypes.TokenGame;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.state.Token;
@@ -28,9 +28,9 @@ public class Util
 
     }
 
-    public static void assertMessageFound(Game blackjackGame, String expected) throws AssertionError
+    public static void assertMessageFound(GameState blackjackGame, String expected) throws AssertionError
     {
-        for (Message message : blackjackGame.getNewMessages())
+        for (Message message : blackjackGame.getMessages())
         {
             if (message.getText().contains(expected))
             {
@@ -42,7 +42,7 @@ public class Util
         throw new AssertionError();
     }
 
-    public static boolean hasGuiCommand(GameState gwt, String cmd)
+    public static boolean hasGuiCommand(GameFrame gwt, String cmd)
     {
         for (GameLabel l : gwt.getLabels())
         {
@@ -60,10 +60,10 @@ public class Util
         return false;
     }
 
-    public static Date printNewMessages(Game blackjackGame, Date now)
+    public static Date printNewMessages(GameState blackjackGame, Date now)
     {
         Date next = now;
-        for (Message message : blackjackGame.getNewMessages())
+        for (Message message : blackjackGame.getMessages())
         {
             if (next.before(message.getDateTime()))
             {
@@ -88,8 +88,8 @@ public class Util
 
     public static String printVisibleCards(GameSession game, Player access) throws GameException
     {
-        PersistantTokenGame state = (PersistantTokenGame) game.getLatestState();
-        GameState gwt = state.toGwt(access);
+        PersistantTokenGame state = (PersistantTokenGame) game.getState();
+        GameFrame gwt = state.toGwt(access);
         StringBuilder sb = new StringBuilder();
         for (com.sawdust.engine.common.game.Token t : gwt.getTokens())
         {
@@ -101,7 +101,7 @@ public class Util
 
     public static String printMyCards(GameSession game, Player access) throws GameException
     {
-        TokenGame state = (TokenGame) game.getLatestState();
+        TokenGame state = (TokenGame) game.getState();
         StringBuilder sb = new StringBuilder();
         for (Token t : state.getTokens())
         {
@@ -116,7 +116,7 @@ public class Util
 
     public static void runCommand(GameSession gameSession, Player access, String cmd) throws com.sawdust.engine.common.GameException
     {
-        Game game = gameSession.getLatestState();
+        GameState game = gameSession.getState();
         for (GameCommand command : game.getCommands(access))
         {
         	if(cmd.startsWith(command.getCommandText()))
@@ -128,8 +128,8 @@ public class Util
 
     public static void testGuiCommand(GameSession game, Player access, String cmd) throws com.sawdust.engine.common.GameException
     {
-        Game latestState = game.getLatestState();
-        GameState gwt = latestState.toGwt(access);
+        GameState latestState = game.getState();
+        GameFrame gwt = latestState.toGwt(access);
         if (!hasGuiCommand(gwt, cmd))
         {
             // throw new AssertionError("No gui command: " + cmd);

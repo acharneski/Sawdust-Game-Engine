@@ -11,18 +11,13 @@ import java.util.Map.Entry;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
 import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.HttpInterface;
-import com.sawdust.engine.game.HttpResponse;
-import com.sawdust.engine.game.LanguageProvider;
-import com.sawdust.engine.game.MarkovPredictor;
-import com.sawdust.engine.game.PersistantTokenGame;
-import com.sawdust.engine.game.PromotionConfig;
+import com.sawdust.engine.game.basetypes.PersistantTokenGame;
 import com.sawdust.engine.game.go.GoLoot;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
@@ -35,6 +30,11 @@ import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
 import com.sawdust.engine.game.stop.StopGame.GamePhase;
 import com.sawdust.engine.game.wordHunt.TokenArray.ArrayPosition;
+import com.sawdust.engine.service.HttpInterface;
+import com.sawdust.engine.service.HttpResponse;
+import com.sawdust.engine.service.LanguageProvider;
+import com.sawdust.engine.service.MarkovPredictor;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.data.Promotion;
@@ -99,13 +99,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
         setCanvas(new SolidColorGameCanvas("black","white"));
         int numberOfPlayers = getNumberOfPlayers(config);
         _mplayerManager = new MultiPlayer(numberOfPlayers);
-        getSession().setRequiredPlayers(numberOfPlayers);
+        getSession().setMinimumPlayers(numberOfPlayers);
     }
 
     @Override
-    public void addMember(final Participant agent) throws GameException
+    public void addPlayer(final Participant agent) throws GameException
     {
-        super.addMember(agent);
+        super.addPlayer(agent);
         _mplayerManager.addMember(this, agent);
     }
 
@@ -259,7 +259,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                 {
                     continue;
                 }
-                final String txt2 = String.format("%s: %d (%d)", displayName(p), getScore(access), getWordList(p.getId()).size());
+                final String txt2 = String.format("%s: %d (%d)", getDisplayName(p), getScore(access), getWordList(p.getId()).size());
                 arrayList.add(new GameLabel("WordCount", new IndexPosition(CURVE_CMDS, idx++), txt2));
 
             }
@@ -642,12 +642,12 @@ public abstract class WordHuntGame extends PersistantTokenGame
                 winningScore = thisScore;
                 winner = p;
             }
-            addMessage("%s's score: %d", displayName(p), thisScore);
+            addMessage("%s's score: %d", getDisplayName(p), thisScore);
         }
         if (isEveryoneDone || isTimeUp)
         {
             _currentState = GameState.Complete;
-            addMessage("<strong>%s won</strong>", displayName(winner));
+            addMessage("<strong>%s won</strong>", getDisplayName(winner));
             final GameSession session = getSession();
             final ArrayList<Player> collection = new ArrayList<Player>();
             if (winner instanceof Player)
@@ -659,7 +659,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                 ((Player) winner).logActivity(new ActivityEvent(type, event));
                 collection.add((Player) winner);
             }
-            session.payOut(collection);
+            session.doSplitWagerPool(collection);
         }
     }
 
@@ -675,7 +675,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         PromotionConfig promoConfig = resource.getLoot();
         if(null != promoConfig)
         {
-            Promotion awardPromotion = account.awardPromotion(promoConfig);
+            Promotion awardPromotion = account.doAwardPromotion(promoConfig);
             addMessage(
                     "I won some loot playing Go at Sawdust Games, and I'd like to share... "+
                     "The first 5 players to visit %s will get 50 free credits!", 
@@ -712,12 +712,12 @@ public abstract class WordHuntGame extends PersistantTokenGame
     public void start() throws GameException
     {
         final GameSession session = getSession();
-        session.anteUp();
+        session.doUnitWager();
         for (final Participant p : _mplayerManager.getPlayerManager().getPlayers())
         {
             if (p instanceof Agent<?>)
             {
-                session.withdraw(-session.getAnte(), null, "Agent Ante Up");
+                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
             }
         }
 
@@ -745,9 +745,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public com.sawdust.engine.common.game.GameState toGwt(Player access) throws GameException
+    public com.sawdust.engine.common.game.GameFrame toGwt(Player access) throws GameException
     {
-        final com.sawdust.engine.common.game.GameState returnValue = super.toGwt(access);
+        final com.sawdust.engine.common.game.GameFrame returnValue = super.toGwt(access);
         if (!_mplayerManager.getPlayerManager().isMember(access))
         {
             Notification notification = new Notification();
@@ -812,9 +812,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void removeMember(Participant agent) throws GameException
+    public void doRemoveMember(Participant agent) throws GameException
     {
-        super.removeMember(agent);
+        super.doRemoveMember(agent);
         _mplayerManager.addMember(this, agent);
     }
 
@@ -868,7 +868,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         }
         else if (WordHuntGame.this.verifyWord(currentWord))
         {
-            WordHuntGame.this.addMessage(String.format("%s spelled %s (%d points)", displayName(p), currentWord, getWordScore(currentWord)));
+            WordHuntGame.this.addMessage(String.format("%s spelled %s (%d points)", getDisplayName(p), currentWord, getWordScore(currentWord)));
             addWord(p, wordPath);
             explodeWord(p, wordPath);
         }

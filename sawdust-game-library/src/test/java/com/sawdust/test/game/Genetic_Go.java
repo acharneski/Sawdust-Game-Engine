@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.PersistantTokenGame;
+import com.sawdust.engine.game.basetypes.PersistantTokenGame;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.euchre.EuchreGame;
 import com.sawdust.engine.game.euchre.ai.Normal1;

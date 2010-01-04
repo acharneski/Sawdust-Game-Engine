@@ -1,11 +1,11 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -92,8 +92,8 @@ public abstract class TokenGame extends BaseGame {
 	public abstract ArrayList<Token> getTokens();
 
 	@Override
-	public GameState toGwt(final Player access) throws GameException {
-	    final GameState returnValue = super.toGwt(access);
+	public GameFrame toGwt(final Player access) throws GameException {
+	    final GameFrame returnValue = super.toGwt(access);
 	    for (final Token t : getTokens())
 	    {
 	        final com.sawdust.engine.common.game.Token g = t.toGwt(access, this);
@@ -110,7 +110,7 @@ public abstract class TokenGame extends BaseGame {
 	}
 
     @Override
-    public void addMember(final Participant agent) throws GameException
+    public void addPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -121,11 +121,11 @@ public abstract class TokenGame extends BaseGame {
             String id = ((Agent<?>) agent).getId();
             _displayFilter.put(agent, id);
         }
-        super.addMember(agent);
+        super.addPlayer(agent);
     }
 
     @Override
-    public String displayName(final Participant participant)
+    public String getDisplayName(final Participant participant)
     {
         if (null == participant) return null;
         if (!_displayFilter.containsKey(participant)) return participant.getId();

@@ -2,7 +2,7 @@ package com.sawdust.engine.game.stop;
 
 import java.io.Serializable;
 
-import com.sawdust.engine.game.PromotionConfig;
+import com.sawdust.engine.service.PromotionConfig;
 
 public class StopLoot implements Serializable
 {

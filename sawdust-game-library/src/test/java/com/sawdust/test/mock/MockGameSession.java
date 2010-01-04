@@ -8,14 +8,14 @@ import java.util.List;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
-import com.sawdust.engine.game.MarkovPredictor;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
+import com.sawdust.engine.service.MarkovPredictor;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.data.MoneyAccount;
+import com.sawdust.engine.service.data.BankAccount;
 import com.sawdust.engine.service.data.SessionMember;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
@@ -26,7 +26,7 @@ public class MockGameSession implements GameSession, Serializable
     private SessionStatus _status = SessionStatus.Initializing;
     public int ante = 1;
     public int bank = 0;
-    private Game _currentState = null;
+    private GameState _currentState = null;
     private int playerTimeout;
 
     private MockGameSession()
@@ -50,7 +50,7 @@ public class MockGameSession implements GameSession, Serializable
         }
     }
 
-    public void anteUp() throws GameException
+    public void doUnitWager() throws GameException
     {
         for (Player s : _members)
         {
@@ -59,7 +59,7 @@ public class MockGameSession implements GameSession, Serializable
         }
     }
 
-    public int getAnte()
+    public int getUnitWager()
     {
         return ante;
     }
@@ -69,22 +69,22 @@ public class MockGameSession implements GameSession, Serializable
         return bank;
     }
 
-    public Collection<Player> getMembers()
+    public Collection<Player> getPlayers()
     {
         return new HashSet<Player>(_members);
     }
 
-    public SessionStatus getSessionStatus()
+    public SessionStatus getStatus()
     {
         return _status;
     }
 
-    public Game getLatestState()
+    public GameState getState()
     {
         return _currentState;
     }
 
-    public void payOut(Collection<Player> winners) throws GameException
+    public void doSplitWagerPool(Collection<Player> winners) throws GameException
     {
         if (null != winners && 0 < winners.size())
         {
@@ -98,13 +98,13 @@ public class MockGameSession implements GameSession, Serializable
         bank = 0;
     }
 
-    public boolean setSessionStatus(SessionStatus playing, Game game) throws GameException
+    public boolean setStatus(SessionStatus playing, GameState game) throws GameException
     {
         _status = playing;
         return false;
     }
 
-    public void setState(Game baseGame) throws GameException
+    public void setState(GameState baseGame) throws GameException
     {
         _currentState = baseGame;
     }
@@ -129,35 +129,35 @@ public class MockGameSession implements GameSession, Serializable
         return 0;
     }
 
-    public List<Game> getStatesSince(int versionNumber)
+    public List<GameState> doGetStatesSince(int versionNumber)
     {
-        return new ArrayList<Game>();
+        return new ArrayList<GameState>();
     }
 
-    public String getId()
+    public String getStringId()
     {
         return "TestGameSession";
     }
 
-    public void updateStatus() throws GameException
+    public void doUpdateStatus() throws GameException
     {
         // TODO Auto-generated method stub
         
     }
 
-    public void setRequiredPlayers(int nPlayers)
+    public void setMinimumPlayers(int nPlayers)
     {
         // TODO Auto-generated method stub
         
     }
 
-    public void addAi(String name)
+    public void addAgent(String name)
     {
         // TODO Auto-generated method stub
         
     }
 
-    public void start(Collection<Participant> collection) throws GameException
+    public void doStart(Collection<Participant> collection) throws GameException
     {
         _currentState.start();
     }
@@ -168,7 +168,7 @@ public class MockGameSession implements GameSession, Serializable
     }
 
     @Override
-    public MoneyAccount getAccount()
+    public BankAccount getBankAccount()
     {
         return new MockMoneyAccount();
     }
@@ -180,7 +180,7 @@ public class MockGameSession implements GameSession, Serializable
     }
 
     @Override
-    public void modifyPayout(double factor, String msg)
+    public void doModifyWagerPool(double factor, String msg)
     {
         // TODO Auto-generated method stub
     }
@@ -206,20 +206,20 @@ public class MockGameSession implements GameSession, Serializable
     }
 
     @Override
-    public void updateConfig(GameConfig game)
+    public void doUpdateConfig(GameConfig game)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void setValue(int anteInteger)
+    public void setUnitWager(int anteInteger)
     {
         ante = anteInteger;
     }
 
     @Override
-    public int getActiveMembers() throws GameException
+    public int getActivePlayers() throws GameException
     {
         assert(false);
         return 1;

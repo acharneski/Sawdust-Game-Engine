@@ -94,7 +94,7 @@ public void cleanIslands(final int playerIdx, final StopGame game, final boolean
       if (modifyGame)
       {
          final Participant islandOwner = game.getPlayerManager().playerName(i.getPlayer());
-         final String displayName = game.displayName(islandOwner);
+         final String displayName = game.getDisplayName(islandOwner);
          game.addMessage("%d pieces captured from %s", allPositions.size(), displayName);
       }
       for (final ArrayPosition p2 : allPositions)

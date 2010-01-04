@@ -19,8 +19,8 @@ import javax.persistence.OrderBy;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.Player;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
@@ -239,7 +239,7 @@ public class Promotion extends DataObj implements com.sawdust.engine.service.dat
 
     public int getBalance()
     {
-        return getAccount().getCurrentBalence();
+        return getAccount().getBalance();
     }
 
     public String getHtml(final InterfacePreference xface)

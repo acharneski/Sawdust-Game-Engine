@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.debug.GameException;
@@ -42,58 +42,58 @@ public interface GameSession extends Bank
         Playing
     }
 
+    void addAgent(String name);
+
     void addPlayer(Participant p) throws GameException;
 
-    void anteUp() throws GameException;
+    List<GameState> doGetStatesSince(int versionNumber);
 
-    int getAnte();
+    void doModifyWagerPool(double factor, String msg) throws GameException;
 
-    String getId();
+    void doSplitWagerPool(Collection<Player> collection) throws GameException;
 
-    Game getLatestState();
+    void doStart(Collection<Participant> players) throws GameException;
+
+    void doUnitWager() throws GameException;
+
+    void doUpdateConfig(GameConfig game) throws GameException;
+
+    void doUpdateStatus() throws GameException;
+
+    int getActivePlayers() throws GameException;
+
+    BankAccount getBankAccount();
 
     int getLatestVersionNumber();
 
-    Collection<Player> getMembers();
+    String getName();
 
     SessionMember getOwner();
 
-    SessionStatus getSessionStatus();
-
-    List<Game> getStatesSince(int versionNumber);
-
-    void payOut(Collection<Player> collection) throws GameException;
-
-    boolean setSessionStatus(SessionStatus playing, Game game) throws GameException;
-
-    void setState(Game baseGame) throws GameException;
-
-	void updateStatus() throws GameException;
-
-    void setRequiredPlayers(int nPlayers);
-
-    void addAi(String name);
-
-    void start(Collection<Participant> players) throws GameException;
-
-    public void setPlayerTimeout(final int pplayerTimeout);
-
-    MoneyAccount getAccount();
-    
-    String getName();
-
-    void modifyPayout(double factor, String msg) throws GameException;
-
-    <T extends Serializable> void setResource(Class<T> c, T markovChain);
+    Collection<Player> getPlayers();
 
     <T extends Serializable> T getResource(Class<T> c);
 
+    GameState getState();
+
+    SessionStatus getStatus();
+
+    String getStringId();
+
+    int getUnitWager();
+
     String getUrl();
 
-    void updateConfig(GameConfig game) throws GameException;
+    void setMinimumPlayers(int nPlayers);
 
-    void setValue(int anteInteger) throws GameException;
+    public void setPlayerTimeout(final int pplayerTimeout);
 
-    int getActiveMembers() throws GameException;
+    <T extends Serializable> void setResource(Class<T> c, T markovChain);
+
+    void setState(GameState baseGame) throws GameException;
+
+    boolean setStatus(SessionStatus playing, GameState game) throws GameException;
+
+    void setUnitWager(int anteInteger) throws GameException;
 
 }

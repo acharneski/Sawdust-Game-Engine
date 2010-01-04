@@ -56,7 +56,7 @@ public class PokerTests extends TestCase
             @Override
             public Account loadAccount()
             {
-                return accessF1.loadAccount();
+                return accessF1.doLoadAccount();
             }
 
             @Override
@@ -73,7 +73,7 @@ public class PokerTests extends TestCase
             @Override
             public Account loadAccount()
             {
-                return accessF2.loadAccount();
+                return accessF2.doLoadAccount();
             }
 
             @Override
@@ -84,10 +84,10 @@ public class PokerTests extends TestCase
             }
         };
         session.addPlayer(player1);
-        game.addMember(player1);
+        game.addPlayer(player1);
         session.addPlayer(player2);
-        game.addMember(player2);
-        session.start(new ArrayList<Participant>(session.getMembers()));
+        game.addPlayer(player2);
+        session.doStart(new ArrayList<Participant>(session.getPlayers()));
         return player1;
     }
 
@@ -116,8 +116,8 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         System.out.println("Player 1: " + Util.printMyCards(session, player1));
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
@@ -127,14 +127,14 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -153,8 +153,8 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Flush of Hearts");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -182,22 +182,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -217,8 +217,8 @@ public class PokerTests extends TestCase
 
         now = Util.printNewMessages(game, now);
         Util.assertMessageFound(game, "test1 won with Four of a kind: Nine");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -246,22 +246,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -281,8 +281,8 @@ public class PokerTests extends TestCase
 
         now = Util.printNewMessages(game, now);
         Util.assertMessageFound(game, "test1 won with Full House: Three of a kind: Nine and Pair of Queen");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -310,22 +310,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Raise 1");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 5");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 3);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 3);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 3);
-        Util.assertEqual(access2.loadAccount().getBalance(), 3);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 3);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 3);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -350,8 +350,8 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Pair of Nine");
-        Util.assertEqual(access1.loadAccount().getBalance(), 17);
-        Util.assertEqual(access2.loadAccount().getBalance(), 3);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 17);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 3);
     }
 
     @Test(timeout = 10000)
@@ -379,22 +379,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -413,8 +413,8 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Straight To Ace");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -442,22 +442,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -476,8 +476,8 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Straight Flush To Ace of Hearts");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -505,22 +505,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -539,8 +539,8 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Three of a kind: Nine");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 
     @Test(timeout = 10000)
@@ -568,22 +568,22 @@ public class PokerTests extends TestCase
 
         Player player1 = Init(deck);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
-        Util.assertEqual(access2.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
         Util.testGuiCommand(session, player1, "Raise 1");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player2, "Call");
         now = Util.printNewMessages(game, now);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 8);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 8);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
 
         Util.testGuiCommand(session, player2, "Discard 1");
         now = Util.printNewMessages(game, now);
@@ -602,7 +602,7 @@ public class PokerTests extends TestCase
         System.out.println("Player 2: " + Util.printMyCards(session, player2));
 
         Util.assertMessageFound(game, "test1 won with Two Pair: Pair of King and Pair of Nine");
-        Util.assertEqual(access1.loadAccount().getBalance(), 12);
-        Util.assertEqual(access2.loadAccount().getBalance(), 8);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 12);
+        Util.assertEqual(access2.doLoadAccount().getBalance(), 8);
     }
 }

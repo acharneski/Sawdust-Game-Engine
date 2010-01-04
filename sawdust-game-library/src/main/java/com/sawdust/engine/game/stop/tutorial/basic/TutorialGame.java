@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.SessionFactory;
-import com.sawdust.engine.game.TutorialGameBase;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.stop.StopGame;

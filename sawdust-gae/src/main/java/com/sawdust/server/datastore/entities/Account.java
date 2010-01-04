@@ -20,9 +20,9 @@ import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Player;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
@@ -292,7 +292,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
         return (isAdmin == 1);
     }
 
-    public void removeSession(final com.sawdust.engine.service.data.GameSession gameSession)
+    public void doRemoveSession(final com.sawdust.engine.service.data.GameSession gameSession)
     {
         final Key id2 = ((GameSession) gameSession).getKey();
         if (null == id2)
@@ -354,7 +354,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
             {
                 LOG.fine(String.format("Withdrawl: %d (%s) from session %s to account %s", amount, description,
                         ((GameSession) depositTarget).getName(), getName()));
-                MoneyAccount account = ((GameSession) depositTarget).getAccount();
+                MoneyAccount account = ((GameSession) depositTarget).getBankAccount();
                 MoneyTransaction.Transfer(getAccount(), account, amount, description);
             }
             else
@@ -434,7 +434,7 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     }
 
     @Override
-    public com.sawdust.engine.service.data.Promotion awardPromotion(PromotionConfig p) throws GameException
+    public com.sawdust.engine.service.data.Promotion doAwardPromotion(PromotionConfig p) throws GameException
     {
         Promotion promo = Promotion.load(this, p);
         return promo;

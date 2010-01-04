@@ -76,7 +76,7 @@ public class EuchreTests extends TestCase
 			@Override
 			public Account loadAccount()
 			{
-				return access1.loadAccount();
+				return access1.doLoadAccount();
 			}
 
             @Override
@@ -90,7 +90,7 @@ public class EuchreTests extends TestCase
 			@Override
 			public Account loadAccount()
 			{
-				return access2.loadAccount();
+				return access2.doLoadAccount();
 			}
 
             @Override
@@ -104,7 +104,7 @@ public class EuchreTests extends TestCase
 			@Override
 			public Account loadAccount()
 			{
-				return access3.loadAccount();
+				return access3.doLoadAccount();
 			}
 
             @Override
@@ -118,7 +118,7 @@ public class EuchreTests extends TestCase
 			@Override
 			public Account loadAccount()
 			{
-				return access4.loadAccount();
+				return access4.doLoadAccount();
 			}
 
             @Override
@@ -131,19 +131,19 @@ public class EuchreTests extends TestCase
 		
 
 		session.addPlayer(player1);
-		game.addMember(player1);
+		game.addPlayer(player1);
 		session.addPlayer(player2);
-		game.addMember(player2);
+		game.addPlayer(player2);
 		session.addPlayer(player3);
-		game.addMember(player3);
+		game.addPlayer(player3);
 		session.addPlayer(player4);
-		game.addMember(player4);
-		session.start(new ArrayList<Participant>(session.getMembers()));
+		game.addPlayer(player4);
+		session.doStart(new ArrayList<Participant>(session.getPlayers()));
 
-		Util.assertEqual(access1.loadAccount().getBalance(), 9);
-		Util.assertEqual(access2.loadAccount().getBalance(), 9);
-		Util.assertEqual(access3.loadAccount().getBalance(), 9);
-		Util.assertEqual(access4.loadAccount().getBalance(), 9);
+		Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access3.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access4.doLoadAccount().getBalance(), 9);
 
 		Util.testGuiCommand(session, player2, "Pass"); now = Util.printNewMessages(game, now);
 		Util.testGuiCommand(session, player3, "Pass"); now = Util.printNewMessages(game, now);
@@ -160,10 +160,10 @@ public class EuchreTests extends TestCase
 		now = Util.printNewMessages(game, now);
 		 
 		Util.assertMessageFound(game, "test3 (team 1) wins this trick, for a total of 3 wins");
-		Util.assertEqual(access1.loadAccount().getBalance(), 9);
-		Util.assertEqual(access2.loadAccount().getBalance(), 9);
-		Util.assertEqual(access3.loadAccount().getBalance(), 9);
-		Util.assertEqual(access4.loadAccount().getBalance(), 9);
+		Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access3.doLoadAccount().getBalance(), 9);
+		Util.assertEqual(access4.doLoadAccount().getBalance(), 9);
 	}
 
 }

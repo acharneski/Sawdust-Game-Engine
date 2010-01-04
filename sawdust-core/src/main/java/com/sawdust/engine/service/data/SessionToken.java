@@ -7,8 +7,8 @@ public interface SessionToken
 
     String getUserId();
 
-    Account loadAccount();
+    Account doLoadAccount();
 
-    GameSession loadSession() throws GameException;
+    GameSession doLoadSession() throws GameException;
 
 }

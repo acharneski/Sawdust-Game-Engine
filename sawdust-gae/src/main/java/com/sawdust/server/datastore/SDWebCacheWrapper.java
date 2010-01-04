@@ -6,8 +6,8 @@ package com.sawdust.server.datastore;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.game.HttpInterface;
-import com.sawdust.engine.game.HttpResponse;
+import com.sawdust.engine.service.HttpInterface;
+import com.sawdust.engine.service.HttpResponse;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.server.datastore.entities.SDWebCache;

@@ -15,7 +15,7 @@ import com.sawdust.server.datastore.entities.AccountPlayer;
 import com.sawdust.server.datastore.entities.GameLeague;
 import com.sawdust.server.datastore.entities.GameListing;
 import com.sawdust.server.datastore.entities.GameSession;
-import com.sawdust.server.datastore.entities.GameState;
+import com.sawdust.server.datastore.entities.GameStateEntity;
 import com.sawdust.server.datastore.entities.MoneyAccount;
 import com.sawdust.server.datastore.entities.MoneyTransaction;
 import com.sawdust.server.datastore.entities.SDWebCache;
@@ -59,7 +59,7 @@ public class DataCleanupBean implements Serializable
         if(className.equals("GameLeague")) return GameLeague.class;
         if(className.equals("GameListing")) return GameListing.class;
         if(className.equals("GameSession")) return GameSession.class;
-        if(className.equals("GameState")) return GameState.class;
+        if(className.equals("GameState")) return GameStateEntity.class;
         if(className.equals("MoneyAccount")) return MoneyAccount.class;
         if(className.equals("MoneyTransaction")) return MoneyTransaction.class;
         if(className.equals("SDWebCache")) return SDWebCache.class;

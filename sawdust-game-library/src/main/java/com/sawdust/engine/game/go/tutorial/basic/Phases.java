@@ -1,12 +1,12 @@
 package com.sawdust.engine.game.go.tutorial.basic;
 
 import com.sawdust.engine.service.debug.GameException;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
-import com.sawdust.engine.game.TutorialGameBase;
 import com.sawdust.engine.game.TutorialPhase;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.go.GoGame;
 import com.sawdust.engine.service.debug.GameLogicException;
@@ -24,7 +24,7 @@ public class Phases implements TutorialPhase<GoGame>
    }
    
    @Override
-   public GameState filterDisplay(GameState gwt)
+   public GameFrame filterDisplay(GameFrame gwt)
    {
       return gwt;
    }

@@ -1,13 +1,16 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Message.MessageType;
+import com.sawdust.engine.game.AgentFactory;
+import com.sawdust.engine.game.GameType;
+import com.sawdust.engine.game.TutorialPhase;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -15,7 +18,7 @@ import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
 
-public abstract class TutorialGameBase<S extends Game> implements Game
+public abstract class TutorialGameBase<S extends GameState> implements GameState
 {
    private static final Logger LOG = Logger.getLogger(TutorialGameBase.class.getName());
    protected TutorialPhase<S> _phase = null;
@@ -37,7 +40,7 @@ public abstract class TutorialGameBase<S extends Game> implements Game
       {
          Agent<S> agent = initAgent();
          this.getSession().addPlayer(agent);
-         _innerGame.addMember(agent);
+         _innerGame.addPlayer(agent);
       }
       catch (GameException e)
       {
@@ -103,9 +106,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
    
    @Override
-   public GameState toGwt(Player access) throws GameException
+   public GameFrame toGwt(Player access) throws GameException
    {
-      GameState gwt = _innerGame.toGwt(access);
+      GameFrame gwt = _innerGame.toGwt(access);
       TutorialPhase<S> phase = getPhase();
       if(null != phase) gwt = phase.filterDisplay(gwt);
       return gwt;
@@ -136,9 +139,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
 
    @Override
-   public String displayName(Participant userId)
+   public String getDisplayName(Participant userId)
    {
-      return getInnerGame().displayName(userId);
+      return getInnerGame().getDisplayName(userId);
    }
 
    @Override
@@ -172,9 +175,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    
 
    @Override
-   public void addMember(Participant agent) throws GameException
+   public void addPlayer(Participant agent) throws GameException
    {
-      _innerGame.addMember(agent);
+      _innerGame.addPlayer(agent);
    }
 
    @Override
@@ -228,9 +231,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
 
    @Override
-   public ArrayList<Message> getNewMessages()
+   public ArrayList<Message> getMessages()
    {
-      return _innerGame.getNewMessages();
+      return _innerGame.getMessages();
    }
 
    @Override
@@ -246,9 +249,9 @@ public abstract class TutorialGameBase<S extends Game> implements Game
    }
 
    @Override
-   public void removeMember(Participant email) throws GameException
+   public void doRemoveMember(Participant email) throws GameException
    {
-      _innerGame.removeMember(email);
+      _innerGame.doRemoveMember(email);
    }
 
    @Override
@@ -292,19 +295,19 @@ public abstract class TutorialGameBase<S extends Game> implements Game
       getSession().setState(this);
    }
 
-   public void setParentGame(Game _parentGame)
+   public void setParentGame(GameState _parentGame)
    {
       throw new RuntimeException("Not Implemented");
    }
 
-   public Game getParentGame()
+   public GameState getParentGame()
    {
       throw new RuntimeException("Not Implemented");
    }
 
-   public void advanceTime(int milliseconds)
+   public void doAdvanceTime(int milliseconds)
    {
-      _innerGame.advanceTime(milliseconds);
+      _innerGame.doAdvanceTime(milliseconds);
    }
 
    public int getUpdateTime()

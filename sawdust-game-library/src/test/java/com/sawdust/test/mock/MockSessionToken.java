@@ -28,12 +28,12 @@ public class MockSessionToken implements SessionToken
 		return user;
 	}
 
-	public Account loadAccount()
+	public Account doLoadAccount()
 	{
 		return _account;
 	}
 
-	public GameSession loadSession() throws GameException
+	public GameSession doLoadSession() throws GameException
 	{
 		return session;
 	}

@@ -39,7 +39,7 @@ public class BlackjackTests extends TestCase
             @Override
             public Account loadAccount()
             {
-                return access1.loadAccount();
+                return access1.doLoadAccount();
             }
 
             @Override
@@ -59,21 +59,21 @@ public class BlackjackTests extends TestCase
         deck.addCard(Ranks.Four, Suits.Clubs);
         deck.addCard(Ranks.Two, Suits.Hearts);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
-        blackjackGame.addMember(player1);
+        blackjackGame.addPlayer(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);
-        Util.assertEqual(access1.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player1, "Hit 0");
         now = Util.printNewMessages(blackjackGame, now);
         Util.testGuiCommand(session, player1, "Stay");
         now = Util.printNewMessages(blackjackGame, now);
         Util.assertMessageFound(blackjackGame, "You Lose.");
-        Util.assertEqual(access1.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
     }
 
     private BlackjackGame getGame()
@@ -99,7 +99,7 @@ public class BlackjackTests extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);
-        session.start(players);
+        session.doStart(players);
     }
 
     @Test(timeout = 10000)
@@ -116,7 +116,7 @@ public class BlackjackTests extends TestCase
             @Override
             public Account loadAccount()
             {
-                return access1.loadAccount();
+                return access1.doLoadAccount();
             }
 
             @Override
@@ -136,14 +136,14 @@ public class BlackjackTests extends TestCase
         deck.addCard(Ranks.Four, Suits.Clubs);
         deck.addCard(Ranks.Ace, Suits.Clubs);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
-        blackjackGame.addMember(player1);
+        blackjackGame.addPlayer(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);
-        Util.assertEqual(access1.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
 
         Util.testGuiCommand(session, player1, "Hit 0");
         now = Util.printNewMessages(blackjackGame, now);
@@ -152,7 +152,7 @@ public class BlackjackTests extends TestCase
         Util.testGuiCommand(session, player1, "Stay");
         now = Util.printNewMessages(blackjackGame, now);
         Util.assertMessageFound(blackjackGame, "You Win.");
-        Util.assertEqual(access1.loadAccount().getBalance(), 11);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 11);
     }
 
 }

@@ -56,7 +56,7 @@ public class DataUtilTests extends TestCase
         AccessToken accessData = new AccessToken("test1");
         User user = new User(UserTypes.Member, accessData.getUserId(), null);
         final SessionToken access1 = new SessionToken(accessData, user);
-        com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
+        com.sawdust.server.datastore.entities.Account account = access1.doLoadAccount();
         DataStore.Save();
         DataStore.Clear();
         
@@ -91,7 +91,7 @@ public class DataUtilTests extends TestCase
         AccessToken accessData = new AccessToken("test1");
         User user = new User(UserTypes.Member, accessData.getUserId(), null);
         final SessionToken access1 = new SessionToken(accessData, user);
-        com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
+        com.sawdust.server.datastore.entities.Account account = access1.doLoadAccount();
         DataStore.Save();
         DataStore.Clear();
         

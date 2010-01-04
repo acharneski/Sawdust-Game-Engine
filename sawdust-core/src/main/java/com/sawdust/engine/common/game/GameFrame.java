@@ -9,7 +9,7 @@ import java.util.List;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.geometry.Position;
 
-public class GameState implements Serializable
+public class GameFrame implements Serializable
 {
 
     private ArrayList<Token> _cardDeck = new ArrayList<Token>();
@@ -27,11 +27,11 @@ public class GameState implements Serializable
     public String html = "";
     public GameCanvas canvas = null;
 
-    public GameState()
+    public GameFrame()
     {
     }
 
-    public GameState(final GameConfig g)
+    public GameFrame(final GameConfig g)
     {
         setConfig(g);
     }

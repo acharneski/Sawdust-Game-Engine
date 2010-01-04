@@ -48,7 +48,7 @@ public class BlackjackTests extends TestCase
         AccessToken accessData = new AccessToken(userId);
         User user = new User(UserTypes.Member, userId, null);
         final SessionToken access1 = new SessionToken(accessData, user);
-        com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
+        com.sawdust.server.datastore.entities.Account account = access1.doLoadAccount();
         com.sawdust.engine.service.data.GameSession session = new GameSession(account);
         BlackjackGame blackjackGame = getGame(session, accessData, account);
         blackjackGame.saveState();
@@ -92,7 +92,7 @@ public class BlackjackTests extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);
-        session.start(players);
+        session.doStart(players);
     }
 
     @Test(timeout = 10000)
@@ -108,7 +108,7 @@ public class BlackjackTests extends TestCase
         AccessToken accessData = new AccessToken(userId);
         User user = new User(UserTypes.Member, userId, null);
         final SessionToken access1 = new SessionToken(accessData, user);
-        com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
+        com.sawdust.server.datastore.entities.Account account = access1.doLoadAccount();
         com.sawdust.engine.service.data.GameSession session = new GameSession(account);
         BlackjackGame blackjackGame = getGame(session, accessData, account);
         blackjackGame.saveState();
@@ -124,14 +124,14 @@ public class BlackjackTests extends TestCase
         deck.addCard(Ranks.Five, Suits.Clubs);
         deck.addCard(Ranks.Four, Suits.Clubs);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
         //blackjackGame.addMember(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         Util.testGuiCommand(session, player1, "Hit Me");
         now = Util.printNewMessages(blackjackGame, now);
@@ -140,7 +140,7 @@ public class BlackjackTests extends TestCase
         Util.testGuiCommand(session, player1, "Stay");
         now = Util.printNewMessages(blackjackGame, now);
         Util.assertMessageFound(blackjackGame, "You Lose.");
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
     }
 
 }

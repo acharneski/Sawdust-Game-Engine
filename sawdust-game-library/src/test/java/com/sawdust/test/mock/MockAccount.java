@@ -3,7 +3,7 @@ package com.sawdust.test.mock;
 import java.io.Serializable;
 
 import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.PromotionConfig;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.data.Promotion;
@@ -40,7 +40,7 @@ public class MockAccount implements Account
         return email;
     }
 
-    public void removeSession(GameSession gameSession)
+    public void doRemoveSession(GameSession gameSession)
     {
         // TODO Auto-generated method stub
 
@@ -79,7 +79,7 @@ public class MockAccount implements Account
     }
 
     @Override
-    public Promotion awardPromotion(PromotionConfig p) throws GameException
+    public Promotion doAwardPromotion(PromotionConfig p) throws GameException
     {
         throw new RuntimeException("Not Implemented");
     }

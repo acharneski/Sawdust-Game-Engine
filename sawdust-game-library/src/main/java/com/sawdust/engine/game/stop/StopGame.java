@@ -11,11 +11,10 @@ import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
-import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.MultiPlayerGame;
-import com.sawdust.engine.game.PromotionConfig;
-import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.MultiPlayerGame;
+import com.sawdust.engine.game.basetypes.TokenGame;
 import com.sawdust.engine.game.go.GoLoot;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
@@ -28,6 +27,7 @@ import com.sawdust.engine.game.state.GameLabel;
 import com.sawdust.engine.game.state.IndexPosition;
 import com.sawdust.engine.game.state.Token;
 import com.sawdust.engine.game.wordHunt.BoardToken;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
@@ -70,9 +70,9 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void removeMember(Participant agent) throws GameException
+   public void doRemoveMember(Participant agent) throws GameException
    {
-      super.removeMember(agent);
+      super.doRemoveMember(agent);
       _mplayerManager.removeMember(this, agent);
    }
    
@@ -97,13 +97,13 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       setCanvas(new SolidColorGameCanvas("tan", "black"));
       _mplayerManager = new MultiPlayer(NUMBER_OF_PLAYERS);
       GameSession session = getSession();
-      if (null != session) session.setRequiredPlayers(NUMBER_OF_PLAYERS);
+      if (null != session) session.setMinimumPlayers(NUMBER_OF_PLAYERS);
    }
    
    @Override
-   public void addMember(final Participant agent) throws GameException
+   public void addPlayer(final Participant agent) throws GameException
    {
-      super.addMember(agent);
+      super.addPlayer(agent);
       _mplayerManager.addMember(this, agent);
    }
    
@@ -121,9 +121,9 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       BoardData boardValue = getBoardData(row, col);
       if (null != boardValue && -1 != boardValue.value) throw new GameLogicException("Can only place tiles at empty nodes");
       setBoardData(row, col, playerIdx);
-      this.advanceTime(500);
+      this.doAdvanceTime(500);
       this.saveState();
-      this.advanceTime(500);
+      this.doAdvanceTime(500);
 
       final TokenArray ta = getTokenArray();
       ta.cleanIslands(playerIdx, this, true);
@@ -171,7 +171,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          final int diff = score - score2;
          if (diff > 0)
          {
-            String displayName = displayName(player);
+            String displayName = getDisplayName(player);
             addMessage("%s won by at least %d!", displayName, diff);
             _currentState = GamePhase.Complete;
             _lastWinner = playerIdx;
@@ -180,7 +180,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             if (null != session)
             {
                 Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
-                String opponentName = displayName(otherPlayer);
+                String opponentName = getDisplayName(otherPlayer);
                 if(player instanceof Player)
                 {
                     String type = "Win/Stop";
@@ -199,13 +199,13 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                {
                   collection.add((Player) player);
                }
-               session.payOut(collection);
+               session.doSplitWagerPool(collection);
             }
             return;
          }
       }
       final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
-      addMessage("It is now %s's turn", displayName(gotoNextPlayer));
+      addMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
    }
 
    private void rollForLoot(Participant p) throws GameException
@@ -219,7 +219,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
        PromotionConfig promoConfig = resource.getLoot();
        if(null != promoConfig)
        {
-           Promotion awardPromotion = account.awardPromotion(promoConfig);
+           Promotion awardPromotion = account.doAwardPromotion(promoConfig);
            addMessage(
                    "I won some loot playing Go at Sawdust Games, and I'd like to share... "+
                    "The first 5 players to visit %s will get 50 free credits!", 
@@ -398,12 +398,12 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       final GameSession session = getSession();
       if (session != null)
       {
-         session.anteUp();
+         session.doUnitWager();
          for (final Participant p : getPlayerManager().getPlayers())
          {
             if (p instanceof Agent<?>)
             {
-               session.withdraw(-session.getAnte(), null, "Agent Ante Up");
+               session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
             }
          }
       }
@@ -417,7 +417,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       }
       if (null != nextPlayer)
       {
-         addMessage("It is now %s's turn", displayName(nextPlayer));
+         addMessage("It is now %s's turn", getDisplayName(nextPlayer));
       }
       _currentState = GamePhase.Playing;
    }
@@ -443,9 +443,9 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public com.sawdust.engine.common.game.GameState toGwt(Player access) throws GameException
+   public com.sawdust.engine.common.game.GameFrame toGwt(Player access) throws GameException
    {
-      final com.sawdust.engine.common.game.GameState returnValue = super.toGwt(access);
+      final com.sawdust.engine.common.game.GameFrame returnValue = super.toGwt(access);
       PlayerManager playerManager = _mplayerManager.getPlayerManager();
       boolean isMember = playerManager.isMember(access);
       boolean inPlay = isInPlay();

@@ -1,4 +1,4 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.game.players.Participant;

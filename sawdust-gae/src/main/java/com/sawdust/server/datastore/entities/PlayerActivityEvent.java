@@ -19,8 +19,8 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.GameSession.SessionStatus;
 import com.sawdust.engine.service.debug.GameException;
@@ -82,7 +82,7 @@ public class PlayerActivityEvent extends DataObj
     }
 
     @NotPersistent
-    private Game _cachedState = null;
+    private GameState _cachedState = null;
 
     @Persistent
     private int currentVersion;
@@ -112,7 +112,7 @@ public class PlayerActivityEvent extends DataObj
 
     public PlayerActivityEvent(final GameSession fromSession) throws GameException
     {
-        this(new Blob(Util.toBytes(fromSession.getLatestState())), fromSession.getLatestVersionNumber(), KeyFactory.keyToString(fromSession.getKey()));
+        this(new Blob(Util.toBytes(fromSession.getState())), fromSession.getLatestVersionNumber(), KeyFactory.keyToString(fromSession.getKey()));
     }
 
     @Override
@@ -131,13 +131,13 @@ public class PlayerActivityEvent extends DataObj
         return KeyFactory.keyToString(getKey());
     }
 
-    public Game getState(final GameSession _parent)
+    public GameState getState(final GameSession _parent)
     {
         if (null != _cachedState) return _cachedState;
         if (null == state) return null;
         try
         {
-            _cachedState = (Game) Util.fromBytes(state.getBytes());
+            _cachedState = (GameState) Util.fromBytes(state.getBytes());
             return _cachedState;
         }
         catch (Throwable e)

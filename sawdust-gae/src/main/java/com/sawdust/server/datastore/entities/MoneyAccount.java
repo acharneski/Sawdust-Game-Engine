@@ -19,7 +19,7 @@ import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class MoneyAccount extends DataObj implements com.sawdust.engine.service.data.MoneyAccount
+public class MoneyAccount extends DataObj implements com.sawdust.engine.service.data.BankAccount
 {
    private static final Logger LOG = Logger.getLogger(MoneyAccount.class.getName());
 
@@ -96,19 +96,19 @@ public class MoneyAccount extends DataObj implements com.sawdust.engine.service.
     }
 
     @Override
-    public String getAccountId()
+    public String getStringId()
     {
         return accountId;
     }
 
     @Override
-    public int getCurrentBalence()
+    public int getBalance()
     {
         return currentBalence;
     }
 
     @Override
-    public void setCurrentBalence(int i)
+    public void setBalance(int i)
     {
         LOG.info(String.format("Set %s balence = %d", accountId, i));
 //        if(i < Account.MIN_CREDITS)

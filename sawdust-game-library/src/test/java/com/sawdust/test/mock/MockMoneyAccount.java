@@ -3,26 +3,26 @@
  */
 package com.sawdust.test.mock;
 
-import com.sawdust.engine.service.data.MoneyAccount;
+import com.sawdust.engine.service.data.BankAccount;
 
-final class MockMoneyAccount implements MoneyAccount
+final class MockMoneyAccount implements BankAccount
 {
     @Override
-    public void setCurrentBalence(int i)
+    public void setBalance(int i)
     {
         // TODO Auto-generated method stub
         
     }
     
     @Override
-    public int getCurrentBalence()
+    public int getBalance()
     {
         // TODO Auto-generated method stub
         return 0;
     }
     
     @Override
-    public String getAccountId()
+    public String getStringId()
     {
         // TODO Auto-generated method stub
         return null;

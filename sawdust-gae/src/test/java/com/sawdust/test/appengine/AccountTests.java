@@ -48,7 +48,7 @@ public class AccountTests extends TestCase implements Serializable
         AccessToken accessData = new AccessToken(id1);
         User user = new User(UserTypes.Member, accessData.getUserId(), null);
         final SessionToken access1 = new SessionToken(accessData, user);
-        com.sawdust.server.datastore.entities.Account account = access1.loadAccount();
+        com.sawdust.server.datastore.entities.Account account = access1.doLoadAccount();
         Assert.assertEquals(10, account.getBalance());
         MyTestData resource = account.getResource(MyTestData.class);
         Assert.assertEquals(null, resource);

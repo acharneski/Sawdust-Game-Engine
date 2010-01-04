@@ -1,4 +1,4 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 import com.sawdust.engine.common.cards.CardDeck;
 import com.sawdust.engine.common.config.GameConfig;

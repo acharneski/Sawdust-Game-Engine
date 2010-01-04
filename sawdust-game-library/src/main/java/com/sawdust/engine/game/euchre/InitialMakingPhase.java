@@ -56,7 +56,7 @@ final class InitialMakingPhase extends GamePhase
          * R-E-0142: The player to the dealer's left begins play by leading a card. (In some R-E-0143: variations, if any player is going
          * alone, the player to that person's left will R-E-0144: lead.)
          */
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.displayName(game._roundStartPlayer));
+        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(game._roundStartPlayer));
         game._winningCard = null;
     }
 
@@ -97,7 +97,7 @@ final class InitialMakingPhase extends GamePhase
         final Participant nextPlayer = game.getPlayerManager().gotoNextPlayer();
         game.addMessage(MessageType.Compact, "Passed.");
         game.addMessage("");
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.displayName(nextPlayer));
+        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(nextPlayer));
         if ((0 == game.getPlayerManager().findPlayer(currentPlayer)) && EuchreGame.INITIAL_MAKING.equals(game.getCurrentPhase()))
         {
             game.addMessage("Any suit can now be named trump");

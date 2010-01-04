@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.game.BaseGame;
+import com.sawdust.engine.game.basetypes.BaseGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;

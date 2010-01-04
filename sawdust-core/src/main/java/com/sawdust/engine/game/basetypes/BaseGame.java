@@ -1,4 +1,4 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.game.basetypes;
 
 
 import java.util.ArrayList;
@@ -10,9 +10,11 @@ import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.GameModConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
 import com.sawdust.engine.common.game.GameCanvas;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Notification;
+import com.sawdust.engine.game.AgentFactory;
+import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -23,10 +25,10 @@ import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.data.SessionMember;
 import com.sawdust.engine.service.debug.GameException;
 
-public abstract class BaseGame implements Game
+public abstract class BaseGame implements GameState
 {
     private static final Logger LOG = Logger.getLogger(BaseGame.class.getName());
-    private Game _parentGame = null; // If the game is encapsulated
+    private GameState _parentGame = null; // If the game is encapsulated
 
     public static <T> boolean compareArray(final ArrayList<T> thisList, final ArrayList<T> otherList)
     {
@@ -106,9 +108,9 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#addMember(com.sawdust.engine.game.players.Participant)
      */
-    public void addMember(final Participant agent) throws GameException
+    public void addPlayer(final Participant agent) throws GameException
     {
-        this.addMessage("%s joined the room", displayName(agent));
+        this.addMessage("%s joined the room", getDisplayName(agent));
     }
 
     public Message addMessage(final Message m)
@@ -160,7 +162,7 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#displayName(com.sawdust.engine.game.players.Participant)
      */
-    public abstract String displayName(Participant userId);
+    public abstract String getDisplayName(Participant userId);
 
     /*
      * (non-Javadoc)
@@ -257,7 +259,7 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#getNewMessages()
      */
-    public ArrayList<Message> getNewMessages()
+    public ArrayList<Message> getMessages()
     {
         if (null == _newMessages) return null;
         return new ArrayList<Message>(_newMessages);
@@ -333,9 +335,9 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#removeMember(com.sawdust.engine.game.players.Participant)
      */
-    public void removeMember(final Participant email) throws GameException
+    public void doRemoveMember(final Participant email) throws GameException
     {
-        this.addMessage("%s left the room", displayName(email));
+        this.addMessage("%s left the room", getDisplayName(email));
     }
 
     /*
@@ -396,9 +398,9 @@ public abstract class BaseGame implements Game
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#toGwt(com.sawdust.engine.game.players.Player)
      */
-    public GameState toGwt(final Player access) throws GameException
+    public GameFrame toGwt(final Player access) throws GameException
     {
-        final GameState returnValue = new GameState(_config);
+        final GameFrame returnValue = new GameFrame(_config);
         returnValue.versionNumber = _versionNumber;
         returnValue.timeOffset = _timeOffset;
         returnValue.setHeight(_height);
@@ -489,18 +491,18 @@ public abstract class BaseGame implements Game
         }
     }
 
-    public void setParentGame(Game _parentGame)
+    public void setParentGame(GameState _parentGame)
     {
         if (_parentGame == this) throw new RuntimeException("Parent cannot be self!");
         this._parentGame = _parentGame;
     }
 
-    public Game getParentGame()
+    public GameState getParentGame()
     {
         return _parentGame;
     }
 
-    public void advanceTime(int milliseconds)
+    public void doAdvanceTime(int milliseconds)
     {
         _timeOffset += milliseconds;
     }
@@ -541,7 +543,7 @@ public abstract class BaseGame implements Game
         int anteInteger = Integer.parseInt(anteString);
         thisProperties.get(GameConfig.ANTE).value = anteString;
         thisProperties.get(GameConfig.ANTE).defaultValue = anteString;
-        this.getSession().setValue(anteInteger);
+        this.getSession().setUnitWager(anteInteger);
         saveState();
     }
 

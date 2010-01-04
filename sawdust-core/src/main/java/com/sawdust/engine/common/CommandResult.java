@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.GameException;
 
 public class CommandResult implements Serializable
 {
     public int _bankBalance = 0;
     private String _exception = null;
-    private ArrayList<GameState> _stateSequence = new ArrayList<GameState>();
+    private ArrayList<GameFrame> _stateSequence = new ArrayList<GameFrame>();
 
     public CommandResult()
     {
@@ -24,13 +24,13 @@ public class CommandResult implements Serializable
         _exception = exception.getMessage();
     }
 
-    public CommandResult(final GameState state)
+    public CommandResult(final GameFrame state)
     {
         super();
         addState(state);
     }
 
-    public void addState(final GameState state)
+    public void addState(final GameFrame state)
     {
         _stateSequence.add(state);
     }
@@ -40,17 +40,17 @@ public class CommandResult implements Serializable
         return _exception;
     }
 
-    public List<GameState> getStateFrames()
+    public List<GameFrame> getStateFrames()
     {
         return _stateSequence;
     }
 
-    private void setStateSequence(ArrayList<GameState> pstateSequence)
+    private void setStateSequence(ArrayList<GameFrame> pstateSequence)
     {
         this._stateSequence = pstateSequence;
     }
 
-    private ArrayList<GameState> getStateSequence()
+    private ArrayList<GameFrame> getStateSequence()
     {
         return _stateSequence;
     }

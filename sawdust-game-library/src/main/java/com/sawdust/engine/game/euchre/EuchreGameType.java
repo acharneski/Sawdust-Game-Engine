@@ -2,8 +2,8 @@ package com.sawdust.engine.game.euchre;
 
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.GameModConfig;
-import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.SessionFactory;
+import com.sawdust.engine.game.basetypes.BaseGame;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.euchre.mod.Mod78;
 import com.sawdust.engine.service.data.GameSession;

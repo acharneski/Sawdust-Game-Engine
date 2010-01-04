@@ -39,7 +39,7 @@ public enum Commands
     {
         public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
-            baseGame.getSession().anteUp();
+            baseGame.getSession().doUnitWager();
             baseGame.doHit(0);
             if (GamePhases.Playing == baseGame.getCurrentPhase()) baseGame.doStay();
             baseGame.saveState();

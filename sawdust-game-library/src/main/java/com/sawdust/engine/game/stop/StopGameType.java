@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.GameType;
 import com.sawdust.engine.game.SessionFactory;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
@@ -51,7 +51,7 @@ public class StopGameType extends com.sawdust.engine.game.GameType<StopGame>
     }
 
     @Override
-    public Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory)
+    public GameState createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new StopGame(c)
         {

@@ -3,11 +3,11 @@ package com.sawdust.engine.game.blackjack.tutorials.basic;
 import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.game.LoadedDeck;
 import com.sawdust.engine.game.SessionFactory;
-import com.sawdust.engine.game.TutorialGameBase;
+import com.sawdust.engine.game.basetypes.GameState;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Player;
@@ -55,9 +55,9 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     }
     
     @Override
-    public GameState toGwt(Player access) throws GameException
+    public GameFrame toGwt(Player access) throws GameException
     {
-        GameState gwt = super.toGwt(access);
+        GameFrame gwt = super.toGwt(access);
         gwt = _phase.filterDisplay(gwt);
         return gwt;
     }
@@ -80,7 +80,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
    }
 
    @Override
-   public void setParentGame(Game parentGame)
+   public void setParentGame(GameState parentGame)
    {
       throw new RuntimeException("Not Implemented");
    }

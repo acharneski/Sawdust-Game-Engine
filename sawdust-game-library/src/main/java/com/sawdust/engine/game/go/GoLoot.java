@@ -2,7 +2,7 @@ package com.sawdust.engine.game.go;
 
 import java.io.Serializable;
 
-import com.sawdust.engine.game.PromotionConfig;
+import com.sawdust.engine.service.PromotionConfig;
 
 public class GoLoot implements Serializable
 {

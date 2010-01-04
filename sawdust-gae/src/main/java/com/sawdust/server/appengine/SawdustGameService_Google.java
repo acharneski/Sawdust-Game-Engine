@@ -15,10 +15,10 @@ import com.sawdust.engine.common.GameException;
 import com.sawdust.engine.common.GameLocation;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.config.LeagueConfig;
-import com.sawdust.engine.common.game.GameState;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.game.GameType;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.service.Util;
@@ -46,7 +46,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
 
     static final UserService userService = com.google.appengine.api.users.UserServiceFactory.getUserService();
 
-    public static void doCommand(final String cmd, final com.sawdust.engine.service.data.GameSession gameSession, final Game tokenGame,
+    public static void doCommand(final String cmd, final com.sawdust.engine.service.data.GameSession gameSession, final GameState tokenGame,
             final Player player) throws GameException
     {
         if ((null != cmd) && (null != tokenGame))
@@ -111,10 +111,10 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
         {
             DataStore.Clear();
             final com.sawdust.server.logic.SessionToken access = getSessionToken2(access2, request, response);
-            final Account account = access.loadAccount();
+            final Account account = access.doLoadAccount();
 
             final com.sawdust.server.datastore.entities.GameSession newSession = new com.sawdust.server.datastore.entities.GameSession(account);
-            final Game gameObj = Games.NewGame(gameToCreate, game, newSession, access2);
+            final GameState gameObj = Games.NewGame(gameToCreate, game, newSession, access2);
             
             final TinySession tinySession = TinySession.load(newSession);
             final GameLocation gameLocation = new GameLocation(tinySession.getTinyId(), access.getUser().getSite());
@@ -135,20 +135,20 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
                 ((BaseGame) gameObj).postStartActivity();
             }
 
-            newSession.updateConfig(game);
+            newSession.doUpdateConfig(game);
             gameObj.saveState();
             final Player player = account.getPlayer();
             newSession.addPlayer(player);
 
-            if (newSession.getSessionStatus() != SessionStatus.Playing)
+            if (newSession.getStatus() != SessionStatus.Playing)
             {
                 if (newSession.getReadyPlayers() >= newSession.getRequiredPlayers())
                 {
-                    newSession.start(null);
+                    newSession.doStart(null);
                 }
                 else
                 {
-                    newSession.setSessionStatus(com.sawdust.engine.service.data.GameSession.SessionStatus.Inviting, gameObj);
+                    newSession.setStatus(com.sawdust.engine.service.data.GameSession.SessionStatus.Inviting, gameObj);
                     if (game.getProperties().get(GameConfig.PUBLIC_INVITES).getBoolean())
                     {
                         newSession.createOpenInvite(player);
@@ -192,18 +192,18 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             LOG.info(String.format("Command=%s;\tUser=%s", cmd, access.getUserId()));
 
             com.sawdust.engine.service.data.GameSession gameSession;
-            gameSession = access.loadSession();
+            gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Cannot load session");
             final int gameVersion = gameSession.getLatestVersionNumber();
-            final Game tokenGame = gameSession.getLatestState();
-            final Account loadAccount = access.loadAccount();
+            final GameState tokenGame = gameSession.getState();
+            final Account loadAccount = access.doLoadAccount();
             final Player player = loadAccount.getPlayer();
             doCommand(cmd, gameSession, tokenGame, player);
 
             final CommandResult commandResult = new CommandResult();
-            for (final Game intermediateState : gameSession.getStatesSince(gameVersion))
+            for (final GameState intermediateState : gameSession.doGetStatesSince(gameVersion))
             {
-                final GameState gwtGame = (null == intermediateState) ? null : intermediateState.toGwt(player);
+                final GameFrame gwtGame = (null == intermediateState) ? null : intermediateState.toGwt(player);
                 commandResult.addState(gwtGame);
             }
             commandResult._bankBalance = loadAccount.getBalance();
@@ -240,7 +240,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final com.sawdust.server.logic.SessionToken access = getSessionToken(access2);
             final GameType<?> gameObj = GameTypes.findById(gameName);
             if (null == gameObj) return null;
-            final GameConfig game = gameObj.getPrototypeConfig(access.loadAccount());
+            final GameConfig game = gameObj.getPrototypeConfig(access.doLoadAccount());
             DataStore.Save();
             return game;
         }
@@ -261,9 +261,9 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             // System.out.println(String.format("Update=%s;\tUser=%s",
             // gameVersion, access.getUserId()));
 
-            GameSession gameSession = access.loadSession();
+            GameSession gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Cannot load session");
-            final Account playerAccount = access.loadAccount();
+            final Account playerAccount = access.doLoadAccount();
             final Player player = playerAccount.getPlayer();
 
             SessionMember findMember = gameSession.findMember(access.getUserId());
@@ -271,12 +271,12 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             {
                 findMember.setLastUpdate();
             }
-            gameSession.updateStatus();
+            gameSession.doUpdateStatus();
 
             final CommandResult commandResult = new CommandResult();
-            for (final Game tokenGame : gameSession.getStatesSince(gameVersion))
+            for (final GameState tokenGame : gameSession.doGetStatesSince(gameVersion))
             {
-                final GameState gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
+                final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
                 commandResult.addState(gwtGame);
             }
             commandResult._bankBalance = playerAccount.getBalance();
@@ -301,11 +301,11 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             DataStore.Clear();
             final SessionToken access = getSessionToken(access2);
             com.sawdust.engine.service.data.GameSession gameSession;
-            gameSession = access.loadSession();
+            gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Unknown session id");
-            final Game tokenGame = gameSession.getLatestState();
-            final Player player = (access.loadAccount()).getPlayer();
-            final GameState gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
+            final GameState tokenGame = gameSession.getState();
+            final Player player = (access.doLoadAccount()).getPlayer();
+            final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
             DataStore.Save();
             return new CommandResult(gwtGame);
         }
@@ -340,10 +340,10 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             LOG.info(String.format("ConfigUpdate\tUser=%s", access.getUserId()));
 
             com.sawdust.engine.service.data.GameSession gameSession;
-            gameSession = access.loadSession();
+            gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Cannot load session");
 
-            gameSession.updateConfig(game);
+            gameSession.doUpdateConfig(game);
             DataStore.Save();
         }
         catch (GameException e)

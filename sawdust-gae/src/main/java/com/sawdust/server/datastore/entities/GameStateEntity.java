@@ -19,8 +19,8 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.GameSession.SessionStatus;
 import com.sawdust.engine.service.debug.GameException;
@@ -29,30 +29,30 @@ import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.DataObj;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
-public class GameState extends DataObj
+public class GameStateEntity extends DataObj
 {
-    private static final Logger LOG = Logger.getLogger(GameState.class.getName());
+    private static final Logger LOG = Logger.getLogger(GameStateEntity.class.getName());
 
-    public static final Comparator<GameState> NaturalSort = new Comparator<GameState>()
+    public static final Comparator<GameStateEntity> NaturalSort = new Comparator<GameStateEntity>()
     {
-        public int compare(final GameState o1, final GameState o2)
+        public int compare(final GameStateEntity o1, final GameStateEntity o2)
         {
             return -o1.time.compareTo(o2.time);
         }
     };
 
-    public static List<GameState> getStatesSince(final GameSession psession, final int version)
+    public static List<GameStateEntity> getStatesSince(final GameSession psession, final int version)
     {
         final PersistenceManager entityManager = DataStore.create();
-        final List<GameState> finalResult = new ArrayList<GameState>();
+        final List<GameStateEntity> finalResult = new ArrayList<GameStateEntity>();
 
-        final Query newQuery = entityManager.newQuery(GameState.class);
+        final Query newQuery = entityManager.newQuery(GameStateEntity.class);
         newQuery.setFilter("currentVersion > _currentVersion && session == _session");
         newQuery.declareParameters("java.lang.String _session, int _currentVersion");
         newQuery.setOrdering("currentVersion desc");
         final String keyToString = KeyFactory.keyToString(psession.getKey());
-        final List<GameState> queryResult = (List<GameState>) newQuery.execute(keyToString, version);
-        for (final GameState transaction : queryResult)
+        final List<GameStateEntity> queryResult = (List<GameStateEntity>) newQuery.execute(keyToString, version);
+        for (final GameStateEntity transaction : queryResult)
         {
             finalResult.add(transaction);
         }
@@ -61,11 +61,11 @@ public class GameState extends DataObj
         return finalResult;
     }
 
-    public static GameState load(final Key key)
+    public static GameStateEntity load(final Key key)
     {
         try
         {
-            final GameState returnValue = DataStore.Get(GameState.class, key);
+            final GameStateEntity returnValue = DataStore.Get(GameStateEntity.class, key);
             return returnValue;
         }
         catch (final Throwable e)
@@ -75,13 +75,13 @@ public class GameState extends DataObj
         }
     }
 
-    public static GameState load(final String sessionKeyString)
+    public static GameStateEntity load(final String sessionKeyString)
     {
-        return GameState.load(KeyFactory.stringToKey(sessionKeyString));
+        return GameStateEntity.load(KeyFactory.stringToKey(sessionKeyString));
     }
 
     @NotPersistent
-    private Game _cachedState = null;
+    private GameState _cachedState = null;
 
     @Persistent
     private int currentVersion;
@@ -95,23 +95,23 @@ public class GameState extends DataObj
     @Persistent
     private final Date time = new Date();
 
-    protected GameState()
+    protected GameStateEntity()
     {
         super();
     }
 
-    public GameState(final Blob state2, final int currentVersion2, final String session2)
+    public GameStateEntity(final Blob state2, final int currentVersion2, final String session2)
     {
-        super(KeyFactory.createKey(GameState.class.getSimpleName(), (session2 + "%" + currentVersion2)));
+        super(KeyFactory.createKey(GameStateEntity.class.getSimpleName(), (session2 + "%" + currentVersion2)));
         state = state2;
         currentVersion = currentVersion2;
         session = session2;
         if (this != DataStore.Cache(this)) throw new AssertionError();
     }
 
-    public GameState(final GameSession fromSession) throws GameException
+    public GameStateEntity(final GameSession fromSession) throws GameException
     {
-        this(new Blob(Util.toBytes(fromSession.getLatestState())), fromSession.getLatestVersionNumber(), KeyFactory.keyToString(fromSession.getKey()));
+        this(new Blob(Util.toBytes(fromSession.getState())), fromSession.getLatestVersionNumber(), KeyFactory.keyToString(fromSession.getKey()));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class GameState extends DataObj
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        final GameState other = (GameState) obj;
+        final GameStateEntity other = (GameStateEntity) obj;
         if (!super.equals(other)) return false;
         return true;
     }
@@ -130,13 +130,13 @@ public class GameState extends DataObj
         return KeyFactory.keyToString(getKey());
     }
 
-    public Game getState(final GameSession _parent)
+    public GameState getState(final GameSession _parent)
     {
         if (null != _cachedState) return _cachedState;
         if (null == state) return null;
         try
         {
-            _cachedState = (Game) Util.fromBytes(state.getBytes());
+            _cachedState = (GameState) Util.fromBytes(state.getBytes());
             return _cachedState;
         }
         catch (Throwable e)

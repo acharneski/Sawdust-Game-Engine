@@ -23,8 +23,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.Game;
-import com.sawdust.engine.game.MultiPlayerGame;
+import com.sawdust.engine.game.basetypes.GameState;
+import com.sawdust.engine.game.basetypes.MultiPlayerGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
@@ -63,7 +63,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                     returnValue.members = new ArrayList<SessionMember>();
                 }
                 DataStore.Cache(returnValue);
-                returnValue.updateStatus();
+                returnValue.doUpdateStatus();
             }
 
             return returnValue;
@@ -81,7 +81,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     }
 
     @NotPersistent
-    private Game _cachedState = null;
+    private GameState _cachedState = null;
 
     @NotPersistent
     private boolean _dirtyGame = false;
@@ -108,7 +108,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     private Date lastGameUpdate = new Date();
 
     @NotPersistent
-    private final transient ArrayList<GameState> localStates = new ArrayList<GameState>();
+    private final transient ArrayList<GameStateEntity> localStates = new ArrayList<GameStateEntity>();
 
     @Persistent(mappedBy = "gameSession")
     @OrderBy(value = "memberIndex")
@@ -165,7 +165,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         {
             Player player = (Player) p;
             final com.sawdust.engine.service.data.Account _account = player.loadAccount();
-            if (getAnte() > _account.getBalance()) throw new GameLogicException("The game's ante is too high!");
+            if (getUnitWager() > _account.getBalance()) throw new GameLogicException("The game's ante is too high!");
             ((Account) _account).addSession(this);
 
             final SessionMember sessionMember = new SessionMember(this, (com.sawdust.server.datastore.entities.Account) _account);
@@ -176,22 +176,22 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         }
         else if (p instanceof Agent<?>)
         {
-            addAi(p.getId());
+            addAgent(p.getId());
         }
 
-        final Game _game = getLatestState();
+        final GameState _game = getState();
         if (null != _game)
         {
-            _game.addMember(p);
+            _game.addPlayer(p);
             _game.saveState();
-            updateStatus();
+            doUpdateStatus();
         }
     }
 
-    public void anteUp() throws GameException
+    public void doUnitWager() throws GameException
     {
         final ArrayList<com.sawdust.engine.service.data.Account> toSave = new ArrayList<com.sawdust.engine.service.data.Account>();
-        for (final Player member : getMembers())
+        for (final Player member : getPlayers())
         {
             final com.sawdust.engine.service.data.Account laccount = member.loadAccount();
             laccount.withdraw(ante, this, "Ante Up");
@@ -207,7 +207,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
 
     private void dropMember(final SessionMember member)
     {
-        final Game lgame = getLatestState();
+        final GameState lgame = getState();
         final Account laccount = (Account) member.getAccount();
         LOG.info(String.format("Remove member from session: %s", member.getAccount().getUserId()));
         if (null != lgame)
@@ -215,7 +215,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
             final Player playerID = member.getPlayer();
             try
             {
-                lgame.removeMember(playerID);
+                lgame.doRemoveMember(playerID);
                 _dirtyGame = true;
             }
             catch (final GameException e)
@@ -224,7 +224,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
             }
         }
         getEntityManager().deletePersistent(member);
-        laccount.removeSession(this);
+        laccount.doRemoveSession(this);
         int index = 0;
         for (final SessionMember m : members)
         {
@@ -253,10 +253,10 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return null;
     }
 
-    public MoneyAccount getAccount()
+    public MoneyAccount getBankAccount()
     {
         if (null != account) return MoneyAccount.Load(account);
-        final MoneyAccount moneyAccount = new MoneyAccount(getId(), getKey());
+        final MoneyAccount moneyAccount = new MoneyAccount(getStringId(), getKey());
         moneyAccount.setDisplayName(String.format("%s (%s game)", getName(), getGame()));
         account = moneyAccount.getKey();
         return moneyAccount;
@@ -265,14 +265,14 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     /**
      * @return the ante
      */
-    public int getAnte()
+    public int getUnitWager()
     {
         return ante;
     }
 
     public int getBalance()
     {
-        return getAccount().getCurrentBalence();
+        return getBankAccount().getBalance();
     }
 
     /**
@@ -312,7 +312,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return String.format("<b>%s</b><br/>(status=%s;game='%s';ante=%d)", name, sessionStatus.toString(), game, ante);
     }
 
-    public String getId()
+    public String getStringId()
     {
         return KeyFactory.keyToString(getKey());
     }
@@ -322,13 +322,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return lastGameUpdate;
     }
 
-    public Game getLatestState()
+    public GameState getState()
     {
         if (null != _cachedState) return _cachedState;
         if (null == currentState) return null;
         try
         {
-            GameState load = GameState.load(currentState);
+            GameStateEntity load = GameStateEntity.load(currentState);
             if(null == load)
             {
                 this.delete(true);
@@ -352,7 +352,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     /**
      * @return the members
      */
-    public Collection<Player> getMembers()
+    public Collection<Player> getPlayers()
     {
         final ArrayList<Player> returnValue = new ArrayList<Player>();
         for (final SessionMember o : members)
@@ -383,7 +383,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
 
     public int getPlayerTimeout()
     {
-        Game latestState = getLatestState();
+        GameState latestState = getState();
         if (null != latestState)
         {
             int updateTime = latestState.getUpdateTime() * 2;
@@ -396,18 +396,18 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     /**
      * @return the sessionStatus
      */
-    public com.sawdust.engine.service.data.GameSession.SessionStatus getSessionStatus()
+    public com.sawdust.engine.service.data.GameSession.SessionStatus getStatus()
     {
         return sessionStatus;
     }
 
-    public ArrayList<Game> getStatesSince(final int versionNumber)
+    public ArrayList<GameState> doGetStatesSince(final int versionNumber)
     {
-        final ArrayList<GameState> statelist = new ArrayList<GameState>();
-        final List<GameState> statesSince = GameState.getStatesSince(this, versionNumber);
+        final ArrayList<GameStateEntity> statelist = new ArrayList<GameStateEntity>();
+        final List<GameStateEntity> statesSince = GameStateEntity.getStatesSince(this, versionNumber);
         // TODO: A more reliable merge with persisted tree.
         final HashSet<Integer> versionsFound = new HashSet<Integer>();
-        for (final GameState state : localStates)
+        for (final GameStateEntity state : localStates)
         {
             if (state.getVersionNumber() > versionNumber)
             {
@@ -418,7 +418,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                 }
             }
         }
-        for (final GameState state : statesSince)
+        for (final GameStateEntity state : statesSince)
         {
             if (!versionsFound.contains(state.getVersionNumber()))
             {
@@ -426,9 +426,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                 statelist.add(state);
             }
         }
-        Collections.sort(statelist, GameState.NaturalSort);
-        final ArrayList<Game> list = new ArrayList<Game>();
-        for (final GameState state : statelist)
+        Collections.sort(statelist, GameStateEntity.NaturalSort);
+        final ArrayList<GameState> list = new ArrayList<GameState>();
+        for (final GameStateEntity state : statelist)
         {
             list.add(state.getState(this));
         }
@@ -521,7 +521,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return null;
     }
 
-    public void payOut(final Collection<Player> winners) throws GameException
+    public void doSplitWagerPool(final Collection<Player> winners) throws GameException
     {
         if ((null != winners) && (0 < winners.size()))
         {
@@ -545,7 +545,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
      *            the ante to set
      * @throws GameException
      */
-    public void setValue(final int pante) throws GameException
+    public void setUnitWager(final int pante) throws GameException
     {
         if (0 > pante) throw new GameLogicException(String.format("Cannot set the ante to %d", pante));
         ante = pante;
@@ -590,7 +590,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
      *            the sessionStatus to set
      * @throws GameException
      */
-    public boolean setSessionStatus(final com.sawdust.engine.service.data.GameSession.SessionStatus sessionStatus2, Game game)
+    public boolean setStatus(final com.sawdust.engine.service.data.GameSession.SessionStatus sessionStatus2, GameState game)
             throws GameException
     {
         boolean isGameDirty = false;
@@ -652,7 +652,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return isGameDirty;
     }
 
-    private boolean dropInactivePlayers(Game game)
+    private boolean dropInactivePlayers(GameState game)
     {
         boolean isGameDirty = false;
         for (final SessionMember member : members)
@@ -673,7 +673,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return isGameDirty;
     }
 
-    public void setState(final Game newState) throws GameException
+    public void setState(final GameState newState) throws GameException
     {
         if (null == newState) throw new NullPointerException();
         boolean isPlaying = SessionStatus.Playing == sessionStatus;
@@ -681,14 +681,14 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         {
             if (!isPlaying)
             {
-                setSessionStatus(SessionStatus.Playing, newState);
+                setStatus(SessionStatus.Playing, newState);
             }
         }
         else
         {
             if (isPlaying)
             {
-                setSessionStatus(SessionStatus.Finished, newState);
+                setStatus(SessionStatus.Finished, newState);
             }
         }
 
@@ -704,15 +704,15 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         }
         lastGameUpdate = new Date();
         _cachedState = newState;
-        this.getLatestState();
-        final GameState gameState = new GameState(this);
+        this.getState();
+        final GameStateEntity gameState = new GameStateEntity(this);
         currentState = gameState.getKey();
         localStates.add(gameState);
     }
 
-    public void updateStatus() throws GameException
+    public void doUpdateStatus() throws GameException
     {
-        final Game lgame = getLatestState();
+        final GameState lgame = getState();
         final long now = new Date().getTime();
 
         // Update players' timeout status
@@ -728,7 +728,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                     member.setMemberStatus(MemberStatus.Timeout);
                     if (null != lgame)
                     {
-                        lgame.addMessage("%s seems to have disconnected...", lgame.displayName(memberEmail));
+                        lgame.addMessage("%s seems to have disconnected...", lgame.getDisplayName(memberEmail));
                         _dirtyGame = true;
                     }
                 }
@@ -740,7 +740,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                     member.setMemberStatus(MemberStatus.Playing);
                     if (null != lgame)
                     {
-                        lgame.addMessage("%s is back online!", lgame.displayName(memberEmail));
+                        lgame.addMessage("%s is back online!", lgame.getDisplayName(memberEmail));
                         _dirtyGame = true;
                     }
                 }
@@ -779,7 +779,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                         {
                             if (null != lgame)
                             {
-                                lgame.addMessage("%s disconnected and has been dropped from the game.", lgame.displayName(memberEmail));
+                                lgame.addMessage("%s disconnected and has been dropped from the game.", lgame.getDisplayName(memberEmail));
                                 _dirtyGame = true;
                             }
                             dropMember(member);
@@ -816,7 +816,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
                     if (players.size() >= requiredPlayers) break;
                     players.add(m.getPlayer());
                 }
-                start(players);
+                doStart(players);
             }
         }
         if (_dirtyGame)
@@ -832,12 +832,12 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return true;
     }
 
-    public void start(Collection<Participant> players) throws GameException
+    public void doStart(Collection<Participant> players) throws GameException
     {
         if (getReadyPlayers() < requiredPlayers) return;
         // if (isPlaying()) { throw new GameLogicException(""); }
 
-        final Game tokenGame2 = getLatestState();
+        final GameState tokenGame2 = getState();
         if (null != tokenGame2)
         {
             tokenGame2.start();
@@ -854,13 +854,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
             {
                 LOG.fine(String.format("Withdrawl: %d (%s) from account %s to session %s", amount, description, ((Account) from).getName(),
                         getName()));
-                MoneyTransaction.Transfer(getAccount(), ((Account) from).getAccount(), amount, description);
+                MoneyTransaction.Transfer(getBankAccount(), ((Account) from).getAccount(), amount, description);
             }
             else if (from instanceof GameSession)
             {
                 LOG.fine(String.format("Withdrawl: %d (%s) from session %s to session %s", amount, description, ((GameSession) from)
                         .getName(), getName()));
-                MoneyTransaction.Transfer(getAccount(), ((GameSession) from).getAccount(), amount, description);
+                MoneyTransaction.Transfer(getBankAccount(), ((GameSession) from).getBankAccount(), amount, description);
             }
             else
             {
@@ -871,11 +871,11 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         else
         {
             LOG.fine(String.format("Withdrawl: %d (%s) from system to session %s", amount, description, getName()));
-            MoneyTransaction.Transfer(getAccount(), null, amount, description);
+            MoneyTransaction.Transfer(getBankAccount(), null, amount, description);
         }
     }
 
-    public void setRequiredPlayers(int requiredPlayers)
+    public void setMinimumPlayers(int requiredPlayers)
     {
         this.requiredPlayers = requiredPlayers;
     }
@@ -885,13 +885,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         return this.requiredPlayers;
     }
 
-    public void addAi(String name)
+    public void addAgent(String name)
     {
         if (null == aiList) aiList = new ArrayList<String>();
         aiList.add(name);
     }
 
-    public void modifyPayout(double factor, String msg) throws GameException
+    public void doModifyWagerPool(double factor, String msg) throws GameException
     {
         double balance = getBalance();
         int newBalance = (int) (balance * factor);
@@ -930,9 +930,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     }
 
     @Override
-    public void updateConfig(GameConfig newConfig) throws GameException
+    public void doUpdateConfig(GameConfig newConfig) throws GameException
     {
-        Game latestState = this.getLatestState();
+        GameState latestState = this.getState();
         GameConfig currentConfig = null;
         if (null != latestState)
         {
@@ -941,7 +941,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
         }
         this.setGame(newConfig.getGameName());
         this.setMoveTimeout(Integer.parseInt(newConfig.getProperties().get(GameConfig.MOVE_TIMEOUT).value));
-        this.setValue(Integer.parseInt(newConfig.getProperties().get(GameConfig.ANTE).value));
+        this.setUnitWager(Integer.parseInt(newConfig.getProperties().get(GameConfig.ANTE).value));
         String name = newConfig.getProperties().get(GameConfig.GAME_NAME).value;
         name = name.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
         this.setName(name);
@@ -949,9 +949,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.service.d
     }
 
     @Override
-    public int getActiveMembers() throws GameException
+    public int getActivePlayers() throws GameException
     {
-        updateStatus();
+        doUpdateStatus();
         int cnt = getReadyPlayers();
         for (final SessionMember member : members)
         {

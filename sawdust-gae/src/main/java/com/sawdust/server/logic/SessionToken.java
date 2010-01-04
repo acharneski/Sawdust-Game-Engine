@@ -29,7 +29,7 @@ public class SessionToken implements com.sawdust.engine.service.data.SessionToke
 
     public String getName()
     {
-        final com.sawdust.engine.service.data.Account account = loadAccount();
+        final com.sawdust.engine.service.data.Account account = doLoadAccount();
         return account.getName();
     }
 
@@ -48,14 +48,14 @@ public class SessionToken implements com.sawdust.engine.service.data.SessionToke
         return (UserTypes.Admin == _user.getType());
     }
 
-    public Account loadAccount()
+    public Account doLoadAccount()
     {
         if (null != _account) return _account;
         _account = Account.Load(_user.getUserID());
         return _account;
     }
 
-    public GameSession loadSession() throws GameException
+    public GameSession doLoadSession() throws GameException
     {
         if (null != _session) return _session;
         final String sessionKey = _token.getSessionId();
@@ -63,7 +63,7 @@ public class SessionToken implements com.sawdust.engine.service.data.SessionToke
         {
             try
             {
-                _session = GameSession.load(sessionKey, loadAccount().getPlayer());
+                _session = GameSession.load(sessionKey, doLoadAccount().getPlayer());
             }
             catch (final Exception e)
             {

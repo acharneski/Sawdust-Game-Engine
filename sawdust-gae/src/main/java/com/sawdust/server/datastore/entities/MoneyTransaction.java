@@ -17,7 +17,7 @@ import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sawdust.engine.service.data.MoneyAccount;
+import com.sawdust.engine.service.data.BankAccount;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.DataObj;
@@ -128,7 +128,7 @@ public class MoneyTransaction extends DataObj
         return myData;
     }
 
-    public static MoneyTransaction Transfer(final MoneyAccount sender, final com.sawdust.engine.service.data.MoneyAccount recipient, final int amount, final String transactionDescription)
+    public static MoneyTransaction Transfer(final BankAccount sender, final com.sawdust.engine.service.data.BankAccount recipient, final int amount, final String transactionDescription)
     {
         return new MoneyTransaction(sender, recipient, amount, transactionDescription);
     }
@@ -168,29 +168,29 @@ public class MoneyTransaction extends DataObj
         super();
     }
 
-    private MoneyTransaction(final MoneyAccount sender, final MoneyAccount recipient, final int amount, final String transactionDescription)
+    private MoneyTransaction(final BankAccount sender, final BankAccount recipient, final int amount, final String transactionDescription)
     {
         super((KeyFactory.createKey(MoneyTransaction.class.getSimpleName(), 
-                (null==sender?null:sender.getAccountId()) + 
-                (null==recipient?null:recipient.getAccountId()) + 
+                (null==sender?null:sender.getStringId()) + 
+                (null==recipient?null:recipient.getStringId()) + 
                 amount + 
                 DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()) +
                 Integer.toString((int) Math.round(Math.random() * 100)))));
         if (null != sender)
         {
-            senderId = sender.getAccountId();
-            senderStartBalance = sender.getCurrentBalence();
-            int currentBalence = sender.getCurrentBalence();
-            sender.setCurrentBalence(currentBalence - amount);
-            senderEndBalance = sender.getCurrentBalence();
+            senderId = sender.getStringId();
+            senderStartBalance = sender.getBalance();
+            int currentBalence = sender.getBalance();
+            sender.setBalance(currentBalence - amount);
+            senderEndBalance = sender.getBalance();
         }
         if (null != recipient)
         {
-            recipientId = recipient.getAccountId();
-            recipientStartBalance = recipient.getCurrentBalence();
-            int currentBalence = recipient.getCurrentBalence();
-            recipient.setCurrentBalence(currentBalence + amount);
-            recipientEndBalance = recipient.getCurrentBalence();
+            recipientId = recipient.getStringId();
+            recipientStartBalance = recipient.getBalance();
+            int currentBalence = recipient.getBalance();
+            recipient.setBalance(currentBalence + amount);
+            recipientEndBalance = recipient.getBalance();
         }
         description = transactionDescription;
         transactionAmount = amount;

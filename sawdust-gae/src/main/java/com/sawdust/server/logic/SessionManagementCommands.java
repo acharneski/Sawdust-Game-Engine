@@ -3,7 +3,7 @@
  */
 package com.sawdust.server.logic;
 
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -28,12 +28,12 @@ public enum SessionManagementCommands
          final Player owner = sessionOwner.getPlayer();
          if (owner.equals(user))
          {
-            gameSession.start(null);
+            gameSession.doStart(null);
          }
          else
          {
-            final Game baseGame = gameSession.getLatestState();
-            throw new GameLogicException("Command restricted to owner: " + baseGame.displayName(owner));
+            final GameState baseGame = gameSession.getState();
+            throw new GameLogicException("Command restricted to owner: " + baseGame.getDisplayName(owner));
          }
       }
       
@@ -53,10 +53,10 @@ public enum SessionManagementCommands
       public void doCommand(final Player user, final com.sawdust.engine.service.data.GameSession gameSession, final String param)
             throws GameException
       {
-         final Game baseGame = ((SessionToken) user).loadSession().getLatestState();
+         final GameState baseGame = ((SessionToken) user).doLoadSession().getState();
          
          ((GameSession) gameSession).createOpenInvite(user);
-         baseGame.addMessage("Created public game listing at the request of %s", baseGame.displayName(user));
+         baseGame.addMessage("Created public game listing at the request of %s", baseGame.getDisplayName(user));
          baseGame.saveState();
       }
       
@@ -98,11 +98,11 @@ public enum SessionManagementCommands
             throws GameException
       {
          final com.sawdust.engine.service.data.Account account = user.loadAccount();
-         account.removeSession(gameSession);
+         account.doRemoveSession(gameSession);
          final SessionMember member = ((GameSession) gameSession).findMember(user);
          member.setMemberStatus(MemberStatus.Quit);
-         final Game baseGame = gameSession.getLatestState();
-         baseGame.addMessage("%s leaves the game.", baseGame.displayName(user));
+         final GameState baseGame = gameSession.getState();
+         baseGame.addMessage("%s leaves the game.", baseGame.getDisplayName(user));
          baseGame.saveState();
       }
       
@@ -124,12 +124,12 @@ public enum SessionManagementCommands
             throws GameException
       {
          final Player owner = ((com.sawdust.engine.service.data.GameSession) gameSession).getOwner().getPlayer();
-         final Game baseGame = gameSession.getLatestState();
+         final GameState baseGame = gameSession.getState();
          if (owner.equals(user))
          {
-            gameSession.setSessionStatus(SessionStatus.Inviting, baseGame);
+            gameSession.setStatus(SessionStatus.Inviting, baseGame);
          }
-         else throw new GameLogicException("Command restricted to owner: " + baseGame.displayName(owner));
+         else throw new GameLogicException("Command restricted to owner: " + baseGame.getDisplayName(owner));
          baseGame.reset();
          baseGame.saveState();
          
@@ -152,17 +152,17 @@ public enum SessionManagementCommands
             throws GameException
       {
          param = param.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-         final Game baseGame = gameSession.getLatestState();
+         final GameState baseGame = gameSession.getState();
          com.sawdust.engine.service.data.SessionMember owner = ((com.sawdust.engine.service.data.GameSession) gameSession).getOwner();
          Player player = (null == owner) ? null : owner.getPlayer();
          if (null == player || player.equals(user))
          {
-            baseGame.addMessage("%s (game owner) says \"%s\"", baseGame.displayName(user), param);
+            baseGame.addMessage("%s (game owner) says \"%s\"", baseGame.getDisplayName(user), param);
             baseGame.saveState();
          }
          else
          {
-            baseGame.addMessage("%s says \"%s\"", baseGame.displayName(user), param);
+            baseGame.addMessage("%s says \"%s\"", baseGame.getDisplayName(user), param);
             baseGame.saveState();
          }
       }
@@ -182,7 +182,7 @@ public enum SessionManagementCommands
       public void doCommand(final Player user, final com.sawdust.engine.service.data.GameSession game, final String param)
             throws GameException
       {
-         final Game state = game.getLatestState();
+         final GameState state = game.getState();
          state.update();
          state.saveState();
          
@@ -191,7 +191,7 @@ public enum SessionManagementCommands
          {
             findMember.setLastUpdate();
          }
-         game.updateStatus();
+         game.doUpdateStatus();
       }
       
       public String getCommandText()
@@ -213,7 +213,7 @@ public enum SessionManagementCommands
    
    public abstract String getHelpText();
    
-   public GameCommand getGameCommand(final Game game)
+   public GameCommand getGameCommand(final GameState game)
    {
       return new GameCommand()
       {

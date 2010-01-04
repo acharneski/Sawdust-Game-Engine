@@ -55,17 +55,17 @@ public class JspActivityLog implements Serializable
             if (null != request.getParameter("until"))
             {
                 Date time = new Date(Long.parseLong(request.getParameter("until")));
-                _transactions = ActivityEventRecord.getTransactionsUntil(account.getAccountId(), time);
+                _transactions = ActivityEventRecord.getTransactionsUntil(account.getStringId(), time);
             }
             else if (null != request.getParameter("since"))
             {
                 Date time = new Date(Long.parseLong(request.getParameter("since")));
-                _transactions = ActivityEventRecord.getTransactionsSince(account.getAccountId(), time);
+                _transactions = ActivityEventRecord.getTransactionsSince(account.getStringId(), time);
             }
             else
             {
                 Date time = new Date(new Date().getTime() + 1000);
-                _transactions = ActivityEventRecord.getTransactionsUntil(account.getAccountId(), time);
+                _transactions = ActivityEventRecord.getTransactionsUntil(account.getStringId(), time);
             }
             for (final ActivityEventRecord t : _transactions)
             {

@@ -3,7 +3,7 @@ package com.sawdust.engine.game.state;
 import java.io.Serializable;
 
 import com.sawdust.engine.common.geometry.Position;
-import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.basetypes.TokenGame;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;

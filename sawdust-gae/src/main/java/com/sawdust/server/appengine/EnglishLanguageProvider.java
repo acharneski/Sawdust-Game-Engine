@@ -7,9 +7,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.game.HttpInterface;
-import com.sawdust.engine.game.HttpResponse;
-import com.sawdust.engine.game.LanguageProvider;
+import com.sawdust.engine.service.HttpInterface;
+import com.sawdust.engine.service.HttpResponse;
+import com.sawdust.engine.service.LanguageProvider;
 
 
 public final class EnglishLanguageProvider implements LanguageProvider

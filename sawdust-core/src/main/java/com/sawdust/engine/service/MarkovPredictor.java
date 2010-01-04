@@ -1,9 +1,10 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 
 public class MarkovPredictor implements Serializable
 {

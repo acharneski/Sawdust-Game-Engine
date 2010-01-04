@@ -20,7 +20,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.service.Util;
-import com.sawdust.engine.service.data.MoneyAccount;
+import com.sawdust.engine.service.data.BankAccount;
 import com.sawdust.server.datastore.DataObj;
 import com.sawdust.server.datastore.DataStore;
 import com.sawdust.server.datastore.DataObj;
@@ -91,14 +91,14 @@ public class ActivityEventRecord extends DataObj
         super();
     }
 
-    protected ActivityEventRecord(final MoneyAccount player, final ActivityEvent event)
+    protected ActivityEventRecord(final BankAccount player, final ActivityEvent event)
     {
         super((KeyFactory.createKey(ActivityEventRecord.class.getSimpleName(), 
-                (null==player?null:player.getAccountId()) + 
+                (null==player?null:player.getStringId()) + 
                 DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()) +
                 Integer.toString((int) Math.round(Math.random() * 100)))));
         eventType = event.type;
-        playerId = player.getAccountId();
+        playerId = player.getStringId();
         setData(event);
         if (this != DataStore.Add(this)) throw new AssertionError();
     }

@@ -33,7 +33,7 @@ import com.sawdust.client.gwt.util.EventListener;
 import com.sawdust.engine.common.config.GameConfig;
 import com.sawdust.engine.common.game.ClientCommand;
 import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
 import com.sawdust.engine.common.game.SolidColorGameCanvas;
 import com.sawdust.engine.common.game.Token;
@@ -56,7 +56,7 @@ public class PlayAreaWidget extends AbsolutePanel
     private final VerticalPanel _rulesWidget = new VerticalPanel();
     private final CommandExecutor _service;
 
-    private GameState _state = null;
+    private GameFrame _state = null;
     private final DecoratedTabPanel _tabPanel = new DecoratedTabPanel();
     private final HorizontalPanel notifyPanel = new HorizontalPanel();
 
@@ -120,11 +120,11 @@ public class PlayAreaWidget extends AbsolutePanel
         return _service;
     }
 
-    public GameState getState()
+    public GameFrame getState()
     {
         if (null == _state)
         {
-            _state = new GameState();
+            _state = new GameFrame();
         }
         _state.clearTokens();
         for (final Widget cardW : this)
@@ -159,7 +159,7 @@ public class PlayAreaWidget extends AbsolutePanel
         return super.remove(widget);
     }
 
-    private void setLabels(final GameState v)
+    private void setLabels(final GameFrame v)
     {
         // Add/Overwrite Labels
         final HashMap<String, LabelWidget> lookup = getLabelIndexById();
@@ -187,7 +187,7 @@ public class PlayAreaWidget extends AbsolutePanel
         }
     }
 
-    public void setState(final GameState state)
+    public void setState(final GameFrame state)
     {
         if ((null == state) || (null == state.getTokens())) return;
         _state = state;
@@ -252,7 +252,7 @@ public class PlayAreaWidget extends AbsolutePanel
         setTokens(state);
     }
 
-    private void setTokens(final GameState state)
+    private void setTokens(final GameFrame state)
     {
         final HashMap<Integer, TokenWidget> lookup = getTokenIndexById();
         final HashSet<Integer> keysToRemove = new HashSet<Integer>(lookup.keySet());

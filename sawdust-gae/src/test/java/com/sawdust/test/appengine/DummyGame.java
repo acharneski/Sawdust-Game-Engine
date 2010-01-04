@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Message.MessageType;
 import com.sawdust.engine.game.AgentFactory;
-import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.GameType;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.stop.StopGame.GamePhase;
 import com.sawdust.engine.service.debug.GameException;
 
-final class DummyGame implements Game, Serializable
+final class DummyGame implements GameState, Serializable
 {
     DummyGame()
     {
@@ -33,7 +33,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public GameState toGwt(Player access) throws GameException
+    public GameFrame toGwt(Player access) throws GameException
     {
         return null;
     }
@@ -64,7 +64,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public void setParentGame(Game parentGame)
+    public void setParentGame(GameState parentGame)
     {
     }
 
@@ -84,7 +84,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public void removeMember(Participant email) throws GameException
+    public void doRemoveMember(Participant email) throws GameException
     {
     }
 
@@ -113,13 +113,13 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public Game getParentGame()
+    public GameState getParentGame()
     {
         return null;
     }
 
     @Override
-    public ArrayList<Message> getNewMessages()
+    public ArrayList<Message> getMessages()
     {
         return null;
     }
@@ -179,13 +179,13 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public String displayName(Participant userId)
+    public String getDisplayName(Participant userId)
     {
         return null;
     }
 
     @Override
-    public void advanceTime(int milliseconds)
+    public void doAdvanceTime(int milliseconds)
     {
     }
 
@@ -202,7 +202,7 @@ final class DummyGame implements Game, Serializable
     }
 
     @Override
-    public void addMember(Participant agent) throws GameException
+    public void addPlayer(Participant agent) throws GameException
     {
     }
 

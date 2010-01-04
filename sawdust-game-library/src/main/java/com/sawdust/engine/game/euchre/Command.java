@@ -5,8 +5,8 @@ package com.sawdust.engine.game.euchre;
 
 
 import com.sawdust.engine.common.cards.Suits;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -23,7 +23,7 @@ public enum Command
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final EuchreGame euchreGame = (EuchreGame) baseGame;
             if (!user.equals(euchreGame.getCurrentPlayer())) throw new GameLogicException("It is not your turn");
             try
@@ -54,10 +54,10 @@ public enum Command
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final GameSession gameSession = game;
-            if (SessionStatus.Playing == gameSession.getSessionStatus()) throw new GameLogicException("A game is in progress");
-            gameSession.setSessionStatus(SessionStatus.Closed, baseGame);
+            if (SessionStatus.Playing == gameSession.getStatus()) throw new GameLogicException("A game is in progress");
+            gameSession.setStatus(SessionStatus.Closed, baseGame);
             baseGame.saveState();
         }
 
@@ -78,7 +78,7 @@ public enum Command
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final EuchreGame euchreGame = (EuchreGame) baseGame;
             final boolean notCurrentPlayer = (user == null) || !user.equals(euchreGame.getCurrentPlayer());
             if (notCurrentPlayer) throw new GameLogicException("It is not your turn");
@@ -103,7 +103,7 @@ public enum Command
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
             final GameSession gameSession = game;
-            final Game baseGame = gameSession.getLatestState();
+            final GameState baseGame = gameSession.getState();
             final EuchreGame euchreGame = (EuchreGame) baseGame;
             if (!euchreGame.getCurrentPhase().equals(EuchreGame.PLAYING)) throw new GameLogicException("You cannot play a card right now!");
             if (!euchreGame.getCurrentPlayer().equals(user)) throw new GameLogicException("It is not your turn!");

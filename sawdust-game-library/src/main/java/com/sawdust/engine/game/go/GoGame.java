@@ -14,7 +14,6 @@ import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -29,6 +28,7 @@ import com.sawdust.engine.game.stop.StopIsland;
 import com.sawdust.engine.game.go.Stupid1;
 import com.sawdust.engine.game.stop.TokenArray;
 import com.sawdust.engine.game.stop.StopGame.GamePhase;
+import com.sawdust.engine.service.PromotionConfig;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.data.Promotion;
@@ -70,9 +70,9 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void addMember(Participant agent) throws GameException
+    public void addPlayer(Participant agent) throws GameException
     {
-        super.addMember(agent);
+        super.addPlayer(agent);
         _scores.put(agent, new PlayerScore());
     }
 
@@ -161,7 +161,7 @@ public abstract class GoGame extends StopGame
                     {
                         GoGame.this._lastPlayerPassed = true;
                         _lastPosition = null;
-                        GoGame.this.addMessage("%s passed!", GoGame.this.displayName(p));
+                        GoGame.this.addMessage("%s passed!", GoGame.this.getDisplayName(p));
                         GoGame.this.finishTurn(p);
                     }
                     return true;
@@ -180,7 +180,7 @@ public abstract class GoGame extends StopGame
         {
             int score = s.getValue().getScore();
             Participant key = s.getKey();
-            this.addMessage("%s has %d points.", displayName(key), score);
+            this.addMessage("%s has %d points.", getDisplayName(key), score);
             if (null == winner || score > winningScore)
             {
                 winner = key;
@@ -188,16 +188,16 @@ public abstract class GoGame extends StopGame
         }
         setCurrentState(GamePhase.Complete);
         setLastWinner(getPlayerManager().findPlayer(winner));
-        this.addMessage("%s wins!", displayName(winner));
+        this.addMessage("%s wins!", getDisplayName(winner));
 
         final GameSession session = getSession();
         if (null != session)
         {
-            String displayName = displayName(p);
+            String displayName = getDisplayName(p);
             final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(p);
             final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
             Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
-            String opponentName = displayName(otherPlayer);
+            String opponentName = getDisplayName(otherPlayer);
             if (p instanceof Player)
             {
                 rollForLoot(p);
@@ -217,7 +217,7 @@ public abstract class GoGame extends StopGame
             {
                 collection.add((Player) winner);
             }
-            session.payOut(collection);
+            session.doSplitWagerPool(collection);
         }
     }
 
@@ -232,16 +232,16 @@ public abstract class GoGame extends StopGame
         PromotionConfig promoConfig = resource.getLoot();
         if(null != promoConfig)
         {
-            Promotion awardPromotion = account.awardPromotion(promoConfig);
+            Promotion awardPromotion = account.doAwardPromotion(promoConfig);
             addMessage(awardPromotion.getMessage()).setTo(p.getId());
         }
         account.setResource(GoLoot.class, resource);
     }
 
     @Override
-    public void removeMember(Participant agent) throws GameException
+    public void doRemoveMember(Participant agent) throws GameException
     {
-        super.removeMember(agent);
+        super.doRemoveMember(agent);
         _scores.remove(agent);
     }
 
@@ -290,7 +290,7 @@ public abstract class GoGame extends StopGame
         }
 
         final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
-        addMessage("It is now %s's turn", displayName(gotoNextPlayer));
+        addMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
     }
 
     @Override

@@ -12,11 +12,12 @@ import com.sawdust.engine.common.config.GameModConfig;
 import com.sawdust.engine.common.config.PropertyConfig;
 import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
 import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
 
-public abstract class GameType<T extends Game> implements IGameType
+public abstract class GameType<T extends GameState> implements IGameType
 {
     public abstract String getDescription();
 
@@ -107,7 +108,7 @@ public abstract class GameType<T extends Game> implements IGameType
         return gameConfig;
     }
 
-    public abstract Game createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory) throws GameException;
+    public abstract GameState createNewGame(final com.sawdust.engine.common.config.GameConfig c, final SessionFactory sessionFactory) throws GameException;
     
     public List<GameType<?>> getTutorialSequence()
     {

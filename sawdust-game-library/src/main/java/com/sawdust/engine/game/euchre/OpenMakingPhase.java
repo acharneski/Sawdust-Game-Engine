@@ -37,7 +37,7 @@ final class OpenMakingPhase extends GamePhase
         game.setCurrentPhase(EuchreGame.PLAYING);
         game.getPlayerManager().setCurrentPlayer(0);
         game._roundStartPlayer = game.getPlayerManager().gotoNextPlayer();
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.displayName(game._roundStartPlayer));
+        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(game._roundStartPlayer));
         game._winningCard = null;
     }
 
@@ -102,9 +102,9 @@ final class OpenMakingPhase extends GamePhase
         if (!game.getCurrentPhase().equals(EuchreGame.INITIAL_MAKING) && !game.getCurrentPhase().equals(EuchreGame.OPEN_MAKING)) throw new GameLogicException(
                 "Invalid command... the game is not making");
         final Participant nextPlayer = game.getPlayerManager().gotoNextPlayer();
-        game.addMessage(MessageType.Compact, "%s passed.", game.displayName(currentPlayer));
+        game.addMessage(MessageType.Compact, "%s passed.", game.getDisplayName(currentPlayer));
         game.addMessage("");
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.displayName(nextPlayer));
+        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(nextPlayer));
 
         if ((0 == game.getPlayerManager().findPlayer(currentPlayer)) && EuchreGame.INITIAL_MAKING.equals(game.getCurrentPhase()))
         {

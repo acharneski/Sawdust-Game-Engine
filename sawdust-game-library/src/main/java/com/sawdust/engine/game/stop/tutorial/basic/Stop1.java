@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.service.debug.GameException;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.TutorialGameBase;
 import com.sawdust.engine.game.TutorialPhase;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.go.GoAgent1;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -102,7 +102,7 @@ public class Stop1 extends Phases
    }
    
    @Override
-   public GameState filterDisplay(GameState gwt)
+   public GameFrame filterDisplay(GameFrame gwt)
    {
       Notification notification = new Notification();
       notification.notifyText = "The game of Go! differs from the game of Go in a few ways. "

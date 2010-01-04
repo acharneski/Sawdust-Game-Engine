@@ -9,13 +9,13 @@ import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Message;
 import com.sawdust.engine.common.game.Message.MessageType;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.IndexCardGame;
+import com.sawdust.engine.game.basetypes.IndexCardGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
@@ -70,11 +70,11 @@ public abstract class BlackjackGame extends IndexCardGame
             this.addMessage("Setting seed: %s", seed).setTo(Message.ADMIN);
             getDeck().setSeed(seed);
         }
-        getSession().setRequiredPlayers(1);
+        getSession().setMinimumPlayers(1);
     }
     
     @Override
-    public void addMember(final Participant s) throws GameException
+    public void addPlayer(final Participant s) throws GameException
     {
         if (null != _owner) throw new GameLogicException(String.format("This game is already inhabited by %s", _owner));
         _owner = s;
@@ -82,7 +82,7 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public String displayName(final Participant userId)
+    public String getDisplayName(final Participant userId)
     {
         return "Player";
     }
@@ -113,13 +113,13 @@ public abstract class BlackjackGame extends IndexCardGame
          */
         int dealerScore = getScore(HAND_DEALER);
         this.saveState();
-        this.advanceTime(DEALER_PAUSE_MS);
+        this.doAdvanceTime(DEALER_PAUSE_MS);
         while (dealerScore < 17)
         {
             this.addMessage("Dealer has %d; dealer hits", dealerScore);
             dealerScore = hit(HAND_DEALER);
             this.saveState();
-            this.advanceTime(DEALER_PAUSE_MS);
+            this.doAdvanceTime(DEALER_PAUSE_MS);
         }
         this.addMessage("Dealer has %d", dealerScore);
         endTurn();
@@ -163,7 +163,7 @@ public abstract class BlackjackGame extends IndexCardGame
             this.addMessage("");
             _currentPhase = GamePhases.Won;
             
-            gameSession.payOut(gameSession.getMembers());
+            gameSession.doSplitWagerPool(gameSession.getPlayers());
             return;
         }
         else
@@ -194,20 +194,20 @@ public abstract class BlackjackGame extends IndexCardGame
             {
                 String msg = String.format("<strong><i>You won %d hands, and lost %d.</i></strong>", wins, losses);
                 this.addMessage(msg );
-                gameSession.modifyPayout(wins/(wins+losses),msg);
-                gameSession.payOut(gameSession.getMembers());
+                gameSession.doModifyWagerPool(wins/(wins+losses),msg);
+                gameSession.doSplitWagerPool(gameSession.getPlayers());
                 _currentPhase = GamePhases.Won;
             }
             else if (wins > 0)
             {
                 this.addMessage("<strong><i>You Win.</i></strong>");
-                gameSession.payOut(gameSession.getMembers());
+                gameSession.doSplitWagerPool(gameSession.getPlayers());
                 _currentPhase = GamePhases.Won;
             }
             else if (losses > 0)
             {
                 this.addMessage("<strong><i>You Lose.</i></strong>");
-                gameSession.payOut(null);
+                gameSession.doSplitWagerPool(null);
                 _currentPhase = GamePhases.Lost;
             }
             else
@@ -476,7 +476,7 @@ public abstract class BlackjackGame extends IndexCardGame
          */
         if (null != _owner)
         {
-            getSession().anteUp();
+            getSession().doUnitWager();
             getSession().withdraw(-getSession().getBalance(), null, "House contribution");
         }
         this.addMessage(MessageType.Compact, "New Deal: ");
@@ -576,9 +576,9 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public GameState toGwt(final Player access) throws GameException
+    public GameFrame toGwt(final Player access) throws GameException
     {
-        final GameState gwt = super.toGwt(access);
+        final GameFrame gwt = super.toGwt(access);
         gwt.setHeight(300);
         gwt.setWidth(400);
         return gwt;

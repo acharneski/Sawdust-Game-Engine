@@ -214,7 +214,7 @@ public class JspLib
     public com.sawdust.engine.service.data.Account getAccount(final JspUser accessData)
     {
         final SessionToken validatedAccess = validateAccess(accessData);
-        final com.sawdust.engine.service.data.Account account = validatedAccess.loadAccount();
+        final com.sawdust.engine.service.data.Account account = validatedAccess.doLoadAccount();
         return account;
     }
 
@@ -222,7 +222,7 @@ public class JspLib
     {
         final ArrayList<GameSession> returnValue = new ArrayList<GameSession>();
         final SessionToken validatedAccess = validateAccess(accessData);
-        final com.sawdust.engine.service.data.Account account = validatedAccess.loadAccount();
+        final com.sawdust.engine.service.data.Account account = validatedAccess.doLoadAccount();
         final HashMap<InviteSearchParam, String> searchParameters = new HashMap<InviteSearchParam, String>();
         searchParameters.put(InviteSearchParam.MaxBid, Integer.toString(account.getBalance()));
         searchParameters.put(InviteSearchParam.Game, game);
@@ -232,8 +232,8 @@ public class JspLib
             for (final GameListing gameListing : GameListing.list(searchParameters, 10))
             {
                 final GameSession gameSession = gameListing.getSession();
-                gameSession.updateStatus();
-                if (gameSession.getSessionStatus() == SessionStatus.Closed)
+                gameSession.doUpdateStatus();
+                if (gameSession.getStatus() == SessionStatus.Closed)
                 {
                     saveData = true;
                     continue;
@@ -261,7 +261,7 @@ public class JspLib
     {
         final ArrayList<GameSession> returnValue = new ArrayList<GameSession>();
         final SessionToken validatedAccess = validateAccess(accessData);
-        final Account account = ((com.sawdust.server.logic.SessionToken) validatedAccess).loadAccount();
+        final Account account = ((com.sawdust.server.logic.SessionToken) validatedAccess).doLoadAccount();
         Set<Key> sessionKeys = ((com.sawdust.server.datastore.entities.Account) account).getSessionKeys();
         for (final Key sessionKey : sessionKeys)
         {

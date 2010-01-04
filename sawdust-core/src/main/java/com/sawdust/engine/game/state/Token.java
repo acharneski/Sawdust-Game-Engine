@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import com.sawdust.engine.common.cards.Card;
 import com.sawdust.engine.common.geometry.Position;
-import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.basetypes.TokenGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.debug.GameException;

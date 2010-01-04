@@ -10,8 +10,8 @@ import com.sawdust.engine.common.config.PropertyConfig;
 import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.state.GameLabel;
 import com.sawdust.engine.game.state.IndexPosition;
@@ -53,7 +53,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         _playerManager = new PlayerManager(nPlayers);
     }
 
-    public void addMember(final Game game, final Participant agent) throws GameException
+    public void addMember(final GameState game, final Participant agent) throws GameException
     {
         _playerManager.addMember(agent);
 //        if (_playerManager.isFull())
@@ -99,7 +99,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
                     GameSession session = game.getSession();
                     if(null != session)
                     {
-                        session.addAi(f.getName());
+                        session.addAgent(f.getName());
                         game.saveState();
                     }
                     return true;
@@ -143,12 +143,12 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         return _playerManager.isFull();
     }
 
-    public ArrayList<GameLabel> memberLabels(final Game game, final Player access)
+    public ArrayList<GameLabel> memberLabels(final GameState game, final Player access)
     {
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         for (final Participant player : _playerManager.getPlayers())
         {
-            returnValue.add(new GameLabel("MemberList #" + _playerCount, new IndexPosition(POS_MEMBER_LIST, ++_playerCount), game.displayName(player)));
+            returnValue.add(new GameLabel("MemberList #" + _playerCount, new IndexPosition(POS_MEMBER_LIST, ++_playerCount), game.getDisplayName(player)));
         }
         final GameSession session = game.getSession();
         final SessionMember owner = (null == session)?null:session.getOwner();
@@ -167,7 +167,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         return returnValue;
     }
 
-    public void removeMember(final Game game, final Participant email) throws GameException
+    public void removeMember(final GameState game, final Participant email) throws GameException
     {
         _playerManager.dropMember(email);
         _playerCount = 0;
@@ -183,7 +183,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         _timeoutAgent = timeoutAgent;
     }
 
-    public ArrayList<GameLabel> setupLobbyLabels(final Game game, final Player access) throws InputException
+    public ArrayList<GameLabel> setupLobbyLabels(final GameState game, final Player access) throws InputException
     {
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         returnValue.addAll(memberLabels(game, access));

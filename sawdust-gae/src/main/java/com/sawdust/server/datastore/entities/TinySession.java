@@ -84,8 +84,8 @@ public class TinySession extends DataObj
 
     public TinySession(GameSession session)
     {
-        super(KeyFactory.createKey(TinySession.class.getSimpleName(), session.getId()));
-        sessionId = session.getId();
+        super(KeyFactory.createKey(TinySession.class.getSimpleName(), session.getStringId()));
+        sessionId = session.getStringId();
     }
 
     @Override

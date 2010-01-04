@@ -16,7 +16,7 @@ import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.ComparableList;
 import com.sawdust.engine.game.GameModification;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.MultiPlayerCardGame;
+import com.sawdust.engine.game.basetypes.MultiPlayerCardGame;
 import com.sawdust.engine.game.euchre.ai.Normal1;
 import com.sawdust.engine.game.euchre.ai.Stupid1;
 import com.sawdust.engine.game.euchre.mod.Mod78;
@@ -257,7 +257,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     @Override
     public int getUpdateTime()
     {
-        if (getSession().getSessionStatus() == SessionStatus.Inviting) return 15;
+        if (getSession().getStatus() == SessionStatus.Inviting) return 15;
         return super.getUpdateTime();
    }
 
@@ -266,7 +266,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     {
         try
         {
-            if (getSession().getSessionStatus() == SessionStatus.Inviting) return setupLobbyLabels(access);
+            if (getSession().getStatus() == SessionStatus.Inviting) return setupLobbyLabels(access);
             else return getCurrentPhase().setupLabels(this, access);
         }
         catch (final GameException e)
@@ -298,7 +298,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         for (int playerIndex = 0; playerIndex < getPlayerManager().getPlayerCount(); playerIndex++)
         {
             final Participant player = getPlayerManager().playerName(playerIndex);
-            returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(EuchreLayout.POS_PLAYER_LABEL, playerIndex), displayName(player)));
+            returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(EuchreLayout.POS_PLAYER_LABEL, playerIndex), getDisplayName(player)));
 
             try
             {
@@ -410,7 +410,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     {
         final GameSession session = getSession();
         final int award = session.getBalance() / 2;
-        for (final Player member : session.getMembers())
+        for (final Player member : session.getPlayers())
         {
             final int teamNumber2 = getTeamNumber(member);
             if (teamNumber2 == teamNumber)
@@ -447,19 +447,19 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     public void start() throws GameException
     {
         final GameSession session = getSession();
-        session.anteUp();
+        session.doUnitWager();
         for (final Participant p : getPlayerManager().getPlayers())
         {
             if (p instanceof Agent<?>)
             {
-                session.withdraw(-session.getAnte(), null, "Agent Ante Up");
+                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
             }
         }
         final int numPlayers = EuchreGame.NUMBER_OF_PLAYERS;
         final Collection<Participant> members = getPlayerManager().getPlayers();
         if (members.size() != numPlayers) throw new GameLogicException("Exactly 4 players are required to play");
         
-        session.setSessionStatus(SessionStatus.Playing, this);
+        session.setStatus(SessionStatus.Playing, this);
         doCommand(EuchreCommand.Deal);
     }
 

@@ -43,7 +43,7 @@ final class PlayingPhase extends GamePhase
         final int endScore = 1+ game.getTeamStatus(teamNumber).currentHandCount;
         game.getTeamStatus(teamNumber).currentHandCount = endScore;
         int totalRounds = ++game._roundNumber;
-        game.addMessage("<strong>%s (team %s) wins this trick, for a total of %d wins</strong>", game.displayName(winner), teamNumber+1, endScore);
+        game.addMessage("<strong>%s (team %s) wins this trick, for a total of %d wins</strong>", game.getDisplayName(winner), teamNumber+1, endScore);
         game.clearPlayedCards();
         int otherTeam = (0 == teamNumber) ? 1 : 0;
         final int makingTeam = game.getTeamNumber(game._maker)-1;
@@ -74,7 +74,7 @@ final class PlayingPhase extends GamePhase
                 game._totalPts += 2;
             }
             game.saveState();
-            game.advanceTime(1000);
+            game.doAdvanceTime(1000);
             if(game.getTeamStatus(affectedTeam).totalPoints >= game.getPointGoal())
             {
                 game.addMessage("<strong>Team %s wins the game!</strong>", affectedTeam+1);
@@ -200,7 +200,7 @@ final class PlayingPhase extends GamePhase
         String displayName;
         if (null != currentPlayer)
         {
-            displayName = game.displayName(currentPlayer);
+            displayName = game.getDisplayName(currentPlayer);
         }
         else
         {

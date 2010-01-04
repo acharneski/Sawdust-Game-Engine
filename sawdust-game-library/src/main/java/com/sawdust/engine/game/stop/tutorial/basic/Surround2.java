@@ -3,10 +3,10 @@ package com.sawdust.engine.game.stop.tutorial.basic;
 import java.util.ArrayList;
 
 import com.sawdust.engine.service.debug.GameException;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
-import com.sawdust.engine.game.TutorialGameBase;
 import com.sawdust.engine.game.TutorialPhase;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.go.GoAgent1;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -75,7 +75,7 @@ public class Surround2 extends Phases
    }
 
    @Override
-   public GameState filterDisplay(GameState gwt)
+   public GameFrame filterDisplay(GameFrame gwt)
    {
       Notification notification = new Notification();
       notification.notifyText = "Good job. When stones of the same color are adjacent, "

@@ -3,10 +3,10 @@ package com.sawdust.engine.game.blackjack.tutorials.basic;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.common.cards.Ranks;
 import com.sawdust.engine.common.cards.Suits;
-import com.sawdust.engine.common.game.GameState;
+import com.sawdust.engine.common.game.GameFrame;
 import com.sawdust.engine.common.game.Notification;
-import com.sawdust.engine.game.TutorialGameBase;
 import com.sawdust.engine.game.TutorialPhase;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.state.GameCommand;
@@ -31,7 +31,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Welcome to Blackjack! Please draw another card by using the \"Hit Me\" command.";
@@ -58,7 +58,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "The goal of this game is to get a higher score than the dealer, without going over 21.";
@@ -85,7 +85,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Press 'Hit Me' as needed to deal cards, and then 'Stay'";
@@ -125,7 +125,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Royal cards are worth 10, aces are worth either 11 or 1, and number cards are face value. It would be a good idea to stay now!";
@@ -184,7 +184,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "At the start of each hand, the player has the option of 'Doubling Down', where the bet is doubled in exchange for recieving exactly 1 more card.";
@@ -244,7 +244,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameState filterDisplay(GameState gwt)
+      public GameFrame filterDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "If you are dealt a pair, you also have the option to 'Split' where each card is used to start a new hand, which are played simultaneously against the dealer. The bet is doubled, with identical bets riding on each hand.";
@@ -261,7 +261,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    }
    
    @Override
-   public GameState filterDisplay(GameState gwt)
+   public GameFrame filterDisplay(GameFrame gwt)
    {
       return gwt;
    }

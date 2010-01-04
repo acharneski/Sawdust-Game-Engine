@@ -6,8 +6,8 @@ package com.sawdust.engine.game.poker;
 
 import java.util.ArrayList;
 
-import com.sawdust.engine.game.BaseGame;
-import com.sawdust.engine.game.Game;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.GameState;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;
@@ -29,7 +29,7 @@ public enum Commands
             {
                 throw new GameLogicException(String.format("Warning: Unparsable card index: %s", param));
             }
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doBet(user, bet);
             baseGame.saveState();
@@ -51,7 +51,7 @@ public enum Commands
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doDraw(user);
             baseGame.saveState();
@@ -73,7 +73,7 @@ public enum Commands
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             final String cards[] = param.split("\\s+");
             final Participant email = user;
@@ -113,7 +113,7 @@ public enum Commands
 
         public void doCommand(final Participant user, final GameSession game, final String param) throws GameException
         {
-            final Game baseGame = game.getLatestState();
+            final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doFold(user);
             baseGame.saveState();

@@ -1,7 +1,8 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 
 public interface LanguageProvider extends Serializable

@@ -8,13 +8,13 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.HttpInterface;
-import com.sawdust.engine.game.HttpResponse;
-import com.sawdust.engine.game.LanguageProvider;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.wordHunt.WordHuntGame;
+import com.sawdust.engine.service.HttpInterface;
+import com.sawdust.engine.service.HttpResponse;
+import com.sawdust.engine.service.LanguageProvider;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.test.Util;
@@ -36,7 +36,7 @@ public class WordHuntTests extends TestCase
             @Override
             public Account loadAccount()
             {
-                return access1.loadAccount();
+                return access1.doLoadAccount();
             }
 
             @Override
@@ -48,14 +48,14 @@ public class WordHuntTests extends TestCase
         };
         Date now = new Date(0);
 
-        Util.assertEqual(access1.loadAccount().getBalance(), 10);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
-        blackjackGame.addMember(player1);
+        blackjackGame.addPlayer(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);
-        Util.assertEqual(access1.loadAccount().getBalance(), 9);
+        Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
     }
 
     private WordHuntGame getGame()
@@ -143,6 +143,6 @@ public class WordHuntTests extends TestCase
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);
-        session.start(players);
+        session.doStart(players);
     }
 }

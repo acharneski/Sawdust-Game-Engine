@@ -1,8 +1,8 @@
 package com.sawdust.engine.game.stop.tutorial.basic;
 
-import com.sawdust.engine.game.BaseGame;
 import com.sawdust.engine.game.SessionFactory;
-import com.sawdust.engine.game.TutorialGameBase;
+import com.sawdust.engine.game.basetypes.BaseGame;
+import com.sawdust.engine.game.basetypes.TutorialGameBase;
 import com.sawdust.engine.game.blackjack.BlackjackGame;
 import com.sawdust.engine.game.blackjack.BlackjackGameType;
 import com.sawdust.engine.game.stop.StopGame;

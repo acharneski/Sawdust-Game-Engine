@@ -1,4 +1,4 @@
-package com.sawdust.engine.game;
+package com.sawdust.engine.service;
 
 public class HttpResponse
 {

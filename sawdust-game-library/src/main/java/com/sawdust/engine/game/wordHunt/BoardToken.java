@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.sawdust.engine.game.TokenGame;
+import com.sawdust.engine.game.basetypes.TokenGame;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.IndexPosition;

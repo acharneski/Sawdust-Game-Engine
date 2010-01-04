@@ -80,8 +80,8 @@ public class GameListing extends DataObj
                 int numberOfMembers = 0;
                 if(null != gameSession)
                 {
-                    gameSession.updateStatus();
-                    if(gameSession.getSessionStatus() == com.sawdust.engine.service.data.GameSession.SessionStatus.Inviting)
+                    gameSession.doUpdateStatus();
+                    if(gameSession.getStatus() == com.sawdust.engine.service.data.GameSession.SessionStatus.Inviting)
                     {
                         numberOfMembers = gameSession.getReadyPlayers();
                     }
@@ -134,7 +134,7 @@ public class GameListing extends DataObj
     {
         super(KeyFactory.createKey(GameListing.class.getSimpleName(), (user.getUserId() + "%" + DateFormat.getDateTimeInstance().format(new Date()))));
         sessionKey = gameSession.getKey();
-        ante = gameSession.getAnte();
+        ante = gameSession.getUnitWager();
         game = gameSession.getGame();
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
@@ -162,7 +162,7 @@ public class GameListing extends DataObj
         {
             delete(true);
         }
-        else if(null == load.getLatestState())
+        else if(null == load.getState())
         {
             LOG.warning("Removing defunc session");
             load.delete(true);

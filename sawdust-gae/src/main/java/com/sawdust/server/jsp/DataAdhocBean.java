@@ -24,7 +24,7 @@ import com.sawdust.server.datastore.entities.AccountPlayer;
 import com.sawdust.server.datastore.entities.GameLeague;
 import com.sawdust.server.datastore.entities.GameListing;
 import com.sawdust.server.datastore.entities.GameSession;
-import com.sawdust.server.datastore.entities.GameState;
+import com.sawdust.server.datastore.entities.GameStateEntity;
 import com.sawdust.server.datastore.entities.MoneyAccount;
 import com.sawdust.server.datastore.entities.MoneyTransaction;
 import com.sawdust.server.datastore.entities.SDWebCache;

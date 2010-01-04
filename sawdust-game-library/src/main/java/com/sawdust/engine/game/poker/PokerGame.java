@@ -15,7 +15,7 @@ import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.MultiPlayerCardGame;
+import com.sawdust.engine.game.basetypes.MultiPlayerCardGame;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
@@ -138,7 +138,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                     playerCards.add((IndexCard) card);
                 }
                 final PokerHand playerHand = PokerHandPattern.FindHighest(playerCards);
-                this.addMessage("%s has a %s", displayName(playerName), playerHand.getName());
+                this.addMessage("%s has a %s", getDisplayName(playerName), playerHand.getName());
                 playerHand.setOwner(playerName);
                 hands.add(playerHand);
                 for (final IndexCard t : playerCards)
@@ -149,14 +149,14 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         final PokerHand winningHand = PokerHand.GetHighest(hands);
         final Participant winner = winningHand.getOwner();
-        this.addMessage("<strong>%s won with %s</strong>", displayName(winner), winningHand.getName());
+        this.addMessage("<strong>%s won with %s</strong>", getDisplayName(winner), winningHand.getName());
 
-        String displayName = displayName(winner);
+        String displayName = getDisplayName(winner);
         if(winner instanceof Player)
         {
             final ArrayList<Player> winners = new ArrayList<Player>();
             winners.add((Player) winner);
-            gameSession.payOut(winners);
+            gameSession.doSplitWagerPool(winners);
             String type = "Win/Go";
             String event = String.format("I won a game of Poker with a !", winningHand.getName());
             ((Player)winner).logActivity(new ActivityEvent(type,event));
@@ -164,7 +164,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         for (int i = 0; i < NUMBER_OF_PLAYERS; i++)
         {
             final Participant otherPlayer = getPlayerManager().playerName(i);
-            String opponentName = displayName(otherPlayer);
+            String opponentName = getDisplayName(otherPlayer);
             if(otherPlayer instanceof Player)
             {
                 String type = "Lose/Go";
@@ -232,13 +232,13 @@ public abstract class PokerGame extends MultiPlayerCardGame
                     _playerStates.put(eachPlayer, PlayerState.Bidding);
                 }
             }
-            this.addMessage(MessageType.Compact, "%s raises the bet to %d", displayName(player), bet);
+            this.addMessage(MessageType.Compact, "%s raises the bet to %d", getDisplayName(player), bet);
             this.addMessage("");
             _roundBet = bet;
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s calls", displayName(player));
+            this.addMessage(MessageType.Compact, "%s calls", getDisplayName(player));
             this.addMessage("");
         }
         _playerStates.put(player, PlayerState.Ready);
@@ -256,7 +256,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s's turn: ", displayName(nextPlayer));
+            this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
         }
     }
 
@@ -291,7 +291,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 t.setMovable(true);
             }
         }
-        this.addMessage("Player %s draws %d cards", displayName(player), numberOfCards);
+        this.addMessage("Player %s draws %d cards", getDisplayName(player), numberOfCards);
 
         if (isEveryoneDone())
         {
@@ -316,7 +316,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         isBidding |= playerState == PlayerState.Ready;
         if (isBidding) throw new GameLogicException("Invalid player state: " + playerState);
         _playerStates.put(user, PlayerState.Folded);
-        this.addMessage(MessageType.Compact, "%s folds.", displayName(user));
+        this.addMessage(MessageType.Compact, "%s folds.", getDisplayName(user));
         this.addMessage("");
         Participant nextPlayer = getPlayerManager().gotoNextPlayer();
         while (getPlayerState(nextPlayer) == PlayerState.Folded)
@@ -330,7 +330,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s's turn: ", displayName(nextPlayer));
+            this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
         }
     }
 
@@ -456,7 +456,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 
             final int requiredBet = _roundBet - currentBet;
             final int maxRaise = bankAvailible - requiredBet;
-            int ante = getSession().getAnte();
+            int ante = getSession().getUnitWager();
 
             l = new GameLabel("SEE", new IndexPosition(CURVE_CMD_BUTTONS, labelNumber++), String.format("Call", requiredBet));
             l.setCommand("Call");
@@ -587,7 +587,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             final int requiredBet = _roundBet - currentBet;
             final int balance = (access instanceof Player) ? ((Player) access).loadAccount().getBalance() : -1;
             final int maxRaise = balance - requiredBet;
-            int ante = getSession().getAnte();
+            int ante = getSession().getUnitWager();
 
             if (_roundBet > 0)
             {
@@ -724,7 +724,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         for (int playerIndex = 0; playerIndex < getPlayerManager().getPlayerCount(); playerIndex++)
         {
             final Participant player = getPlayerManager().playerName(playerIndex);
-            returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(POS_PLAYER_LABEL, playerIndex), displayName(player)));
+            returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(POS_PLAYER_LABEL, playerIndex), getDisplayName(player)));
         }
         return returnValue;
     }
@@ -834,7 +834,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         for (int player = 0; player < NUMBER_OF_PLAYERS; player++)
         {
             final Participant thisPlayer = getPlayerManager().playerName(player);
-            this.addMessage(MessageType.Compact, "%s's hand: ", displayName(thisPlayer)).setTo(thisPlayer.getId());
+            this.addMessage(MessageType.Compact, "%s's hand: ", getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < NUMBER_OF_CARDS; cardSlot++)
             {
                 final IndexCard t = dealNewCard(new IndexPosition(player, cardSlot));
@@ -852,11 +852,11 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         setCurrentPhase(GamePhase.Bidding);
         getSession().withdraw(getSession().getBalance(), null, "New Game");
-        _roundBet = getSession().getAnte();
+        _roundBet = getSession().getUnitWager();
         _currentBets.clear();
         getPlayerManager().setCurrentPlayer(0);
         final Participant nextPlayer = getPlayerManager().gotoNextPlayer();
-        this.addMessage(MessageType.Compact, "%s's turn: ", displayName(nextPlayer));
+        this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
     }
 
     @Override
