@@ -57,16 +57,13 @@
 %>
 
 <h2>Join an open game:</h2>
+<div class="sdge-game-listing">
 <%
     boolean t1 = null != user.getEmail();
     String t2 = user.getLoginUrl();
     try
 	{
-%>
-<div class="sdge-game-listing">
-    <jsp:include page="/jsp/openGameListing.jsp" />
-</div>
-<%
+        %><jsp:include page="/jsp/openGameListing.jsp" /><%
 	}
     catch(Throwable e)
     {
@@ -74,6 +71,7 @@
         %>Error loading existing games...<%
     }
 %>
+</div>
 
 <h2>Create a new game:</h2>
 <div id="gameCreator-main" width="100%" height="500px">Loading Game Creator...</div>

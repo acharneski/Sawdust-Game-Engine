@@ -1,25 +1,16 @@
 package com.sawdust.engine.game.go.tutorial.basic;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameState;
-import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.common.game.Message.MessageType;
-import com.sawdust.engine.game.AgentFactory;
-import com.sawdust.engine.game.Game;
 import com.sawdust.engine.game.SessionFactory;
 import com.sawdust.engine.game.TutorialGameBase;
-import com.sawdust.engine.game.TutorialPhase;
+import com.sawdust.engine.game.go.GoGame;
 import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
-import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.state.GameCommand;
 import com.sawdust.engine.game.stop.StopGame.GamePhase;
-import com.sawdust.engine.game.go.GoAgent1;
-import com.sawdust.engine.game.go.GoGame;
 import com.sawdust.engine.service.Util;
 import com.sawdust.engine.service.data.GameSession;
 import com.sawdust.engine.service.debug.GameException;

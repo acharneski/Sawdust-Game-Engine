@@ -3,8 +3,10 @@ package com.sawdust.test.mock;
 import java.io.Serializable;
 
 import com.sawdust.engine.game.Bank;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.data.Promotion;
 import com.sawdust.engine.service.debug.GameException;
 
 public class MockAccount implements Account
@@ -72,6 +74,12 @@ public class MockAccount implements Account
 
     @Override
     public <T extends Serializable> void setResource(Class<T> c, T markovChain)
+    {
+        throw new RuntimeException("Not Implemented");
+    }
+
+    @Override
+    public Promotion awardPromotion(PromotionConfig p) throws GameException
     {
         throw new RuntimeException("Not Implemented");
     }

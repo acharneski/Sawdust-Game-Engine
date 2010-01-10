@@ -12,7 +12,8 @@ public class UriComponent
 
     public static String contextualEncode(final String string, final Type query_param, final boolean b)
     {
-        return URLEncoder.encode(string);
+        String encode = URLEncoder.encode(string);
+        return encode;
     };
 
 }

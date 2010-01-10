@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.game.Bank;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.ActivityEvent;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.service.Util;
@@ -375,10 +376,10 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
         UserLogic logic = getLogic();
         if(null != logic) 
         {
-            LOG.fine(String.format("Publishing Facebook event: %s", event.event));
+            LOG.info(String.format("SUPRESS Facebook event: %s", event.event));
             try
             {
-                logic.publishActivity(event.event);
+                //logic.publishActivity(event.event);
             }
             catch (Exception e)
             {
@@ -430,5 +431,12 @@ public class Account extends DataObj implements com.sawdust.engine.service.data.
     public <T extends Serializable> void setResource(Class<T> c, T markovChain)
     {
         resources.put(c, new SessionResource(this, markovChain).getKey());
+    }
+
+    @Override
+    public com.sawdust.engine.service.data.Promotion awardPromotion(PromotionConfig p) throws GameException
+    {
+        Promotion promo = Promotion.load(this, p);
+        return promo;
     }
 }

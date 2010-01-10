@@ -44,6 +44,7 @@
         <div style="display:none;"><%=gameDesc%></div>
 	</c:when>
 	<c:otherwise>
-		ERROR: No session id found
+		<h2 style="background:yellow;">We're sorry, but that game doesn't seem to exist anymore. However, you could always start your own game...</h2>
+		<jsp:include page="/jsp/welcome.jsp"></jsp:include>
 	</c:otherwise>
 </c:choose>

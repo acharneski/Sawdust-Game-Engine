@@ -39,7 +39,7 @@ public class PropertyConfig implements Serializable
 
     /**
      * @param pkey
-     * @param value
+     * @param _value
      * @param ptype
      */
     public PropertyConfig(final PropertyType ptype, final String pkey)

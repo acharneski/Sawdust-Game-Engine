@@ -14,7 +14,9 @@ import com.sawdust.engine.common.geometry.Position;
 import com.sawdust.engine.common.geometry.Vector;
 import com.sawdust.engine.game.AgentFactory;
 import com.sawdust.engine.game.GameType;
+import com.sawdust.engine.game.PromotionConfig;
 import com.sawdust.engine.game.players.ActivityEvent;
+import com.sawdust.engine.game.players.Agent;
 import com.sawdust.engine.game.players.Participant;
 import com.sawdust.engine.game.players.Player;
 import com.sawdust.engine.game.players.PlayerManager;
@@ -27,7 +29,9 @@ import com.sawdust.engine.game.stop.StopIsland;
 import com.sawdust.engine.game.go.Stupid1;
 import com.sawdust.engine.game.stop.TokenArray;
 import com.sawdust.engine.game.stop.StopGame.GamePhase;
+import com.sawdust.engine.service.data.Account;
 import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.service.data.Promotion;
 import com.sawdust.engine.service.debug.GameException;
 import com.sawdust.engine.service.debug.GameLogicException;
 
@@ -196,6 +200,8 @@ public abstract class GoGame extends StopGame
             String opponentName = displayName(otherPlayer);
             if (p instanceof Player)
             {
+                rollForLoot(p);
+                
                 String type = "Win/Go";
                 String event = String.format("I won a game of Stop against %s!", opponentName);
                 ((Player) p).logActivity(new ActivityEvent(type, event));
@@ -213,6 +219,23 @@ public abstract class GoGame extends StopGame
             }
             session.payOut(collection);
         }
+    }
+
+    private void rollForLoot(Participant p) throws GameException
+    {
+        Account account = ((Player) p).loadAccount();
+        GoLoot resource = account.getResource(GoLoot.class);
+        if(null == resource)
+        {
+            resource = new GoLoot();
+        }
+        PromotionConfig promoConfig = resource.getLoot();
+        if(null != promoConfig)
+        {
+            Promotion awardPromotion = account.awardPromotion(promoConfig);
+            addMessage(awardPromotion.getMessage()).setTo(p.getId());
+        }
+        account.setResource(GoLoot.class, resource);
     }
 
     @Override
@@ -271,9 +294,9 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public List<AgentFactory<?>> getAgentFactories()
+    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
-        final List<AgentFactory<?>> agentFactories = new ArrayList<AgentFactory<?>>();
+        final List<AgentFactory<? extends Agent<?>>> agentFactories = new ArrayList<AgentFactory<? extends Agent<?>>>();
         final PlayerManager playerManager = getPlayerManager();
         agentFactories.add(new AgentFactory<Stupid1>()
         {

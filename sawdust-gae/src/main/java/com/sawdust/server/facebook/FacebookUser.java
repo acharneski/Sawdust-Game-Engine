@@ -167,6 +167,8 @@ public class FacebookUser
         tm.put("uid", userId);
         String text = message.getText();
         text = StringEscapeUtils.escapeHtml(text);
+        message.fbAttachment = StringEscapeUtils.escapeHtml(message.fbAttachment);
+        //tm.put("message", "");
         tm.put("message", text);
         tm.put("attachment", message.fbAttachment);
 
