@@ -9,90 +9,43 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.media.jai.JAI;
 
-public class LetterGenerator1
+public class LetterGenerator1 extends ArtLibraryGenerator<LetterArt>
 {
-    static final StringBuilder initCode = new StringBuilder();
-    static final StringBuilder declareCode = new StringBuilder();
-    static final int size = 50;
-    static final String letters[] = {
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-        "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    };
-    private static String inputPath;
-    private static String basePath;
-   private static boolean verbose;
 
-
-    /**
-     * @param args
-     * @throws IOException
-     */
     public static void main(String[] args) throws IOException
     {
-       inputPath = args[0];
-       basePath = args[1];
-        for(String letter : letters)
-        {
-            createSubLetter(letter, Color.WHITE, "1");
-            createSubLetter(letter, Color.GREEN, "2");
-        }
-        
-        
-        verbose = false;
-        if (verbose)
-        {
-           System.out.println(declareCode);
-           System.out.println("\n\n");
-           System.out.println(initCode);
-        }
+        new LetterGenerator1(args[0], args[1]).createLibrary();
     }
 
-    private static void createSubLetter(String letter, Color color, String suffix) throws FileNotFoundException
+    static final int size = 50;
+    static final String letters[] =
+    { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+    public LetterGenerator1(String string, String string2)
     {
-        String artSet = "/letters1/";
-        String imageName = letter + suffix;
-        String imagePath = artSet + imageName + ".png";
-        createImage(basePath + imagePath, size, letter, color);
-        initCode.append(String.format(
-                "\nImageRegistry.put(\"%s\", " + 
-                "\n\tnew ImageCallback(){ public AbstractImagePrototype getImage(Object self){ " + 
-                    "\n\t\treturn ((Bundle)self).get%s();" + 
-                "\n\t}\n});",
-                (suffix.equals("1"))?letter:imageName,
-                imageName));
-        declareCode.append(String.format(
-                "\n@Resource(\"%s\")\n" + 
-                "AbstractImagePrototype get%s();\n", 
-                imagePath,
-                imageName));
+        super(string, string2);
     }
 
-    private static void createImage(String outputFile, int psize, String str, Color color) throws FileNotFoundException
+    @Override
+    LetterArt[] getTokenSet()
     {
-        BufferedImage image = new BufferedImage(psize,psize,BufferedImage.TYPE_INT_RGB);
-        
-        Graphics graphics = image.getGraphics();
-//        graphics.setColor(Color.BLACK);
-//        graphics.fillRect(-1, -1, 2*psize, 2*psize);
-//        graphics.setColor(Color.LIGHT_GRAY);
-//        int w = (int)(psize*0.05);
-//        graphics.fillRect(w, w, psize - 2*w, psize - 2*w);
+        ArrayList<LetterArt> returnList = new ArrayList<LetterArt>(); 
+        for (String letter : letters)
+        {
+            returnList.add(new LetterArt(this, letter+"1", Color.WHITE, size));
+            returnList.add(new LetterArt(this, letter+"2", Color.GREEN, size));
+        }
+        return returnList.toArray(new LetterArt[]{});
+    }
 
-        graphics.setFont(new Font("Canarsie Slab JL", Font.BOLD, (int)(psize*0.90)));
-        graphics.setColor(color);
-        Rectangle2D labelMetrics = graphics.getFontMetrics().getStringBounds(str, graphics);
-        graphics.drawString(str, 
-                (int)(psize - labelMetrics.getWidth())/2, 
-                (int)(0.8*labelMetrics.getHeight() + (psize - labelMetrics.getHeight())/2));
-        
-        // Encode the file as a BMP image
-        new File(outputFile).getParentFile().mkdirs();
-        FileOutputStream stream = new FileOutputStream(outputFile);
-        String format = "PNG";
-        JAI.create("encode", image, stream, format, null);
+    @Override
+    String getKey()
+    {
+        return "letters1";
     }
 
 }
