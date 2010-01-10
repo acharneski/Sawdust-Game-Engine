@@ -108,9 +108,9 @@ public abstract class BaseGame implements GameState
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#addMember(com.sawdust.engine.game.players.Participant)
      */
-    public void addPlayer(final Participant agent) throws GameException
+    public void doAddPlayer(final Participant agent) throws GameException
     {
-        this.addMessage("%s joined the room", getDisplayName(agent));
+        this.doAddMessage("%s joined the room", getDisplayName(agent));
     }
 
     public Message addMessage(final Message m)
@@ -120,7 +120,7 @@ public abstract class BaseGame implements GameState
         return m;
     }
 
-    public Message addMessage(final Message.MessageType type, final String msg, final Object... params)
+    public Message doAddMessage(final Message.MessageType type, final String msg, final Object... params)
     {
         if (null == _newMessages) return new Message("");
         if ((null == params) || (0 == (params).length))
@@ -136,16 +136,16 @@ public abstract class BaseGame implements GameState
             }
             else return null;
         }
-        else return addMessage(type, String.format(msg, params));
+        else return doAddMessage(type, String.format(msg, params));
     }
 
     /*
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#addMessage(java.lang.String, java.lang.Object)
      */
-    public Message addMessage(final String msg, final Object... params)
+    public Message doAddMessage(final String msg, final Object... params)
     {
-        return addMessage(Message.MessageType.Normal, msg, params);
+        return doAddMessage(Message.MessageType.Normal, msg, params);
     }
 
     protected void addNewModule(final GameModConfig x)
@@ -189,18 +189,6 @@ public abstract class BaseGame implements GameState
     public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
         return new ArrayList<AgentFactory<? extends Agent<?>>>();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.sawdust.engine.game.Game#getCommands(com.sawdust.engine.game.players.Participant)
-     */
-    public ArrayList<GameCommand> getCommands(final Participant access2) throws GameException
-    {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
-        // returnValue.addAll(_commands);
-        returnValue.addAll(getMoves(access2));
-        return returnValue;
     }
 
     /*
@@ -337,14 +325,14 @@ public abstract class BaseGame implements GameState
      */
     public void doRemoveMember(final Participant email) throws GameException
     {
-        this.addMessage("%s left the room", getDisplayName(email));
+        this.doAddMessage("%s left the room", getDisplayName(email));
     }
 
     /*
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#reset()
      */
-    public abstract void reset();
+    public abstract void doReset();
 
     /*
      * (non-Javadoc)
@@ -392,13 +380,13 @@ public abstract class BaseGame implements GameState
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#start()
      */
-    public abstract void start() throws GameException;
+    public abstract void doStart() throws GameException;
 
     /*
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#toGwt(com.sawdust.engine.game.players.Player)
      */
-    public GameFrame toGwt(final Player access) throws GameException
+    public GameFrame getView(final Player access) throws GameException
     {
         final GameFrame returnValue = new GameFrame(_config);
         returnValue.versionNumber = _versionNumber;
@@ -448,7 +436,7 @@ public abstract class BaseGame implements GameState
      * (non-Javadoc)
      * @see com.sawdust.engine.game.Game#update()
      */
-    public abstract void update() throws GameException;
+    public abstract void doUpdate() throws GameException;
 
     private boolean visible(final Message s, final Player access)
     {
@@ -520,7 +508,7 @@ public abstract class BaseGame implements GameState
     public void postStartActivity()
     {
         GameSession session = getSession();
-        Message message = this.addMessage(
+        Message message = this.doAddMessage(
                 String.format("I am playing %s at Sawdust Games. You can join my game at %s", getGameType().getName(), session
                         .getUrl())).setSocialActivity(true);
 
@@ -535,7 +523,7 @@ public abstract class BaseGame implements GameState
     }
 
     @Override
-    public void updateConfig(GameConfig newConfig) throws GameException
+    public void setConfig(GameConfig newConfig) throws GameException
     {
         HashMap<String, PropertyConfig> thisProperties = getConfig().getProperties();
         HashMap<String, PropertyConfig> newProperties = newConfig.getProperties();

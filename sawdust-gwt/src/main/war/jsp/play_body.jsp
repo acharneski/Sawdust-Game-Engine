@@ -2,14 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
-<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
-<%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
-<%@ page import="com.sawdust.server.datastore.entities.Account" %>
+<%@ page import="com.sawdust.engine.model.basetypes.BaseGame"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
+<%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
+<%@ page import="com.sawdust.gae.datastore.entities.Account" %>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <%
@@ -33,7 +33,7 @@
 %>
 
 
-<%@page import="com.sawdust.server.datastore.entities.GameSession"%>
+<%@page import="com.sawdust.gae.datastore.entities.GameSession"%>
 <c:choose>
 	<c:when test="<%=isSessionDefined%>">
         <script type="text/javascript" language="javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"></script>  

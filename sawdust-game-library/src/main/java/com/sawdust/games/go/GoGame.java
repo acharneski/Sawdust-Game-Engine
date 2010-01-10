@@ -71,9 +71,9 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void addPlayer(Participant agent) throws GameException
+    public void doAddPlayer(Participant agent) throws GameException
     {
-        super.addPlayer(agent);
+        super.doAddPlayer(agent);
         _scores.put(agent, new PlayerScore());
     }
 
@@ -162,7 +162,7 @@ public abstract class GoGame extends StopGame
                     {
                         GoGame.this._lastPlayerPassed = true;
                         _lastPosition = null;
-                        GoGame.this.addMessage("%s passed!", GoGame.this.getDisplayName(p));
+                        GoGame.this.doAddMessage("%s passed!", GoGame.this.getDisplayName(p));
                         GoGame.this.finishTurn(p);
                     }
                     return true;
@@ -181,7 +181,7 @@ public abstract class GoGame extends StopGame
         {
             int score = s.getValue().getScore();
             Participant key = s.getKey();
-            this.addMessage("%s has %d points.", getDisplayName(key), score);
+            this.doAddMessage("%s has %d points.", getDisplayName(key), score);
             if (null == winner || score > winningScore)
             {
                 winner = key;
@@ -189,7 +189,7 @@ public abstract class GoGame extends StopGame
         }
         setCurrentState(GamePhase.Complete);
         setLastWinner(getPlayerManager().findPlayer(winner));
-        this.addMessage("%s wins!", getDisplayName(winner));
+        this.doAddMessage("%s wins!", getDisplayName(winner));
 
         final GameSession session = getSession();
         if (null != session)
@@ -247,20 +247,20 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void reset()
+    public void doReset()
     {
-        super.reset();
+        super.doReset();
         // _scores.clear();
     }
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
         for (PlayerScore s : _scores.values())
         {
             s.clear();
         }
-        super.start();
+        super.doStart();
     }
 
     @Override
@@ -291,7 +291,7 @@ public abstract class GoGame extends StopGame
         }
 
         final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
-        addMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
+        doAddMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
     }
 
     @Override

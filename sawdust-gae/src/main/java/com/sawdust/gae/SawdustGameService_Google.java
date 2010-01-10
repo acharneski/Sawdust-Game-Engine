@@ -63,7 +63,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             }
             if (!handled)
             {
-                for (final GameCommand thisCmd : tokenGame.getCommands(player))
+                for (final GameCommand thisCmd : tokenGame.getMoves(player))
                 {
                     if (cmd.startsWith(thisCmd.getCommandText()) && thisCmd.doCommand(player, cmd))
                     {
@@ -77,7 +77,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             }
             if (handled)
             {
-                tokenGame.update();
+                tokenGame.doUpdate();
             }
         }
     }
@@ -203,7 +203,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final CommandResult commandResult = new CommandResult();
             for (final GameState intermediateState : gameSession.doGetStatesSince(gameVersion))
             {
-                final GameFrame gwtGame = (null == intermediateState) ? null : intermediateState.toGwt(player);
+                final GameFrame gwtGame = (null == intermediateState) ? null : intermediateState.getView(player);
                 commandResult.addState(gwtGame);
             }
             commandResult._bankBalance = loadAccount.getBalance();
@@ -276,7 +276,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final CommandResult commandResult = new CommandResult();
             for (final GameState tokenGame : gameSession.doGetStatesSince(gameVersion))
             {
-                final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
+                final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.getView(player);
                 commandResult.addState(gwtGame);
             }
             commandResult._bankBalance = playerAccount.getBalance();
@@ -305,7 +305,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             if (null == gameSession) throw new InputException("Unknown session id");
             final GameState tokenGame = gameSession.getState();
             final Player player = (access.doLoadAccount()).getPlayer();
-            final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.toGwt(player);
+            final GameFrame gwtGame = (null == tokenGame) ? null : tokenGame.getView(player);
             DataStore.Save();
             return new CommandResult(gwtGame);
         }

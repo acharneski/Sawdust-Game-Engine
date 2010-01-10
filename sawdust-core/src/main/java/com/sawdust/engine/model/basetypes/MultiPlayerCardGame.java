@@ -53,7 +53,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         if (config.getProperties().containsKey(GameConfig.RANDOM_SEED))
         {
             final String seed = config.getProperties().get(GameConfig.RANDOM_SEED).value;
-            this.addMessage("Setting seed: %s", seed).setTo(Message.ADMIN);
+            this.doAddMessage("Setting seed: %s", seed).setTo(Message.ADMIN);
             getDeck().setSeed(seed);
         }
         _mplayerManager = new MultiPlayer(nPlayers);
@@ -61,7 +61,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void addPlayer(final Participant agent) throws GameException
+    public void doAddPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -71,7 +71,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         {
             _displayFilter.put(agent, ((Agent<?>) agent).getId());
         }
-        super.addPlayer(agent);
+        super.doAddPlayer(agent);
         _mplayerManager.addMember(this, agent);
     }
 
@@ -155,15 +155,15 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void update() throws GameException
+    public void doUpdate() throws GameException
     {
         _mplayerManager.update(this);
     }
 
     @Override
-    public GameFrame toGwt(Player access) throws GameException
+    public GameFrame getView(Player access) throws GameException
     {
-        final GameFrame returnValue = super.toGwt(access);
+        final GameFrame returnValue = super.getView(access);
         if(!getPlayerManager().isMember(access))
         {
             if(this.isInPlay())

@@ -3,9 +3,9 @@
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 
-<%@ page import="com.sawdust.server.datastore.DataStore"%>
+<%@ page import="com.sawdust.gae.datastore.DataStore"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <%

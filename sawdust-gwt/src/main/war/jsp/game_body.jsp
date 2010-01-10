@@ -4,11 +4,11 @@
 
 <%@ page import="java.lang.String"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
-<%@ page import="com.sawdust.engine.service.Util"%>
-<%@ page import="com.sawdust.server.logic.GameTypes"%>
+<%@ page import="com.sawdust.engine.model.GameType"%>
+<%@ page import="com.sawdust.engine.controller.Util"%>
+<%@ page import="com.sawdust.gae.logic.GameTypes"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" />
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty property="request" name="user" value="<%=request%>" />
 
 <%@ page import="java.util.logging.Logger" %>

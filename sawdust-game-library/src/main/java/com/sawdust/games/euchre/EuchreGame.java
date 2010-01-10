@@ -432,7 +432,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void reset()
+    public void doReset()
     {
         clearTokens();
         setCurrentPhase(EuchreGame.DEALING);
@@ -444,7 +444,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
         final GameSession session = getSession();
         session.doUnitWager();

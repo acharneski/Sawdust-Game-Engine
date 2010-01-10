@@ -37,7 +37,7 @@
 				<directory>src/main/java</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/common/**</include>
+					<include>**/view/**</include>
 					<include>**/*.gwt.xml</include>
 				</includes>
 			</resource>

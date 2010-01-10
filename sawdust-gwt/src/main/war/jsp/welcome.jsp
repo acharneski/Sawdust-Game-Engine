@@ -4,10 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.engine.model.GameType"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <h1>Welcome!</h1>

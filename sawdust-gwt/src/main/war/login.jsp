@@ -1,8 +1,10 @@
 
 <%@page import="java.net.HttpURLConnection"%><%@page import="java.net.URLEncoder"%><%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.logic.User"%>
+
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.logic.User"%>
+
 <%@ page import="java.util.Map"%>
 <%@ page errorPage="/error.jsp"%>
 

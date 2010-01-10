@@ -1,11 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
-<%@ page import="com.sawdust.server.logic.GameTypes"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.engine.model.GameType"%>
+<%@ page import="com.sawdust.gae.logic.GameTypes"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
+
+<jsp:useBean id="requestData" class="com.sawdust.gae.jsp.JspRequestInfoBean" scope="request"/>
 
 <%
 	// TODO: Re-enable Java 5 support in JSP

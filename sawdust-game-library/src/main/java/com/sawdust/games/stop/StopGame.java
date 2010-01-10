@@ -101,9 +101,9 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void addPlayer(final Participant agent) throws GameException
+   public void doAddPlayer(final Participant agent) throws GameException
    {
-      super.addPlayer(agent);
+      super.doAddPlayer(agent);
       _mplayerManager.addMember(this, agent);
    }
    
@@ -172,7 +172,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          if (diff > 0)
          {
             String displayName = getDisplayName(player);
-            addMessage("%s won by at least %d!", displayName, diff);
+            doAddMessage("%s won by at least %d!", displayName, diff);
             _currentState = GamePhase.Complete;
             _lastWinner = playerIdx;
             
@@ -205,7 +205,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          }
       }
       final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
-      addMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
+      doAddMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
    }
 
    private void rollForLoot(Participant p) throws GameException
@@ -378,13 +378,13 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void reset()
+   public void doReset()
    {
       _currentState = GamePhase.Lobby;
    }
    
    @Override
-   public void start() throws GameException
+   public void doStart() throws GameException
    {
       if (2 > _mplayerManager.getPlayerManager().getPlayerCount())
       {
@@ -413,7 +413,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       }
       if (null != nextPlayer)
       {
-         addMessage("It is now %s's turn", getDisplayName(nextPlayer));
+         doAddMessage("It is now %s's turn", getDisplayName(nextPlayer));
       }
       _currentState = GamePhase.Playing;
    }
@@ -433,15 +433,15 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void update() throws GameException
+   public void doUpdate() throws GameException
    {
       _mplayerManager.update(this);
    }
    
    @Override
-   public com.sawdust.engine.view.game.GameFrame toGwt(Player access) throws GameException
+   public com.sawdust.engine.view.game.GameFrame getView(Player access) throws GameException
    {
-      final com.sawdust.engine.view.game.GameFrame returnValue = super.toGwt(access);
+      final com.sawdust.engine.view.game.GameFrame returnValue = super.getView(access);
       PlayerManager playerManager = _mplayerManager.getPlayerManager();
       boolean isMember = playerManager.isMember(access);
       boolean inPlay = isInPlay();

@@ -67,14 +67,14 @@ public abstract class BlackjackGame extends IndexCardGame
         if (config.getProperties().containsKey(GameConfig.RANDOM_SEED))
         {
             final String seed = config.getProperties().get(GameConfig.RANDOM_SEED).value;
-            this.addMessage("Setting seed: %s", seed).setTo(Message.ADMIN);
+            this.doAddMessage("Setting seed: %s", seed).setTo(Message.ADMIN);
             getDeck().setSeed(seed);
         }
         getSession().setMinimumPlayers(1);
     }
     
     @Override
-    public void addPlayer(final Participant s) throws GameException
+    public void doAddPlayer(final Participant s) throws GameException
     {
         if (null != _owner) throw new GameLogicException(String.format("This game is already inhabited by %s", _owner));
         _owner = s;
@@ -116,19 +116,19 @@ public abstract class BlackjackGame extends IndexCardGame
         this.doAdvanceTime(DEALER_PAUSE_MS);
         while (dealerScore < 17)
         {
-            this.addMessage("Dealer has %d; dealer hits", dealerScore);
+            this.doAddMessage("Dealer has %d; dealer hits", dealerScore);
             dealerScore = hit(HAND_DEALER);
             this.saveState();
             this.doAdvanceTime(DEALER_PAUSE_MS);
         }
-        this.addMessage("Dealer has %d", dealerScore);
+        this.doAddMessage("Dealer has %d", dealerScore);
         endTurn();
     }
     
     private void lose(int i, GameSession gameSession) throws GameException
     {
         
-        this.addMessage("Player busts... ").setType(MessageType.Compact);
+        this.doAddMessage("Player busts... ").setType(MessageType.Compact);
         boolean stillPlaying = false;
         int won = 0;
         int lost = 0;
@@ -158,9 +158,9 @@ public abstract class BlackjackGame extends IndexCardGame
          */
         if (dealerBust)
         {
-            this.addMessage(MessageType.Compact, "Dealer busts... ");
-            this.addMessage(MessageType.Compact, "<strong><i>Everyone Wins!</i></strong>");
-            this.addMessage("");
+            this.doAddMessage(MessageType.Compact, "Dealer busts... ");
+            this.doAddMessage(MessageType.Compact, "<strong><i>Everyone Wins!</i></strong>");
+            this.doAddMessage("");
             _currentPhase = GamePhases.Won;
             
             gameSession.doSplitWagerPool(gameSession.getPlayers());
@@ -193,20 +193,20 @@ public abstract class BlackjackGame extends IndexCardGame
             if (wins > 0 && losses > 0)
             {
                 String msg = String.format("<strong><i>You won %d hands, and lost %d.</i></strong>", wins, losses);
-                this.addMessage(msg );
+                this.doAddMessage(msg );
                 gameSession.doModifyWagerPool(wins/(wins+losses),msg);
                 gameSession.doSplitWagerPool(gameSession.getPlayers());
                 _currentPhase = GamePhases.Won;
             }
             else if (wins > 0)
             {
-                this.addMessage("<strong><i>You Win.</i></strong>");
+                this.doAddMessage("<strong><i>You Win.</i></strong>");
                 gameSession.doSplitWagerPool(gameSession.getPlayers());
                 _currentPhase = GamePhases.Won;
             }
             else if (losses > 0)
             {
-                this.addMessage("<strong><i>You Lose.</i></strong>");
+                this.doAddMessage("<strong><i>You Lose.</i></strong>");
                 gameSession.doSplitWagerPool(null);
                 _currentPhase = GamePhases.Lost;
             }
@@ -431,7 +431,7 @@ public abstract class BlackjackGame extends IndexCardGame
         final GameSession gameSession = getSession();
         if (GamePhases.Playing != _currentPhase) throw new GameLogicException("Game is not in progress");
         final int totalScore = hit(i);
-        this.addMessage("Player has %d", totalScore);
+        this.doAddMessage("Player has %d", totalScore);
         if (totalScore > 21)
         {
             lose(i, gameSession);
@@ -455,18 +455,18 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public void reset()
+    public void doReset()
     {
         clearTokens();
         _currentPhase = GamePhases.Null;
     }
     
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
         if (GamePhases.Playing != _currentPhase) 
         {
-            this.addMessage("Clearing table and redealing game.");
+            this.doAddMessage("Clearing table and redealing game.");
         }
         /*
          * R-B-0047 The minimum and maximum bets are posted on the table. The
@@ -479,7 +479,7 @@ public abstract class BlackjackGame extends IndexCardGame
             getSession().doUnitWager();
             getSession().withdraw(-getSession().getBalance(), null, "House contribution");
         }
-        this.addMessage(MessageType.Compact, "New Deal: ");
+        this.doAddMessage(MessageType.Compact, "New Deal: ");
         playerHandStatus.clear();
         clearTokens();
         getDeck().setReshuffleEnabled(true); // Card counting is part of the fun
@@ -556,7 +556,7 @@ public abstract class BlackjackGame extends IndexCardGame
             }
             if (HAND_PLAYER == i)
             {
-                this.addMessage(MessageType.Compact, "Player has %d. ", totalScore);
+                this.doAddMessage(MessageType.Compact, "Player has %d. ", totalScore);
             }
             else
             {
@@ -564,28 +564,28 @@ public abstract class BlackjackGame extends IndexCardGame
                 {
                     // this.addMessage(MessageType.Compact, "Dealer has %s. ",
                     // showingCard.toString());
-                    this.addMessage(MessageType.Compact, "Dealer has Blackjack.");
+                    this.doAddMessage(MessageType.Compact, "Dealer has Blackjack.");
                 }
                 else
                 {
-                    this.addMessage(MessageType.Compact, "Dealer has %s. ", showingCard.toString());
-                    this.addMessage(MessageType.Compact, "Dealer does not have Blackjack.");
+                    this.doAddMessage(MessageType.Compact, "Dealer has %s. ", showingCard.toString());
+                    this.doAddMessage(MessageType.Compact, "Dealer does not have Blackjack.");
                 }
             }
         }
     }
     
     @Override
-    public GameFrame toGwt(final Player access) throws GameException
+    public GameFrame getView(final Player access) throws GameException
     {
-        final GameFrame gwt = super.toGwt(access);
+        final GameFrame gwt = super.getView(access);
         gwt.setHeight(300);
         gwt.setWidth(400);
         return gwt;
     }
     
     @Override
-    public void update() throws GameException
+    public void doUpdate() throws GameException
     {
         // Do nothing
     }

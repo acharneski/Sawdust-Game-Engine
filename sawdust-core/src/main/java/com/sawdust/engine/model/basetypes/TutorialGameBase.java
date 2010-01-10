@@ -40,7 +40,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       {
          Agent<S> agent = initAgent();
          this.getSession().addPlayer(agent);
-         _innerGame.addPlayer(agent);
+         _innerGame.doAddPlayer(agent);
       }
       catch (GameException e)
       {
@@ -92,23 +92,23 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
    
    @Override
-   public void reset()
+   public void doReset()
    {
-      getInnerGame().reset();
+      getInnerGame().doReset();
       _isFirstPlay = false;
    }
    
    @Override
-   public void start() throws GameException
+   public void doStart() throws GameException
    {
-      getInnerGame().start();
+      getInnerGame().doStart();
       _isFirstPlay = false;
    }
    
    @Override
-   public GameFrame toGwt(Player access) throws GameException
+   public GameFrame getView(Player access) throws GameException
    {
-      GameFrame gwt = _innerGame.toGwt(access);
+      GameFrame gwt = _innerGame.getView(access);
       TutorialPhase<S> phase = getPhase();
       if(null != phase) gwt = phase.filterDisplay(gwt);
       return gwt;
@@ -163,9 +163,9 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void update() throws GameException
+   public void doUpdate() throws GameException
    {
-      getInnerGame().update();
+      getInnerGame().doUpdate();
    }
 
    public S getInnerGame()
@@ -175,35 +175,27 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    
 
    @Override
-   public void addPlayer(Participant agent) throws GameException
+   public void doAddPlayer(Participant agent) throws GameException
    {
-      _innerGame.addPlayer(agent);
+      _innerGame.doAddPlayer(agent);
    }
 
    @Override
-   public Message addMessage(MessageType type, String msg, Object... params)
+   public Message doAddMessage(MessageType type, String msg, Object... params)
    {
-      return _innerGame.addMessage(type, msg, params);
+      return _innerGame.doAddMessage(type, msg, params);
    }
 
    @Override
-   public Message addMessage(String msg, Object... params)
+   public Message doAddMessage(String msg, Object... params)
    {
-      return _innerGame.addMessage(msg, params);
+      return _innerGame.doAddMessage(msg, params);
    }
 
    @Override
    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
    {
       return _innerGame.getAgentFactories();
-   }
-
-   @Override
-   public ArrayList<GameCommand> getCommands(Participant access2) throws GameException
-   {
-      final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
-      returnValue.addAll(getMoves(access2));
-      return returnValue;
    }
 
    @Override
@@ -316,7 +308,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void updateConfig(GameConfig newConfig) throws GameException
+   public void setConfig(GameConfig newConfig) throws GameException
    {
    }
 

@@ -6,15 +6,15 @@
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="java.util.Collection"%>
 <%@ page import="java.util.HashSet"%>
-<%@ page import="com.sawdust.server.appengine.SawdustGameService_Google"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
-<%@ page import="com.sawdust.engine.common.config.GameConfig"%>
-<%@ page import="com.sawdust.engine.common.config.GameModConfig"%>
-<%@ page import="com.sawdust.server.logic.GameTypes"%>
-<%@ page import="com.sawdust.engine.common.config.PropertyConfig"%>
-<%@ page import="com.sawdust.engine.common.config.PropertyConfig.PropertyType"%>
+<%@ page import="com.sawdust.gae.SawdustGameService_Google"%>
+<%@ page import="com.sawdust.engine.model.GameType"%>
+<%@ page import="com.sawdust.engine.view.config.GameConfig"%>
+<%@ page import="com.sawdust.engine.view.config.GameModConfig"%>
+<%@ page import="com.sawdust.gae.logic.GameTypes"%>
+<%@ page import="com.sawdust.engine.view.config.PropertyConfig"%>
+<%@ page import="com.sawdust.engine.view.config.PropertyConfig.PropertyType"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" />
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
 <jsp:setProperty property="request" name="user" value="<%=request%>" />
 
 <%

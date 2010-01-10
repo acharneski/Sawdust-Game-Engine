@@ -27,7 +27,7 @@
 	 -->
 	<servlet>
 		<servlet-name>GameServlet</servlet-name>
-		<servlet-class>com.sawdust.server.appengine.SawdustGameService_Google</servlet-class>
+		<servlet-class>com.sawdust.gae.SawdustGameService_Google</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>facebook_wrapper</servlet-name>

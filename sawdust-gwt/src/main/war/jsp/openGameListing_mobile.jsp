@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
-<%@ page import="com.sawdust.server.datastore.entities.Account.InterfacePreference"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" />
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.gae.datastore.entities.Account.InterfacePreference"%>
+
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
 <jsp:setProperty name="user" property="request" value="<%=request%>" />
 
 <%

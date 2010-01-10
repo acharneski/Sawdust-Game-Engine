@@ -28,18 +28,18 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void update() throws GameException
+    public void doUpdate() throws GameException
     {
     }
 
     @Override
-    public GameFrame toGwt(Player access) throws GameException
+    public GameFrame getView(Player access) throws GameException
     {
         return null;
     }
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
     }
 
@@ -79,7 +79,7 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void reset()
+    public void doReset()
     {
     }
 
@@ -167,12 +167,6 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public ArrayList<GameCommand> getCommands(Participant access2) throws GameException
-    {
-        return null;
-    }
-
-    @Override
     public List<AgentFactory<?>> getAgentFactories()
     {
         return null;
@@ -190,19 +184,19 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public Message addMessage(String msg, Object... params)
+    public Message doAddMessage(String msg, Object... params)
     {
         return null;
     }
 
     @Override
-    public Message addMessage(MessageType type, String msg, Object... params)
+    public Message doAddMessage(MessageType type, String msg, Object... params)
     {
         return null;
     }
 
     @Override
-    public void addPlayer(Participant agent) throws GameException
+    public void doAddPlayer(Participant agent) throws GameException
     {
     }
 
@@ -212,7 +206,7 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void updateConfig(GameConfig newConfig) throws GameException
+    public void setConfig(GameConfig newConfig) throws GameException
     {
     }
 

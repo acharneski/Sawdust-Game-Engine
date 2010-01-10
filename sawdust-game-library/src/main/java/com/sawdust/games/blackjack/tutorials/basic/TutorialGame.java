@@ -22,15 +22,15 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     }
     
     @Override
-    public void reset()
+    public void doReset()
     {
-        super.reset();
+        super.doReset();
     }
     
     protected LoadedDeck _deck = null;
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
        if(null == _deck)
        {
@@ -51,13 +51,13 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
        }
         
        getInnerGame().setDeck(_deck);
-       super.start();
+       super.doStart();
     }
     
     @Override
-    public GameFrame toGwt(Player access) throws GameException
+    public GameFrame getView(Player access) throws GameException
     {
-        GameFrame gwt = super.toGwt(access);
+        GameFrame gwt = super.getView(access);
         gwt = _phase.filterDisplay(gwt);
         return gwt;
     }

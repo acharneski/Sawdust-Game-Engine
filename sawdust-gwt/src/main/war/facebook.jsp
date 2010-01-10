@@ -2,11 +2,11 @@
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.logic.User"%>
-<%@ page import="com.sawdust.server.facebook.FacebookUser"%>
-<%@ page import="com.sawdust.server.facebook.FacebookSite"%>
-<%@ page import="com.sawdust.server.logic.User.UserTypes"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.jsp.JspUser"%>
+<%@ page import="com.sawdust.gae.facebook.FacebookUser"%>
+<%@ page import="com.sawdust.gae.facebook.FacebookSite"%>
+<%@ page import="com.sawdust.gae.logic.GameTypes"%>
 <%@ page import="java.net.URLEncoder"%>
 
 <%@ page errorPage="/error.jsp"%>
@@ -23,7 +23,7 @@ if(request.getPathInfo().startsWith("/f/"))
 }
 %>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 <jsp:setProperty name="user" property="response" value="<%=response%>"/>
 

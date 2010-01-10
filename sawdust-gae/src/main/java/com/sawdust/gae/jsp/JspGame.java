@@ -42,7 +42,7 @@ public class JspGame implements Serializable
         init();
         SawdustGameService_Google.doCommand(cmd, _gameSession, _game, _player);
         _game.saveState();
-        setGame((null == _game) ? null : _game.toGwt(_player));
+        setGame((null == _game) ? null : _game.getView(_player));
         DataStore.Save();
     }
 
@@ -161,7 +161,7 @@ public class JspGame implements Serializable
             if (null == _gameSession) throw new InputException("Unknown session id");
             _game = _gameSession.getState();
             _player = (sessionToken.doLoadAccount()).getPlayer();
-            setGame((null == _game) ? null : _game.toGwt(_player));
+            setGame((null == _game) ? null : _game.getView(_player));
             // DataStore.Save();
         }
     }
@@ -192,7 +192,7 @@ public class JspGame implements Serializable
         {
             try
             {
-                _gwtGame = _game.toGwt(_player);
+                _gwtGame = _game.getView(_player);
             }
             catch (GameException e)
             {

@@ -92,8 +92,8 @@ public abstract class TokenGame extends BaseGame {
 	public abstract ArrayList<Token> getTokens();
 
 	@Override
-	public GameFrame toGwt(final Player access) throws GameException {
-	    final GameFrame returnValue = super.toGwt(access);
+	public GameFrame getView(final Player access) throws GameException {
+	    final GameFrame returnValue = super.getView(access);
 	    for (final Token t : getTokens())
 	    {
 	        final com.sawdust.engine.view.game.Token g = t.toGwt(access, this);
@@ -110,7 +110,7 @@ public abstract class TokenGame extends BaseGame {
 	}
 
     @Override
-    public void addPlayer(final Participant agent) throws GameException
+    public void doAddPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -121,7 +121,7 @@ public abstract class TokenGame extends BaseGame {
             String id = ((Agent<?>) agent).getId();
             _displayFilter.put(agent, id);
         }
-        super.addPlayer(agent);
+        super.doAddPlayer(agent);
     }
 
     @Override

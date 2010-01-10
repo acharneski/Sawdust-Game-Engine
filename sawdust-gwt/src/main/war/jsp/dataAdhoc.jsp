@@ -2,13 +2,13 @@
 
 <%@ page import="com.google.appengine.api.datastore.EntityNotFoundException"%>
 <%@ page import="java.util.Date"%>
-<%@ page import="com.sawdust.engine.service.Util" %>
+<%@ page import="com.sawdust.engine.controller.Util" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
 
-<%@page import="java.text.DateFormat"%><jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<%@page import="java.text.DateFormat"%><jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 <jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
@@ -27,7 +27,7 @@ Max Rows: <input type="text" name="max" value="<%=maxRows%>"><br/>
 <input type="submit" name="action" value="QUERY"><br/>
 </form>
 
-<jsp:useBean id="admin" class="com.sawdust.server.jsp.DataAdhocBean" />
+<jsp:useBean id="admin" class="com.sawdust.gae.jsp.DataAdhocBean" />
 <jsp:setProperty name="admin" property="request" value="<%=request%>" />
 <jsp:setProperty name="admin" property="response" value="<%=response%>"/>
 <%

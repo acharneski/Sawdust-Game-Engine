@@ -8,15 +8,14 @@
 <%@page import="java.io.PrintWriter"%>
 
 <%@page import="java.util.logging.Logger"%>
-<%@page import="com.sawdust.server.jsp.JspLib"%>
 <%@page import="java.io.PrintStream"%>
-<%@page import="com.sawdust.engine.service.debug.GameLogicException"%>
-<%@page import="com.sawdust.server.datastore.DataStore"%>
-<%@page import="com.sawdust.server.logic.ReportedException"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.DataStore"%>
+<%@page import="com.sawdust.engine.controller.exceptions.GameLogicException"%>
 
 <%@ page isErrorPage="true" %>
 
-<%@ page import="com.sawdust.engine.service.Util" %>
+<%@ page import="com.sawdust.engine.controller.Util" %>
 <%@ page import="java.util.logging.Logger" %>
 <%
 final Logger LOG = Logger.getLogger("gameType.tag");

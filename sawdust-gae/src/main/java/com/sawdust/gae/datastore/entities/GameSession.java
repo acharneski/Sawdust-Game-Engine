@@ -182,7 +182,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         final GameState _game = getState();
         if (null != _game)
         {
-            _game.addPlayer(p);
+            _game.doAddPlayer(p);
             _game.saveState();
             doUpdateStatus();
         }
@@ -628,13 +628,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         {
             if (member.getMemberStatus() == MemberStatus.Timeout)
             {
-                game.addMessage("%s has been dropped from the game", member);
+                game.doAddMessage("%s has been dropped from the game", member);
                 isGameDirty = true;
                 dropMember(member);
             }
             if (member.getMemberStatus() == MemberStatus.Quit)
             {
-                game.addMessage("%s has been dropped from the game", member);
+                game.doAddMessage("%s has been dropped from the game", member);
                 isGameDirty = true;
                 dropMember(member);
             }
@@ -697,7 +697,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                     member.setMemberStatus(MemberStatus.Timeout);
                     if (null != lgame)
                     {
-                        lgame.addMessage("%s seems to have disconnected...", lgame.getDisplayName(memberEmail));
+                        lgame.doAddMessage("%s seems to have disconnected...", lgame.getDisplayName(memberEmail));
                         _dirtyGame = true;
                     }
                 }
@@ -709,7 +709,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                     member.setMemberStatus(MemberStatus.Playing);
                     if (null != lgame)
                     {
-                        lgame.addMessage("%s is back online!", lgame.getDisplayName(memberEmail));
+                        lgame.doAddMessage("%s is back online!", lgame.getDisplayName(memberEmail));
                         _dirtyGame = true;
                     }
                 }
@@ -748,7 +748,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                         {
                             if (null != lgame)
                             {
-                                lgame.addMessage("%s disconnected and has been dropped from the game.", lgame.getDisplayName(memberEmail));
+                                lgame.doAddMessage("%s disconnected and has been dropped from the game.", lgame.getDisplayName(memberEmail));
                                 _dirtyGame = true;
                             }
                             dropMember(member);
@@ -802,8 +802,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         final GameState tokenGame2 = getState();
         if (null != tokenGame2)
         {
-            tokenGame2.start();
-            tokenGame2.update();
+            tokenGame2.doStart();
+            tokenGame2.doUpdate();
             tokenGame2.saveState();
         }
     }
@@ -899,7 +899,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (null != latestState)
         {
             currentConfig = latestState.getConfig();
-            latestState.updateConfig(newConfig);
+            latestState.setConfig(newConfig);
         }
         this.setGame(newConfig.getGameName());
         this.setMoveTimeout(Integer.parseInt(newConfig.getProperties().get(GameConfig.MOVE_TIMEOUT).value));

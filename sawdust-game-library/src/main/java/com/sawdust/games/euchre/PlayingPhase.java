@@ -43,7 +43,7 @@ final class PlayingPhase extends GamePhase
         final int endScore = 1+ game.getTeamStatus(teamNumber).currentHandCount;
         game.getTeamStatus(teamNumber).currentHandCount = endScore;
         int totalRounds = ++game._roundNumber;
-        game.addMessage("<strong>%s (team %s) wins this trick, for a total of %d wins</strong>", game.getDisplayName(winner), teamNumber+1, endScore);
+        game.doAddMessage("<strong>%s (team %s) wins this trick, for a total of %d wins</strong>", game.getDisplayName(winner), teamNumber+1, endScore);
         game.clearPlayedCards();
         int otherTeam = (0 == teamNumber) ? 1 : 0;
         final int makingTeam = game.getTeamNumber(game._maker)-1;
@@ -54,21 +54,21 @@ final class PlayingPhase extends GamePhase
             int affectedTeam;
             if(makingTeam == teamNumber && endScore == 5)
             {
-                game.addMessage("<strong>Team %s took every trick, and gets %d points.</strong>", teamNumber+1, otherTeam+1, 2);
+                game.doAddMessage("<strong>Team %s took every trick, and gets %d points.</strong>", teamNumber+1, otherTeam+1, 2);
                 game.getTeamStatus(otherTeam).totalPoints += 2;
                 affectedTeam = otherTeam;
                 game._totalPts += 2;
             }
             else if(makingTeam == teamNumber && endScore >= 3)
             {
-                game.addMessage("<strong>Team %s wins, and gets %d points.</strong>", teamNumber+1, 1);
+                game.doAddMessage("<strong>Team %s wins, and gets %d points.</strong>", teamNumber+1, 1);
                 game.getTeamStatus(teamNumber).totalPoints += 1;
                 affectedTeam = teamNumber;
                 game._totalPts += 1;
             }
             else
             {
-                game.addMessage("<strong>Team %s was Euchred! Team %s gets %d points.</strong>", makingTeam+1, nonMakingTeam+1, 2);
+                game.doAddMessage("<strong>Team %s was Euchred! Team %s gets %d points.</strong>", makingTeam+1, nonMakingTeam+1, 2);
                 game.getTeamStatus(nonMakingTeam).totalPoints += 2;
                 affectedTeam = nonMakingTeam;
                 game._totalPts += 2;
@@ -77,11 +77,11 @@ final class PlayingPhase extends GamePhase
             game.doAdvanceTime(1000);
             if(game.getTeamStatus(affectedTeam).totalPoints >= game.getPointGoal())
             {
-                game.addMessage("<strong>Team %s wins the game!</strong>", affectedTeam+1);
+                game.doAddMessage("<strong>Team %s wins the game!</strong>", affectedTeam+1);
                 game.payToTeam(affectedTeam+1);
                 game.getPlayerManager().resetCurrentPlayer();
                 game.setCurrentPhase(EuchreGame.COMPLETE);
-                game.addMessage("Enter 'Deal' or 'Quit'.");
+                game.doAddMessage("Enter 'Deal' or 'Quit'.");
                 
                 for(Participant p : game.getTeam(affectedTeam))
                 {
@@ -179,13 +179,13 @@ final class PlayingPhase extends GamePhase
         final boolean canLeadSuit = game.playerCanLead(currentPlayerIndex);
         if (!isLeadingSuit && canLeadSuit) throw new GameLogicException(String.format("You must play a %s", leadingSuit.fullString()));
         
-        game.addMessage(MessageType.Compact, "Played %s of %s ", cardToPlay.getCard().getRank().name(), cardToPlay.getCard().getSuit().fullString());
+        game.doAddMessage(MessageType.Compact, "Played %s of %s ", cardToPlay.getCard().getRank().name(), cardToPlay.getCard().getSuit().fullString());
         if (game.isWinningCard(cardToPlay))
         {
             game._winningCard = cardToPlay;
-            game.addMessage(MessageType.Compact, "<strong>(Currently Winning)</strong>");
+            game.doAddMessage(MessageType.Compact, "<strong>(Currently Winning)</strong>");
         }
-        game.addMessage("");
+        game.doAddMessage("");
         
         cardToPlay.setPosition(new IndexPosition(EuchreLayout.POS_IN_PLAY, game._roundCardCount++));
         cardToPlay.setPublic();
@@ -206,7 +206,7 @@ final class PlayingPhase extends GamePhase
         {
             displayName = "<NULL>";
         }
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", displayName);
+        game.doAddMessage(MessageType.Compact, "It is now %s's turn: ", displayName);
     }
     
     @Override

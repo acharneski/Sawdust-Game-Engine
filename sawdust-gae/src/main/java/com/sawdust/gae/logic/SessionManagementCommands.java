@@ -56,7 +56,7 @@ public enum SessionManagementCommands
          final GameState baseGame = ((SessionToken) user).doLoadSession().getState();
          
          ((GameSession) gameSession).createOpenInvite(user);
-         baseGame.addMessage("Created public game listing at the request of %s", baseGame.getDisplayName(user));
+         baseGame.doAddMessage("Created public game listing at the request of %s", baseGame.getDisplayName(user));
          baseGame.saveState();
       }
       
@@ -102,7 +102,7 @@ public enum SessionManagementCommands
          final SessionMember member = ((GameSession) gameSession).findMember(user);
          member.setMemberStatus(MemberStatus.Quit);
          final GameState baseGame = gameSession.getState();
-         baseGame.addMessage("%s leaves the game.", baseGame.getDisplayName(user));
+         baseGame.doAddMessage("%s leaves the game.", baseGame.getDisplayName(user));
          baseGame.saveState();
       }
       
@@ -130,7 +130,7 @@ public enum SessionManagementCommands
             gameSession.setStatus(SessionStatus.Inviting, baseGame);
          }
          else throw new GameLogicException("Command restricted to owner: " + baseGame.getDisplayName(owner));
-         baseGame.reset();
+         baseGame.doReset();
          baseGame.saveState();
          
       }
@@ -157,12 +157,12 @@ public enum SessionManagementCommands
          Player player = (null == owner) ? null : owner.getPlayer();
          if (null == player || player.equals(user))
          {
-            baseGame.addMessage("%s (game owner) says \"%s\"", baseGame.getDisplayName(user), param);
+            baseGame.doAddMessage("%s (game owner) says \"%s\"", baseGame.getDisplayName(user), param);
             baseGame.saveState();
          }
          else
          {
-            baseGame.addMessage("%s says \"%s\"", baseGame.getDisplayName(user), param);
+            baseGame.doAddMessage("%s says \"%s\"", baseGame.getDisplayName(user), param);
             baseGame.saveState();
          }
       }
@@ -183,7 +183,7 @@ public enum SessionManagementCommands
             throws GameException
       {
          final GameState state = game.getState();
-         state.update();
+         state.doUpdate();
          state.saveState();
          
          SessionMember findMember = ((GameSession) game).findMember(user.getId());

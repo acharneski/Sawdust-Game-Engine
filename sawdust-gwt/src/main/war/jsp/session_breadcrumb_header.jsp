@@ -3,19 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error.jsp"%>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
-<%@ page import="com.sawdust.engine.service.data.GameSession"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
-
-<%@ page import="com.sawdust.engine.service.Util"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.engine.model.basetypes.BaseGame"%>
+<%@ page import="com.sawdust.engine.controller.entities.GameSession"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
+<%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
+<%@ page import="com.sawdust.engine.controller.Util"%>
 <%@ page import="java.util.logging.Logger" %>
 
 <%final Logger LOG = Logger.getLogger("session_breadcrumb_header");%>
 
-<jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
+<jsp:useBean id="requestData" class="com.sawdust.gae.jsp.JspRequestInfoBean" scope="request"/>
 
 <%
 if(requestData.getGameType().isEmpty())

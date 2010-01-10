@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
 
 <%
     TinySession tsession = JspLib.Instance.getTinySession(request);

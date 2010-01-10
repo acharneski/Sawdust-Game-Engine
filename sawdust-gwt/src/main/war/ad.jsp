@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error.jsp"%>
 
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
 <%@ page import="java.lang.String"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
-<%@ page import="com.sawdust.engine.service.Util"%>
-<%@ page import="com.sawdust.server.logic.GameTypes"%>
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.engine.model.GameType"%>
+<%@ page import="com.sawdust.engine.controller.Util"%>
+<%@ page import="com.sawdust.gae.logic.GameTypes"%>
 
 <html style="overflow:hidden;">
 <head>

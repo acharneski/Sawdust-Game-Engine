@@ -18,19 +18,23 @@ import com.sawdust.engine.view.game.Message;
 
 public interface GameState extends Serializable, Cloneable
 {
-    Message addMessage(final Message.MessageType type, final String msg, final Object... params);
+    @Deprecated
+    Message doAddMessage(final Message.MessageType type, final String msg, final Object... params);
 
-    Message addMessage(final String msg, final Object... params);
+    @Deprecated
+    Message doAddMessage(final String msg, final Object... params);
 
-    void addPlayer(final Participant agent) throws GameException;
+    void doAddPlayer(final Participant agent) throws GameException;
 
     public void doAdvanceTime(int milliseconds);
 
     void doRemoveMember(final Participant email) throws GameException;
 
-    List<AgentFactory<? extends Agent<?>>> getAgentFactories();
+    void doReset();
 
-    ArrayList<GameCommand> getCommands(final Participant access2) throws GameException;
+    void doUpdate() throws GameException;
+    
+    List<AgentFactory<? extends Agent<?>>> getAgentFactories();
 
     GameConfig getConfig();
 
@@ -58,13 +62,15 @@ public interface GameState extends Serializable, Cloneable
 
     int getUpdateTime();
 
+    GameFrame getView(final Player access) throws GameException;
+
     int getWidth();
 
     boolean isInPlay();
 
-    void reset();
-
     void saveState() throws GameException;
+
+    void setConfig(GameConfig newConfig) throws GameException;
 
     void setHeight(final int height);
 
@@ -78,12 +84,6 @@ public interface GameState extends Serializable, Cloneable
 
     void setWidth(final int width);
 
-    void start() throws GameException;
-
-    GameFrame toGwt(final Player access) throws GameException;
-
-    void update() throws GameException;
-
-    void updateConfig(GameConfig newConfig) throws GameException;
+    void doStart() throws GameException;
 
 }

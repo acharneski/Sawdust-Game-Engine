@@ -4,21 +4,21 @@
 
 <%@ page errorPage="/error.jsp"%>
 
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
-<%@ page import="com.sawdust.engine.service.data.GameSession"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
-<%@ page import="com.sawdust.engine.service.Util"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.engine.model.basetypes.BaseGame"%>
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
+<%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
+<%@ page import="com.sawdust.engine.controller.Util"%>
 <%@ page import="java.util.logging.Logger" %>
 
 <%final Logger LOG = Logger.getLogger("tinySession");%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
-<jsp:useBean id="requestData" class="com.sawdust.server.jsp.JspRequestInfoBean" scope="request"/>
+<jsp:useBean id="requestData" class="com.sawdust.gae.jsp.JspRequestInfoBean" scope="request"/>
 
 <%
 String title = "Play";
@@ -26,7 +26,7 @@ String adTargetId = "";
 GameSession gSession = null;
 try
 {
-    gSession = JspLib.Instance.loadSessionFromTinyUrlRequest(request, user);
+    gSession = (GameSession) JspLib.Instance.loadSessionFromTinyUrlRequest(request, user);
     if (null != gSession)
     {
         title = gSession.getName();

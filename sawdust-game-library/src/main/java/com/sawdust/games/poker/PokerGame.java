@@ -138,7 +138,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                     playerCards.add((IndexCard) card);
                 }
                 final PokerHand playerHand = PokerHandPattern.FindHighest(playerCards);
-                this.addMessage("%s has a %s", getDisplayName(playerName), playerHand.getName());
+                this.doAddMessage("%s has a %s", getDisplayName(playerName), playerHand.getName());
                 playerHand.setOwner(playerName);
                 hands.add(playerHand);
                 for (final IndexCard t : playerCards)
@@ -149,7 +149,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         final PokerHand winningHand = PokerHand.GetHighest(hands);
         final Participant winner = winningHand.getOwner();
-        this.addMessage("<strong>%s won with %s</strong>", getDisplayName(winner), winningHand.getName());
+        this.doAddMessage("<strong>%s won with %s</strong>", getDisplayName(winner), winningHand.getName());
 
         String displayName = getDisplayName(winner);
         if(winner instanceof Player)
@@ -206,7 +206,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 final int balance = a.getBalance();
                 if ((balance < payAmount) && (raiseAmount <= 0))
                 {
-                    this.addMessage(MessageType.Compact, "(All in: %d) ", balance);
+                    this.doAddMessage(MessageType.Compact, "(All in: %d) ", balance);
                     a.withdraw(balance, getSession(), "All in");
                     _currentBets.put(player, balance + currentBet);
                 }
@@ -232,14 +232,14 @@ public abstract class PokerGame extends MultiPlayerCardGame
                     _playerStates.put(eachPlayer, PlayerState.Bidding);
                 }
             }
-            this.addMessage(MessageType.Compact, "%s raises the bet to %d", getDisplayName(player), bet);
-            this.addMessage("");
+            this.doAddMessage(MessageType.Compact, "%s raises the bet to %d", getDisplayName(player), bet);
+            this.doAddMessage("");
             _roundBet = bet;
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s calls", getDisplayName(player));
-            this.addMessage("");
+            this.doAddMessage(MessageType.Compact, "%s calls", getDisplayName(player));
+            this.doAddMessage("");
         }
         _playerStates.put(player, PlayerState.Ready);
 
@@ -251,12 +251,12 @@ public abstract class PokerGame extends MultiPlayerCardGame
 
         if (_playerStates.get(nextPlayer) == PlayerState.Ready)
         {
-            this.addMessage("<strong>Betting is complete. Please draw new cards.</strong>");
+            this.doAddMessage("<strong>Betting is complete. Please draw new cards.</strong>");
             setCurrentPhase(GamePhase.Drawing);
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
+            this.doAddMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
         }
     }
 
@@ -291,7 +291,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 t.setMovable(true);
             }
         }
-        this.addMessage("Player %s draws %d cards", getDisplayName(player), numberOfCards);
+        this.doAddMessage("Player %s draws %d cards", getDisplayName(player), numberOfCards);
 
         if (isEveryoneDone())
         {
@@ -316,8 +316,8 @@ public abstract class PokerGame extends MultiPlayerCardGame
         isBidding |= playerState == PlayerState.Ready;
         if (isBidding) throw new GameLogicException("Invalid player state: " + playerState);
         _playerStates.put(user, PlayerState.Folded);
-        this.addMessage(MessageType.Compact, "%s folds.", getDisplayName(user));
-        this.addMessage("");
+        this.doAddMessage(MessageType.Compact, "%s folds.", getDisplayName(user));
+        this.doAddMessage("");
         Participant nextPlayer = getPlayerManager().gotoNextPlayer();
         while (getPlayerState(nextPlayer) == PlayerState.Folded)
         {
@@ -325,12 +325,12 @@ public abstract class PokerGame extends MultiPlayerCardGame
         }
         if (_playerStates.get(nextPlayer) == PlayerState.Ready)
         {
-            this.addMessage("<strong>Betting is complete. Please draw new cards.</strong>");
+            this.doAddMessage("<strong>Betting is complete. Please draw new cards.</strong>");
             setCurrentPhase(GamePhase.Drawing);
         }
         else
         {
-            this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
+            this.doAddMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
         }
     }
 
@@ -349,7 +349,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             final Token card = getToken(new IndexPosition(player, cardSlot));
             if (null == card)
             {
-                this.addMessage("Warning: No card found at index %d", cardSlot);
+                this.doAddMessage("Warning: No card found at index %d", cardSlot);
                 continue;
             }
             removeToken(card);
@@ -811,7 +811,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void reset()
+    public void doReset()
     {
         clearTokens();
         _currentPhase = GamePhase.Null;
@@ -824,7 +824,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
         boolean isntComplete = getCurrentPhase() != GamePhase.Complete;
         boolean isntNull = getCurrentPhase() != GamePhase.Null;
@@ -834,16 +834,16 @@ public abstract class PokerGame extends MultiPlayerCardGame
         for (int player = 0; player < NUMBER_OF_PLAYERS; player++)
         {
             final Participant thisPlayer = getPlayerManager().playerName(player);
-            this.addMessage(MessageType.Compact, "%s's hand: ", getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
+            this.doAddMessage(MessageType.Compact, "%s's hand: ", getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < NUMBER_OF_CARDS; cardSlot++)
             {
                 final IndexCard t = dealNewCard(new IndexPosition(player, cardSlot));
                 t.setOwner(thisPlayer);
                 t.setPrivate("VR");
                 t.setMovable(true);
-                this.addMessage(MessageType.Compact, "(%s) ", t.getCard()).setTo(thisPlayer.getId());
+                this.doAddMessage(MessageType.Compact, "(%s) ", t.getCard()).setTo(thisPlayer.getId());
             }
-            this.addMessage("");
+            this.doAddMessage("");
         }
         _playerStates.clear();
         for (final Participant player : getPlayerManager().getPlayers())
@@ -856,13 +856,13 @@ public abstract class PokerGame extends MultiPlayerCardGame
         _currentBets.clear();
         getPlayerManager().setCurrentPlayer(0);
         final Participant nextPlayer = getPlayerManager().gotoNextPlayer();
-        this.addMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
+        this.doAddMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
     }
 
     @Override
-    public void update() throws GameException
+    public void doUpdate() throws GameException
     {
-        super.update();
+        super.doUpdate();
         if (getCurrentPhase() == GamePhase.Drawing)
         {
             for (final Participant p : getPlayerManager().getPlayers())

@@ -159,7 +159,7 @@ public class MockGameSession implements GameSession, Serializable
 
     public void doStart() throws GameException
     {
-        _currentState.start();
+        _currentState.doStart();
     }
 
     public void setPlayerTimeout(final int pplayerTimeout)

@@ -1,4 +1,6 @@
 <%@ tag body-content="scriptless" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@ attribute name="title" required="true"%>
 <%@ attribute name="header"%>
 <%@ attribute name="gatewayLink"%>
@@ -11,10 +13,7 @@
 <%@ attribute name="topColumn" fragment="true"%>
 <%@ attribute name="headerInclude" fragment="true"%>
 
-<%@ tag import="com.sawdust.engine.service.Util" %>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ tag import="com.sawdust.engine.controller.Util" %>
 <%@ tag import="java.util.logging.Logger" %>
 
 <%

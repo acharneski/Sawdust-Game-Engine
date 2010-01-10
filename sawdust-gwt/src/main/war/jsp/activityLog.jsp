@@ -5,12 +5,12 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
-<%@ page import="com.sawdust.server.datastore.entities.ActivityEventRecord"%>
-<%@ page import="com.sawdust.server.datastore.entities.MoneyAccount"%>
+<%@ page import="com.sawdust.gae.datastore.entities.ActivityEventRecord"%>
+<%@ page import="com.sawdust.gae.datastore.entities.MoneyAccount"%>
 
 <%@page import="java.text.DateFormat"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 <jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
@@ -19,9 +19,9 @@ String id = request.getParameter("id");
 if(null == id) id = user.getAccount().getUserId(); 
 %>
 
-<%@page import="com.sawdust.server.datastore.entities.Account"%>
-<%@page import="com.sawdust.server.datastore.entities.ActivityEventRecord"%>
-<jsp:useBean id="account" class="com.sawdust.server.jsp.JspTransactionLog" />
+<%@page import="com.sawdust.gae.datastore.entities.Account"%>
+<%@page import="com.sawdust.gae.datastore.entities.ActivityEventRecord"%>
+<jsp:useBean id="account" class="com.sawdust.gae.jsp.JspTransactionLog" />
 <jsp:setProperty name="account" property="request" value="<%=request%>" />
 <jsp:setProperty name="account" property="accountId" value="<%=id%>" />
 
@@ -51,7 +51,7 @@ if(null == id) id = user.getAccount().getUserId();
     }
 %>
 
-<jsp:useBean id="statement" class="com.sawdust.server.jsp.JspActivityLog" />
+<jsp:useBean id="statement" class="com.sawdust.gae.jsp.JspActivityLog" />
 <jsp:setProperty name="statement" property="request" value="<%=request%>" />
 <jsp:setProperty name="statement" property="account" value="<%=a%>" />
 

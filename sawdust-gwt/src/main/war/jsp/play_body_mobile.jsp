@@ -2,19 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
-<%@ page import="com.sawdust.engine.game.basetypes.BaseGame"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.TinySession"%>
-<%@ page import="com.sawdust.engine.common.game.Message.MessageType"%>
-<%@ page import="com.sawdust.engine.common.game.Message"%>
-<%@ page import="com.sawdust.engine.common.game.ClientCommand"%>
+<%@ page import="com.sawdust.engine.model.basetypes.BaseGame"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
+<%@ page import="com.sawdust.engine.view.game.Message.MessageType"%>
+<%@ page import="com.sawdust.engine.view.game.Message"%>
+<%@ page import="com.sawdust.engine.view.game.ClientCommand"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.sawdust.engine.service.debug.GameException"%>
-<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.engine.controller.exceptions.GameException"%>
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
 <%@ page import="java.net.URLEncoder"%>
-<%@ page import="com.sawdust.engine.game.basetypes.GameState" %>
+<%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <%
@@ -43,7 +43,7 @@
 <c:choose>
 	<c:when test="<%=isSessionDefined%>">
 
-		<jsp:useBean id="game" class="com.sawdust.server.jsp.JspGame" />
+		<jsp:useBean id="game" class="com.sawdust.gae.jsp.JspGame">
 		<jsp:setProperty name="game" property="request" value="<%=request%>" />
 		<jsp:setProperty name="game" property="sessionId" value="<%=tsession.getSessionId()%>" />
 		<%

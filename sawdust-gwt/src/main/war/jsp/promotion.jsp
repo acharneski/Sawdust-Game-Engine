@@ -1,19 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.datastore.entities.GameSession"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error.jsp"%>
 
+<%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
 <%@ page import="java.lang.String"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.sawdust.engine.game.GameType"%>
-<%@ page import="com.sawdust.engine.service.Util"%>
-<%@ page import="com.sawdust.server.logic.GameTypes"%>
-<%@ page import="com.sawdust.server.datastore.entities.Promotion"%>
-<%@page import="com.sawdust.engine.service.debug.GameLogicException"%>
-<%@page import="com.sawdust.server.datastore.DataStore"%><html>
+<%@ page import="com.sawdust.engine.model.GameType"%>
+<%@ page import="com.sawdust.engine.controller.Util"%>
+<%@ page import="com.sawdust.gae.datastore.DataStore"%>
+<%@ page import="com.sawdust.gae.datastore.entities.Promotion"%>
+<%@page import="com.sawdust.engine.controller.exceptions.GameLogicException"%>
 
-<jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser" scope="request" />
+<html>
+
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <head>

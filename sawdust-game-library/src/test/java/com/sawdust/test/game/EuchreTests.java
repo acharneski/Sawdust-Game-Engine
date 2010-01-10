@@ -129,13 +129,13 @@ public class EuchreTests extends TestCase
 		
 
 		session.addPlayer(player1);
-		game.addPlayer(player1);
+		game.doAddPlayer(player1);
 		session.addPlayer(player2);
-		game.addPlayer(player2);
+		game.doAddPlayer(player2);
 		session.addPlayer(player3);
-		game.addPlayer(player3);
+		game.doAddPlayer(player3);
 		session.addPlayer(player4);
-		game.addPlayer(player4);
+		game.doAddPlayer(player4);
 		session.doStart();
 
 		Util.assertEqual(access1.doLoadAccount().getBalance(), 9);

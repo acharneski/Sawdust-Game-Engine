@@ -4,7 +4,7 @@
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
 
-<%@page import="java.text.DateFormat"%><jsp:useBean id="user" class="com.sawdust.server.jsp.JspUser"/>
+<%@page import="java.text.DateFormat"%><jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 <jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
@@ -15,7 +15,7 @@ String n = request.getParameter("since");
 Date since = (null==n)?null:new Date(Long.parseLong(n));
 %>
 
-<jsp:useBean id="admin" class="com.sawdust.server.jsp.DataCleanupBean" />
+<jsp:useBean id="admin" class="com.sawdust.gae.jsp.DataCleanupBean" />
 <jsp:setProperty name="admin" property="request" value="<%=request%>" />
 <jsp:setProperty name="admin" property="response" value="<%=response%>"/>
 

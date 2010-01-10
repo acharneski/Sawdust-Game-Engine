@@ -62,7 +62,7 @@ public class BlackjackTests extends TestCase
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
-        blackjackGame.addPlayer(player1);
+        blackjackGame.doAddPlayer(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);
@@ -139,7 +139,7 @@ public class BlackjackTests extends TestCase
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
         session.addPlayer(player1);
-        blackjackGame.addPlayer(player1);
+        blackjackGame.doAddPlayer(player1);
         startGame(session, player1);
 
         now = Util.printNewMessages(blackjackGame, now);

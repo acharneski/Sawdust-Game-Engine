@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient" %>
-<%@ page import="com.sawdust.server.jsp.JspLib"%>
-<%@ page import="com.sawdust.server.logic.User"%>
 <%@ page errorPage="/error.jsp"%>
+
+<%@ page import="com.sawdust.gae.jsp.JspLib"%>
+<%@ page import="com.sawdust.gae.logic.User"%>
 
 <%
 User.clearCookieLogin(response);

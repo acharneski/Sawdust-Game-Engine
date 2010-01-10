@@ -154,7 +154,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
          // Then the next player cards
          ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
          
-         game.start();
+         game.doStart();
       }
       
       @Override
@@ -214,7 +214,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
          ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
          ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
 
-         game.start();
+         game.doStart();
       }
       
       @Override

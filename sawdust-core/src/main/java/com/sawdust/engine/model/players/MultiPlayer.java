@@ -56,12 +56,6 @@ public class MultiPlayer implements IMultiPlayer, Serializable
     public void addMember(final GameState game, final Participant agent) throws GameException
     {
         _playerManager.addMember(agent);
-//        if (_playerManager.isFull())
-//        {
-//            Log.info("Join-triggered deal!");
-//            game.start();
-//            game.update();
-//        }
     }
 
     public void doForceMove(final BaseGame game, final Participant participant) throws GameException

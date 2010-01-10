@@ -103,9 +103,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void addPlayer(final Participant agent) throws GameException
+    public void doAddPlayer(final Participant agent) throws GameException
     {
-        super.addPlayer(agent);
+        super.doAddPlayer(agent);
         _mplayerManager.addMember(this, agent);
     }
 
@@ -345,7 +345,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                                 Player user = (Player) p;
                                 if ((null != prevPosition) && !adjacent(position, prevPosition))
                                 {
-                                    WordHuntGame.this.addMessage("Non-adjacent letter selected: " + token.letter).setTo(user.getUserId());
+                                    WordHuntGame.this.doAddMessage("Non-adjacent letter selected: " + token.letter).setTo(user.getUserId());
                                     clearCurrentWord(user.getUserId());
 
                                     getPath(user.getUserId()).add(position);
@@ -626,11 +626,11 @@ public abstract class WordHuntGame extends PersistantTokenGame
         if (!isEveryoneDone && !isTimeUp) return;
         if (isEveryoneDone)
         {
-            addMessage("Everyone is done!");
+            doAddMessage("Everyone is done!");
         }
         if (isTimeUp)
         {
-            addMessage("Time is up!");
+            doAddMessage("Time is up!");
         }
         int winningScore = -1;
         Participant winner = null;
@@ -642,12 +642,12 @@ public abstract class WordHuntGame extends PersistantTokenGame
                 winningScore = thisScore;
                 winner = p;
             }
-            addMessage("%s's score: %d", getDisplayName(p), thisScore);
+            doAddMessage("%s's score: %d", getDisplayName(p), thisScore);
         }
         if (isEveryoneDone || isTimeUp)
         {
             _currentState = GameState.Complete;
-            addMessage("<strong>%s won</strong>", getDisplayName(winner));
+            doAddMessage("<strong>%s won</strong>", getDisplayName(winner));
             final GameSession session = getSession();
             final ArrayList<Player> collection = new ArrayList<Player>();
             if (winner instanceof Player)
@@ -694,7 +694,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void reset()
+    public void doReset()
     {
         // TODO Auto-generated method stub
     }
@@ -705,7 +705,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void start() throws GameException
+    public void doStart() throws GameException
     {
         final GameSession session = getSession();
         session.doUnitWager();
@@ -735,15 +735,15 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void update() throws GameException
+    public void doUpdate() throws GameException
     {
         _mplayerManager.update(this);
     }
 
     @Override
-    public com.sawdust.engine.view.game.GameFrame toGwt(Player access) throws GameException
+    public com.sawdust.engine.view.game.GameFrame getView(Player access) throws GameException
     {
-        final com.sawdust.engine.view.game.GameFrame returnValue = super.toGwt(access);
+        final com.sawdust.engine.view.game.GameFrame returnValue = super.getView(access);
         if (!_mplayerManager.getPlayerManager().isMember(access))
         {
             Notification notification = new Notification();
@@ -859,18 +859,18 @@ public abstract class WordHuntGame extends PersistantTokenGame
         final ArrayList<IndexPosition> wordPath = getPath(p.getId());
         if (wordList.contains(currentWord))
         {
-            WordHuntGame.this.addMessage("Already Entered: " + currentWord).setTo(p.getId());
+            WordHuntGame.this.doAddMessage("Already Entered: " + currentWord).setTo(p.getId());
             WordHuntGame.this.saveState();
         }
         else if (WordHuntGame.this.verifyWord(currentWord))
         {
-            WordHuntGame.this.addMessage(String.format("%s spelled %s (%d points)", getDisplayName(p), currentWord, getWordScore(currentWord)));
+            WordHuntGame.this.doAddMessage(String.format("%s spelled %s (%d points)", getDisplayName(p), currentWord, getWordScore(currentWord)));
             addWord(p, wordPath);
             explodeWord(p, wordPath);
         }
         else
         {
-            WordHuntGame.this.addMessage("Rejected: " + currentWord).setTo(p.getId());
+            WordHuntGame.this.doAddMessage("Rejected: " + currentWord).setTo(p.getId());
         }
         clearCurrentWord(p.getId());
         maybeComplete();

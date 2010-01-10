@@ -32,12 +32,12 @@ final class OpenMakingPhase extends GamePhase
         game.getDeck().discard(playCard.getCard());
         game._trumpSuit = suit;
         game._maker = game.getPlayerManager().getCurrentPlayer();
-        game.addMessage(MessageType.Compact, "<strong>Trump suit is called %s</strong>", game._trumpSuit.fullString());
-        game.addMessage("");
+        game.doAddMessage(MessageType.Compact, "<strong>Trump suit is called %s</strong>", game._trumpSuit.fullString());
+        game.doAddMessage("");
         game.setCurrentPhase(EuchreGame.PLAYING);
         game.getPlayerManager().setCurrentPlayer(0);
         game._roundStartPlayer = game.getPlayerManager().gotoNextPlayer();
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(game._roundStartPlayer));
+        game.doAddMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(game._roundStartPlayer));
         game._winningCard = null;
     }
 
@@ -102,13 +102,13 @@ final class OpenMakingPhase extends GamePhase
         if (!game.getCurrentPhase().equals(EuchreGame.INITIAL_MAKING) && !game.getCurrentPhase().equals(EuchreGame.OPEN_MAKING)) throw new GameLogicException(
                 "Invalid command... the game is not making");
         final Participant nextPlayer = game.getPlayerManager().gotoNextPlayer();
-        game.addMessage(MessageType.Compact, "%s passed.", game.getDisplayName(currentPlayer));
-        game.addMessage("");
-        game.addMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(nextPlayer));
+        game.doAddMessage(MessageType.Compact, "%s passed.", game.getDisplayName(currentPlayer));
+        game.doAddMessage("");
+        game.doAddMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(nextPlayer));
 
         if ((0 == game.getPlayerManager().findPlayer(currentPlayer)) && EuchreGame.INITIAL_MAKING.equals(game.getCurrentPhase()))
         {
-            game.addMessage("<strong>Any suit can now be named trump</strong>");
+            game.doAddMessage("<strong>Any suit can now be named trump</strong>");
             game.setCurrentPhase(EuchreGame.OPEN_MAKING);
         }
     }

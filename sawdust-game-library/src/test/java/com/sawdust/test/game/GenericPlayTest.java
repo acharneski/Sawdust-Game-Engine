@@ -43,7 +43,7 @@ public abstract class GenericPlayTest extends TestCase
         for (Participant p : players)
         {
             sessionTimers.put(p, 0.0);
-            game.addPlayer(p);
+            game.doAddPlayer(p);
             game.getSession().addPlayer(p);
         }
         startGame(game.getSession(), players[0]);

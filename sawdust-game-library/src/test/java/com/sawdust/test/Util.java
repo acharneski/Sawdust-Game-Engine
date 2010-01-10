@@ -89,7 +89,7 @@ public class Util
     public static String printVisibleCards(GameSession game, Player access) throws GameException
     {
         PersistantTokenGame state = (PersistantTokenGame) game.getState();
-        GameFrame gwt = state.toGwt(access);
+        GameFrame gwt = state.getView(access);
         StringBuilder sb = new StringBuilder();
         for (com.sawdust.engine.view.game.Token t : gwt.getTokens())
         {
@@ -117,7 +117,7 @@ public class Util
     public static void runCommand(GameSession gameSession, Player access, String cmd) throws com.sawdust.engine.view.GameException
     {
         GameState game = gameSession.getState();
-        for (GameCommand command : game.getCommands(access))
+        for (GameCommand command : game.getMoves(access))
         {
         	if(cmd.startsWith(command.getCommandText()))
         	{
@@ -129,7 +129,7 @@ public class Util
     public static void testGuiCommand(GameSession game, Player access, String cmd) throws com.sawdust.engine.view.GameException
     {
         GameState latestState = game.getState();
-        GameFrame gwt = latestState.toGwt(access);
+        GameFrame gwt = latestState.getView(access);
         if (!hasGuiCommand(gwt, cmd))
         {
             // throw new AssertionError("No gui command: " + cmd);

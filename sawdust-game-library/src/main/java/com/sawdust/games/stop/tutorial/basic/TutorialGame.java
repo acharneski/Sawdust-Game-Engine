@@ -36,9 +36,9 @@ public class TutorialGame extends TutorialGameBase<StopGame>
    }
 
    @Override
-   public void reset()
+   public void doReset()
    {
-      super.reset();
+      super.doReset();
       try
       {
          setPhase(Welcome1.INSTANCE);
@@ -50,9 +50,9 @@ public class TutorialGame extends TutorialGameBase<StopGame>
    }
    
    @Override
-   public void start() throws GameException
+   public void doStart() throws GameException
    {
-      super.start();
+      super.doStart();
       setPhase(Welcome1.INSTANCE);
    }
    

@@ -53,7 +53,7 @@ final class DealingPhase extends GamePhase
         for (int player = 0; player < EuchreGame.NUMBER_OF_PLAYERS; player++)
         {
             final Participant thisPlayer = game.getPlayerManager().playerName(player);
-            game.addMessage(MessageType.Compact, "%s's hand: ", game.getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
+            game.doAddMessage(MessageType.Compact, "%s's hand: ", game.getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < EuchreGame.NUMBER_OF_CARDS; cardSlot++)
             {
                 final IndexPosition pos = new IndexPosition(player, cardSlot);
@@ -62,16 +62,16 @@ final class DealingPhase extends GamePhase
                 t.setPrivate("VR");
                 t.getMoveCommands().put(playSlot, "Play " + cardSlot);
                 t.setMovable(true);
-                game.addMessage(MessageType.Compact, "(%s) ", t.getCard()).setTo(thisPlayer.getId());
+                game.doAddMessage(MessageType.Compact, "(%s) ", t.getCard()).setTo(thisPlayer.getId());
             }
-            game.addMessage("");
+            game.doAddMessage("");
         }
         game._maker = null;
         game._roundStartPlayer = null;
         game.setCurrentPhase(EuchreGame.INITIAL_MAKING);
 
-        game.addMessage("The dealt trump suit candidate is %s: ", playCard.getCard().getSuit().fullString());
-        game.addMessage(MessageType.Compact, "It is %s's turn to call or pass: ", game.getDisplayName(game.getPlayerManager().gotoNextPlayer()));
+        game.doAddMessage("The dealt trump suit candidate is %s: ", playCard.getCard().getSuit().fullString());
+        game.doAddMessage(MessageType.Compact, "It is %s's turn to call or pass: ", game.getDisplayName(game.getPlayerManager().gotoNextPlayer()));
     }
 
     @Override
