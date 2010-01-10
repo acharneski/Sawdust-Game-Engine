@@ -3,7 +3,7 @@
  */
 package com.sawdust.test.mock;
 
-import com.sawdust.engine.service.data.BankAccount;
+import com.sawdust.engine.controller.entities.BankAccount;
 
 final class MockMoneyAccount implements BankAccount
 {

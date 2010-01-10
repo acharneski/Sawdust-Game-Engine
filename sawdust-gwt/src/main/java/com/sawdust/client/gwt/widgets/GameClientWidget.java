@@ -37,12 +37,12 @@ import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.EventListener;
 import com.sawdust.client.gwt.util.FacebookLogic;
 import com.sawdust.client.gwt.util.GoogleAccess;
-import com.sawdust.engine.common.CommandResult;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
-import com.sawdust.engine.common.game.ClientCommand;
-import com.sawdust.engine.common.game.GameFrame;
-import com.sawdust.engine.common.game.Message;
+import com.sawdust.engine.view.CommandResult;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.config.PropertyConfig.DetailLevel;
+import com.sawdust.engine.view.game.ClientCommand;
+import com.sawdust.engine.view.game.GameFrame;
+import com.sawdust.engine.view.game.Message;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

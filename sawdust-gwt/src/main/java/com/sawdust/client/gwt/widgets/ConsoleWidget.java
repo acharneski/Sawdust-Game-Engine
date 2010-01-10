@@ -4,8 +4,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.common.game.Message.MessageType;
+import com.sawdust.engine.view.game.Message;
+import com.sawdust.engine.view.game.Message.MessageType;
 
 public class ConsoleWidget extends Composite
 {

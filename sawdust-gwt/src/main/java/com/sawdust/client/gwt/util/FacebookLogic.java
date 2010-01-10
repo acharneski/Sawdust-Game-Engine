@@ -11,7 +11,7 @@ import com.gwittit.client.facebook.FacebookApi;
 import com.gwittit.client.facebook.FacebookConnect;
 import com.gwittit.client.facebook.entities.ActionLink;
 import com.gwittit.client.facebook.entities.Attachment;
-import com.sawdust.engine.common.game.Message;
+import com.sawdust.engine.view.game.Message;
 
 public class FacebookLogic
 {

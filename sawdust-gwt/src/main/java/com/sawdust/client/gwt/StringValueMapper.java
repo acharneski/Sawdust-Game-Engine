@@ -5,7 +5,7 @@ package com.sawdust.client.gwt;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.sawdust.engine.common.config.PropertyConfig;
+import com.sawdust.engine.view.config.PropertyConfig;
 
 class StringValueMapper implements ValueChangeHandler<String>
 {

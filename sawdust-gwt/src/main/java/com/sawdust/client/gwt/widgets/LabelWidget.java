@@ -12,9 +12,9 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sawdust.client.gwt.util.EventListener;
-import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.geometry.Position;
-import com.sawdust.engine.common.geometry.Vector;
+import com.sawdust.engine.view.game.GameLabel;
+import com.sawdust.engine.view.geometry.Position;
+import com.sawdust.engine.view.geometry.Vector;
 
 /**
  * @author Administrator

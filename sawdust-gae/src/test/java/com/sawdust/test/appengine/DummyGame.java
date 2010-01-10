@@ -7,18 +7,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.GameFrame;
-import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.common.game.Message.MessageType;
-import com.sawdust.engine.game.AgentFactory;
-import com.sawdust.engine.game.GameType;
-import com.sawdust.engine.game.basetypes.GameState;
-import com.sawdust.engine.game.players.Participant;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.game.state.GameCommand;
-import com.sawdust.engine.game.stop.StopGame.GamePhase;
-import com.sawdust.engine.service.debug.GameException;
+import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.AgentFactory;
+import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.GameCommand;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.game.GameFrame;
+import com.sawdust.engine.view.game.Message;
+import com.sawdust.engine.view.game.Message.MessageType;
+import com.sawdust.games.stop.StopGame.GamePhase;
 
 final class DummyGame implements GameState, Serializable
 {
@@ -107,7 +107,7 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public com.sawdust.engine.service.data.GameSession getSession()
+    public com.sawdust.engine.controller.entities.GameSession getSession()
     {
         return null;
     }

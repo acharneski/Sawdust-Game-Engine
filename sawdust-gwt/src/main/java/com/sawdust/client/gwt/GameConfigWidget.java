@@ -19,11 +19,11 @@ import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sawdust.client.gwt.util.Constants;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.config.GameModConfig;
-import com.sawdust.engine.common.config.PropertyConfig;
-import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
-import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.config.GameModConfig;
+import com.sawdust.engine.view.config.PropertyConfig;
+import com.sawdust.engine.view.config.PropertyConfig.DetailLevel;
+import com.sawdust.engine.view.config.PropertyConfig.PropertyType;
 
 public class GameConfigWidget extends VerticalPanel
 {

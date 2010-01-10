@@ -2,7 +2,7 @@ package com.sawdust.client.gwt.util;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.sawdust.engine.common.AccessToken;
+import com.sawdust.engine.view.AccessToken;
 
 public class GoogleAccess
 {

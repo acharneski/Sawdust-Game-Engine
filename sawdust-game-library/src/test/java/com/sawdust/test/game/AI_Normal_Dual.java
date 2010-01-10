@@ -2,16 +2,16 @@ package com.sawdust.test.game;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.blackjack.BlackjackGame;
-import com.sawdust.engine.game.euchre.EuchreGame;
-import com.sawdust.engine.game.euchre.ai.Normal1;
-import com.sawdust.engine.game.go.GoAgent1;
-import com.sawdust.engine.game.go.GoGame;
-import com.sawdust.engine.game.poker.PokerGame;
-import com.sawdust.engine.game.poker.ai.Regular1;
-import com.sawdust.engine.game.stop.StopGame;
-import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.games.blackjack.BlackjackGame;
+import com.sawdust.games.euchre.EuchreGame;
+import com.sawdust.games.euchre.ai.Normal1;
+import com.sawdust.games.go.GoAgent1;
+import com.sawdust.games.go.GoGame;
+import com.sawdust.games.poker.PokerGame;
+import com.sawdust.games.poker.ai.Regular1;
+import com.sawdust.games.stop.StopGame;
 import com.sawdust.test.mock.MockGameSession;
 
 public class AI_Normal_Dual extends GenericPlayTest {

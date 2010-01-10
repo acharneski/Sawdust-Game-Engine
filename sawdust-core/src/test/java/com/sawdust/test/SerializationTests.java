@@ -6,11 +6,11 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.cards.Card;
-import com.sawdust.engine.common.cards.CardDeck;
-import com.sawdust.engine.common.cards.SpecialCard;
-import com.sawdust.engine.game.state.IndexCard;
-import com.sawdust.engine.service.Util;
+import com.sawdust.engine.controller.Util;
+import com.sawdust.engine.model.state.IndexCard;
+import com.sawdust.engine.view.cards.Card;
+import com.sawdust.engine.view.cards.CardDeck;
+import com.sawdust.engine.view.cards.SpecialCard;
 
 
 
@@ -27,7 +27,7 @@ public class SerializationTests extends TestCase
     @Test(timeout = 10000)
     public void testToken() throws Exception
     {
-        serializationTests(new com.sawdust.engine.game.state.Token());
+        serializationTests(new com.sawdust.engine.model.state.Token());
     }
 
     @Test(timeout = 10000)

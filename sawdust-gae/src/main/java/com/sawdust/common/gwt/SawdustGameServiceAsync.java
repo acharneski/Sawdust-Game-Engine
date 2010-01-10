@@ -3,11 +3,11 @@ package com.sawdust.common.gwt;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sawdust.engine.common.AccessToken;
-import com.sawdust.engine.common.CommandResult;
-import com.sawdust.engine.common.GameLocation;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.config.LeagueConfig;
+import com.sawdust.engine.view.AccessToken;
+import com.sawdust.engine.view.CommandResult;
+import com.sawdust.engine.view.GameLocation;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.config.LeagueConfig;
 
 /**
  * The async counterpart of <code>SawdustGameService</code>.

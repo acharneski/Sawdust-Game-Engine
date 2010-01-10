@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.go.GoAgent1;
-import com.sawdust.engine.game.stop.StopGame;
-import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.games.go.GoAgent1;
+import com.sawdust.games.stop.StopGame;
 import com.sawdust.test.mock.MockGameSession;
 
 public class GoAI extends GenericPlayTest implements Serializable

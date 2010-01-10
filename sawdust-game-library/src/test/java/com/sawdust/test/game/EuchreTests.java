@@ -7,15 +7,15 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.cards.Ranks;
-import com.sawdust.engine.common.cards.Suits;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.LoadedDeck;
-import com.sawdust.engine.game.euchre.EuchreGame;
-import com.sawdust.engine.game.players.ActivityEvent;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.model.players.ActivityEvent;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.view.cards.Ranks;
+import com.sawdust.engine.view.cards.Suits;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.games.euchre.EuchreGame;
 import com.sawdust.test.Util;
 import com.sawdust.test.mock.MockGameSession;
 import com.sawdust.test.mock.MockSessionToken;

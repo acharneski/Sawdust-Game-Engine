@@ -1,9 +1,9 @@
 package com.sawdust.test.mock;
 
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.data.SessionToken;
-import com.sawdust.engine.service.debug.GameException;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.entities.SessionToken;
+import com.sawdust.engine.controller.exceptions.GameException;
 
 public class MockSessionToken implements SessionToken
 {

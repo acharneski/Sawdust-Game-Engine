@@ -4,17 +4,17 @@ package com.sawdust.test;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.game.GameFrame;
-import com.sawdust.engine.common.game.Message;
-import com.sawdust.engine.game.basetypes.GameState;
-import com.sawdust.engine.game.basetypes.PersistantTokenGame;
-import com.sawdust.engine.game.basetypes.TokenGame;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.game.state.GameCommand;
-import com.sawdust.engine.game.state.Token;
-import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.debug.GameException;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.basetypes.PersistantTokenGame;
+import com.sawdust.engine.model.basetypes.TokenGame;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.GameCommand;
+import com.sawdust.engine.model.state.Token;
+import com.sawdust.engine.view.game.GameFrame;
+import com.sawdust.engine.view.game.GameLabel;
+import com.sawdust.engine.view.game.Message;
 
 public class Util
 {
@@ -49,7 +49,7 @@ public class Util
             if (cmd.equals(l.command)) return true;
         }
         LOG.fine("No gui button: " + cmd);
-        for (com.sawdust.engine.common.game.Token t : gwt.getTokens())
+        for (com.sawdust.engine.view.game.Token t : gwt.getTokens())
         {
             for (String c : t.getMoveCommands().values())
             {
@@ -91,7 +91,7 @@ public class Util
         PersistantTokenGame state = (PersistantTokenGame) game.getState();
         GameFrame gwt = state.toGwt(access);
         StringBuilder sb = new StringBuilder();
-        for (com.sawdust.engine.common.game.Token t : gwt.getTokens())
+        for (com.sawdust.engine.view.game.Token t : gwt.getTokens())
         {
             if (0 < sb.length()) sb.append(", ");
             sb.append(t.getBaseImageId());
@@ -114,7 +114,7 @@ public class Util
         return sb.toString();
     }
 
-    public static void runCommand(GameSession gameSession, Player access, String cmd) throws com.sawdust.engine.common.GameException
+    public static void runCommand(GameSession gameSession, Player access, String cmd) throws com.sawdust.engine.view.GameException
     {
         GameState game = gameSession.getState();
         for (GameCommand command : game.getCommands(access))
@@ -126,7 +126,7 @@ public class Util
         }
     }
 
-    public static void testGuiCommand(GameSession game, Player access, String cmd) throws com.sawdust.engine.common.GameException
+    public static void testGuiCommand(GameSession game, Player access, String cmd) throws com.sawdust.engine.view.GameException
     {
         GameState latestState = game.getState();
         GameFrame gwt = latestState.toGwt(access);

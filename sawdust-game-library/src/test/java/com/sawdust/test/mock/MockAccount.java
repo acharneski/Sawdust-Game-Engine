@@ -2,12 +2,12 @@ package com.sawdust.test.mock;
 
 import java.io.Serializable;
 
-import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.service.PromotionConfig;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.data.Promotion;
-import com.sawdust.engine.service.debug.GameException;
+import com.sawdust.engine.controller.PromotionConfig;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.entities.Promotion;
+import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.Bank;
 
 public class MockAccount implements Account
 {

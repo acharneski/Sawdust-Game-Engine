@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.service.Util;
+import com.sawdust.engine.controller.Util;
 
 
 

@@ -10,9 +10,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.sawdust.client.gwt.widgets.mylog;
 import com.sawdust.common.gwt.SawdustGameService;
 import com.sawdust.common.gwt.SawdustGameServiceAsync;
-import com.sawdust.engine.common.AccessToken;
-import com.sawdust.engine.common.CommandResult;
-import com.sawdust.engine.common.config.GameConfig;
+import com.sawdust.engine.view.AccessToken;
+import com.sawdust.engine.view.CommandResult;
+import com.sawdust.engine.view.config.GameConfig;
 
 public class CommandExecutor
 {

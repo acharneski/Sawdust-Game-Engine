@@ -12,8 +12,8 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.JAI;
 
-import com.sawdust.engine.common.cards.Ranks;
-import com.sawdust.engine.common.cards.Suits;
+import com.sawdust.engine.view.cards.Ranks;
+import com.sawdust.engine.view.cards.Suits;
 
 public class CardArt extends ArtToken
 {

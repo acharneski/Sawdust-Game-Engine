@@ -30,13 +30,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.EventListener;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.game.ClientCommand;
-import com.sawdust.engine.common.game.GameLabel;
-import com.sawdust.engine.common.game.GameFrame;
-import com.sawdust.engine.common.game.Notification;
-import com.sawdust.engine.common.game.SolidColorGameCanvas;
-import com.sawdust.engine.common.game.Token;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.game.ClientCommand;
+import com.sawdust.engine.view.game.GameFrame;
+import com.sawdust.engine.view.game.GameLabel;
+import com.sawdust.engine.view.game.Notification;
+import com.sawdust.engine.view.game.SolidColorGameCanvas;
+import com.sawdust.engine.view.game.Token;
 
 /**
  * @author Administrator

@@ -6,7 +6,7 @@ package com.sawdust.client.gwt.util;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sawdust.client.gwt.widgets.GameClientWidget;
 import com.sawdust.client.gwt.widgets.mylog;
-import com.sawdust.engine.common.CommandResult;
+import com.sawdust.engine.view.CommandResult;
 
 final class CmdCallback<T> implements AsyncCallback<T>
 {

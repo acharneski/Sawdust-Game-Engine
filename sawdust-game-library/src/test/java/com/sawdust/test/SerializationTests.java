@@ -6,9 +6,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.cards.CardDeck;
-import com.sawdust.engine.game.wordHunt.BoardToken;
-import com.sawdust.engine.service.Util;
+import com.sawdust.engine.controller.Util;
+import com.sawdust.engine.view.cards.CardDeck;
+import com.sawdust.games.wordHunt.BoardToken;
 
 
 

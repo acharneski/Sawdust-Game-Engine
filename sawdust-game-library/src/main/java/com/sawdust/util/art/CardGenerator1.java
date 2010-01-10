@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import javax.media.jai.JAI;
 
-import com.sawdust.engine.common.cards.Card;
-import com.sawdust.engine.common.cards.Ranks;
-import com.sawdust.engine.common.cards.Suits;
+import com.sawdust.engine.view.cards.Card;
+import com.sawdust.engine.view.cards.Ranks;
+import com.sawdust.engine.view.cards.Suits;
 import com.sun.media.jai.codec.FileSeekableStream;
 
 public class CardGenerator1 extends ArtLibraryGenerator<CardArt>

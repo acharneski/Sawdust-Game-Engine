@@ -6,9 +6,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;
 import com.sawdust.client.gwt.util.ImageCallback;
-import com.sawdust.engine.common.cards.Card;
-import com.sawdust.engine.common.cards.Ranks;
-import com.sawdust.engine.common.cards.Suits;
+import com.sawdust.engine.view.cards.Card;
+import com.sawdust.engine.view.cards.Ranks;
+import com.sawdust.engine.view.cards.Suits;
 
 public class ArtManager
 {

@@ -19,9 +19,9 @@ import com.sawdust.client.gwt.GameClient;
 import com.sawdust.client.gwt.art.ArtManager;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.EventListener;
-import com.sawdust.engine.common.game.Token;
-import com.sawdust.engine.common.geometry.Position;
-import com.sawdust.engine.common.geometry.Vector;
+import com.sawdust.engine.view.game.Token;
+import com.sawdust.engine.view.geometry.Position;
+import com.sawdust.engine.view.geometry.Vector;
 
 /**
  * @author Administrator

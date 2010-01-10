@@ -12,23 +12,23 @@ import org.mortbay.log.Log;
 import com.google.appengine.api.datastore.dev.LocalDatastoreService;
 import com.google.appengine.tools.development.ApiProxyLocalImpl;
 import com.google.apphosting.api.ApiProxy;
-import com.sawdust.engine.common.AccessToken;
-import com.sawdust.engine.common.cards.Ranks;
-import com.sawdust.engine.common.cards.Suits;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.LoadedDeck;
-import com.sawdust.engine.game.blackjack.BlackjackGame;
-import com.sawdust.engine.game.blackjack.BlackjackGameType;
-import com.sawdust.engine.service.data.Account;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.view.AccessToken;
+import com.sawdust.engine.view.cards.Ranks;
+import com.sawdust.engine.view.cards.Suits;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.gae.datastore.DataStore;
+import com.sawdust.gae.datastore.Games;
+import com.sawdust.gae.datastore.entities.GameSession;
+import com.sawdust.gae.logic.GameTypes;
+import com.sawdust.gae.logic.SessionToken;
+import com.sawdust.gae.logic.User;
+import com.sawdust.gae.logic.User.UserTypes;
+import com.sawdust.games.blackjack.BlackjackGame;
+import com.sawdust.games.blackjack.BlackjackGameType;
 import com.sawdust.test.Util;
-import com.sawdust.server.datastore.DataStore;
-import com.sawdust.server.datastore.Games;
 import com.sawdust.server.datastore.Hacks;
-import com.sawdust.server.datastore.entities.GameSession;
-import com.sawdust.server.logic.GameTypes;
-import com.sawdust.server.logic.SessionToken;
-import com.sawdust.server.logic.User;
-import com.sawdust.server.logic.User.UserTypes;
 
 public class DataLifecycleTest extends TestCase
 {
@@ -83,9 +83,9 @@ public class DataLifecycleTest extends TestCase
         int flushCount = 0;
         for(int i=0;i<loadSize;i++)
         {
-            com.sawdust.server.datastore.entities.Account account;
-            com.sawdust.server.datastore.entities.GameSession session;
-            account = com.sawdust.server.datastore.entities.Account.Load("test"+i);
+            com.sawdust.gae.datastore.entities.Account account;
+            com.sawdust.gae.datastore.entities.GameSession session;
+            account = com.sawdust.gae.datastore.entities.Account.Load("test"+i);
             session = new GameSession(account);
             session.setState(new DummyGame());
             if(Math.random()<0.5) com.sawdust.server.datastore.Hacks.nullifyUpdateTime(session); 
@@ -97,7 +97,7 @@ public class DataLifecycleTest extends TestCase
         
         Date since = new Date(new Date().getTime() - 10000);
         int cleanedRecords;
-        while((cleanedRecords = DataStore.Clean(com.sawdust.server.datastore.entities.Account.class, since, 15, batchSize,null))>0)
+        while((cleanedRecords = DataStore.Clean(com.sawdust.gae.datastore.entities.Account.class, since, 15, batchSize,null))>0)
         {
             Log.info("Cleaning " + cleanedRecords + " rows from account...");
         }

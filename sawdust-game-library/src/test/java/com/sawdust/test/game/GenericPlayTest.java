@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.sawdust.engine.game.basetypes.GameState;
-import com.sawdust.engine.game.players.ActivityEvent;
-import com.sawdust.engine.game.players.Agent;
-import com.sawdust.engine.game.players.Participant;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.game.state.GameCommand;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.debug.GameException;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.players.ActivityEvent;
+import com.sawdust.engine.model.players.Agent;
+import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.test.mock.MockSessionToken;
 
 import junit.framework.TestCase;
@@ -86,7 +86,7 @@ public abstract class GenericPlayTest extends TestCase
         ArrayList<GameCommand> moves = game.getMoves(player);
         while (true)
         {
-            GameCommand randomMember = com.sawdust.engine.service.Util.randomMember(moves.toArray(new GameCommand[] {}));
+            GameCommand randomMember = com.sawdust.engine.controller.Util.randomMember(moves.toArray(new GameCommand[] {}));
             try
             {
                 String commandText = randomMember.getCommandText();
@@ -145,7 +145,7 @@ public abstract class GenericPlayTest extends TestCase
         return player1;
     }
 
-    private static void startGame(GameSession session, Participant players2) throws com.sawdust.engine.common.GameException
+    private static void startGame(GameSession session, Participant players2) throws com.sawdust.engine.view.GameException
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(players2);

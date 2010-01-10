@@ -1,6 +1,6 @@
 package com.sawdust.server.datastore;
 
-import com.sawdust.server.datastore.entities.GameSession;
+import com.sawdust.gae.datastore.entities.GameSession;
 
 public class Hacks
 {

@@ -1,8 +1,8 @@
 package com.sawdust.test.mock;
 
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.SessionMember;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.SessionMember;
+import com.sawdust.engine.model.players.Player;
 
 public class MockSessionMember implements SessionMember
 {

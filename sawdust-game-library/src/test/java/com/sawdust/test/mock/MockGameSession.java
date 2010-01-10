@@ -6,19 +6,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.Bank;
-import com.sawdust.engine.game.basetypes.BaseGame;
-import com.sawdust.engine.game.basetypes.GameState;
-import com.sawdust.engine.game.players.Participant;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.service.MarkovPredictor;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
-import com.sawdust.engine.service.data.BankAccount;
-import com.sawdust.engine.service.data.SessionMember;
-import com.sawdust.engine.service.debug.GameException;
-import com.sawdust.engine.service.debug.GameLogicException;
+import com.sawdust.engine.controller.MarkovPredictor;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.BankAccount;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.entities.SessionMember;
+import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.controller.exceptions.GameLogicException;
+import com.sawdust.engine.model.Bank;
+import com.sawdust.engine.model.basetypes.BaseGame;
+import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.view.config.GameConfig;
 
 public class MockGameSession implements GameSession, Serializable
 {

@@ -7,16 +7,16 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.game.players.ActivityEvent;
-import com.sawdust.engine.game.players.Participant;
-import com.sawdust.engine.game.players.Player;
-import com.sawdust.engine.game.wordHunt.WordHuntGame;
-import com.sawdust.engine.service.HttpInterface;
-import com.sawdust.engine.service.HttpResponse;
-import com.sawdust.engine.service.LanguageProvider;
-import com.sawdust.engine.service.data.Account;
-import com.sawdust.engine.service.data.GameSession;
+import com.sawdust.engine.controller.HttpInterface;
+import com.sawdust.engine.controller.HttpResponse;
+import com.sawdust.engine.controller.LanguageProvider;
+import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.model.players.ActivityEvent;
+import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.games.wordHunt.WordHuntGame;
 import com.sawdust.test.Util;
 import com.sawdust.test.mock.MockGameSession;
 import com.sawdust.test.mock.MockSessionToken;
@@ -139,7 +139,7 @@ public class WordHuntTests extends TestCase
         return game;
     }
 
-    private void startGame(GameSession session, Player player1) throws com.sawdust.engine.common.GameException
+    private void startGame(GameSession session, Player player1) throws com.sawdust.engine.view.GameException
     {
         ArrayList<Participant> players = new ArrayList<Participant>();
         players.add(player1);

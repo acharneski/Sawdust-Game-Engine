@@ -31,12 +31,12 @@ import com.sawdust.client.gwt.util.Constants;
 import com.sawdust.client.gwt.util.GoogleAccess;
 import com.sawdust.common.gwt.SawdustGameService;
 import com.sawdust.common.gwt.SawdustGameServiceAsync;
-import com.sawdust.engine.common.AccessToken;
-import com.sawdust.engine.common.GameLocation;
-import com.sawdust.engine.common.config.GameConfig;
-import com.sawdust.engine.common.config.GameModConfig;
-import com.sawdust.engine.common.config.PropertyConfig.DetailLevel;
-import com.sawdust.engine.common.config.PropertyConfig.PropertyType;
+import com.sawdust.engine.view.AccessToken;
+import com.sawdust.engine.view.GameLocation;
+import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.config.GameModConfig;
+import com.sawdust.engine.view.config.PropertyConfig.DetailLevel;
+import com.sawdust.engine.view.config.PropertyConfig.PropertyType;
 
 public class GameCreator implements EntryPoint
 {
