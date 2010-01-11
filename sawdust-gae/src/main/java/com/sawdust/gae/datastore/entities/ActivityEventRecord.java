@@ -20,7 +20,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sawdust.engine.controller.Util;
 import com.sawdust.engine.controller.entities.BankAccount;
-import com.sawdust.engine.model.players.ActivityEvent;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.gae.datastore.DataObj;
 import com.sawdust.gae.datastore.DataStore;
 

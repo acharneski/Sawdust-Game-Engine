@@ -10,11 +10,11 @@ import org.junit.Test;
 import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.model.LoadedDeck;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.cards.Ranks;
 import com.sawdust.engine.view.cards.Suits;
 import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.games.euchre.EuchreGame;
 import com.sawdust.test.Util;
 import com.sawdust.test.mock.MockGameSession;
@@ -152,12 +152,15 @@ public class EuchreTests extends TestCase
 
 		Util.testGuiCommand(session, player2, "Play 0"); now = Util.printNewMessages(game, now);
 
-		for(int player = 0; player < 3; player++) game.doForceMove(game.getCurrentPlayer());
-		for(int player = 0; player < 4; player++) game.doForceMove(game.getCurrentPlayer());
-		for(int player = 0; player < 4; player++) game.doForceMove(game.getCurrentPlayer());
+		for(int player = 0; player < 4; player++) game.doForceMove(game.getCurrentPlayer()).doCommand(game.getCurrentPlayer(), null);
+        Util.assertMessageFound(game, "test1 (team 1) wins this trick, for a total of 1 wins");
+		for(int player = 0; player < 4; player++) game.doForceMove(game.getCurrentPlayer()).doCommand(game.getCurrentPlayer(), null);
+        Util.assertMessageFound(game, "test1 (team 1) wins this trick, for a total of 2 wins");
+		for(int player = 0; player < 4; player++) game.doForceMove(game.getCurrentPlayer()).doCommand(game.getCurrentPlayer(), null);
+		Util.assertMessageFound(game, "test3 (team 1) wins this trick, for a total of 3 wins");
+
 		now = Util.printNewMessages(game, now);
 		 
-		Util.assertMessageFound(game, "test3 (team 1) wins this trick, for a total of 3 wins");
 		Util.assertEqual(access1.doLoadAccount().getBalance(), 9);
 		Util.assertEqual(access2.doLoadAccount().getBalance(), 9);
 		Util.assertEqual(access3.doLoadAccount().getBalance(), 9);

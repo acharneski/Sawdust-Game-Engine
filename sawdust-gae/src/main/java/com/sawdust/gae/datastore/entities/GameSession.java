@@ -727,7 +727,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                     if (lgame instanceof MultiPlayerGame)
                     {
                         final MultiPlayerGame multiPlayerCardGame = (MultiPlayerGame) lgame;
-                        multiPlayerCardGame.doForceMove(multiPlayerCardGame.getPlayerManager().getCurrentPlayer());
+                        Participant currentPlayer = multiPlayerCardGame.getPlayerManager().getCurrentPlayer();
+                        multiPlayerCardGame.doForceMove(currentPlayer).doCommand(currentPlayer, null);
                         _dirtyGame = true;
                     }
                 }

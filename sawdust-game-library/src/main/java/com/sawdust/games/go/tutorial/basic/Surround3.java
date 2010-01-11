@@ -9,13 +9,12 @@ import com.sawdust.engine.model.TutorialPhase;
 import com.sawdust.engine.model.basetypes.TutorialGameBase;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
-import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.view.game.GameFrame;
 import com.sawdust.engine.view.game.Notification;
 import com.sawdust.games.go.GoAgent1;
 import com.sawdust.games.go.GoGame;
-import com.sawdust.games.stop.BoardData;
 import com.sawdust.games.stop.StopIsland;
 
 public class Surround3 extends Phases
@@ -30,14 +29,19 @@ public class Surround3 extends Phases
 
     private Agent<GoGame> _agent = new GoAgent1("Do Nothing", 1, 30)
     {
-
         @Override
-        public void Move(GoGame game, Participant participant) throws GameException
+        public GameCommand<GoGame> getMove(final GoGame game, final Participant participant) throws GameException
         {
-            LOG.fine("_agent.Move");
-            game.doFinishTurn(participant);
-            // super.Move(game,
-            // participant);
+            return new GameCommand<GoGame>()
+            {
+                @Override
+                public CommandResult<GoGame> doCommand(Participant p, String parameters) throws GameException
+                {
+                    LOG.fine("_agent.Move");
+                    game.doFinishTurn(participant);
+                    return new CommandResult<GoGame>(game);
+                }
+            };
         }
 
     };
@@ -101,12 +105,10 @@ public class Surround3 extends Phases
     public GameFrame filterDisplay(GameFrame gwt)
     {
         Notification notification = new Notification();
-        notification.notifyText = "There are two types of points in Go: "+
-            "<ol>"+
-            "<li>Territory - Empty nodes surrounded by a single color count as territory points</li>"+
-            "<li>Prisoners - Captured stones become prisoners, permanently reducing that player's score</li>"+
-            "</ol>"+
-            "Pay attention to the score as you capture all the black pieces.";
+        notification.notifyText = "There are two types of points in Go: " + "<ol>"
+                + "<li>Territory - Empty nodes surrounded by a single color count as territory points</li>"
+                + "<li>Prisoners - Captured stones become prisoners, permanently reducing that player's score</li>" + "</ol>"
+                + "Pay attention to the score as you capture all the black pieces.";
         gwt.setNotification(notification);
         return gwt;
     }

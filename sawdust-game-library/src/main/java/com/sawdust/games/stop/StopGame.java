@@ -19,17 +19,18 @@ import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.MultiPlayerGame;
 import com.sawdust.engine.model.basetypes.TokenGame;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.MultiPlayer;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.model.players.PlayerManager;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.engine.view.game.Notification;
 import com.sawdust.engine.view.game.SolidColorGameCanvas;
 import com.sawdust.engine.view.geometry.Position;
@@ -113,7 +114,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     @Override
     public StopGame doAddPlayer(final Participant agent) throws GameException
     {
-        _mplayerManager.addMember(this, agent);
+        _mplayerManager.doAddMember(this, agent);
         return (StopGame) super.doAddPlayer(agent);
     }
 
@@ -195,17 +196,24 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     }
 
     @Override
-    public StopGame doForceMove(Participant currentPlayer) throws GameException
+    public GameCommand<MultiPlayerGame> doForceMove(final Participant currentPlayer) throws GameException
     {
-        try
+        return new GameCommand<MultiPlayerGame>()
         {
-            _mplayerManager.doForceMove(this, currentPlayer);
-        }
-        catch (GameException e)
-        {
-            e.printStackTrace();
-        }
-        return this;
+            @Override
+            public CommandResult<MultiPlayerGame> doCommand(Participant p, String parameters) throws GameException
+            {
+                try
+                {
+                    _mplayerManager.doForceMove(StopGame.this, currentPlayer);
+                    return new CommandResult<MultiPlayerGame>(StopGame.this);
+                }
+                catch (GameException e)
+                {
+                    throw new SawdustSystemError(e);
+                }
+            }
+        };
     }
 
     public StopGame doMove(final IndexPosition position, final Participant player) throws GameException
@@ -237,7 +245,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     @Override
     public StopGame doRemoveMember(Participant agent) throws GameException
     {
-        _mplayerManager.removeMember(this, agent);
+        _mplayerManager.doRemoveMember(this, agent);
         return (StopGame) super.doRemoveMember(agent);
     }
 

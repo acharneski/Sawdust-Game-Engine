@@ -17,7 +17,7 @@ public class Stupid1 extends com.sawdust.games.stop.Stupid1
    }
 
    @Override
-   public void Move(StopGame game, Participant player) throws GameException
+   public GameCommand<StopGame> getMove(StopGame game, Participant player) throws GameException
    {
       if(game.getCurrentPhase() == GamePhase.Playing &&  Math.random() > 0.9)
       {
@@ -27,15 +27,14 @@ public class Stupid1 extends com.sawdust.games.stop.Stupid1
             String commandText = gameCommand.getCommandText();
             if(commandText.equals("Pass"))
             {
-               gameCommand.doCommand(player, commandText);
-               return;
+               return gameCommand;
             }
          }
          throw new RuntimeException("Pass command not found");
       }
       else
       {
-         super.Move(game, player);
+         return super.getMove(game, player);
       }
    }
    

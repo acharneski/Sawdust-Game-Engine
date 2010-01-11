@@ -54,21 +54,23 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         _playerManager = new PlayerManager(nPlayers);
     }
 
-    public void addMember(final GameState game, final Participant agent) throws GameException
+    public MultiPlayer doAddMember(final GameState game, final Participant agent) throws GameException
     {
         _playerManager.addMember(agent);
+        return this;
     }
 
-    public void doForceMove(final BaseGame game, final Participant participant) throws GameException
+    public MultiPlayer doForceMove(final BaseGame game, final Participant participant) throws GameException
     {
         if (participant instanceof Agent<?>)
         {
-            ((Agent<BaseGame>) participant).Move(game, participant);
+            ((Agent<BaseGame>) participant).getMove(game, participant).doCommand(participant, null);
         }
         else
         {
-            getAgent(participant.getId()).Move(game, participant);
+            getAgent(participant.getId()).getMove(game, participant).doCommand(participant, null);
         }
+        return this;
     }
 
     public Agent<BaseGame> getAgent(final String playerID)
@@ -161,10 +163,11 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         return returnValue;
     }
 
-    public void removeMember(final GameState game, final Participant email) throws GameException
+    public MultiPlayer doRemoveMember(final GameState game, final Participant email) throws GameException
     {
         _playerManager.dropMember(email);
         _playerCount = 0;
+        return this;
     }
 
     public void setPlayerManager(final PlayerManager playerManager)
@@ -223,7 +226,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         while (currentPlayer instanceof Agent<?>)
         {
             final Agent<BaseGame> agent = (Agent<BaseGame>) currentPlayer;
-            agent.Move(game, agent);
+            agent.getMove(game, agent).doCommand(agent, null);
             game._timeOffset += 1000;
             GameSession session = game.getSession();
             game.doSaveState();

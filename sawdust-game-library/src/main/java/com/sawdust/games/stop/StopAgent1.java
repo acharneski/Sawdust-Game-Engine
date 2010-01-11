@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.controller.exceptions.SawdustSystemError;
 import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
@@ -32,17 +33,18 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
    }
    
    @Override
-   public void Move(S game, Participant participant) throws GameException
+   public GameCommand<S> getMove(S game, Participant participant) throws GameException
    {
       try
       {
          GameCommand moveN = move_N(game, _depth);
          String x = (null == moveN) ? "<null>" : moveN.getCommandText();
          LOG.fine("Command: " + x);
+         return moveN;
       }
       catch (CloneNotSupportedException e)
       {
-         e.printStackTrace();
+         throw new SawdustSystemError(e);
       }
    }
    

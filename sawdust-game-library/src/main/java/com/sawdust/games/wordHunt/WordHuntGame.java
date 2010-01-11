@@ -22,7 +22,6 @@ import com.sawdust.engine.model.GameType;
 import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.PersistantTokenGame;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.MultiPlayer;
 import com.sawdust.engine.model.players.Participant;
@@ -34,6 +33,7 @@ import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.engine.view.config.PropertyConfig;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.engine.view.game.GameFrame;
 import com.sawdust.engine.view.game.Notification;
 import com.sawdust.engine.view.game.SolidColorGameCanvas;
@@ -97,7 +97,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     @Override
     public WordHuntGame doAddPlayer(final Participant agent) throws GameException
     {
-        _mplayerManager.addMember(this, agent);
+        _mplayerManager.doAddMember(this, agent);
         return (WordHuntGame) super.doAddPlayer(agent);
     }
 
@@ -255,7 +255,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     @Override
     public WordHuntGame doRemoveMember(Participant agent) throws GameException
     {
-        _mplayerManager.addMember(this, agent);
+        _mplayerManager.doAddMember(this, agent);
         return (WordHuntGame) super.doRemoveMember(agent);
     }
 

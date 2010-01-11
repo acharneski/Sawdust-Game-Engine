@@ -1,8 +1,7 @@
-package com.sawdust.engine.model.players;
+package com.sawdust.engine.view.game;
 
 import java.io.Serializable;
 
-import com.sawdust.engine.view.game.Message;
 
 public class ActivityEvent implements Serializable
 {
@@ -22,6 +21,7 @@ public class ActivityEvent implements Serializable
     {
         super();
     }
+
     public Message event;
     public String type;
 }

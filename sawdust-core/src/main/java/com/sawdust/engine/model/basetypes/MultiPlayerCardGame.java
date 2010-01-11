@@ -7,12 +7,14 @@ import java.util.List;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.controller.exceptions.InputException;
+import com.sawdust.engine.controller.exceptions.SawdustSystemError;
 import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.MultiPlayer;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.model.players.PlayerManager;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexCard;
@@ -72,7 +74,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
             _displayFilter.put(agent, ((Agent<?>) agent).getId());
         }
         GameState newGame = super.doAddPlayer(agent);
-        _mplayerManager.addMember(this, agent);
+        _mplayerManager.doAddMember(this, agent);
         return (MultiPlayerCardGame) newGame;
     }
 
@@ -86,23 +88,31 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         return newCard;
     }
 
-    public MultiPlayerCardGame doForceMove(final Participant participant) throws GameException
+    public GameCommand<MultiPlayerGame> doForceMove(final Participant participant) throws GameException
     {
-        try
+        return new GameCommand<MultiPlayerGame>()
         {
-            _mplayerManager.doForceMove(this, participant);
-        }
-        catch (GameException e)
-        {
-            e.printStackTrace();
-        }
-        return this;
+            
+            @Override
+            public CommandResult<MultiPlayerGame> doCommand(Participant p, String parameters) throws GameException
+            {
+                try
+                {
+                    _mplayerManager.doForceMove(MultiPlayerCardGame.this, participant);
+                    return new CommandResult<MultiPlayerGame>(MultiPlayerCardGame.this);
+                }
+                catch (GameException e)
+                {
+                    throw new SawdustSystemError(e);
+                }
+            }
+        };
     }
 
     @Override
     public MultiPlayerCardGame doRemoveMember(final Participant email) throws GameException
     {
-        _mplayerManager.removeMember(this, email);
+        _mplayerManager.doRemoveMember(this, email);
         return (MultiPlayerCardGame) super.doRemoveMember(email);
     }
 

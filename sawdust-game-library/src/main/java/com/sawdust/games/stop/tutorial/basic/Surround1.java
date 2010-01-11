@@ -8,6 +8,7 @@ import com.sawdust.engine.model.TutorialPhase;
 import com.sawdust.engine.model.basetypes.TutorialGameBase;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.view.game.GameFrame;
@@ -27,10 +28,17 @@ public class Surround1 extends Phases
    private Agent<StopGame> _agent = new StopAgent1<StopGame>("Do Nothing", 1, 30) {
 
       @Override
-      public void Move(StopGame game, Participant participant) throws GameException
+      public GameCommand<StopGame> getMove(final StopGame game, final Participant participant) throws GameException
       {
-         game.doFinishTurn(participant);
-         //super.Move(game, participant);
+        return new GameCommand<StopGame>()
+        {
+            @Override
+            public CommandResult<StopGame> doCommand(Participant p, String parameters) throws GameException
+            {
+                game.doFinishTurn(participant);
+                return new CommandResult<StopGame>(game);
+            }
+        };
       }
       
    };

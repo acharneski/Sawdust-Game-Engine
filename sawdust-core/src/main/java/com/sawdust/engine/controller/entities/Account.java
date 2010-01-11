@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.sawdust.engine.controller.PromotionConfig;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.Bank;
-import com.sawdust.engine.model.players.ActivityEvent;
+import com.sawdust.engine.view.game.ActivityEvent;
 
 public interface Account extends Bank
 {

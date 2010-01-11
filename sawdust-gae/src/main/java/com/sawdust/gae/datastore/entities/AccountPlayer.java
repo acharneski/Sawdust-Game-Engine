@@ -5,8 +5,8 @@ package com.sawdust.gae.datastore.entities;
 
 import java.util.logging.Logger;
 
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.view.game.ActivityEvent;
 
 public final class AccountPlayer extends Player
 {

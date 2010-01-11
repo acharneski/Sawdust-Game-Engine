@@ -9,11 +9,11 @@ import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.basetypes.GameState;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.model.state.GameCommand;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.test.mock.MockSessionToken;
 
 import junit.framework.TestCase;
@@ -60,7 +60,7 @@ public abstract class GenericPlayTest extends TestCase
             if(player instanceof Agent<?>)
             {
                 LOG.info("Agent Move: " + player.getId());
-                ((Agent<T>)player).Move(game, player);
+                ((Agent<T>)player).getMove(game, player).doCommand(player, null);
             }
             else
             {
@@ -81,24 +81,13 @@ public abstract class GenericPlayTest extends TestCase
         return sessionTimers;
     }
 
-    private static <T extends GameState> void doRandomMove(T game, Participant player) throws GameException
+    private static <T extends GameState> GameCommand<T> doRandomMove(T game, Participant player) throws GameException
     {
         ArrayList<GameCommand> moves = game.getMoves(player);
-        while (true)
-        {
-            GameCommand randomMember = com.sawdust.engine.controller.Util.randomMember(moves.toArray(new GameCommand[] {}));
-            try
-            {
-                String commandText = randomMember.getCommandText();
-                System.out.println("Command: " + commandText);
-                randomMember.doCommand(player, commandText);
-                break;
-            }
-            catch (GameException e)
-            {
-                System.out.println("Game Exception: " + e.getMessage());
-            }
-        }
+        GameCommand randomMember = com.sawdust.engine.controller.Util.randomMember(moves.toArray(new GameCommand[] {}));
+        String commandText = randomMember.getCommandText();
+        System.out.println("Command: " + commandText);
+        return randomMember;
     }
 
     public <T extends GameState> void testGame(T game, int nPlayers) throws Exception
@@ -117,9 +106,9 @@ public abstract class GenericPlayTest extends TestCase
         return new Agent<T>(userId)
         {
             @Override
-            public void Move(T game, Participant participant) throws GameException
+            public GameCommand<T> getMove(T game, Participant participant) throws GameException
             {
-                doRandomMove(game, this);
+                return doRandomMove(game, this);
             }
         };
     }

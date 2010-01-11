@@ -6,9 +6,9 @@ import com.sawdust.engine.model.basetypes.GameState;
 
 public interface IMultiPlayer
 {
-    void addMember(GameState game, Participant agent) throws GameException;
+    IMultiPlayer doAddMember(GameState game, Participant agent) throws GameException;
 
-    void doForceMove(BaseGame game, Participant participant) throws GameException, com.sawdust.engine.view.GameException;
+    IMultiPlayer doForceMove(BaseGame game, Participant participant) throws GameException, com.sawdust.engine.view.GameException;
 
     Agent<BaseGame> getAgent(String playerID);
 
@@ -16,7 +16,7 @@ public interface IMultiPlayer
 
     Agent<BaseGame> getTimeoutAgent();
 
-    void removeMember(GameState game, Participant email) throws GameException;
+    IMultiPlayer doRemoveMember(GameState game, Participant email) throws GameException;
 
     void setPlayerManager(PlayerManager playerManager);
 

@@ -9,9 +9,15 @@ public abstract class GameCommand<T extends GameState>
 {
     public abstract CommandResult<T> doCommand(final Participant p, String parameters) throws GameException;
 
-    public abstract String getCommandText();
+    public String getCommandText()
+    {
+        return "";
+    }
 
-    public abstract String getHelpText();
+    public String getHelpText()
+    {
+        return "";
+    }
 
     public ClientCommand toGwt()
     {

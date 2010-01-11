@@ -115,16 +115,24 @@ public class TutorialGame extends TutorialGameBase<GoGame>
       return new Agent<GoGame>("Instructor")
       {
          @Override
-         public void Move(GoGame game, Participant participant) throws GameException
+         public GameCommand<GoGame> getMove(final GoGame game, final Participant participant) throws GameException
          {
-            if(null != _agent) 
+            return new GameCommand<GoGame>()
             {
-               _agent.Move(game, participant);
-            }
-            else
-            {
-                game.doFinishTurn(participant);
-            }
+                @Override
+                public CommandResult<GoGame> doCommand(Participant p, String parameters) throws GameException
+                {
+                    if(null != _agent) 
+                    {
+                       _agent.getMove(game, participant).doCommand(participant, null);
+                    }
+                    else
+                    {
+                        game.doFinishTurn(participant);
+                    }
+                    return new CommandResult<GoGame>(game);
+                }
+            };
          }
       };
    }

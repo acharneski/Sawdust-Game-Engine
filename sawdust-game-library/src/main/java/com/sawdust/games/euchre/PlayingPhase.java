@@ -8,7 +8,6 @@ import java.util.Collection;
 
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.model.state.CommandResult;
@@ -18,6 +17,7 @@ import com.sawdust.engine.model.state.IndexCard;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.cards.Suits;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.engine.view.game.Message.MessageType;
 
 final class PlayingPhase extends GamePhase

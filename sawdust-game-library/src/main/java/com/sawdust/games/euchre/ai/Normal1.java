@@ -7,6 +7,8 @@ import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.PlayerManager;
+import com.sawdust.engine.model.state.CommandResult;
+import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.IndexCard;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.view.cards.Suits;
@@ -62,7 +64,7 @@ public class Normal1 extends Agent<EuchreGame>
         if (isSamePlayer)
         {
             game.doSaveState();
-            Move(game, player);
+            getMove(game, player);
         }
     }
 
@@ -130,7 +132,7 @@ public class Normal1 extends Agent<EuchreGame>
         if (isSamePlayer && (newScore > originalScore))
         {
             game.doSaveState();
-            Move(game, player);
+            getMove(game, player);
         }
     }
 
@@ -166,34 +168,30 @@ public class Normal1 extends Agent<EuchreGame>
     }
 
     @Override
-    public void Move(final EuchreGame game, final Participant player) throws GameException
+    public GameCommand<EuchreGame> getMove(final EuchreGame game, final Participant player) throws GameException
     {
-        final GamePhase currentPhase = game.getCurrentPhase();
-        final boolean isInitMaking = currentPhase.equals(EuchreGame.INITIAL_MAKING);
-        final boolean isOpenMaking = currentPhase.equals(EuchreGame.OPEN_MAKING);
-        if (isInitMaking || isOpenMaking)
+        return new GameCommand<EuchreGame>()
         {
-            doMaking(game, isInitMaking);
-        }
-        else if (currentPhase.equals(EuchreGame.PLAYING))
-        {
-            doPlayCards(game, player);
-        }
-        // else if (game.getCurrentPhase().equals(EuchreGame.DEALING))
-        // {
-        // // Do nothing
-        // }
-        // else if (game.getCurrentPhase().equals(EuchreGame.COMPLETE))
-        // {
-        // // Do nothing
-        // }
-        // else if (game.getCurrentPhase().equals(EuchreGame.FORMING))
-        // {
-        // // Do nothing
-        // }
-        else
-        {
-            LOG.warning("Failed force move");
-        }
+            @Override
+            public CommandResult<EuchreGame> doCommand(Participant p, String parameters) throws GameException
+            {
+                final GamePhase currentPhase = game.getCurrentPhase();
+                final boolean isInitMaking = currentPhase.equals(EuchreGame.INITIAL_MAKING);
+                final boolean isOpenMaking = currentPhase.equals(EuchreGame.OPEN_MAKING);
+                if (isInitMaking || isOpenMaking)
+                {
+                    doMaking(game, isInitMaking);
+                }
+                else if (currentPhase.equals(EuchreGame.PLAYING))
+                {
+                    doPlayCards(game, player);
+                }
+                else
+                {
+                    LOG.warning("Failed force move");
+                }
+                return new CommandResult<EuchreGame>(game);
+            }
+        };
     }
 }

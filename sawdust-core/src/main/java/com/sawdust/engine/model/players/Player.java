@@ -3,6 +3,7 @@ package com.sawdust.engine.model.players;
 import java.io.Serializable;
 
 import com.sawdust.engine.controller.entities.Account;
+import com.sawdust.engine.view.game.ActivityEvent;
 
 public abstract class Player extends Participant implements Serializable
 {

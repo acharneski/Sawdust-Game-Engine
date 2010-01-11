@@ -2,6 +2,7 @@ package com.sawdust.engine.model.players;
 
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.state.GameCommand;
 
 public abstract class Agent<G extends GameState> extends Participant
 {
@@ -14,5 +15,5 @@ public abstract class Agent<G extends GameState> extends Participant
         super(s);
     }
 
-    public abstract void Move(G game, Participant participant) throws GameException;
+    public abstract GameCommand<G> getMove(G game, Participant participant) throws GameException;
 }

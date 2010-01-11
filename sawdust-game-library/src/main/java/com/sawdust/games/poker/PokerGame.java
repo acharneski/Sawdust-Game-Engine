@@ -17,7 +17,6 @@ import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.GameType;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.MultiPlayerCardGame;
-import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
@@ -29,6 +28,7 @@ import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.engine.view.config.PropertyConfig;
+import com.sawdust.engine.view.game.ActivityEvent;
 import com.sawdust.engine.view.game.Message.MessageType;
 import com.sawdust.engine.view.geometry.ParametricLine;
 import com.sawdust.engine.view.geometry.ParametricPosition;
@@ -873,7 +873,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             {
                 if ((_playerStates.get(p) == PlayerState.Ready) && (p instanceof Agent<?>))
                 {
-                    ((Agent<PokerGame>) p).Move(this, p);
+                    ((Agent<PokerGame>) p).getMove(this, p).doCommand(p, null);
                 }
             }
         }

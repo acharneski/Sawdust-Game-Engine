@@ -28,13 +28,11 @@ public class Go1 extends Phases
 
     private Agent<GoGame> _agent = new GoAgent1("Do Nothing", 1, 30)
     {
-
         @Override
-        public void Move(GoGame game, Participant participant) throws GameException
+        public GameCommand<GoGame> getMove(GoGame game, Participant participant) throws GameException
         {
             LOG.fine("_agent.Move");
-            // game.finishTurn(participant);
-            super.Move(game, participant);
+            return super.getMove(game, participant);
         }
 
     };
