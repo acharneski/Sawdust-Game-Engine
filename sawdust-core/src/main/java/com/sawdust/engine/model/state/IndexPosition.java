@@ -1,29 +1,55 @@
 package com.sawdust.engine.model.state;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 public class IndexPosition implements Serializable
 {
-    private int _cardIndex;
-    private int _curveIndex;
-    private Integer _z = null;
-
-    protected IndexPosition()
+    protected static class SerialForm implements Serializable
     {
-        super();
+        int _cardIndex;
+        int _curveIndex;
+        Integer _z = null;
+        
+        protected SerialForm(){}
+        protected SerialForm(IndexPosition obj)
+        {
+            _cardIndex = obj._cardIndex;
+            _curveIndex = obj._curveIndex;
+            _z = obj._z;
+        }
+        private Object readResolve()
+        {
+            return new IndexPosition(this);
+        }
     }
+
+    public final int _cardIndex;
+    public final int _curveIndex;
+    public final Integer _z;
 
     public IndexPosition(final int curve, final int card)
     {
         super();
         _curveIndex = curve;
         _cardIndex = card;
+        _z = 0;
     }
 
     public IndexPosition(int i, int j, int z)
     {
-        this(i,j);
+        _curveIndex = i;
+        _cardIndex = j;
         _z = z;
+    }
+
+    public IndexPosition(SerialForm obj)
+    {
+        _cardIndex = obj._cardIndex;
+        _curveIndex = obj._curveIndex;
+        _z = obj._z;
     }
 
     @Override
@@ -75,22 +101,21 @@ public class IndexPosition implements Serializable
         return true;
     }
 
-    public IndexPosition setCardIndex(final int cardIndex)
+    public IndexPosition setZ(Integer z)
     {
-        _cardIndex = cardIndex;
-        return this;
+        SerialForm serialForm = new SerialForm(this);
+        serialForm._z = z;
+        return new IndexPosition(serialForm);
     }
 
-    public IndexPosition setCurveIndex(final int curveIndex)
+    private Object writeReplace()
     {
-        _curveIndex = curveIndex;
-        return this;
+        return new SerialForm(this);
     }
 
-    public IndexPosition setZ(Integer _z)
+    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
     {
-        this._z = _z;
-        return this;
+        throw new NotSerializableException();
     }
 
 }

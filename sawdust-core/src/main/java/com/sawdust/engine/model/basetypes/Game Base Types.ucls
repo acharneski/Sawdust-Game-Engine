@@ -64,7 +64,7 @@
   <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.games.wordHunt.WordHuntGame" 
     project="sawdust-game-library" 
     file="/sawdust-game-library/src/main/java/com/sawdust/games/wordHunt/WordHuntGame.java" binary="false">    
-    <position x="804" y="1641" width="-1" height="-1"/>    
+    <position x="794" y="1704" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
@@ -73,7 +73,7 @@
   <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.games.blackjack.BlackjackGame" 
     project="sawdust-game-library" 
     file="/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/BlackjackGame.java" binary="false">    
-    <position x="761" y="2287" width="-1" height="-1"/>    
+    <position x="720" y="2318" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
@@ -90,7 +90,7 @@
   </class>  
   <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.games.euchre.EuchreGame" project="sawdust-game-library" 
     file="/sawdust-game-library/src/main/java/com/sawdust/games/euchre/EuchreGame.java" binary="false">    
-    <position x="219" y="3067" width="-1" height="-1"/>    
+    <position x="227" y="2798" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
@@ -121,22 +121,16 @@
     </display>  
   </class>  
   <generalization>    
-    <source project="sawdust-game-library" name="com.sawdust.games.stop.StopGame" 
-      file="/sawdust-game-library/src/main/java/com/sawdust/games/stop/StopGame.java" binary="false"/>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.PersistantTokenGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/PersistantTokenGame.java" binary="false"/>    
     <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.TokenGame" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TokenGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="sawdust-game-library" name="com.sawdust.games.poker.PokerGame" 
-      file="/sawdust-game-library/src/main/java/com/sawdust/games/poker/PokerGame.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.MultiPlayerCardGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/MultiPlayerCardGame.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.MultiPlayerCardGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/MultiPlayerCardGame.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.IndexCardGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/IndexCardGame.java" binary="false"/>  
+    <source project="sawdust-game-library" name="com.sawdust.games.stop.StopGame" 
+      file="/sawdust-game-library/src/main/java/com/sawdust/games/stop/StopGame.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.TokenGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TokenGame.java" binary="false"/>  
   </generalization>  
   <association>    
     <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.BaseGame" 
@@ -150,21 +144,9 @@
       navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.TokenGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TokenGame.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.BaseGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java" binary="false"/>  
-  </generalization>  
   <realization>    
     <source project="sawdust-gae" name="com.sawdust.test.appengine.DummyGame" 
       file="/sawdust-gae/src/test/java/com/sawdust/test/appengine/DummyGame.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.GameState" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java" binary="false"/>  
-  </realization>  
-  <realization>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.BaseGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java" binary="false"/>    
     <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.GameState" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java" binary="false"/>  
   </realization>  
@@ -181,22 +163,28 @@
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/PersistantTokenGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.MultiPlayerCardGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/MultiPlayerCardGame.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.IndexCardGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/IndexCardGame.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
     <source project="sawdust-game-library" name="com.sawdust.games.wordHunt.WordHuntGame" 
       file="/sawdust-game-library/src/main/java/com/sawdust/games/wordHunt/WordHuntGame.java" binary="false"/>    
     <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.PersistantTokenGame" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/PersistantTokenGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="sawdust-game-library" name="com.sawdust.games.euchre.EuchreGame" 
-      file="/sawdust-game-library/src/main/java/com/sawdust/games/euchre/EuchreGame.java" binary="false"/>    
+    <source project="sawdust-game-library" name="com.sawdust.games.poker.PokerGame" 
+      file="/sawdust-game-library/src/main/java/com/sawdust/games/poker/PokerGame.java" binary="false"/>    
     <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.MultiPlayerCardGame" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/MultiPlayerCardGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.PersistantTokenGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/PersistantTokenGame.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.TokenGame" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TokenGame.java" binary="false"/>  
+    <source project="sawdust-game-library" name="com.sawdust.games.go.GoGame" 
+      file="/sawdust-game-library/src/main/java/com/sawdust/games/go/GoGame.java" binary="false"/>    
+    <target project="sawdust-game-library" name="com.sawdust.games.stop.StopGame" 
+      file="/sawdust-game-library/src/main/java/com/sawdust/games/stop/StopGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
     <source project="sawdust-game-library" name="com.sawdust.games.blackjack.BlackjackGame" 
@@ -205,10 +193,22 @@
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/IndexCardGame.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="sawdust-game-library" name="com.sawdust.games.go.GoGame" 
-      file="/sawdust-game-library/src/main/java/com/sawdust/games/go/GoGame.java" binary="false"/>    
-    <target project="sawdust-game-library" name="com.sawdust.games.stop.StopGame" 
-      file="/sawdust-game-library/src/main/java/com/sawdust/games/stop/StopGame.java" binary="false"/>  
+    <source project="sawdust-game-library" name="com.sawdust.games.euchre.EuchreGame" 
+      file="/sawdust-game-library/src/main/java/com/sawdust/games/euchre/EuchreGame.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.MultiPlayerCardGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/MultiPlayerCardGame.java" binary="false"/>  
+  </generalization>  
+  <realization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.BaseGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.GameState" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java" binary="false"/>  
+  </realization>  
+  <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.basetypes.TokenGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TokenGame.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.basetypes.BaseGame" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java" binary="false"/>  
   </generalization>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="true" package="false" protected="false" private="false"/>    

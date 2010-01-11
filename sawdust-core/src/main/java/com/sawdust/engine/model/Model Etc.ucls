@@ -1,0 +1,276 @@
+<class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.TutorialPhase" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/TutorialPhase.java" binary="false">    
+    <position x="41" y="37" width="462" height="132"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.SessionFactory" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/SessionFactory.java" binary="false">    
+    <position x="1129" y="37" width="155" height="68"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.Pair" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/Pair.java" binary="false">    
+    <position x="968" y="37" width="121" height="100"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.LoadedDeck" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/LoadedDeck.java" binary="false">    
+    <position x="705" y="37" width="223" height="132"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.GameType" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/GameType.java" binary="false">    
+    <position x="2258" y="37" width="293" height="260"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.GameModification" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/GameModification.java" binary="false">    
+    <position x="1546" y="37" width="147" height="68"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.ComparableList" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/ComparableList.java" binary="false">    
+    <position x="2052" y="37" width="166" height="84"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.Bank" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/Bank.java" binary="false">    
+    <position x="1324" y="37" width="182" height="84"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.AgentFactory" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/AgentFactory.java" binary="false">    
+    <position x="543" y="37" width="122" height="84"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.Token" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/Token.java" binary="false">    
+    <position x="2149" y="561" width="325" height="580"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.IndexPosition" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexPosition.java" 
+    binary="false">    
+    <position x="1898" y="1181" width="211" height="292"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.IndexCard" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexCard.java" binary="false">    
+    <position x="2149" y="1181" width="290" height="180"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.GameLabel" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/GameLabel.java" binary="false">    
+    <position x="1879" y="561" width="230" height="276"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.GameCommand" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/GameCommand.java" binary="false">    
+    <position x="1733" y="37" width="279" height="116"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.state.CommandResult" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/CommandResult.java" 
+    binary="false">    
+    <position x="2591" y="37" width="145" height="84"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.PlayerManager" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" 
+    binary="false">    
+    <position x="2514" y="561" width="241" height="404"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.Player" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Player.java" binary="false">    
+    <position x="2514" y="1513" width="177" height="164"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.Participant" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" 
+    binary="false">    
+    <position x="2514" y="1181" width="154" height="148"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.MultiPlayer" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" 
+    binary="false">    
+    <position x="2776" y="37" width="322" height="484"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.IMultiPlayer" 
+    project="sawdust-core" file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/IMultiPlayer.java" 
+    binary="false">    
+    <position x="2816" y="561" width="291" height="180"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.players.Agent" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Agent.java" binary="false">    
+    <position x="2776" y="1513" width="238" height="100"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.MultiPlayer" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" binary="false" 
+      navigable="false">      
+      <attribute name="_playerManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.Agent" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Agent.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.state.Token" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/Token.java" binary="false" navigable="false">      
+      <attribute name="_position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.state.IndexPosition" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexPosition.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2785" y="561"/>    
+    <bendpoint x="2785" y="1181"/>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.MultiPlayer" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" binary="false" 
+      navigable="false">      
+      <attribute name="_timeoutAgent"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Agent" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Agent.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.state.GameLabel" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/GameLabel.java" binary="false" navigable="false">      
+      <attribute name="_position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.state.IndexPosition" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexPosition.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.MultiPlayer" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.IMultiPlayer" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/IMultiPlayer.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.state.Token" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/Token.java" binary="false" navigable="false">      
+      <attribute name="_owner"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.state.IndexCard" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexCard.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.state.Token" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/Token.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
+      navigable="false">      
+      <attribute name="_members"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.Player" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Player.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
