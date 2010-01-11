@@ -22,7 +22,7 @@ public abstract class IndexCardGame extends PersistantTokenGame
     @Deprecated
     public IndexCard doDealNewCard(final IndexPosition indexPosition)
     {
-        final IndexCard newCard = new IndexCard(++cardIdCounter, null, "VR", false, indexPosition, getDeck().dealNewCard());
+        final IndexCard newCard = new IndexCard(++cardIdCounter, null, "VR", false, indexPosition, getDeck().doDealNewCard().second);
         doAddToken(newCard);
         return newCard;
     }

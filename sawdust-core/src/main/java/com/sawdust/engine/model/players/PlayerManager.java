@@ -23,38 +23,20 @@ public class PlayerManager implements Serializable
         _maxSize = count;
     }
 
-    public void addMember(final Participant email) throws GameException
+    public PlayerManager doAddMember(final Participant email) throws GameException
     {
         if (isFull()) throw new GameLogicException("This game is full");
         _members.add(email);
+        return this;
     }
 
-    public void dropMember(final Participant email) throws GameException
+    public PlayerManager doDropMember(final Participant email) throws GameException
     {
         if (_members.contains(email))
         {
             _members.remove(email);
         }
-    }
-
-    public int findPlayer(final Participant owner) throws GameException
-    {
-        for (int i = 0; i < _members.size(); i++)
-        {
-            final Participant player = _members.get(i);
-            if (player.equals(owner)) return i;
-        }
-        return -1;
-    }
-
-    public Participant findPlayer(final String playerID)
-    {
-        for (int i = 0; i < _members.size(); i++)
-        {
-            final Participant player = _members.get(i);
-            if (player.getId().equals(playerID)) return player;
-        }
-        return null;
+        return this;
     }
 
     public Participant getCurrentPlayer()
@@ -68,6 +50,11 @@ public class PlayerManager implements Serializable
         return _currentPlayerIndex;
     }
 
+    public int getMemberCount()
+    {
+        return _members.size();
+    }
+
     public Participant getNextPlayer()
     {
         return _members.get((_currentPlayerIndex + 1) % _maxSize);
@@ -78,9 +65,39 @@ public class PlayerManager implements Serializable
         return _members.size();
     }
 
+    public Participant getPlayerFromIndex(final String playerID)
+    {
+        for (int i = 0; i < _members.size(); i++)
+        {
+            final Participant player = _members.get(i);
+            if (player.getId().equals(playerID)) return player;
+        }
+        return null;
+    }
+
+    public int getPlayerIndex(final Participant owner) throws GameException
+    {
+        for (int i = 0; i < _members.size(); i++)
+        {
+            final Participant player = _members.get(i);
+            if (player.equals(owner)) return i;
+        }
+        return -1;
+    }
+
+    public Participant getPlayerName(final int player)
+    {
+        return _members.get(player);
+    }
+
     public ArrayList<Participant> getPlayers()
     {
         return _members;
+    }
+
+    public void getResetCurrentPlayer()
+    {
+        _currentPlayerIndex = 0;
     }
 
     public Participant gotoNextPlayer()
@@ -108,29 +125,16 @@ public class PlayerManager implements Serializable
         return false;
     }
 
-    public int memberCount()
-    {
-        return _members.size();
-    }
-
-    public Participant playerName(final int player)
-    {
-        return _members.get(player);
-    }
-
-    public void resetCurrentPlayer()
-    {
-        _currentPlayerIndex = 0;
-    }
-
     @Deprecated
-    public void setCurrentPlayer(final int playerIndex)
+    public PlayerManager setCurrentPlayer(final int playerIndex)
     {
         _currentPlayerIndex = playerIndex;
+        return this;
     }
 
-    public void setCurrentPlayer(final Participant player) throws GameException
+    public PlayerManager setCurrentPlayer(final Participant player) throws GameException
     {
-        _currentPlayerIndex = this.findPlayer(player);
+        _currentPlayerIndex = this.getPlayerIndex(player);
+        return this;
     }
 }

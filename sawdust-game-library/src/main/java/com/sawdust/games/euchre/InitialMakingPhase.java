@@ -98,7 +98,7 @@ final class InitialMakingPhase extends GamePhase
         game.doAddMessage(MessageType.Compact, "Passed.");
         game.doAddMessage("");
         game.doAddMessage(MessageType.Compact, "It is now %s's turn: ", game.getDisplayName(nextPlayer));
-        if ((0 == game.getPlayerManager().findPlayer(currentPlayer)) && EuchreGame.INITIAL_MAKING.equals(game.getCurrentPhase()))
+        if ((0 == game.getPlayerManager().getPlayerIndex(currentPlayer)) && EuchreGame.INITIAL_MAKING.equals(game.getCurrentPhase()))
         {
             game.doAddMessage("Any suit can now be named trump");
             game.setCurrentPhase(EuchreGame.OPEN_MAKING);

@@ -52,7 +52,7 @@ public class EuchreGameType extends com.sawdust.engine.model.GameType<EuchreGame
     }
 
     @Override
-    public BaseGame createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public BaseGame getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new EuchreGame(c)
         {

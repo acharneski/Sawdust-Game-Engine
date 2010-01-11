@@ -20,7 +20,7 @@ public class Games
     {
         final String id = session.getStringId();
         SessionFactory sessionFactory = new MySessionFactory(id);
-        GameState newGame = gameToCreate.createNewGame(config, sessionFactory);
+        GameState newGame = gameToCreate.getNewGame(config, sessionFactory);
         if (WordHuntGameType.INSTANCE.equals(gameToCreate))
         {
             ((WordHuntGame)newGame).setHttpInterface(new SDWebCacheWrapper());

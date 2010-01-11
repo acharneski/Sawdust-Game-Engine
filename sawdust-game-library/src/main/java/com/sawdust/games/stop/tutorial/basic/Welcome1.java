@@ -16,7 +16,7 @@ public class Welcome1 extends Phases
    public static final Welcome1 INSTANCE = new Welcome1();
    
    @Override
-   public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<StopGame> doOnPostCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       if (m.getCommandText().startsWith("Move"))
       {
@@ -29,7 +29,7 @@ public class Welcome1 extends Phases
    }
    
    @Override
-   public GameFrame filterDisplay(GameFrame gwt)
+   public GameFrame getFilteredDisplay(GameFrame gwt)
    {
       Notification notification = new Notification();
       notification.notifyText = "Welcome to Go! To start, please drag your white 'stone' on the right and place it on the board.";

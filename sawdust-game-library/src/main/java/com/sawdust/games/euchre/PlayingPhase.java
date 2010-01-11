@@ -80,7 +80,7 @@ final class PlayingPhase extends GamePhase
             {
                 game.doAddMessage("<strong>Team %s wins the game!</strong>", affectedTeam+1);
                 game.doPayToTeam(affectedTeam+1);
-                game.getPlayerManager().resetCurrentPlayer();
+                game.getPlayerManager().getResetCurrentPlayer();
                 game.setCurrentPhase(EuchreGame.COMPLETE);
                 game.doAddMessage("Enter 'Deal' or 'Quit'.");
                 
@@ -90,7 +90,7 @@ final class PlayingPhase extends GamePhase
                     {
                         String type = "Win/Euchre";
                         String event = String.format("I won a game of Euchre!");
-                        ((Player)p).logActivity(new ActivityEvent(type,event));
+                        ((Player)p).doLogActivity(new ActivityEvent(type,event));
                     }
                     
                 }

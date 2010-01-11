@@ -3,7 +3,6 @@ package com.sawdust.engine.model.state;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -13,27 +12,10 @@ import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.basetypes.TokenGame;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
-import com.sawdust.engine.view.cards.Card;
 import com.sawdust.engine.view.geometry.Position;
 
 public class Token implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger(Token.class.getName());
-
-    private final HashMap<IndexPosition, String> _moveCommands = new HashMap<IndexPosition, String>();
-    
-    protected String _art = "";
-    protected int _id = 0;
-    protected boolean _movable = false;
-    protected Participant _owner = null;
-    private IndexPosition _position = null;
-
-    public String _text = "";
-    public String imageLibraryId = null;
-    public String baseImageId = null;
-    public String toggleImageId = null;
-    public String toggleCommand = null;
-
     protected static class SerialForm implements Serializable
     {
         HashMap<IndexPosition, String> _moveCommands;
@@ -69,15 +51,36 @@ public class Token implements Serializable
             return new Token(this);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(Token.class.getName());
     
-    private Object writeReplace()
+    final HashMap<IndexPosition, String> _moveCommands = new HashMap<IndexPosition, String>();
+    
+    String _art = "";
+    int _id = 0;
+    boolean _movable = false;
+    Participant _owner = null;
+    IndexPosition _position = null;
+    public String _text = "";
+    public String imageLibraryId = null;
+    public String baseImageId = null;
+    public String toggleImageId = null;
+    public String toggleCommand = null;
+    
+    public Token()
     {
-        return new SerialForm(this);
+        super();
     }
     
-    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
+    public Token(final int id, final String libararyId, final String art, final Participant player, final String publicArt, final boolean movable, final IndexPosition position)
     {
-        throw new NotSerializableException();
+       imageLibraryId = libararyId;
+        _position = position;
+        _id = id;
+        _art = art;
+        _owner = player;
+        baseImageId = publicArt;
+        _movable = movable;
     }
 
     public Token(SerialForm obj)
@@ -93,22 +96,6 @@ public class Token implements Serializable
         baseImageId = obj.baseImageId;
         toggleImageId = obj.toggleImageId;
         toggleCommand = obj.toggleCommand;
-    }
-
-    public Token()
-    {
-        super();
-    }
-
-    public Token(final int id, final String libararyId, final String art, final Participant player, final String publicArt, final boolean movable, final IndexPosition position)
-    {
-       imageLibraryId = libararyId;
-        _position = position;
-        _id = id;
-        _art = art;
-        _owner = player;
-        baseImageId = publicArt;
-        _movable = movable;
     }
 
     @Override
@@ -151,17 +138,11 @@ public class Token implements Serializable
         return true;
     }
 
-    /**
-     * @return the _art
-     */
     public String getArt()
     {
         return _art;
     }
 
-    /**
-     * @return the _id
-     */
     public int getId()
     {
         return _id;
@@ -172,9 +153,6 @@ public class Token implements Serializable
         return _moveCommands;
     }
 
-    /**
-     * @return the _owner
-     */
     public Participant getOwner()
     {
         return _owner;
@@ -183,6 +161,11 @@ public class Token implements Serializable
     public IndexPosition getPosition()
     {
         return _position;
+    }
+
+    public String getText()
+    {
+        return _text;
     }
 
     @Override
@@ -200,20 +183,19 @@ public class Token implements Serializable
         return result;
     }
 
-    /**
-     * @return the _movable
-     */
     public boolean isMovable()
     {
         return _movable;
     }
 
-    /**
-     * @return the _isPublic
-     */
     public boolean isPublic()
     {
         return (null == baseImageId);
+    }
+
+    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
+    {
+        throw new NotSerializableException();
     }
 
     public void setArt(final String art)
@@ -222,20 +204,11 @@ public class Token implements Serializable
 
     }
 
-    /**
-     * @param _movable
-     *            the _movable to set
-     */
     public void setMovable(final boolean movable)
     {
         _movable = movable;
     }
 
-    /**
-     * @param _owner
-     *            the _owner to set
-     * @return 
-     */
     public Token setOwner(final Participant playerEmail)
     {
         _owner = playerEmail;
@@ -256,6 +229,11 @@ public class Token implements Serializable
     public void setPublic()
     {
         baseImageId = null;
+    }
+
+    public void setText(String _text)
+    {
+        this._text = _text;
     }
 
     public com.sawdust.engine.view.game.Token toGwt(final Player access, final TokenGame parametricTokenGame) throws GameException
@@ -303,14 +281,9 @@ public class Token implements Serializable
         return returnValue;
     }
 
-    public void setText(String _text)
+    private Object writeReplace()
     {
-        this._text = _text;
-    }
-
-    public String getText()
-    {
-        return _text;
+        return new SerialForm(this);
     }
 
 }

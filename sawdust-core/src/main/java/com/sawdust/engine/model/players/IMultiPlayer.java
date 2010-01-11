@@ -10,15 +10,15 @@ public interface IMultiPlayer
 
     IMultiPlayer doForceMove(BaseGame game, Participant participant) throws GameException, com.sawdust.engine.view.GameException;
 
+    IMultiPlayer doRemoveMember(GameState game, Participant email) throws GameException;
+
     Agent<BaseGame> getAgent(String playerID);
 
     PlayerManager getPlayerManager();
 
     Agent<BaseGame> getTimeoutAgent();
 
-    IMultiPlayer doRemoveMember(GameState game, Participant email) throws GameException;
+    IMultiPlayer setPlayerManager(PlayerManager playerManager);
 
-    void setPlayerManager(PlayerManager playerManager);
-
-    void setTimeoutAgent(Agent<?> timeoutAgent);
+    IMultiPlayer setTimeoutAgent(Agent<?> timeoutAgent);
 }

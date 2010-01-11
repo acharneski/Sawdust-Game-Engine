@@ -17,31 +17,31 @@ public class Phases implements TutorialPhase<StopGame>
    }
    
    @Override
-   public boolean allowCommand(TutorialGameBase<StopGame> game, GameCommand m)
+   public boolean getAllowCommand(TutorialGameBase<StopGame> game, GameCommand m)
    {
       return true;
    }
    
    @Override
-   public GameFrame filterDisplay(GameFrame gwt)
+   public GameFrame getFilteredDisplay(GameFrame gwt)
    {
       return gwt;
    }
    
    @Override
-   public TutorialPhase<StopGame> preCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<StopGame> doOnPreCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       return this;
    }
    
    @Override
-   public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<StopGame> doOnPostCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       return null;
    }
    
    @Override
-   public void onStartPhase(TutorialGameBase<StopGame> game) throws GameException
+   public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException
    {
    }
 }

@@ -67,7 +67,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     {
         if (agent instanceof Player)
         {
-            _displayFilter.put(agent, ((Player) agent).loadAccount().getName());
+            _displayFilter.put(agent, ((Player) agent).getAccount().getName());
         }
         else
         {
@@ -81,7 +81,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     @Override @Deprecated
     public IndexCard doDealNewCard(final IndexPosition indexPosition)
     {
-        final Card dealNewCard = getDeck().dealNewCard();
+        final Card dealNewCard = getDeck().doDealNewCard().second;
         if (null == dealNewCard) return null;
         final IndexCard newCard = new IndexCard(++cardIdCounter, null, "VR", false, indexPosition, dealNewCard);
         doAddToken(newCard);
@@ -119,7 +119,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     @Override
     public MultiPlayerCardGame doUpdate() throws GameException
     {
-        _mplayerManager.update(this);
+        _mplayerManager.doUpdate(this);
         return this;
     }
 

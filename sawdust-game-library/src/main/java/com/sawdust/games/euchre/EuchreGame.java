@@ -129,7 +129,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
             final int teamNumber2 = getTeamNumber(member);
             if (teamNumber2 == teamNumber)
             {
-                session.withdraw(award, member.loadAccount(), "Pay to Winning Team");
+                session.doWithdraw(award, member.getAccount(), "Pay to Winning Team");
             }
         }
         return this;
@@ -152,7 +152,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         {
             if (p instanceof Agent<?>)
             {
-                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
+                session.doWithdraw(-session.getUnitWager(), null, "Agent Ante Up");
             }
         }
         final int numPlayers = EuchreGame.NUMBER_OF_PLAYERS;
@@ -347,7 +347,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         for (int playerIndex = 0; playerIndex < getPlayerManager().getPlayerCount(); playerIndex++)
         {
-            final Participant player = getPlayerManager().playerName(playerIndex);
+            final Participant player = getPlayerManager().getPlayerName(playerIndex);
             returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(EuchreLayout.POS_PLAYER_LABEL, playerIndex), getDisplayName(player)));
 
             try
@@ -451,7 +451,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
 
     public int getTeamNumber(final Participant winningPlayer) throws GameException
     {
-        return 1 + (getPlayerManager().findPlayer(winningPlayer) % 2);
+        return 1 + (getPlayerManager().getPlayerIndex(winningPlayer) % 2);
     }
 
     public TeamStatus getTeamStatus(int n)

@@ -15,7 +15,7 @@ public class MockSessionMember implements SessionMember
 
     public Account getAccount()
     {
-        return _account.loadAccount();
+        return _account.getAccount();
     }
 
     public Player getPlayer()

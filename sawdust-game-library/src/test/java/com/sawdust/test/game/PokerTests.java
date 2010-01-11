@@ -52,13 +52,13 @@ public class PokerTests extends TestCase
         Player player1 = new Player(accessF1.getUserId(), false)
         {
             @Override
-            public Account loadAccount()
+            public Account getAccount()
             {
                 return accessF1.doLoadAccount();
             }
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -69,13 +69,13 @@ public class PokerTests extends TestCase
         player2 = new Player(access2.getUserId(), false)
         {
             @Override
-            public Account loadAccount()
+            public Account getAccount()
             {
                 return accessF2.doLoadAccount();
             }
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -99,18 +99,18 @@ public class PokerTests extends TestCase
         // deck.add(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.Ace, Suits.Hearts); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.Ace, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -139,8 +139,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -162,21 +162,21 @@ public class PokerTests extends TestCase
         Date now = new Date(0);
         LoadedDeck deck = new LoadedDeck();
 
-        deck.addCard(Ranks.Three, Suits.Hearts);
+        deck.doAddCard(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 0
-        deck.addCard(Ranks.Nine, Suits.Spades); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 0
+        deck.doAddCard(Ranks.Nine, Suits.Spades); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Six, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Six, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -202,8 +202,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -229,18 +229,18 @@ public class PokerTests extends TestCase
         // deck.add(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.Queen, Suits.Diamonds); // 0
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.Queen, Suits.Diamonds); // 0
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -266,8 +266,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -293,18 +293,18 @@ public class PokerTests extends TestCase
         // deck.add(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.Ace, Suits.Hearts); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.Ace, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -334,13 +334,13 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player1, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Queen, Suits.Clubs);
-        deck.addCard(Ranks.King, Suits.Diamonds);
+        deck.doAddCard(Ranks.Queen, Suits.Clubs);
+        deck.doAddCard(Ranks.King, Suits.Diamonds);
         Util.testGuiCommand(session, player1, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -362,18 +362,18 @@ public class PokerTests extends TestCase
         // deck.add(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.Ace, Suits.Hearts); // 1
-        deck.addCard(Ranks.Jack, Suits.Hearts); // 2
-        deck.addCard(Ranks.Ten, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.Ace, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Jack, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Ten, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -399,8 +399,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -425,18 +425,18 @@ public class PokerTests extends TestCase
         // deck.add(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.Ace, Suits.Hearts); // 1
-        deck.addCard(Ranks.Jack, Suits.Hearts); // 2
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.Ace, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Jack, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -462,8 +462,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -485,21 +485,21 @@ public class PokerTests extends TestCase
         Date now = new Date(0);
         LoadedDeck deck = new LoadedDeck();
 
-        deck.addCard(Ranks.Three, Suits.Hearts);
+        deck.doAddCard(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.Nine, Suits.Spades); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.Nine, Suits.Spades); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -525,8 +525,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 
@@ -548,21 +548,21 @@ public class PokerTests extends TestCase
         Date now = new Date(0);
         LoadedDeck deck = new LoadedDeck();
 
-        deck.addCard(Ranks.Three, Suits.Hearts);
+        deck.doAddCard(Ranks.Three, Suits.Hearts);
 
         // Player 1 Cards
-        deck.addCard(Ranks.King, Suits.Hearts); // 0
-        deck.addCard(Ranks.King, Suits.Hearts); // 1
-        deck.addCard(Ranks.Nine, Suits.Hearts); // 2
-        deck.addCard(Ranks.Nine, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Queen, Suits.Hearts); // 4
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 0
+        deck.doAddCard(Ranks.King, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Nine, Suits.Hearts); // 2
+        deck.doAddCard(Ranks.Nine, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Queen, Suits.Hearts); // 4
 
         // Player 2 Cards
-        deck.addCard(Ranks.Five, Suits.Spades); // 0
-        deck.addCard(Ranks.Ten, Suits.Hearts); // 1
-        deck.addCard(Ranks.Eight, Suits.Clubs); // 2
-        deck.addCard(Ranks.Seven, Suits.Diamonds); // 3
-        deck.addCard(Ranks.Nine, Suits.Clubs); // 4
+        deck.doAddCard(Ranks.Five, Suits.Spades); // 0
+        deck.doAddCard(Ranks.Ten, Suits.Hearts); // 1
+        deck.doAddCard(Ranks.Eight, Suits.Clubs); // 2
+        deck.doAddCard(Ranks.Seven, Suits.Diamonds); // 3
+        deck.doAddCard(Ranks.Nine, Suits.Clubs); // 4
 
         Player player1 = Init(deck);
 
@@ -588,8 +588,8 @@ public class PokerTests extends TestCase
         Util.testGuiCommand(session, player2, "Discard 2");
         now = Util.printNewMessages(game, now);
 
-        deck.addCard(Ranks.Seven, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Clubs);
+        deck.doAddCard(Ranks.Seven, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Clubs);
         Util.runCommand(session, player2, "Draw Cards");
         now = Util.printNewMessages(game, now);
 

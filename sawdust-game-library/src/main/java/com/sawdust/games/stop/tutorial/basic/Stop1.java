@@ -42,10 +42,10 @@ public class Stop1 extends Phases
     };
 
     @Override
-    public void onStartPhase(TutorialGameBase<StopGame> game) throws GameException
+    public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException
     {
         LOG.fine("onStartPhase");
-        super.onStartPhase(game);
+        super.doOnStartPhase(game);
         game.setAgent(_agent);
         game.getInnerGame().doResetBoard();
         game.getInnerGame().getPlayerManager().setCurrentPlayer(1);
@@ -70,7 +70,7 @@ public class Stop1 extends Phases
     }
 
     @Override
-    public TutorialPhase<StopGame> preCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<StopGame> doOnPreCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         if (m.getCommandText().startsWith("Move"))
         {
@@ -85,12 +85,12 @@ public class Stop1 extends Phases
     }
 
     @Override
-    public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<StopGame> doOnPostCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         if (game.getInnerGame().getCurrentPhase() == GamePhase.Playing)
         {
             LOG.fine("Post-command: Still in GoBang1 phase");
-            return super.postCommand(game, m, p);
+            return super.doOnPostCommand(game, m, p);
         }
         else
         {
@@ -101,7 +101,7 @@ public class Stop1 extends Phases
     }
 
     @Override
-    public GameFrame filterDisplay(GameFrame gwt)
+    public GameFrame getFilteredDisplay(GameFrame gwt)
     {
         Notification notification = new Notification();
         notification.notifyText = "The game of Go! differs from the game of Go in a few ways. "

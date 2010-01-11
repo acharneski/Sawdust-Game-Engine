@@ -14,7 +14,7 @@ public class Stop101_GameType extends StopGameType
     public static final Stop101_GameType INSTANCE = new Stop101_GameType();
 
     @Override
-    public TutorialGameBase<StopGame> createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public TutorialGameBase<StopGame> getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new TutorialGame(c, sessionFactory);
     }

@@ -20,15 +20,15 @@ public final class AccountPlayer extends Player
     }
 
     @Override
-    public com.sawdust.engine.controller.entities.Account loadAccount()
+    public com.sawdust.engine.controller.entities.Account getAccount()
     {
         return Account.Load(getUserId());
     }
 
     @Override
-    public void logActivity(ActivityEvent event)
+    public void doLogActivity(ActivityEvent event)
     {
         LOG.info(String.format("Event: %s: %s",getUserId(),event.toString()));
-        ((Account) loadAccount()).logActivity(event);
+        ((Account) getAccount()).logActivity(event);
     }
 }

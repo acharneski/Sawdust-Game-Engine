@@ -51,7 +51,7 @@ public class StopGameType extends com.sawdust.engine.model.GameType<StopGame>
     }
 
     @Override
-    public GameState createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public GameState getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new StopGame(c)
         {

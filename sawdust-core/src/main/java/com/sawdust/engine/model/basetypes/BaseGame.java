@@ -258,7 +258,7 @@ public abstract class BaseGame implements GameState
 
     boolean getIsVisible(final Message s, final Player access)
     {
-        if (s.getTo().equals(Message.ADMIN)) return (access.loadAccount().isAdmin());
+        if (s.getTo().equals(Message.ADMIN)) return (access.getAccount().isAdmin());
         if (s.getTo().equals(Message.ALL)) return true;
         if (s.getTo().equals(access.getUserId())) return true;
         return false;
@@ -329,7 +329,7 @@ public abstract class BaseGame implements GameState
 
         for (final GameCommand s : getMoves(access))
         {
-            returnValue.getCommands().add(s.toGwt());
+            returnValue.getCommands().add(s.getView());
         }
         if (null != _newMessages)
         {

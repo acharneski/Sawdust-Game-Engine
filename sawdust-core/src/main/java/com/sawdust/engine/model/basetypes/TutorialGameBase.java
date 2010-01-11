@@ -186,16 +186,16 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       {
          for (final GameCommand m : moves)
          {
-            if (phase.allowCommand(TutorialGameBase.this, m))
+            if (phase.getAllowCommand(TutorialGameBase.this, m))
             {
                returnValue.add(new GameCommand<TutorialGameBase<S>>()
                {
                   @Override
                   public CommandResult doCommand(Participant p, String commandText) throws GameException
                   {
-                     setPhase(phase.preCommand(TutorialGameBase.this, m, p));
+                     setPhase(phase.doOnPreCommand(TutorialGameBase.this, m, p));
                      CommandResult cmdResult = m.doCommand(p, commandText);
-                     setPhase(phase.postCommand(TutorialGameBase.this, m, p));
+                     setPhase(phase.doOnPostCommand(TutorialGameBase.this, m, p));
                      TutorialGameBase.this.doSaveState();
                      return cmdResult;
                   }
@@ -250,7 +250,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    {
       GameFrame gwt = _innerGame.getView(access);
       TutorialPhase<S> phase = getPhase();
-      if(null != phase) gwt = phase.filterDisplay(gwt);
+      if(null != phase) gwt = phase.getFilteredDisplay(gwt);
       return gwt;
    }
 
@@ -295,7 +295,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       if (null != phase && _phase != phase)
       {
          this._phase = phase;
-         this._phase.onStartPhase(TutorialGameBase.this);
+         this._phase.doOnStartPhase(TutorialGameBase.this);
       }
     return this;
    }

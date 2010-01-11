@@ -136,7 +136,7 @@ public class DataStorePerfTest extends TestCase
     
     private BlackjackGame getGame(com.sawdust.engine.controller.entities.GameSession session, AccessToken access, Account account) throws GameException
     {
-        GameConfig prototypeConfig = BlackjackGameType.INSTANCE.getPrototypeConfig(account);
+        GameConfig prototypeConfig = BlackjackGameType.INSTANCE.getBaseConfig(account);
         return (BlackjackGame) Games.NewGame(BlackjackGameType.INSTANCE, prototypeConfig, session, access);
     }
     
@@ -152,12 +152,12 @@ public class DataStorePerfTest extends TestCase
     {
         System.out.println("\ntestGameWin()\n");
         Date now = new Date(0);
-        _deck.addCard(Ranks.Ace, Suits.Clubs);
-        _deck.addCard(Ranks.Ace, Suits.Clubs);
-        _deck.addCard(Ranks.King, Suits.Clubs);
-        _deck.addCard(Ranks.Jack, Suits.Hearts);
-        _deck.addCard(Ranks.Five, Suits.Clubs);
-        _deck.addCard(Ranks.Four, Suits.Clubs);
+        _deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        _deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        _deck.doAddCard(Ranks.King, Suits.Clubs);
+        _deck.doAddCard(Ranks.Jack, Suits.Hearts);
+        _deck.doAddCard(Ranks.Five, Suits.Clubs);
+        _deck.doAddCard(Ranks.Four, Suits.Clubs);
         Util.assertEqual(_access1.doLoadAccount().getBalance(), 10);
         reset();
         

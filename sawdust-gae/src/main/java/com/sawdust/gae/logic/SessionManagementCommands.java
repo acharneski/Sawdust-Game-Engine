@@ -98,7 +98,7 @@ public enum SessionManagementCommands
       public void doCommand(final Player user, final com.sawdust.engine.controller.entities.GameSession gameSession, final String param)
             throws GameException
       {
-         final com.sawdust.engine.controller.entities.Account account = user.loadAccount();
+         final com.sawdust.engine.controller.entities.Account account = user.getAccount();
          account.doRemoveSession(gameSession);
          final SessionMember member = ((GameSession) gameSession).findMember(user);
          member.setMemberStatus(MemberStatus.Quit);

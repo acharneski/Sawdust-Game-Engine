@@ -31,7 +31,7 @@ public class Stupid1 extends Agent<StopGame>
     {
         if (game.getCurrentPhase() == GamePhase.Playing)
         {
-            final int findPlayer = game.getPlayerManager().findPlayer(player);
+            final int findPlayer = game.getPlayerManager().getPlayerIndex(player);
             final int otherPlayer = (0 == findPlayer) ? 1 : 0;
 
             final TokenArray tokenArray = game.getTokenArray();

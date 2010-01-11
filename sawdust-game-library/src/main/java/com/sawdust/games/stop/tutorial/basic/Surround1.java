@@ -44,9 +44,9 @@ public class Surround1 extends Phases
    };
 
    @Override
-   public void onStartPhase(TutorialGameBase<StopGame> game) throws GameException
+   public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException
    {
-      super.onStartPhase(game);
+      super.doOnStartPhase(game);
       game.setAgent(_agent );
       
       for (int i = 0; i < StopGame.NUM_ROWS; i++)
@@ -64,7 +64,7 @@ public class Surround1 extends Phases
    }
 
    @Override
-   public TutorialPhase<StopGame> preCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<StopGame> doOnPreCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       if (m.getCommandText().startsWith("Move"))
       {
@@ -77,19 +77,19 @@ public class Surround1 extends Phases
    }
    
    @Override
-   public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<StopGame> doOnPostCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       ArrayList<StopIsland> islands = game.getInnerGame().getTokenArray().getIslands();
       for(StopIsland i : islands)
       {
-         if(i.getPlayer() == 0) return super.postCommand(game, m, p); 
+         if(i.getPlayer() == 0) return super.doOnPostCommand(game, m, p); 
       }
       game.getInnerGame().doResetBoard();
       return Surround2.INSTANCE;
    }
 
    @Override
-   public GameFrame filterDisplay(GameFrame gwt)
+   public GameFrame getFilteredDisplay(GameFrame gwt)
    {
       Notification notification = new Notification();
       notification.notifyText = "When stones surround others of the opposite color, " + 

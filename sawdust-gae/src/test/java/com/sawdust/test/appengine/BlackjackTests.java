@@ -57,12 +57,12 @@ public class BlackjackTests extends TestCase
 
         Date now = new Date(0);
 
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.Jack, Suits.Hearts);
-        deck.addCard(Ranks.Five, Suits.Clubs);
-        deck.addCard(Ranks.Four, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Hearts);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Jack, Suits.Hearts);
+        deck.doAddCard(Ranks.Five, Suits.Clubs);
+        deck.doAddCard(Ranks.Four, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Hearts);
 
         Util.assertEqual(account.getBalance(), 10);
 
@@ -84,7 +84,7 @@ public class BlackjackTests extends TestCase
 
     private BlackjackGame getGame(com.sawdust.engine.controller.entities.GameSession session, AccessToken access, Account account) throws GameException
     {
-        GameConfig prototypeConfig = BlackjackGameType.INSTANCE.getPrototypeConfig(account);
+        GameConfig prototypeConfig = BlackjackGameType.INSTANCE.getBaseConfig(account);
         return (BlackjackGame) Games.NewGame(BlackjackGameType.INSTANCE, prototypeConfig, session, access);
     }
 
@@ -117,12 +117,12 @@ public class BlackjackTests extends TestCase
 
         Date now = new Date(0);
 
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.King, Suits.Clubs);
-        deck.addCard(Ranks.Jack, Suits.Hearts);
-        deck.addCard(Ranks.Five, Suits.Clubs);
-        deck.addCard(Ranks.Four, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.King, Suits.Clubs);
+        deck.doAddCard(Ranks.Jack, Suits.Hearts);
+        deck.doAddCard(Ranks.Five, Suits.Clubs);
+        deck.doAddCard(Ranks.Four, Suits.Clubs);
 
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 

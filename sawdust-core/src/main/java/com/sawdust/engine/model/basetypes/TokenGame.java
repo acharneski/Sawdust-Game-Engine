@@ -36,7 +36,7 @@ public abstract class TokenGame extends BaseGame {
     {
         if (agent instanceof Player)
         {
-            _displayFilter.put(agent, ((Player) agent).loadAccount().getName());
+            _displayFilter.put(agent, ((Player) agent).getAccount().getName());
         }
         else
         {
@@ -127,7 +127,7 @@ public abstract class TokenGame extends BaseGame {
 	    }
 	    for (final GameLabel s : getLabels(access))
 	    {
-	        returnValue.add(s.toGwt(access, this));
+	        returnValue.add(s.getAsGwt(access, this));
 	    }
 	    return returnValue;
 	}

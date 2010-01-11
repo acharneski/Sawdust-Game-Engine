@@ -52,7 +52,7 @@ public class GoGameType extends com.sawdust.engine.model.GameType<GoGame>
     }
 
     @Override
-    public GameState createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public GameState getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new GoGame(c)
         {

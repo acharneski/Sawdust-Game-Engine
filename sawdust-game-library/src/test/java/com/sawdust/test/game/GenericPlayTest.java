@@ -119,13 +119,13 @@ public abstract class GenericPlayTest extends TestCase
         Player player1 = new Player(access1.getUserId(), false)
         {
             @Override
-            public Account loadAccount()
+            public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 

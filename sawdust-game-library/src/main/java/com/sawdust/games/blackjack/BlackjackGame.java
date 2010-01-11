@@ -231,7 +231,7 @@ public abstract class BlackjackGame extends IndexCardGame
         if (null != _owner)
         {
             getSession().doUnitWager();
-            getSession().withdraw(-getSession().getBalance(), null, "House contribution");
+            getSession().doWithdraw(-getSession().getBalance(), null, "House contribution");
         }
         this.doAddMessage(MessageType.Compact, "New Deal: ");
         playerHandStatus.clear();

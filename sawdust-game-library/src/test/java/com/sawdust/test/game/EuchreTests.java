@@ -43,27 +43,27 @@ public class EuchreTests extends TestCase
 		MockGameSession session = (MockGameSession) game.getSession();
 		LoadedDeck deck = new LoadedDeck();
 		
-		deck.addCard(Ranks.King, Suits.Clubs);
-		deck.addCard(Ranks.Six, Suits.Diamonds);
-		deck.addCard(Ranks.Four, Suits.Clubs);
-		deck.addCard(Ranks.Eight, Suits.Diamonds);
-		deck.addCard(Ranks.Two, Suits.Clubs);
-		deck.addCard(Ranks.Seven, Suits.Clubs);
-		deck.addCard(Ranks.Nine, Suits.Clubs);
-		deck.addCard(Ranks.Six, Suits.Spades);
-		deck.addCard(Ranks.Six, Suits.Hearts);
-		deck.addCard(Ranks.Five, Suits.Spades);
-		deck.addCard(Ranks.Two, Suits.Diamonds);
-		deck.addCard(Ranks.Ace, Suits.Spades);
-		deck.addCard(Ranks.Five, Suits.Diamonds);
-		deck.addCard(Ranks.Queen, Suits.Diamonds);
-		deck.addCard(Ranks.Jack, Suits.Hearts);
-		deck.addCard(Ranks.Jack, Suits.Diamonds);
-		deck.addCard(Ranks.Nine, Suits.Spades);
-		deck.addCard(Ranks.King, Suits.Spades);
-		deck.addCard(Ranks.Queen, Suits.Spades);
-		deck.addCard(Ranks.Ten, Suits.Clubs);
-		deck.addCard(Ranks.Ace, Suits.Hearts);
+		deck.doAddCard(Ranks.King, Suits.Clubs);
+		deck.doAddCard(Ranks.Six, Suits.Diamonds);
+		deck.doAddCard(Ranks.Four, Suits.Clubs);
+		deck.doAddCard(Ranks.Eight, Suits.Diamonds);
+		deck.doAddCard(Ranks.Two, Suits.Clubs);
+		deck.doAddCard(Ranks.Seven, Suits.Clubs);
+		deck.doAddCard(Ranks.Nine, Suits.Clubs);
+		deck.doAddCard(Ranks.Six, Suits.Spades);
+		deck.doAddCard(Ranks.Six, Suits.Hearts);
+		deck.doAddCard(Ranks.Five, Suits.Spades);
+		deck.doAddCard(Ranks.Two, Suits.Diamonds);
+		deck.doAddCard(Ranks.Ace, Suits.Spades);
+		deck.doAddCard(Ranks.Five, Suits.Diamonds);
+		deck.doAddCard(Ranks.Queen, Suits.Diamonds);
+		deck.doAddCard(Ranks.Jack, Suits.Hearts);
+		deck.doAddCard(Ranks.Jack, Suits.Diamonds);
+		deck.doAddCard(Ranks.Nine, Suits.Spades);
+		deck.doAddCard(Ranks.King, Suits.Spades);
+		deck.doAddCard(Ranks.Queen, Suits.Spades);
+		deck.doAddCard(Ranks.Ten, Suits.Clubs);
+		deck.doAddCard(Ranks.Ace, Suits.Hearts);
 		
 		game.setDeck(deck);
 		final MockSessionToken access1 = new MockSessionToken("test1",session);
@@ -72,13 +72,13 @@ public class EuchreTests extends TestCase
 		final MockSessionToken access4 = new MockSessionToken("test4",session);
 		Player player1 = new Player(access1.getUserId(), false){
 			@Override
-			public Account loadAccount()
+			public Account getAccount()
 			{
 				return access1.doLoadAccount();
 			}
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -86,13 +86,13 @@ public class EuchreTests extends TestCase
 		};
 		Player player2 = new Player(access2.getUserId(), false){
 			@Override
-			public Account loadAccount()
+			public Account getAccount()
 			{
 				return access2.doLoadAccount();
 			}
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -100,13 +100,13 @@ public class EuchreTests extends TestCase
 		};
 		Player player3 = new Player(access3.getUserId(), false){
 			@Override
-			public Account loadAccount()
+			public Account getAccount()
 			{
 				return access3.doLoadAccount();
 			}
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -114,13 +114,13 @@ public class EuchreTests extends TestCase
 		};
 		Player player4 = new Player(access4.getUserId(), false){
 			@Override
-			public Account loadAccount()
+			public Account getAccount()
 			{
 				return access4.doLoadAccount();
 			}
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 

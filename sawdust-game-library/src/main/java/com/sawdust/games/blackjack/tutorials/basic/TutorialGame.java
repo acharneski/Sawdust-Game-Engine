@@ -35,18 +35,18 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
        if(null == _deck)
        {
           _deck = new LoadedDeck();
-          _deck.clearMemory();
+          _deck.doClearMemory();
           // First 2 player cards
-          _deck.addCard(Ranks.Two, Suits.Hearts);
-          _deck.addCard(Ranks.Three, Suits.Hearts);
+          _deck.doAddCard(Ranks.Two, Suits.Hearts);
+          _deck.doAddCard(Ranks.Three, Suits.Hearts);
           // Then 2 dealer cards
-          _deck.addCard(Ranks.Jack, Suits.Spades);
-          _deck.addCard(Ranks.Seven, Suits.Spades);
+          _deck.doAddCard(Ranks.Jack, Suits.Spades);
+          _deck.doAddCard(Ranks.Seven, Suits.Spades);
           // Then player hits 4 times!
-          _deck.addCard(Ranks.Four, Suits.Hearts);
-          _deck.addCard(Ranks.Five, Suits.Hearts);
-          _deck.addCard(Ranks.Six, Suits.Hearts);
-          _deck.addCard(Ranks.Ace, Suits.Spades);
+          _deck.doAddCard(Ranks.Four, Suits.Hearts);
+          _deck.doAddCard(Ranks.Five, Suits.Hearts);
+          _deck.doAddCard(Ranks.Six, Suits.Hearts);
+          _deck.doAddCard(Ranks.Ace, Suits.Spades);
           _phase = Phases.Card0;
        }
         
@@ -58,7 +58,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     public GameFrame getView(Player access) throws GameException
     {
         GameFrame gwt = super.getView(access);
-        gwt = _phase.filterDisplay(gwt);
+        gwt = _phase.getFilteredDisplay(gwt);
         return gwt;
     }
     

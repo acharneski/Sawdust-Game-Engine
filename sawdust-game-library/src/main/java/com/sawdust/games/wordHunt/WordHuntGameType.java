@@ -39,9 +39,9 @@ public class WordHuntGameType extends com.sawdust.engine.model.GameType<WordHunt
     }
 
     @Override
-    public GameConfig getPrototypeConfig(final Account account)
+    public GameConfig getBaseConfig(final Account account)
     {
-        final GameConfig gameTemplate = super.getPrototypeConfig(account);
+        final GameConfig gameTemplate = super.getBaseConfig(account);
 
         final PropertyConfig value = new PropertyConfig(PropertyType.Number, GameConfig.NUM_PLAYERS);
         value.description = "Number of players to play (including you)";
@@ -59,7 +59,7 @@ public class WordHuntGameType extends com.sawdust.engine.model.GameType<WordHunt
     }
 
     @Override
-    public BaseGame createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public BaseGame getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new WordHuntGame(c)
         {

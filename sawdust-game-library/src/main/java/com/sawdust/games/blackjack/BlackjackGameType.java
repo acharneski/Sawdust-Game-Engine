@@ -51,7 +51,7 @@ public class BlackjackGameType extends com.sawdust.engine.model.GameType<Blackja
     }
 
     @Override
-    public GameState createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
+    public GameState getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
     {
         return new BlackjackGame(c)
         {

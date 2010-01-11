@@ -54,8 +54,8 @@ public class MockGameSession implements GameSession, Serializable
     {
         for (Player s : _members)
         {
-            Account a = s.loadAccount();
-            a.withdraw(ante, this, "Ante Up");
+            Account a = s.getAccount();
+            a.doWithdraw(ante, this, "Ante Up");
         }
     }
 
@@ -91,7 +91,7 @@ public class MockGameSession implements GameSession, Serializable
             int amt = bank / winners.size();
             for (Player player : winners)
             {
-                this.withdraw(amt, player.loadAccount(), "Pay Out");
+                this.doWithdraw(amt, player.getAccount(), "Pay Out");
                 bank -= amt;
             }
         }
@@ -109,10 +109,10 @@ public class MockGameSession implements GameSession, Serializable
         _currentState = baseGame;
     }
 
-    public void withdraw(int amount, Bank from, String description) throws GameException
+    public void doWithdraw(int amount, Bank from, String description) throws GameException
     {
         bank -= amount;
-        if(null != from) from.withdraw(-amount, null, description);
+        if(null != from) from.doWithdraw(-amount, null, description);
     }
 
     public SessionMember getOwner()

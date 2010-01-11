@@ -38,10 +38,10 @@ public class Go1 extends Phases
     };
 
     @Override
-    public void onStartPhase(TutorialGameBase<GoGame> game) throws GameException
+    public void doOnStartPhase(TutorialGameBase<GoGame> game) throws GameException
     {
         LOG.fine("onStartPhase");
-        super.onStartPhase(game);
+        super.doOnStartPhase(game);
         game.setAgent(_agent);
         GoGame innerGame = game.getInnerGame();
         innerGame.doResetBoard();
@@ -63,7 +63,7 @@ public class Go1 extends Phases
     }
 
     @Override
-    public TutorialPhase<GoGame> preCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<GoGame> doOnPreCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         if (m.getCommandText().startsWith("Move"))
         {
@@ -78,12 +78,12 @@ public class Go1 extends Phases
     }
 
     @Override
-    public TutorialPhase<GoGame> postCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<GoGame> doOnPostCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         if (game.getInnerGame().getCurrentPhase() == GoGame.GamePhase.Playing)
         {
             LOG.fine("Post-command: Still in Go1 phase");
-            return super.postCommand(game, m, p);
+            return super.doOnPostCommand(game, m, p);
         }
         else
         {
@@ -94,7 +94,7 @@ public class Go1 extends Phases
     }
 
     @Override
-    public GameFrame filterDisplay(GameFrame gwt)
+    public GameFrame getFilteredDisplay(GameFrame gwt)
     {
         Notification notification = new Notification();
         notification.notifyText = "In order to win, the basic strategy of Go is to "+

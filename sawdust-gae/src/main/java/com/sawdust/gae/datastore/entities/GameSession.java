@@ -164,7 +164,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (p instanceof Player)
         {
             Player player = (Player) p;
-            final com.sawdust.engine.controller.entities.Account _account = player.loadAccount();
+            final com.sawdust.engine.controller.entities.Account _account = player.getAccount();
             if (getUnitWager() > _account.getBalance()) throw new GameLogicException("The game's ante is too high!");
             ((Account) _account).addSession(this);
 
@@ -193,8 +193,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         final ArrayList<com.sawdust.engine.controller.entities.Account> toSave = new ArrayList<com.sawdust.engine.controller.entities.Account>();
         for (final Player member : getPlayers())
         {
-            final com.sawdust.engine.controller.entities.Account laccount = member.loadAccount();
-            laccount.withdraw(ante, this, "Ante Up");
+            final com.sawdust.engine.controller.entities.Account laccount = member.getAccount();
+            laccount.doWithdraw(ante, this, "Ante Up");
             toSave.add(laccount);
         }
     }
@@ -500,13 +500,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                 payOut(member, winningPer);
             }
         }
-        withdraw(getBalance(), null, "End of Game");
+        doWithdraw(getBalance(), null, "End of Game");
     }
 
     public void payOut(final Player member, final int winningPer) throws GameException
     {
-        final com.sawdust.engine.controller.entities.Account laccount = member.loadAccount();
-        withdraw(winningPer, laccount, "Pay Out");
+        final com.sawdust.engine.controller.entities.Account laccount = member.getAccount();
+        doWithdraw(winningPer, laccount, "Pay Out");
     }
 
     /**
@@ -809,7 +809,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         }
     }
 
-    public void withdraw(final int amount, final Bank from, final String description) throws GameException
+    public void doWithdraw(final int amount, final Bank from, final String description) throws GameException
     {
         if (null != from)
         {
@@ -828,7 +828,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
             else
             {
                 LOG.warning(String.format("Withdrawl: %d (%s) from UNKNOWN %s to session %s", amount, description, from, getName()));
-                from.withdraw(-amount, null, description);
+                from.doWithdraw(-amount, null, description);
             }
         }
         else
@@ -858,7 +858,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
     {
         double balance = getBalance();
         int newBalance = (int) (balance * factor);
-        this.withdraw((int) (balance - newBalance), null, msg);
+        this.doWithdraw((int) (balance - newBalance), null, msg);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class GameType extends BlackjackGameType
     public static final GameType INSTANCE = new GameType();
 
     @Override
-    public GameState createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
+    public GameState getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException
     {
       return new TutorialGame(c, sessionFactory)
         {

@@ -9,41 +9,42 @@ import com.sawdust.engine.view.cards.Suits;
 
 public class LoadedDeck extends CardDeck
 {
-	private LinkedList<Card> _loadedCards = new LinkedList<Card>();
+    private LinkedList<Card> _loadedCards = new LinkedList<Card>();
 
-	public LoadedDeck()
-	{
-		super();
-	}
+    public LoadedDeck()
+    {
+        super();
+    }
 
-	@Override
-   public void clearMemory()
-   {
-      super.clearMemory();
-      _loadedCards.clear();
-   }
+    @Override
+    public LoadedDeck doClearMemory()
+    {
+        super.doClearMemory();
+        _loadedCards.clear();
+        return this;
+    }
 
-   public void addCard(Ranks ace, Suits clubs)
-	{
-		_loadedCards.add(new Card(ace, clubs, 0));
-	}
+    public LoadedDeck doAddCard(Ranks ace, Suits clubs)
+    {
+        _loadedCards.add(new Card(ace, clubs, 0));
+        return this;
+    }
 
-	@Override
-	public Card dealNewCard()
-	{
-		if(_loadedCards.isEmpty())
-		{
-			Card dealNewCard = super.dealNewCard();
-			System.out.println(String.format("deck.add(Ranks.%s, Suits.%s);", 
-					dealNewCard.getRank().name(), 
-					dealNewCard.getSuit().name()));
-			return dealNewCard;
-		}
-		else
-		{
-			Card card = _loadedCards.pop();
-			_inPlay.add(card);
-			return card;
-		}
-	}
+    @Override
+    public Pair<CardDeck, Card> doDealNewCard()
+    {
+        if (_loadedCards.isEmpty())
+        {
+            Pair<CardDeck, Card> doDealNewCard = super.doDealNewCard();
+            Card dealNewCard = doDealNewCard.second;
+            System.out.println(String.format("deck.add(Ranks.%s, Suits.%s);", dealNewCard.getRank().name(), dealNewCard.getSuit().name()));
+            return new Pair<CardDeck, Card>(this, dealNewCard);
+        }
+        else
+        {
+            Card card = _loadedCards.pop();
+            _inPlay.add(card);
+            return new Pair<CardDeck, Card>(this, card);
+        }
+    }
 }

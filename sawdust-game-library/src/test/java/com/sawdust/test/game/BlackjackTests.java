@@ -37,13 +37,13 @@ public class BlackjackTests extends TestCase
         Player player1 = new Player(access1.getUserId(), false)
         {
             @Override
-            public Account loadAccount()
+            public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -52,12 +52,12 @@ public class BlackjackTests extends TestCase
 
         Date now = new Date(0);
 
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.Jack, Suits.Hearts);
-        deck.addCard(Ranks.Five, Suits.Clubs);
-        deck.addCard(Ranks.Four, Suits.Clubs);
-        deck.addCard(Ranks.Two, Suits.Hearts);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Jack, Suits.Hearts);
+        deck.doAddCard(Ranks.Five, Suits.Clubs);
+        deck.doAddCard(Ranks.Four, Suits.Clubs);
+        deck.doAddCard(Ranks.Two, Suits.Hearts);
 
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 
@@ -114,13 +114,13 @@ public class BlackjackTests extends TestCase
         Player player1 = new Player(access1.getUserId(), false)
         {
             @Override
-            public Account loadAccount()
+            public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
 
             @Override
-            public void logActivity(ActivityEvent event)
+            public void doLogActivity(ActivityEvent event)
             {
                 // TODO Auto-generated method stub
                 
@@ -129,12 +129,12 @@ public class BlackjackTests extends TestCase
 
         Date now = new Date(0);
 
-        deck.addCard(Ranks.Five, Suits.Clubs);
-        deck.addCard(Ranks.Ace, Suits.Clubs);
-        deck.addCard(Ranks.King, Suits.Clubs);
-        deck.addCard(Ranks.Jack, Suits.Hearts);
-        deck.addCard(Ranks.Four, Suits.Clubs);
-        deck.addCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.Five, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
+        deck.doAddCard(Ranks.King, Suits.Clubs);
+        deck.doAddCard(Ranks.Jack, Suits.Hearts);
+        deck.doAddCard(Ranks.Four, Suits.Clubs);
+        deck.doAddCard(Ranks.Ace, Suits.Clubs);
 
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);
 

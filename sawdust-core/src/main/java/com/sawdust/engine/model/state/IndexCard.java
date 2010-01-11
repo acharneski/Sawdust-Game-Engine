@@ -3,8 +3,6 @@ package com.sawdust.engine.model.state;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashSet;
 
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.cards.Card;
@@ -62,8 +60,9 @@ public class IndexCard extends Token
         return _card;
     }
 
-    public void setCard(final Card card)
+    public IndexCard setCard(final Card card)
     {
         _card = card;
+        return this;
     }
 }

@@ -59,7 +59,7 @@ public abstract class GameType<T extends GameState> implements IGameType
         return false;
     }
 
-    public GameConfig getPrototypeConfig(final Account loadAccount)
+    public GameConfig getBaseConfig(final Account loadAccount)
     {
         final ArrayList<PropertyConfig> configs = new ArrayList<PropertyConfig>();
 
@@ -108,7 +108,7 @@ public abstract class GameType<T extends GameState> implements IGameType
         return gameConfig;
     }
 
-    public abstract GameState createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException;
+    public abstract GameState getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory) throws GameException;
     
     public List<GameType<?>> getTutorialSequence()
     {

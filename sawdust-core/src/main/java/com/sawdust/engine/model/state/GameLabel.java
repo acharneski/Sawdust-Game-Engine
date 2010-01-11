@@ -23,6 +23,20 @@ public class GameLabel implements Serializable
         _text = labelText;
     }
 
+    public com.sawdust.engine.view.game.GameLabel getAsGwt(final Player access, final TokenGame parametricTokenGame) throws GameException
+    {
+        final com.sawdust.engine.view.game.GameLabel returnValue = new com.sawdust.engine.view.game.GameLabel();
+        final Position p1 = parametricTokenGame.getPosition(_position, access);
+        if (null == p1) throw new GameLogicException("Cannot find position: " + _position);
+        returnValue.position = p1;
+        returnValue.text = _text;
+        returnValue.command = _command;
+        returnValue.key = _id;
+        returnValue.width = _width;
+        return returnValue;
+
+    }
+
     public String getCommand()
     {
         return _command;
@@ -49,33 +63,21 @@ public class GameLabel implements Serializable
         return this;
     }
 
-    public void setKey(final String key)
+    public GameLabel setKey(final String key)
     {
         _id = key;
+        return this;
     }
 
-    public void setText(final String text)
+    public GameLabel setText(final String text)
     {
         _text = text;
+        return this;
     }
 
     public GameLabel setWidth(final int width)
     {
         _width = width;
         return this;
-    }
-
-    public com.sawdust.engine.view.game.GameLabel toGwt(final Player access, final TokenGame parametricTokenGame) throws GameException
-    {
-        final com.sawdust.engine.view.game.GameLabel returnValue = new com.sawdust.engine.view.game.GameLabel();
-        final Position p1 = parametricTokenGame.getPosition(_position, access);
-        if (null == p1) throw new GameLogicException("Cannot find position: " + _position);
-        returnValue.position = p1;
-        returnValue.text = _text;
-        returnValue.command = _command;
-        returnValue.key = _id;
-        returnValue.width = _width;
-        return returnValue;
-
     }
 }

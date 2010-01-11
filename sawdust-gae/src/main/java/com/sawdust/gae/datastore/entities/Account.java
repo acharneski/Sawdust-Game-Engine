@@ -325,7 +325,7 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         displayName = pdisplayName;
     }
 
-    public void withdraw(int amount, final Bank depositTarget, final String description) throws GameException
+    public void doWithdraw(int amount, final Bank depositTarget, final String description) throws GameException
     {
         final int finalAmt = getBalance() - amount;
         super.update();
@@ -360,7 +360,7 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
             {
                 LOG.warning(String
                         .format("Withdrawl: %d (%s) from UNKNOWN %s to account %s", amount, description, depositTarget, getName()));
-                depositTarget.withdraw(-amount, null, description);
+                depositTarget.doWithdraw(-amount, null, description);
             }
         }
         else

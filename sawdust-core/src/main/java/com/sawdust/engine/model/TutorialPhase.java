@@ -13,14 +13,14 @@ import com.sawdust.engine.view.game.GameFrame;
 public interface TutorialPhase<T extends GameState> extends Serializable
 {
 
-    boolean allowCommand(TutorialGameBase<T> game, GameCommand m);
+    TutorialPhase<T> doOnPostCommand(TutorialGameBase<T> game, GameCommand m, Participant p) throws GameLogicException;
 
-    TutorialPhase<T> preCommand(TutorialGameBase<T> game, GameCommand m, Participant p) throws GameLogicException;
+    TutorialPhase<T> doOnPreCommand(TutorialGameBase<T> game, GameCommand m, Participant p) throws GameLogicException;
 
-    GameFrame filterDisplay(GameFrame gwt);
+    void doOnStartPhase(TutorialGameBase<T> game) throws GameException;
 
-    TutorialPhase<T> postCommand(TutorialGameBase<T> game, GameCommand m, Participant p) throws GameLogicException;
+    boolean getAllowCommand(TutorialGameBase<T> game, GameCommand m);
 
-   void onStartPhase(TutorialGameBase<T> game) throws GameException;
+   GameFrame getFilteredDisplay(GameFrame gwt);
     
 }

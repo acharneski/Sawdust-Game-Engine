@@ -48,6 +48,11 @@ public class IndexPosition implements Serializable
         return _curveIndex;
     }
 
+    public Integer getZ()
+    {
+        return (null==_z)?null:new Integer(_z);
+    }
+
     @Override
     public int hashCode()
     {
@@ -56,26 +61,6 @@ public class IndexPosition implements Serializable
         result = prime * result + _cardIndex;
         result = prime * result + _curveIndex;
         return result;
-    }
-
-    public void setCardIndex(final int cardIndex)
-    {
-        _cardIndex = cardIndex;
-    }
-
-    public void setCurveIndex(final int curveIndex)
-    {
-        _curveIndex = curveIndex;
-    }
-
-    public void setZ(Integer _z)
-    {
-        this._z = _z;
-    }
-
-    public Integer getZ()
-    {
-        return (null==_z)?null:new Integer(_z);
     }
 
     public boolean is2dAdjacentTo(IndexPosition indexPosition)
@@ -88,6 +73,24 @@ public class IndexPosition implements Serializable
         if(dy<-1) return false;
         if(dx==0 && dy==0) return false;
         return true;
+    }
+
+    public IndexPosition setCardIndex(final int cardIndex)
+    {
+        _cardIndex = cardIndex;
+        return this;
+    }
+
+    public IndexPosition setCurveIndex(final int curveIndex)
+    {
+        _curveIndex = curveIndex;
+        return this;
+    }
+
+    public IndexPosition setZ(Integer _z)
+    {
+        this._z = _z;
+        return this;
     }
 
 }

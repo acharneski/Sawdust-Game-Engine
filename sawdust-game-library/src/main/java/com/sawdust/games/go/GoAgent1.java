@@ -54,7 +54,7 @@ public class GoAgent1 extends StopAgent1<GoGame>
       GoGame goGame = ((GoGame) game);
       if (null == game) return Integer.MIN_VALUE;
       if (null == self) return Integer.MIN_VALUE;
-      int playerIdx = game.getPlayerManager().findPlayer(self);
+      int playerIdx = game.getPlayerManager().getPlayerIndex(self);
       int otherIdx = (playerIdx == 0) ? 1 : 0;
       if (GamePhase.Complete == game.getCurrentPhase())
       {
@@ -68,7 +68,7 @@ public class GoAgent1 extends StopAgent1<GoGame>
          }
       }
       int score1 = goGame._scores.get(self).getScore();
-      int score2 = goGame._scores.get(game.getPlayerManager().playerName(otherIdx)).getScore();
+      int score2 = goGame._scores.get(game.getPlayerManager().getPlayerName(otherIdx)).getScore();
       int scoreDiff = score1 - score2;
       double fitness = scoreDiff * 1000;
       

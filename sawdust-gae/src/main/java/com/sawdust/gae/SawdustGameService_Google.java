@@ -244,7 +244,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final com.sawdust.gae.logic.SessionToken access = getSessionToken(access2);
             final GameType<?> gameObj = GameTypes.findById(gameName);
             if (null == gameObj) return null;
-            final GameConfig game = gameObj.getPrototypeConfig(access.doLoadAccount());
+            final GameConfig game = gameObj.getBaseConfig(access.doLoadAccount());
             DataStore.Save();
             return game;
         }

@@ -27,9 +27,10 @@ public class Mod78 extends GameModification<EuchreGame>
     }
 
     @Override
-    public void apply(final EuchreGame game)
+    public EuchreGame apply(final EuchreGame game)
     {
         ((EuchreDeck) game.getDeck()).setFilterMax(Ranks.Six);
+        return game;
     }
 
 }

@@ -50,10 +50,10 @@ public class Surround3 extends Phases
     };
 
     @Override
-    public void onStartPhase(TutorialGameBase<StopGame> game) throws GameException
+    public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException
     {
         LOG.fine("onStartPhase");
-        super.onStartPhase(game);
+        super.doOnStartPhase(game);
         game.setAgent(_agent);
 
         game.getInnerGame().doResetBoard();
@@ -71,7 +71,7 @@ public class Surround3 extends Phases
     }
 
     @Override
-    public TutorialPhase<StopGame> preCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<StopGame> doOnPreCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         if (m.getCommandText().startsWith("Move"))
         {
@@ -86,7 +86,7 @@ public class Surround3 extends Phases
     }
 
     @Override
-    public TutorialPhase<StopGame> postCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
+    public TutorialPhase<StopGame> doOnPostCommand(TutorialGameBase<StopGame> game, GameCommand m, Participant p) throws GameLogicException
     {
         ArrayList<StopIsland> islands = game.getInnerGame().getTokenArray().getIslands();
         for (StopIsland i : islands)
@@ -94,7 +94,7 @@ public class Surround3 extends Phases
             if (i.getPlayer() == 0)
             {
                 LOG.fine("Post-command: Still in Surround3 phase");
-                return super.postCommand(game, m, p);
+                return super.doOnPostCommand(game, m, p);
             }
         }
         LOG.fine("Post-command: Finished Surround3 phase");
@@ -103,7 +103,7 @@ public class Surround3 extends Phases
     }
 
     @Override
-    public GameFrame filterDisplay(GameFrame gwt)
+    public GameFrame getFilteredDisplay(GameFrame gwt)
     {
         Notification notification = new Notification();
         notification.notifyText = "The border counts as being surrounded, and interior spaces can be used to help secure islands. Capture this island.";

@@ -19,7 +19,7 @@ public abstract class GameCommand<T extends GameState>
         return "";
     }
 
-    public ClientCommand toGwt()
+    public ClientCommand getView()
     {
         return new ClientCommand(getCommandText(), getHelpText());
     }

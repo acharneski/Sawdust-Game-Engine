@@ -131,7 +131,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         final ArrayList<PokerHand> hands = new ArrayList<PokerHand>();
         for (int i = 0; i < NUMBER_OF_PLAYERS; i++)
         {
-            final Participant playerName = getPlayerManager().playerName(i);
+            final Participant playerName = getPlayerManager().getPlayerName(i);
             if (_playerStates.get(playerName) == PlayerState.Complete)
             {
                 final ArrayList<IndexCard> playerCards = new ArrayList<IndexCard>();
@@ -161,17 +161,17 @@ public abstract class PokerGame extends MultiPlayerCardGame
             gameSession.doSplitWagerPool(winners);
             String type = "Win/Go";
             String event = String.format("I won a game of Poker with a !", winningHand.getName());
-            ((Player)winner).logActivity(new ActivityEvent(type,event));
+            ((Player)winner).doLogActivity(new ActivityEvent(type,event));
         }
         for (int i = 0; i < NUMBER_OF_PLAYERS; i++)
         {
-            final Participant otherPlayer = getPlayerManager().playerName(i);
+            final Participant otherPlayer = getPlayerManager().getPlayerName(i);
             String opponentName = getDisplayName(otherPlayer);
             if(otherPlayer instanceof Player)
             {
                 String type = "Lose/Go";
                 String event = String.format("I lost a game of Poker to %s!", displayName);
-                ((Player)otherPlayer).logActivity(new ActivityEvent(type,event));
+                ((Player)otherPlayer).doLogActivity(new ActivityEvent(type,event));
             }
         }
     }
@@ -204,23 +204,23 @@ public abstract class PokerGame extends MultiPlayerCardGame
         {
             if (player instanceof Player)
             {
-                final Account a = ((Player) player).loadAccount();
+                final Account a = ((Player) player).getAccount();
                 final int balance = a.getBalance();
                 if ((balance < payAmount) && (raiseAmount <= 0))
                 {
                     this.doAddMessage(MessageType.Compact, "(All in: %d) ", balance);
-                    a.withdraw(balance, getSession(), "All in");
+                    a.doWithdraw(balance, getSession(), "All in");
                     _currentBets.put(player, balance + currentBet);
                 }
                 else
                 {
-                    a.withdraw(payAmount, getSession(), "Bet");
+                    a.doWithdraw(payAmount, getSession(), "Bet");
                     _currentBets.put(player, bet);
                 }
             }
             else
             {
-                getSession().withdraw(-payAmount, null, "Non-player bet");
+                getSession().doWithdraw(-payAmount, null, "Non-player bet");
                 _currentBets.put(player, bet);
             }
         }
@@ -278,7 +278,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         _playerStates.put(player, PlayerState.Complete);
 
         int numberOfCards = 0;
-        final int playerIndex = getPlayerManager().findPlayer(player);
+        final int playerIndex = getPlayerManager().getPlayerIndex(player);
         for (int cardSlot = 0; cardSlot < NUMBER_OF_CARDS; cardSlot++)
         {
             IndexCard t = (IndexCard) getToken(new IndexPosition(playerIndex, cardSlot));
@@ -344,7 +344,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
          * from the deck the same number of cards they discarded so that each R-P-0015 player again has five cards.
          */
         if (getCurrentPhase() != GamePhase.Drawing) throw new GameLogicException("Invalid state: " + getCurrentPhase());
-        final int player = getPlayerManager().findPlayer(email);
+        final int player = getPlayerManager().getPlayerIndex(email);
         int cardCount = 0;
         for (final Integer cardSlot : cardIndex)
         {
@@ -416,7 +416,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     @Override
     public Collection<GameLabel> getLabels(final Player access) throws GameException
     {
-        final int bankAvailible = access.loadAccount().getBalance();
+        final int bankAvailible = access.getAccount().getBalance();
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
 
         if (GamePhase.Drawing == _currentPhase)
@@ -425,7 +425,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             GameLabel l;
             int labelNumber = 0;
 
-            final int playerIndex = getPlayerManager().findPlayer(access);
+            final int playerIndex = getPlayerManager().getPlayerIndex(access);
             for (int cardNumber = 0; cardNumber < NUMBER_OF_CARDS; cardNumber++)
             {
                 final IndexCard t = (IndexCard) getToken(new IndexPosition(playerIndex, cardNumber));
@@ -529,7 +529,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
 
         if (GamePhase.Drawing == _currentPhase)
         {
-            final int playerIndex = getPlayerManager().findPlayer(access);
+            final int playerIndex = getPlayerManager().getPlayerIndex(access);
             for (int cardNumber = 0; cardNumber < NUMBER_OF_CARDS; cardNumber++)
             {
                 final IndexCard t = (IndexCard) getToken(new IndexPosition(playerIndex, cardNumber));
@@ -587,7 +587,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             }
 
             final int requiredBet = _roundBet - currentBet;
-            final int balance = (access instanceof Player) ? ((Player) access).loadAccount().getBalance() : -1;
+            final int balance = (access instanceof Player) ? ((Player) access).getAccount().getBalance() : -1;
             final int maxRaise = balance - requiredBet;
             int ante = getSession().getUnitWager();
 
@@ -725,7 +725,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         for (int playerIndex = 0; playerIndex < getPlayerManager().getPlayerCount(); playerIndex++)
         {
-            final Participant player = getPlayerManager().playerName(playerIndex);
+            final Participant player = getPlayerManager().getPlayerName(playerIndex);
             returnValue.add(new GameLabel("PlayerLabel " + playerIndex, new IndexPosition(POS_PLAYER_LABEL, playerIndex), getDisplayName(player)));
         }
         return returnValue;
@@ -740,7 +740,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     public Position getPosition(final IndexPosition key, final Player access) throws GameException
     {
         final int curveIndex = key.getCurveIndex();
-        final int findPlayer = getPlayerManager().findPlayer(access);
+        final int findPlayer = getPlayerManager().getPlayerIndex(access);
         if (curveIndex == findPlayer) return _mainHand.getPositionN(key.getCardIndex());
         else if ((curveIndex >= 0) && (curveIndex < NUMBER_OF_PLAYERS))
         {
@@ -836,7 +836,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         getDeck().setReshuffleEnabled(true);
         for (int player = 0; player < NUMBER_OF_PLAYERS; player++)
         {
-            final Participant thisPlayer = getPlayerManager().playerName(player);
+            final Participant thisPlayer = getPlayerManager().getPlayerName(player);
             this.doAddMessage(MessageType.Compact, "%s's hand: ", getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < NUMBER_OF_CARDS; cardSlot++)
             {
@@ -854,7 +854,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             _playerStates.put(player, PlayerState.Bidding);
         }
         setCurrentPhase(GamePhase.Bidding);
-        getSession().withdraw(getSession().getBalance(), null, "New Game");
+        getSession().doWithdraw(getSession().getBalance(), null, "New Game");
         _roundBet = getSession().getUnitWager();
         _currentBets.clear();
         getPlayerManager().setCurrentPlayer(0);

@@ -139,7 +139,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
    {
       if (null == game) return Integer.MIN_VALUE;
       if (null == self) return Integer.MIN_VALUE;
-      int playerIdx = game.getPlayerManager().findPlayer(self);
+      int playerIdx = game.getPlayerManager().getPlayerIndex(self);
       int otherIdx = (playerIdx == 0) ? 1 : 0;
       int score1 = game.getTokenArray().getScore(playerIdx);
       int score2 = game.getTokenArray().getScore(otherIdx);

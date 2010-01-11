@@ -120,7 +120,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
 
     public StopGame doFinishTurn(final Participant player) throws GameException
     {
-        final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(player);
+        final int playerIdx = _mplayerManager.getPlayerManager().getPlayerIndex(player);
         final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
         final TokenArray ta2 = getTokenArray();
 
@@ -165,20 +165,20 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                 final GameSession session = getSession();
                 if (null != session)
                 {
-                    Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
+                    Participant otherPlayer = _mplayerManager.getPlayerManager().getPlayerName(otherPlayerIdx);
                     String opponentName = getDisplayName(otherPlayer);
                     if (player instanceof Player)
                     {
                         String type = "Win/Stop";
                         String event = String.format("I won a game of Stop against %s!", opponentName);
-                        ((Player) player).logActivity(new ActivityEvent(type, event));
+                        ((Player) player).doLogActivity(new ActivityEvent(type, event));
                         doRollForLoot(player);
                     }
                     if (otherPlayer instanceof Player)
                     {
                         String type = "Lose/Stop";
                         String event = String.format("I lost a game of Stop against %s!", displayName);
-                        ((Player) otherPlayer).logActivity(new ActivityEvent(type, event));
+                        ((Player) otherPlayer).doLogActivity(new ActivityEvent(type, event));
                     }
                     final ArrayList<Player> collection = new ArrayList<Player>();
                     if (player instanceof Player)
@@ -220,7 +220,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     {
         _moves = null;
         if (!_mplayerManager.getPlayerManager().isCurrentPlayer(player)) throw new GameLogicException("Not your turn!");
-        final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(player);
+        final int playerIdx = _mplayerManager.getPlayerManager().getPlayerIndex(player);
         final String tokenType = getPlayerTokenType(playerIdx);
         _lastPosition = position;
 
@@ -273,7 +273,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
 
     StopGame doRollForLoot(Participant p) throws GameException
     {
-        Account account = ((Player) p).loadAccount();
+        Account account = ((Player) p).getAccount();
         StopLoot resource = account.getResource(StopLoot.class);
         if (null == resource)
         {
@@ -303,7 +303,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             {
                 if (p instanceof Agent<?>)
                 {
-                    session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
+                    session.doWithdraw(-session.getUnitWager(), null, "Agent Ante Up");
                 }
             }
         }
@@ -326,7 +326,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     @Override
     public StopGame doUpdate() throws GameException
     {
-        _mplayerManager.update(this);
+        _mplayerManager.doUpdate(this);
         return this;
     }
 
@@ -569,7 +569,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                     if (null != playerIdx && -1 != playerIdx.value)
                     {
                         position = new IndexPosition(i, j, 3);
-                        Participant player = _mplayerManager.getPlayerManager().playerName(playerIdx.value);
+                        Participant player = _mplayerManager.getPlayerManager().getPlayerName(playerIdx.value);
                         String tokenType = getPlayerTokenType(playerIdx.value);
                         token = new BoardToken(cardIdCounter, "GO1", tokenType, player, null, false, position);
                         token.getPosition().setZ(3);
@@ -598,7 +598,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
             {
                 try
                 {
-                    int i = _mplayerManager.getPlayerManager().findPlayer(p);
+                    int i = _mplayerManager.getPlayerManager().getPlayerIndex(p);
                     final IndexPosition position = new IndexPosition(ROW_PLAYERTOKEN, 0, 1);
                     final String art = getPlayerTokenType(i);
                     final BoardToken token = new BoardToken(++cardIdCounter, "GO1", art, p, "", true, position);

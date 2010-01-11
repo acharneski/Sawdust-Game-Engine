@@ -38,7 +38,7 @@ public class Regular1 extends Agent<PokerGame>
             @Override
             public CommandResult<PokerGame> doCommand(Participant p, String parameters) throws GameException
             {
-                final int playerIdx = game.getPlayerManager().findPlayer(player);
+                final int playerIdx = game.getPlayerManager().getPlayerIndex(player);
 
                 final ArrayList<IndexCard> playerCards = new ArrayList<IndexCard>();
                 for (final Token card : game.getCurveCards(playerIdx))

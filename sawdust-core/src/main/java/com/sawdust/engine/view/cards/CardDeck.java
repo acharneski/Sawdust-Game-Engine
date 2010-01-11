@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.model.Pair;
+
 public class CardDeck implements Serializable
 {
     private static final int _numberOfDecks = 1;
@@ -49,13 +52,14 @@ public class CardDeck implements Serializable
         super();
     }
 
-    public void clearMemory()
+    public CardDeck doClearMemory()
     {
         _inPlay.clear();
         _discards.clear();
+        return this;
     }
 
-    public Card dealNewCard()
+    public Pair<CardDeck, Card> doDealNewCard()
     {
         final ArrayList<Card> cardsLeft = getAvailibleCards();
         final Card randomCard = (Card) randomMember(cardsLeft.toArray());
@@ -64,15 +68,15 @@ public class CardDeck implements Serializable
             if (_reshuffleEnabled && !_discards.isEmpty())
             {
                 _discards.clear();
-                return dealNewCard();
+                return doDealNewCard();
             }
             else
             {
-                return null;
+                return new Pair<CardDeck, Card>(this, null);
             }
         }
         _inPlay.add(randomCard);
-        return randomCard;
+        return new Pair<CardDeck, Card>(this, randomCard);
     }
 
     private ArrayList<Card> getAvailibleCards()

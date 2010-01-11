@@ -98,7 +98,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
             @Override
             public CommandResult doCommand(Participant p, String commandText) throws GameException
             {
-               getPhase().onStartPhase(TutorialGame.this);
+               getPhase().doOnStartPhase(TutorialGame.this);
                TutorialGame.this.doSaveState();
                return new CommandResult<TutorialGame>(TutorialGame.this);
             }

@@ -40,9 +40,9 @@ public class PokerGameType extends com.sawdust.engine.model.GameType<PokerGame>
     }
 
     @Override
-    public GameConfig getPrototypeConfig(final Account account)
+    public GameConfig getBaseConfig(final Account account)
     {
-        final GameConfig gameTemplate = super.getPrototypeConfig(account);
+        final GameConfig gameTemplate = super.getBaseConfig(account);
 
         final PropertyConfig value = new PropertyConfig(PropertyType.Number, GameConfig.NUM_PLAYERS);
         value.description = "Number of players to play poker (including you)";
@@ -60,7 +60,7 @@ public class PokerGameType extends com.sawdust.engine.model.GameType<PokerGame>
     }
 
     @Override
-    public BaseGame createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public BaseGame getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new PokerGame(c)
         {

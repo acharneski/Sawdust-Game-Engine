@@ -18,31 +18,31 @@ public class Phases implements TutorialPhase<GoGame>
    }
    
    @Override
-   public boolean allowCommand(TutorialGameBase<GoGame> game, GameCommand m)
+   public boolean getAllowCommand(TutorialGameBase<GoGame> game, GameCommand m)
    {
       return true;
    }
    
    @Override
-   public GameFrame filterDisplay(GameFrame gwt)
+   public GameFrame getFilteredDisplay(GameFrame gwt)
    {
       return gwt;
    }
    
    @Override
-   public TutorialPhase<GoGame> preCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<GoGame> doOnPreCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       return this;
    }
    
    @Override
-   public TutorialPhase<GoGame> postCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
+   public TutorialPhase<GoGame> doOnPostCommand(TutorialGameBase<GoGame> game, GameCommand m, Participant p) throws GameLogicException
    {
       return null;
    }
    
    @Override
-   public void onStartPhase(TutorialGameBase<GoGame> game) throws GameException
+   public void doOnStartPhase(TutorialGameBase<GoGame> game) throws GameException
    {
    }
 

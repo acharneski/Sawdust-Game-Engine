@@ -52,7 +52,7 @@ final class DealingPhase extends GamePhase
 
         for (int player = 0; player < EuchreGame.NUMBER_OF_PLAYERS; player++)
         {
-            final Participant thisPlayer = game.getPlayerManager().playerName(player);
+            final Participant thisPlayer = game.getPlayerManager().getPlayerName(player);
             game.doAddMessage(MessageType.Compact, "%s's hand: ", game.getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < EuchreGame.NUMBER_OF_CARDS; cardSlot++)
             {

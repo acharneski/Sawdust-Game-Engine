@@ -244,7 +244,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
 
                 String type = "Win/WordHunt";
                 String event = String.format("I won a game of WordHunt!");
-                ((Player) winner).logActivity(new ActivityEvent(type, event));
+                ((Player) winner).doLogActivity(new ActivityEvent(type, event));
                 collection.add((Player) winner);
             }
             session.doSplitWagerPool(collection);
@@ -267,7 +267,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
 
     WordHuntGame doRollForLoot(Participant p) throws GameException
     {
-        Account account = ((Player) p).loadAccount();
+        Account account = ((Player) p).getAccount();
         WordHuntLoot resource = account.getResource(WordHuntLoot.class);
         if (null == resource)
         {
@@ -292,7 +292,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         {
             if (p instanceof Agent<?>)
             {
-                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
+                session.doWithdraw(-session.getUnitWager(), null, "Agent Ante Up");
             }
         }
 
@@ -317,7 +317,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     @Override
     public WordHuntGame doUpdate() throws GameException
     {
-        _mplayerManager.update(this);
+        _mplayerManager.doUpdate(this);
         return this;
     }
 

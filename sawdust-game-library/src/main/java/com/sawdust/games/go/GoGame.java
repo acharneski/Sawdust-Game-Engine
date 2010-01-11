@@ -78,7 +78,7 @@ public abstract class GoGame extends StopGame
     public GoGame doCaptureIsland(StopIsland i)
     {
         int islandSize = i.getAllPositions().size();
-        Participant playerName = getPlayerManager().playerName(i.getPlayer());
+        Participant playerName = getPlayerManager().getPlayerName(i.getPlayer());
         PlayerScore playerScore = _scores.get(playerName);
         playerScore.addPrisoners(islandSize);
         return this;
@@ -99,16 +99,16 @@ public abstract class GoGame extends StopGame
             }
         }
         setCurrentState(GamePhase.Complete);
-        setLastWinner(getPlayerManager().findPlayer(winner));
+        setLastWinner(getPlayerManager().getPlayerIndex(winner));
         this.doAddMessage("%s wins!", getDisplayName(winner));
 
         final GameSession session = getSession();
         if (null != session)
         {
             String displayName = getDisplayName(p);
-            final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(p);
+            final int playerIdx = _mplayerManager.getPlayerManager().getPlayerIndex(p);
             final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
-            Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
+            Participant otherPlayer = _mplayerManager.getPlayerManager().getPlayerName(otherPlayerIdx);
             String opponentName = getDisplayName(otherPlayer);
             if (p instanceof Player)
             {
@@ -116,13 +116,13 @@ public abstract class GoGame extends StopGame
                 
                 String type = "Win/Go";
                 String event = String.format("I won a game of Stop against %s!", opponentName);
-                ((Player) p).logActivity(new ActivityEvent(type, event));
+                ((Player) p).doLogActivity(new ActivityEvent(type, event));
             }
             if (otherPlayer instanceof Player)
             {
                 String type = "Lose/Go";
                 String event = String.format("I lost a game of Stop against %s!", displayName);
-                ((Player) otherPlayer).logActivity(new ActivityEvent(type, event));
+                ((Player) otherPlayer).doLogActivity(new ActivityEvent(type, event));
             }
             final ArrayList<Player> collection = new ArrayList<Player>();
             if (winner instanceof Player)
@@ -153,7 +153,7 @@ public abstract class GoGame extends StopGame
                 if (!countedIslands.contains(eye))
                 {
                     int opposingPlayer = stopIsland.getPlayer();
-                    Participant playerName = getPlayerManager().playerName(opposingPlayer);
+                    Participant playerName = getPlayerManager().getPlayerName(opposingPlayer);
                     PlayerScore playerScore = _scores.get(playerName);
                     playerScore.setTerritory(playerScore.getTerritory() + eye.getSize());
                     countedIslands.add(eye);
@@ -177,7 +177,7 @@ public abstract class GoGame extends StopGame
         }
         super.doMove(position, player);
         TokenArray end = getTokenArray();
-        int playerIdx = getPlayerManager().findPlayer(player);
+        int playerIdx = getPlayerManager().getPlayerIndex(player);
         for (TokenArray h : history)
         {
             if (end.equals(h)) { throw new GameLogicException("Illegal Suicide", Level.FINE); }
@@ -215,7 +215,7 @@ public abstract class GoGame extends StopGame
 
     GoGame doRollForLoot(Participant p) throws GameException
     {
-        Account account = ((Player) p).loadAccount();
+        Account account = ((Player) p).getAccount();
         GoLoot resource = account.getResource(GoLoot.class);
         if(null == resource)
         {
@@ -293,7 +293,7 @@ public abstract class GoGame extends StopGame
 
         labels.add(new GameLabel("PASS_CMD", new IndexPosition(ROW_SCORES, card++), "Pass").setCommand("Pass"));
 
-        Participant black = getPlayerManager().playerName(0);
+        Participant black = getPlayerManager().getPlayerName(0);
         PlayerScore blackScore = _scores.get(black);
 
         if (null != blackScore)
@@ -309,7 +309,7 @@ public abstract class GoGame extends StopGame
                     .getTerritory())));
         }
 
-        Participant white = getPlayerManager().playerName(1);
+        Participant white = getPlayerManager().getPlayerName(1);
         PlayerScore whiteScore = _scores.get(white);
 
         if (null != whiteScore)

@@ -55,12 +55,12 @@ public class EuchreLayout implements Serializable
     public Position getPosition(final PlayerManager playerManager, final IndexPosition key, final Player player) throws GameException
     {
         final int curveIndex = key.getCurveIndex();
-        final int memberCount = playerManager.memberCount();
+        final int memberCount = playerManager.getMemberCount();
 
         if (curveIndex < POS_MAX) return null;
         if (curveIndex > memberCount) return null;
 
-        final int playerIndex = playerManager.findPlayer(player);
+        final int playerIndex = playerManager.getPlayerIndex(player);
         int relativePlayer = (curveIndex - playerIndex) % memberCount;
         if (relativePlayer < 0)
         {

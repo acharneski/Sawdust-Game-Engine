@@ -4,7 +4,7 @@ import com.sawdust.engine.controller.exceptions.GameException;
 
 public interface Bank
 {
-    int getBalance();
+    void doWithdraw(int amount, Bank from, String description) throws GameException;
 
-    void withdraw(int amount, Bank from, String description) throws GameException;
+    int getBalance();
 }

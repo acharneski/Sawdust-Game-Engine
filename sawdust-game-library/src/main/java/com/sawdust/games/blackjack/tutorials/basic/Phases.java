@@ -18,7 +18,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Hit 0"))
          {
@@ -31,7 +31,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Welcome to Blackjack! Please draw another card by using the \"Hit Me\" command.";
@@ -45,7 +45,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Hit 0"))
          {
@@ -58,7 +58,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "The goal of this game is to get a higher score than the dealer, without going over 21.";
@@ -72,7 +72,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Hit 0"))
          {
@@ -85,7 +85,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Press 'Hit Me' as needed to deal cards, and then 'Stay'";
@@ -99,7 +99,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Stay"))
          {
@@ -112,7 +112,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public TutorialPhase<BlackjackGame> postCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPostCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Stay"))
          {
@@ -125,7 +125,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "Royal cards are worth 10, aces are worth either 11 or 1, and number cards are face value. It would be a good idea to stay now!";
@@ -138,27 +138,27 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public void onStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
+      public void doOnStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
       {
-         super.onStartPhase(game);
-         ((TutorialGame) game)._deck.clearMemory();
+         super.doOnStartPhase(game);
+         ((TutorialGame) game)._deck.doClearMemory();
          
          // First 2 player cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Ace, Suits.Spades);
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ace, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
          
          // Then 2 dealer cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
          
          // Then the next player cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
          
          game.doStart();
       }
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Double Down"))
          {
@@ -171,7 +171,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public TutorialPhase<BlackjackGame> postCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPostCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Double Down"))
          {
@@ -184,7 +184,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "At the start of each hand, the player has the option of 'Doubling Down', where the bet is doubled in exchange for recieving exactly 1 more card.";
@@ -197,28 +197,28 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    {
       
       @Override
-      public void onStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
+      public void doOnStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
       {
-         super.onStartPhase(game);
-         ((TutorialGame) game)._deck.clearMemory();
+         super.doOnStartPhase(game);
+         ((TutorialGame) game)._deck.doClearMemory();
          
          // First 2 player cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Ace, Suits.Spades);
-         ((TutorialGame) game)._deck.addCard(Ranks.Ace, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ace, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ace, Suits.Spades);
          
          // Then 2 dealer cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Seven, Suits.Spades);
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Seven, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
          
          // Then the next player cards
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
-         ((TutorialGame) game)._deck.addCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
+         ((TutorialGame) game)._deck.doAddCard(Ranks.Ten, Suits.Spades);
 
          game.doStart();
       }
       
       @Override
-      public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Split Pair"))
          {
@@ -231,7 +231,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public TutorialPhase<BlackjackGame> postCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
+      public TutorialPhase<BlackjackGame> doOnPostCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p) throws GameLogicException
       {
          if (m.getCommandText().equals("Split Pair"))
          {
@@ -244,7 +244,7 @@ public enum Phases implements TutorialPhase<BlackjackGame>
       }
       
       @Override
-      public GameFrame filterDisplay(GameFrame gwt)
+      public GameFrame getFilteredDisplay(GameFrame gwt)
       {
          Notification notification = new Notification();
          notification.notifyText = "If you are dealt a pair, you also have the option to 'Split' where each card is used to start a new hand, which are played simultaneously against the dealer. The bet is doubled, with identical bets riding on each hand.";
@@ -255,33 +255,33 @@ public enum Phases implements TutorialPhase<BlackjackGame>
    };
    
    @Override
-   public boolean allowCommand(TutorialGameBase<BlackjackGame> game, GameCommand m)
+   public boolean getAllowCommand(TutorialGameBase<BlackjackGame> game, GameCommand m)
    {
       return true;
    }
    
    @Override
-   public GameFrame filterDisplay(GameFrame gwt)
+   public GameFrame getFilteredDisplay(GameFrame gwt)
    {
       return gwt;
    }
    
    @Override
-   public TutorialPhase<BlackjackGame> preCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p)
+   public TutorialPhase<BlackjackGame> doOnPreCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p)
          throws GameLogicException
    {
       return this;
    }
    
    @Override
-   public TutorialPhase<BlackjackGame> postCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p)
+   public TutorialPhase<BlackjackGame> doOnPostCommand(TutorialGameBase<BlackjackGame> game, GameCommand m, Participant p)
          throws GameLogicException
    {
       return null;
    }
    
    @Override
-   public void onStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
+   public void doOnStartPhase(TutorialGameBase<BlackjackGame> game) throws GameException
    {
    }
    

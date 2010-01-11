@@ -14,7 +14,7 @@ public class Go101_GameType extends GoGameType
     public static final Go101_GameType INSTANCE = new Go101_GameType();
 
     @Override
-    public TutorialGameBase<GoGame> createNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
+    public TutorialGameBase<GoGame> getNewGame(final com.sawdust.engine.view.config.GameConfig c, final SessionFactory sessionFactory)
     {
         return new TutorialGame(c, sessionFactory);
     }

@@ -51,10 +51,10 @@ public class MockAccount implements Account
         this.name = displayName;
     }
 
-    public void withdraw(int amount, Bank from, String description) throws GameException
+    public void doWithdraw(int amount, Bank from, String description) throws GameException
     {
         this.bank -= amount;
-        if (null != from) from.withdraw(-amount, null, description);
+        if (null != from) from.doWithdraw(-amount, null, description);
     }
 
     public boolean isAdmin()
