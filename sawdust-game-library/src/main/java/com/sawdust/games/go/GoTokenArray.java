@@ -80,7 +80,7 @@ public class GoTokenArray extends TokenArray
    {
       if (modifyGame)
       {
-         ((GoGame) game).captureIsland(i);
+         ((GoGame) game).doCaptureIsland(i);
       }
       super.captureIsland(game, i, modifyGame);
    }

@@ -45,7 +45,7 @@ final class PlayingPhase extends GamePhase
         game.getTeamStatus(teamNumber).currentHandCount = endScore;
         int totalRounds = ++game._roundNumber;
         game.doAddMessage("<strong>%s (team %s) wins this trick, for a total of %d wins</strong>", game.getDisplayName(winner), teamNumber+1, endScore);
-        game.clearPlayedCards();
+        game.doClearPlayedCards();
         int otherTeam = (0 == teamNumber) ? 1 : 0;
         final int makingTeam = game.getTeamNumber(game._maker)-1;
         final int nonMakingTeam = (0 == makingTeam) ? 1 : 0;
@@ -79,7 +79,7 @@ final class PlayingPhase extends GamePhase
             if(game.getTeamStatus(affectedTeam).totalPoints >= game.getPointGoal())
             {
                 game.doAddMessage("<strong>Team %s wins the game!</strong>", affectedTeam+1);
-                game.payToTeam(affectedTeam+1);
+                game.doPayToTeam(affectedTeam+1);
                 game.getPlayerManager().resetCurrentPlayer();
                 game.setCurrentPhase(EuchreGame.COMPLETE);
                 game.doAddMessage("Enter 'Deal' or 'Quit'.");
@@ -177,7 +177,7 @@ final class PlayingPhase extends GamePhase
         
         final Suits leadingSuit = game.getLeadingSuit();
         final boolean isLeadingSuit = (game.getEffectiveSuit(cardToPlay.getCard()) == leadingSuit);
-        final boolean canLeadSuit = game.playerCanLead(currentPlayerIndex);
+        final boolean canLeadSuit = game.getPlayerCanLead(currentPlayerIndex);
         if (!isLeadingSuit && canLeadSuit) throw new GameLogicException(String.format("You must play a %s", leadingSuit.fullString()));
         
         game.doAddMessage(MessageType.Compact, "Played %s of %s ", cardToPlay.getCard().getRank().name(), cardToPlay.getCard().getSuit().fullString());

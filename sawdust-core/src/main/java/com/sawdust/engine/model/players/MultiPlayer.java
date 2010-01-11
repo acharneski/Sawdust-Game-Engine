@@ -177,7 +177,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         _timeoutAgent = timeoutAgent;
     }
 
-    public ArrayList<GameLabel> setupLobbyLabels(final GameState game, final Player access) throws InputException
+    public ArrayList<GameLabel> getLobbyLabels(final GameState game, final Player access) throws InputException
     {
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         returnValue.addAll(memberLabels(game, access));

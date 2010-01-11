@@ -79,7 +79,7 @@ public class Normal1 extends Agent<EuchreGame>
         }
 
         // Aggregate data
-        final boolean canLeadSuit = game.playerCanLead(currentPlayerIndex);
+        final boolean canLeadSuit = game.getPlayerCanLead(currentPlayerIndex);
         IndexCard lowCard = null;
         IndexCard highCard = null;
         for (int cardIndexToPlay = 0; cardIndexToPlay < EuchreGame.NUMBER_OF_CARDS; cardIndexToPlay++)

@@ -37,7 +37,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
          }
 
         @Override
-        public void postStartActivity()
+        public void doOnPostStartActivity()
         {
             // Supress
         }
@@ -110,7 +110,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
    
    
    @Override
-   protected Agent<GoGame> initAgent()
+   protected Agent<GoGame> getInitAgent()
    {
       return new Agent<GoGame>("Instructor")
       {
@@ -123,7 +123,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
             }
             else
             {
-                game.finishTurn(participant);
+                game.doFinishTurn(participant);
             }
          }
       };

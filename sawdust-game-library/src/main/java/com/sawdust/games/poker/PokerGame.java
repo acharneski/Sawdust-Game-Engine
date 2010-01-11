@@ -285,7 +285,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             if (null == t)
             {
                 numberOfCards++;
-                t = dealNewCard(new IndexPosition(playerIndex, cardSlot));
+                t = doDealNewCard(new IndexPosition(playerIndex, cardSlot));
                 t.setOwner(player);
                 t.setPrivate("VR");
                 // t.getMoveCommands().put(new
@@ -354,7 +354,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 this.doAddMessage("Warning: No card found at index %d", cardSlot);
                 continue;
             }
-            removeToken(card);
+            doRemoveToken(card);
             getDeck().discard(((IndexCard) card).getCard());
             cardCount++;
         }
@@ -503,7 +503,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         {
             try
             {
-                returnValue.addAll(setupLobbyLabels(access));
+                returnValue.addAll(getLobbyLabels(access));
             }
             catch (final InputException e)
             {
@@ -815,7 +815,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     @Override
     public GameState doReset()
     {
-        clearTokens();
+        doClearTokens();
         _currentPhase = GamePhase.Null;
         return this;
     }
@@ -832,7 +832,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
         boolean isntComplete = getCurrentPhase() != GamePhase.Complete;
         boolean isntNull = getCurrentPhase() != GamePhase.Null;
         if (isntNull && isntComplete) throw new GameLogicException("Invalid state: " + getCurrentPhase());
-        clearTokens();
+        doClearTokens();
         getDeck().setReshuffleEnabled(true);
         for (int player = 0; player < NUMBER_OF_PLAYERS; player++)
         {
@@ -840,7 +840,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
             this.doAddMessage(MessageType.Compact, "%s's hand: ", getDisplayName(thisPlayer)).setTo(thisPlayer.getId());
             for (int cardSlot = 0; cardSlot < NUMBER_OF_CARDS; cardSlot++)
             {
-                final IndexCard t = dealNewCard(new IndexPosition(player, cardSlot));
+                final IndexCard t = doDealNewCard(new IndexPosition(player, cardSlot));
                 t.setOwner(thisPlayer);
                 t.setPrivate("VR");
                 t.setMovable(true);
@@ -864,7 +864,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public GameState doUpdate() throws GameException
+    public PokerGame doUpdate() throws GameException
     {
         super.doUpdate();
         if (getCurrentPhase() == GamePhase.Drawing)

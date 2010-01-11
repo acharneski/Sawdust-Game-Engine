@@ -76,17 +76,17 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         return (MultiPlayerCardGame) newGame;
     }
 
-    @Override
-    public IndexCard dealNewCard(final IndexPosition indexPosition)
+    @Override @Deprecated
+    public IndexCard doDealNewCard(final IndexPosition indexPosition)
     {
         final Card dealNewCard = getDeck().dealNewCard();
         if (null == dealNewCard) return null;
         final IndexCard newCard = new IndexCard(++cardIdCounter, null, "VR", false, indexPosition, dealNewCard);
-        add(newCard);
+        doAddToken(newCard);
         return newCard;
     }
 
-    public void doForceMove(final Participant participant) throws GameException
+    public MultiPlayerCardGame doForceMove(final Participant participant) throws GameException
     {
         try
         {
@@ -96,6 +96,21 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         {
             e.printStackTrace();
         }
+        return this;
+    }
+
+    @Override
+    public MultiPlayerCardGame doRemoveMember(final Participant email) throws GameException
+    {
+        _mplayerManager.removeMember(this, email);
+        return (MultiPlayerCardGame) super.doRemoveMember(email);
+    }
+
+    @Override
+    public MultiPlayerCardGame doUpdate() throws GameException
+    {
+        _mplayerManager.update(this);
+        return this;
     }
 
     public Agent<?> getAgent(final String playerID)
@@ -107,6 +122,11 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
         return new ArrayList<AgentFactory<? extends Agent<?>>>();
+    }
+
+    protected ArrayList<GameLabel> getLobbyLabels(final Player access) throws InputException
+    {
+        return _mplayerManager.getLobbyLabels(this, access);
     }
 
     @Override
@@ -133,33 +153,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         return _mplayerManager.getTimeoutAgent();
     }
 
-    @Override
-    public GameState doRemoveMember(final Participant email) throws GameException
+    public int getUpdateTime()
     {
-        _mplayerManager.removeMember(this, email);
-        return super.doRemoveMember(email);
-    }
-
-    public void setPlayerManager(final PlayerManager playerManager)
-    {
-        _mplayerManager.setPlayerManager(playerManager);
-    }
-
-    public void setTimeoutAgent(final Agent<?> timeoutAgent)
-    {
-        _mplayerManager.setTimeoutAgent(timeoutAgent);
-    }
-
-    protected ArrayList<GameLabel> setupLobbyLabels(final Player access) throws InputException
-    {
-        return _mplayerManager.setupLobbyLabels(this, access);
-    }
-
-    @Override
-    public GameState doUpdate() throws GameException
-    {
-        _mplayerManager.update(this);
-        return this;
+        return _mplayerManager.isSinglePlayer()?90:5;
     }
 
     @Override
@@ -200,8 +196,15 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         return returnValue;
     }
 
-    public int getUpdateTime()
+    public MultiPlayerCardGame setPlayerManager(final PlayerManager playerManager)
     {
-        return _mplayerManager.isSinglePlayer()?90:5;
+        _mplayerManager.setPlayerManager(playerManager);
+        return this;
+    }
+
+    public MultiPlayerCardGame setTimeoutAgent(final Agent<?> timeoutAgent)
+    {
+        _mplayerManager.setTimeoutAgent(timeoutAgent);
+        return this;
     }
 }

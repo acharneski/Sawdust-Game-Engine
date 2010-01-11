@@ -136,7 +136,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
 
             if (gameObj instanceof BaseGame)
             {
-                ((BaseGame) gameObj).postStartActivity();
+                ((BaseGame) gameObj).doOnPostStartActivity();
             }
 
             newSession.doUpdateConfig(game);

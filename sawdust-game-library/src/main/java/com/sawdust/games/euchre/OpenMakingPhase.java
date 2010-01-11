@@ -29,7 +29,7 @@ final class OpenMakingPhase extends GamePhase
         if (Suits.Null == suit) throw new GameLogicException("You must name a trump suit");
         if (playCard.getCard().getSuit() == suit) throw new GameLogicException("You cannot call the same suit as the turn-up");
         // TODO: Consolidate with InitialMaking
-        game.removeToken(playCard);
+        game.doRemoveToken(playCard);
         game.getDeck().discard(playCard.getCard());
         game._trumpSuit = suit;
         game._maker = game.getPlayerManager().getCurrentPlayer();

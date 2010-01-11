@@ -15,6 +15,11 @@ public abstract class PersistantTokenGame extends TokenGame
         super();
     }
 
+    public PersistantTokenGame(final GameConfig config)
+    {
+        super(config);
+    }
+
     protected PersistantTokenGame(PersistantTokenGame obj)
     {
         super(obj);
@@ -22,26 +27,23 @@ public abstract class PersistantTokenGame extends TokenGame
         cardIdCounter = obj.cardIdCounter;
     }
 
-    public PersistantTokenGame(final GameConfig config)
-    {
-        super(config);
-    }
-
-    public void add(final Token state)
+    public PersistantTokenGame doAddToken(final Token state)
     {
         if (cardIdCounter < state.getId())
         {
             cardIdCounter = 1 + state.getId();
         }
         _tokens.add(state);
+        return this;
     }
 
-    public void clearTokens()
+    public PersistantTokenGame doClearTokens()
     {
         _tokens.clear();
+        return this;
     }
 
-    public void removeToken(final Token state)
+    public PersistantTokenGame doRemoveToken(final Token state)
     {
         final int cardId = state.getId();
         final ArrayList<Token> cardsToRemove = new ArrayList<Token>();
@@ -56,6 +58,7 @@ public abstract class PersistantTokenGame extends TokenGame
         {
             _tokens.remove(card);
         }
+        return this;
     }
 
     @Override

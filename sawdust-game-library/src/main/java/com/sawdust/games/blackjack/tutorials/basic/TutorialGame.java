@@ -74,7 +74,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     }
 
    @Override
-   protected Agent<BlackjackGame> initAgent()
+   protected Agent<BlackjackGame> getInitAgent()
    {
       return null;
    }

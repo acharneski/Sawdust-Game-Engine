@@ -46,7 +46,7 @@ public class Go1 extends Phases
         super.onStartPhase(game);
         game.setAgent(_agent);
         GoGame innerGame = game.getInnerGame();
-        innerGame.resetBoard();
+        innerGame.doResetBoard();
         innerGame.getPlayerManager().setCurrentPlayer(1);
 
         setGameLayout(innerGame, new char[][]
@@ -90,7 +90,7 @@ public class Go1 extends Phases
         else
         {
             LOG.fine("Post-command: Finished Go1 phase");
-            game.getInnerGame().resetBoard();
+            game.getInnerGame().doResetBoard();
             return Welcome1.INSTANCE;
         }
     }

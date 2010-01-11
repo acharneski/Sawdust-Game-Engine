@@ -39,7 +39,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       game.setParentGame(this);
       try
       {
-         Agent<S> agent = initAgent();
+         Agent<S> agent = getInitAgent();
          this.getSession().addPlayer(agent);
          _innerGame.doAddPlayer(agent);
       }
@@ -49,54 +49,50 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       }
    }
 
-   protected abstract Agent<S> initAgent();
-   
-   public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+   @Deprecated @Override
+   public Message doAddMessage(MessageType type, String msg, Object... params)
    {
-      ArrayList<GameCommand> moves = getInnerGame().getMoves(access);
-      ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
-      final TutorialPhase<S> phase = getPhase();
-      if (null != phase)
-      {
-         for (final GameCommand m : moves)
-         {
-            if (phase.allowCommand(TutorialGameBase.this, m))
-            {
-               returnValue.add(new GameCommand<TutorialGameBase<S>>()
-               {
-                  @Override
-                  public String getHelpText()
-                  {
-                     return m.getHelpText();
-                  }
-                  
-                  @Override
-                  public String getCommandText()
-                  {
-                     return m.getCommandText();
-                  }
-                  
-                  @Override
-                  public CommandResult doCommand(Participant p, String commandText) throws GameException
-                  {
-                     setPhase(phase.preCommand(TutorialGameBase.this, m, p));
-                     CommandResult cmdResult = m.doCommand(p, commandText);
-                     setPhase(phase.postCommand(TutorialGameBase.this, m, p));
-                     TutorialGameBase.this.doSaveState();
-                     return cmdResult;
-                  }
-               });
-            }
-         }
-      }
-      return returnValue;
+      return _innerGame.doAddMessage(type, msg, params);
+   }
+   
+   @Deprecated
+   @Override
+   public Message doAddMessage(String msg, Object... params)
+   {
+      return _innerGame.doAddMessage(msg, params);
    }
    
    @Override
-   public TutorialGameBase doReset()
+   public TutorialGameBase<S> doAddPlayer(Participant agent) throws GameException
+   {
+      _innerGame.doAddPlayer(agent);
+      return this;
+   }
+   
+   public TutorialGameBase<S> doAdvanceTime(int milliseconds)
+   {
+      _innerGame.doAdvanceTime(milliseconds);
+      return this;
+   }
+   
+   @Override
+   public TutorialGameBase<S> doRemoveMember(Participant email) throws GameException
+   {
+      _innerGame.doRemoveMember(email);
+      return this;
+   }
+   
+   @Override
+   public TutorialGameBase<S> doReset()
    {
       getInnerGame().doReset();
       _isFirstPlay = false;
+      return this;
+   }
+   
+   public TutorialGameBase<S> doSaveState() throws GameException
+   {
+      getSession().setState(this);
       return this;
    }
    
@@ -109,92 +105,15 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
    
    @Override
-   public GameFrame getView(Player access) throws GameException
-   {
-      GameFrame gwt = _innerGame.getView(access);
-      TutorialPhase<S> phase = getPhase();
-      if(null != phase) gwt = phase.filterDisplay(gwt);
-      return gwt;
-   }
-   
-   public void setAgent(Agent<S> agent)
-   {
-      this._agent = agent;
-   }
-   
-   public Agent<S> getAgent()
-   {
-      return _agent;
-   }
-   
-   protected void setPhase(TutorialPhase<S> phase) throws GameException
-   {
-      if (null != phase && _phase != phase)
-      {
-         this._phase = phase;
-         this._phase.onStartPhase(TutorialGameBase.this);
-      }
-   }
-   
-   public TutorialPhase<S> getPhase()
-   {
-      return _phase;
-   }
-
-   @Override
-   public String getDisplayName(Participant userId)
-   {
-      return getInnerGame().getDisplayName(userId);
-   }
-
-   @Override
-   public Participant getCurrentPlayer()
-   {
-      return getInnerGame().getCurrentPlayer();
-   }
-
-   @Override
-   public GameType<?> getGameType()
-   {
-      return getInnerGame().getGameType();
-   }
-
-   @Override
-   public GameSession getSession()
-   {
-      return getInnerGame().getSession();
-   }
-
-   @Override
    public TutorialGameBase<S> doUpdate() throws GameException
    {
       getInnerGame().doUpdate();
       return this;
    }
 
-   public S getInnerGame()
+   public Agent<S> getAgent()
    {
-      return _innerGame;
-   }
-   
-
-   @Override
-   public TutorialGameBase<S> doAddPlayer(Participant agent) throws GameException
-   {
-      _innerGame.doAddPlayer(agent);
-      return this;
-   }
-
-   @Override
-   public Message doAddMessage(MessageType type, String msg, Object... params)
-   {
-      return _innerGame.doAddMessage(type, msg, params);
-   }
-
-   @Override
-   public Message doAddMessage(String msg, Object... params)
-   {
-      return _innerGame.doAddMessage(msg, params);
+      return _agent;
    }
 
    @Override
@@ -210,9 +129,34 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
+   public Participant getCurrentPlayer()
+   {
+      return getInnerGame().getCurrentPlayer();
+   }
+
+   @Override
+   public String getDisplayName(Participant userId)
+   {
+      return getInnerGame().getDisplayName(userId);
+   }
+
+   @Override
+   public GameType<?> getGameType()
+   {
+      return getInnerGame().getGameType();
+   }
+
+   @Override
    public int getHeight()
    {
       return _innerGame.getHeight();
+   }
+
+   protected abstract Agent<S> getInitAgent();
+
+   public S getInnerGame()
+   {
+      return _innerGame;
    }
 
    @Override
@@ -222,15 +166,92 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
+   public ArrayList<Message> getMessages()
+   {
+      return _innerGame.getMessages();
+   }
+
+   @Override
    public GameCommand getMove(String commandText, Participant access) throws GameException
    {
       return _innerGame.getMove(commandText, access);
    }
 
-   @Override
-   public ArrayList<Message> getMessages()
+   public ArrayList<GameCommand> getMoves(Participant access) throws GameException
    {
-      return _innerGame.getMessages();
+      ArrayList<GameCommand> moves = getInnerGame().getMoves(access);
+      ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+      final TutorialPhase<S> phase = getPhase();
+      if (null != phase)
+      {
+         for (final GameCommand m : moves)
+         {
+            if (phase.allowCommand(TutorialGameBase.this, m))
+            {
+               returnValue.add(new GameCommand<TutorialGameBase<S>>()
+               {
+                  @Override
+                  public CommandResult doCommand(Participant p, String commandText) throws GameException
+                  {
+                     setPhase(phase.preCommand(TutorialGameBase.this, m, p));
+                     CommandResult cmdResult = m.doCommand(p, commandText);
+                     setPhase(phase.postCommand(TutorialGameBase.this, m, p));
+                     TutorialGameBase.this.doSaveState();
+                     return cmdResult;
+                  }
+                  
+                  @Override
+                  public String getCommandText()
+                  {
+                     return m.getCommandText();
+                  }
+                  
+                  @Override
+                  public String getHelpText()
+                  {
+                     return m.getHelpText();
+                  }
+               });
+            }
+         }
+      }
+      return returnValue;
+   }
+
+   public GameState getParentGame()
+   {
+      throw new RuntimeException("Not Implemented");
+   }
+
+   public TutorialPhase<S> getPhase()
+   {
+      return _phase;
+   }
+
+   @Override
+   public GameSession getSession()
+   {
+      return getInnerGame().getSession();
+   }
+
+   @Override
+   public int getTimeOffset()
+   {
+      return _innerGame.getTimeOffset();
+   }
+
+   public int getUpdateTime()
+   {
+       return 90;
+   }
+
+   @Override
+   public GameFrame getView(Player access) throws GameException
+   {
+      GameFrame gwt = _innerGame.getView(access);
+      TutorialPhase<S> phase = getPhase();
+      if(null != phase) gwt = phase.filterDisplay(gwt);
+      return gwt;
    }
 
    @Override
@@ -245,11 +266,16 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       return _innerGame.isInPlay();
    }
 
-   @Override
-   public TutorialGameBase<S> doRemoveMember(Participant email) throws GameException
+   public TutorialGameBase<S> setAgent(Agent<S> agent)
    {
-      _innerGame.doRemoveMember(email);
-      return this;
+      this._agent = agent;
+    return this;
+   }
+
+   @Override
+   public TutorialGameBase<S> setConfig(GameConfig newConfig) throws GameException
+   {
+       return this;
    }
 
    @Override
@@ -259,23 +285,26 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       return this;
    }
 
+   public TutorialGameBase<S> setParentGame(GameState _parentGame)
+   {
+      throw new RuntimeException("Not Implemented");
+   }
+
+   protected TutorialGameBase<S> setPhase(TutorialPhase<S> phase) throws GameException
+   {
+      if (null != phase && _phase != phase)
+      {
+         this._phase = phase;
+         this._phase.onStartPhase(TutorialGameBase.this);
+      }
+    return this;
+   }
+
    @Override
    public TutorialGameBase<S> setSilent(boolean b)
    {
       _innerGame.setSilent(b);
       return this;
-   }
-
-   @Override
-   public TutorialGameBase<S> setWidth(int width)
-   {
-      _innerGame.setWidth(width);
-      return this;
-   }
-   @Override
-   public int getTimeOffset()
-   {
-      return _innerGame.getTimeOffset();
    }
 
    @Override
@@ -292,37 +321,11 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       return this;
    }
 
-   public GameState doSaveState() throws GameException
-   {
-      getSession().setState(this);
-      return this;
-   }
-
-   public TutorialGameBase<S> setParentGame(GameState _parentGame)
-   {
-      throw new RuntimeException("Not Implemented");
-   }
-
-   public GameState getParentGame()
-   {
-      throw new RuntimeException("Not Implemented");
-   }
-
-   public TutorialGameBase<S> doAdvanceTime(int milliseconds)
-   {
-      _innerGame.doAdvanceTime(milliseconds);
-      return this;
-   }
-
-   public int getUpdateTime()
-   {
-       return 90;
-   }
-
    @Override
-   public TutorialGameBase<S> setConfig(GameConfig newConfig) throws GameException
+   public TutorialGameBase<S> setWidth(int width)
    {
-       return this;
+      _innerGame.setWidth(width);
+      return this;
    }
 
 }

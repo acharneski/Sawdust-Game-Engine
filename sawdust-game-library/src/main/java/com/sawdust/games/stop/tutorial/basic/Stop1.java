@@ -48,7 +48,7 @@ public class Stop1 extends Phases
       LOG.fine("onStartPhase");
       super.onStartPhase(game);
       game.setAgent(_agent);
-      game.getInnerGame().resetBoard();
+      game.getInnerGame().doResetBoard();
       game.getInnerGame().getPlayerManager().setCurrentPlayer(1);
       
       game.getInnerGame().setBoardData(0, 2, 1);
@@ -96,7 +96,7 @@ public class Stop1 extends Phases
       else
       {
          LOG.fine("Post-command: Finished GoBang1 phase");
-         game.getInnerGame().resetBoard();
+         game.getInnerGame().doResetBoard();
          return Welcome1.INSTANCE;
       }
    }

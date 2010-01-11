@@ -18,7 +18,7 @@ public class GameType extends BlackjackGameType
       return new TutorialGame(c, sessionFactory)
         {
             @Override
-            protected Agent<BlackjackGame> initAgent()
+            protected Agent<BlackjackGame> getInitAgent()
             {
                return null;
             }

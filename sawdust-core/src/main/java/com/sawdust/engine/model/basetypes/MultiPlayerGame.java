@@ -9,6 +9,6 @@ public interface MultiPlayerGame
 
     PlayerManager getPlayerManager();
 
-    void doForceMove(Participant currentPlayer) throws GameException;
+    MultiPlayerGame doForceMove(Participant currentPlayer) throws GameException;
     
 }

@@ -32,7 +32,7 @@ public class Surround2 extends Phases
         @Override
         public void Move(GoGame game, Participant participant) throws GameException
         {
-            game.finishTurn(participant);
+            game.doFinishTurn(participant);
             // super.Move(game, participant);
         }
 
@@ -44,7 +44,7 @@ public class Surround2 extends Phases
         super.onStartPhase(game);
         game.setAgent(_agent);
 
-        game.getInnerGame().resetBoard();
+        game.getInnerGame().doResetBoard();
         setGameLayout(game.getInnerGame(), new char[][]
         {
         // --------1----2----3----4----5----6----7----8----9
@@ -82,7 +82,7 @@ public class Surround2 extends Phases
         {
             if (i.getPlayer() == 0) return super.postCommand(game, m, p);
         }
-        game.getInnerGame().resetBoard();
+        game.getInnerGame().doResetBoard();
         return Surround3.INSTANCE;
     }
 

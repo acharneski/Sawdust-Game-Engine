@@ -41,7 +41,7 @@ public class Stupid1 extends Agent<EuchreGame>
                 originalScore += i.currentHandCount;
             }
 
-            final boolean canLeadSuit = game.playerCanLead(currentPlayerIndex);
+            final boolean canLeadSuit = game.getPlayerCanLead(currentPlayerIndex);
             for (int cardIndexToPlay = 0; cardIndexToPlay < EuchreGame.NUMBER_OF_CARDS; cardIndexToPlay++)
             {
                 final IndexCard cardToPlay = (IndexCard) game.getToken(new IndexPosition(playerManager.getCurrentPlayerIndex(), cardIndexToPlay));

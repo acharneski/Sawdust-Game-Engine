@@ -58,7 +58,7 @@ public class TutorialGame extends TutorialGameBase<StopGame>
    }
    
    @Override
-   protected Agent<StopGame> initAgent()
+   protected Agent<StopGame> getInitAgent()
    {
       return new Agent<StopGame>("Instructor")
       {
@@ -71,7 +71,7 @@ public class TutorialGame extends TutorialGameBase<StopGame>
             }
             else
             {
-               game.finishTurn(participant);
+               game.doFinishTurn(participant);
             }
          }
       };

@@ -126,7 +126,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
          }
 
         @Override
-        public void postStartActivity()
+        public void doOnPostStartActivity()
         {
         }
          

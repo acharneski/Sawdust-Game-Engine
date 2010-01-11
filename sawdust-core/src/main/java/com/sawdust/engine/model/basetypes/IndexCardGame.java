@@ -19,10 +19,11 @@ public abstract class IndexCardGame extends PersistantTokenGame
         super(config);
     }
 
-    public IndexCard dealNewCard(final IndexPosition indexPosition)
+    @Deprecated
+    public IndexCard doDealNewCard(final IndexPosition indexPosition)
     {
         final IndexCard newCard = new IndexCard(++cardIdCounter, null, "VR", false, indexPosition, getDeck().dealNewCard());
-        add(newCard);
+        doAddToken(newCard);
         return newCard;
     }
 
@@ -31,9 +32,10 @@ public abstract class IndexCardGame extends PersistantTokenGame
         return _deck;
     }
 
-    public void setDeck(final CardDeck deck)
+    public IndexCardGame setDeck(final CardDeck deck)
     {
         _deck = deck;
+        return this;
     }
 
 }

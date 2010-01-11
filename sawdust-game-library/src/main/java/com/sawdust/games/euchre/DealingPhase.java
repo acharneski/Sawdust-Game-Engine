@@ -39,7 +39,7 @@ final class DealingPhase extends GamePhase
         game._roundNumber = 0;
         game.getTeamStatus(0).currentHandCount = 0;
         game.getTeamStatus(1).currentHandCount = 0;
-        game.clearTokens();
+        game.doClearTokens();
         game._winningCard = null;
         game.getDeck().setReshuffleEnabled(true);
         game.setCurrentPhase(EuchreGame.DEALING);
@@ -47,7 +47,7 @@ final class DealingPhase extends GamePhase
         game.getPlayerManager().setCurrentPlayer(0);
 
         final IndexPosition playSlot = new IndexPosition(EuchreLayout.POS_IN_PLAY, 0);
-        final IndexCard playCard = game.dealNewCard(playSlot);
+        final IndexCard playCard = game.doDealNewCard(playSlot);
         playCard.setPublic();
 
         for (int player = 0; player < EuchreGame.NUMBER_OF_PLAYERS; player++)
@@ -57,7 +57,7 @@ final class DealingPhase extends GamePhase
             for (int cardSlot = 0; cardSlot < EuchreGame.NUMBER_OF_CARDS; cardSlot++)
             {
                 final IndexPosition pos = new IndexPosition(player, cardSlot);
-                final IndexCard t = game.dealNewCard(pos);
+                final IndexCard t = game.doDealNewCard(pos);
                 t.setOwner(thisPlayer);
                 t.setPrivate("VR");
                 t.getMoveCommands().put(playSlot, "Play " + cardSlot);

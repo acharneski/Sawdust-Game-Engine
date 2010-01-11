@@ -58,16 +58,10 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     protected Participant _roundStartPlayer = null;
     
     private HashMap<Integer, TeamStatus> _teamStatus = new HashMap<Integer, TeamStatus>();
-    public TeamStatus getTeamStatus(int n)
-    {
-        if(!_teamStatus.containsKey(n)) _teamStatus.put(n, new TeamStatus());
-        return _teamStatus.get(n);
-    }
-    
     protected Suits _trumpSuit = Suits.Hearts;
+    
     protected IndexCard _winningCard = null;
     private int _pointGoal = 5;
-
     protected EuchreGame()
     {
         super(NUMBER_OF_PLAYERS);
@@ -86,21 +80,20 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         getDeck().setSeed(deck.getSeed());
         
         setTimeoutAgent(new Stupid1("Timeout"));
-        initializeModules();
+        doInitializeModules();
     }
 
-    @Override
-    protected void addNewModule(final GameModConfig x)
+    EuchreGame doAddNewModule(final GameModConfig x)
     {
         final GameModification<EuchreGame> newModule = Mod78.getNewModule(x);
         if (null != newModule)
         {
             newModule.apply(this);
-            return;
         }
+        return this;
     }
 
-    protected void clearPlayedCards()
+    EuchreGame doClearPlayedCards()
     {
         for (final Token card : getCurveCards(EuchreLayout.POS_IN_PLAY))
         {
@@ -108,15 +101,67 @@ public abstract class EuchreGame extends MultiPlayerCardGame
             {
                 continue;
             }
-            removeToken(card);
+            doRemoveToken(card);
             getDeck().discard(((IndexCard) card).getCard());
         }
         _roundCardCount = 0;
+        return this;
     }
 
-    public void doCommand(final EuchreCommand cmd, final Object... params) throws GameException
+    public EuchreGame doClearTeamStatuses()
+    {
+        _teamStatus.clear();
+        return this;
+    }
+
+    public EuchreGame doCommand(final EuchreCommand cmd, final Object... params) throws GameException
     {
         getCurrentPhase().doCommand(this, cmd, params);
+        return this;
+    }
+
+    EuchreGame doPayToTeam(final int teamNumber) throws GameException
+    {
+        final GameSession session = getSession();
+        final int award = session.getBalance() / 2;
+        for (final Player member : session.getPlayers())
+        {
+            final int teamNumber2 = getTeamNumber(member);
+            if (teamNumber2 == teamNumber)
+            {
+                session.withdraw(award, member.loadAccount(), "Pay to Winning Team");
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public EuchreGame doReset()
+    {
+        doClearTokens();
+        setCurrentPhase(EuchreGame.DEALING);
+        return this;
+    }
+
+    @Override
+    public EuchreGame doStart() throws GameException
+    {
+        final GameSession session = getSession();
+        session.doUnitWager();
+        for (final Participant p : getPlayerManager().getPlayers())
+        {
+            if (p instanceof Agent<?>)
+            {
+                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
+            }
+        }
+        final int numPlayers = EuchreGame.NUMBER_OF_PLAYERS;
+        final Collection<Participant> members = getPlayerManager().getPlayers();
+        if (members.size() != numPlayers) throw new GameLogicException("Exactly 4 players are required to play");
+        
+        session.setStatus(SessionStatus.Playing, this);
+        doCommand(EuchreCommand.Deal);
+        return this;
     }
 
     @Override
@@ -256,18 +301,11 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public int getUpdateTime()
-    {
-        if (getSession().getStatus() == SessionStatus.Inviting) return 15;
-        return super.getUpdateTime();
-   }
-
-    @Override
     public Collection<GameLabel> getLabels(final Player access)
     {
         try
         {
-            if (getSession().getStatus() == SessionStatus.Inviting) return setupLobbyLabels(access);
+            if (getSession().getStatus() == SessionStatus.Inviting) return getLobbyLabels(access);
             else return getCurrentPhase().setupLabels(this, access);
         }
         catch (final GameException e)
@@ -293,7 +331,18 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return returnValue;
     }
 
-    protected Collection<GameLabel> getPlayerLabels()
+    public boolean getPlayerCanLead(final int player)
+    {
+        final Suits leadingSuit = getLeadingSuit();
+        for (final Token token : getCurveCards(player))
+        {
+            final Card card = ((IndexCard) token).getCard();
+            if ((getEffectiveSuit(card) == leadingSuit)) return true;
+        }
+        return false;
+    }
+
+    Collection<GameLabel> getPlayerLabels()
     {
         final ArrayList<GameLabel> returnValue = new ArrayList<GameLabel>();
         for (int playerIndex = 0; playerIndex < getPlayerManager().getPlayerCount(); playerIndex++)
@@ -313,6 +362,11 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return returnValue;
     }
 
+    public int getPointGoal()
+    {
+        return _pointGoal;
+    }
+
     @Override
     public Position getPosition(final IndexPosition key, final Player access) throws GameException
     {
@@ -321,7 +375,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return super.getPosition(key, access);
     }
 
-    protected ArrayList<Ranks> getRankOrder()
+    ArrayList<Ranks> getRankOrder()
     {
         /*
          * R-E-0045: When a suit is named trump, any card of that suit outranks any card of a R-E-0046: non-trump suit. The highest ranking
@@ -343,7 +397,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return rankOrder;
     }
 
-    protected ArrayList<Suits> getSuitOrder()
+    ArrayList<Suits> getSuitOrder()
     {
         final ArrayList<Suits> returnValue = new ArrayList<Suits>();
         if (null != _winningCard)
@@ -379,10 +433,44 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return returnValue;
     }
 
+    public List<Participant> getTeam(int affectedTeam)
+    {
+        
+        ArrayList<Participant> arrayList = new ArrayList<Participant>();
+        for(int i=0;i<4;i++)
+        {
+            Participant p = getPlayerManager().getPlayers().get(i);
+            int team = 1 + (i % 2);
+            if(team == affectedTeam)
+            {
+                arrayList.add(p);
+            }
+        }
+        return arrayList;
+    }
+
     public int getTeamNumber(final Participant winningPlayer) throws GameException
     {
         return 1 + (getPlayerManager().findPlayer(winningPlayer) % 2);
     }
+
+    public TeamStatus getTeamStatus(int n)
+    {
+        if(!_teamStatus.containsKey(n)) _teamStatus.put(n, new TeamStatus());
+        return _teamStatus.get(n);
+    }
+
+    public HashMap<Integer, TeamStatus> getTeamStatuses()
+    {
+        return _teamStatus;
+    }
+
+    @Override
+    public int getUpdateTime()
+    {
+        if (getSession().getStatus() == SessionStatus.Inviting) return 15;
+        return super.getUpdateTime();
+   }
 
     @Override
     public boolean isInPlay()
@@ -407,99 +495,15 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         return (compareTo < 0);
     }
 
-    protected void payToTeam(final int teamNumber) throws GameException
-    {
-        final GameSession session = getSession();
-        final int award = session.getBalance() / 2;
-        for (final Player member : session.getPlayers())
-        {
-            final int teamNumber2 = getTeamNumber(member);
-            if (teamNumber2 == teamNumber)
-            {
-                session.withdraw(award, member.loadAccount(), "Pay to Winning Team");
-            }
-        }
-    }
-
-    public boolean playerCanLead(final int player)
-    {
-        final Suits leadingSuit = getLeadingSuit();
-        for (final Token token : getCurveCards(player))
-        {
-            final Card card = ((IndexCard) token).getCard();
-            if ((getEffectiveSuit(card) == leadingSuit)) return true;
-        }
-        return false;
-    }
-
-    @Override
-    public GameState doReset()
-    {
-        clearTokens();
-        setCurrentPhase(EuchreGame.DEALING);
-        return this;
-    }
-
-    public void setCurrentPhase(final GamePhase pcurrentPhase)
+    public EuchreGame setCurrentPhase(final GamePhase pcurrentPhase)
     {
         _currentPhase = pcurrentPhase;
-    }
-
-    @Override
-    public GameState doStart() throws GameException
-    {
-        final GameSession session = getSession();
-        session.doUnitWager();
-        for (final Participant p : getPlayerManager().getPlayers())
-        {
-            if (p instanceof Agent<?>)
-            {
-                session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
-            }
-        }
-        final int numPlayers = EuchreGame.NUMBER_OF_PLAYERS;
-        final Collection<Participant> members = getPlayerManager().getPlayers();
-        if (members.size() != numPlayers) throw new GameLogicException("Exactly 4 players are required to play");
-        
-        session.setStatus(SessionStatus.Playing, this);
-        doCommand(EuchreCommand.Deal);
         return this;
     }
 
-
-    public void clearTeamStatuses()
-    {
-        _teamStatus.clear();
-    }
-
-    public HashMap<Integer, TeamStatus> getTeamStatuses()
-    {
-        return _teamStatus;
-    }
-
-    public void setPointGoal(int _pointGoal)
+    public EuchreGame setPointGoal(int _pointGoal)
     {
         this._pointGoal = _pointGoal;
-    }
-
-    public int getPointGoal()
-    {
-        return _pointGoal;
-    }
-
-    public List<Participant> getTeam(int affectedTeam)
-    {
-        
-        ArrayList<Participant> arrayList = new ArrayList<Participant>();
-        for(int i=0;i<4;i++)
-        {
-            Participant p = getPlayerManager().getPlayers().get(i);
-            int team = 1 + (i % 2);
-            if(team == affectedTeam)
-            {
-                arrayList.add(p);
-            }
-        }
-        return arrayList;
+        return this;
     }
 }

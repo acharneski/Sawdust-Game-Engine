@@ -36,7 +36,7 @@ public class Surround3 extends Phases
                                              public void Move(StopGame game, Participant participant) throws GameException
                                              {
                                                 LOG.fine("_agent.Move");
-                                                game.finishTurn(participant);
+                                                game.doFinishTurn(participant);
                                                 // super.Move(game,
                                                 // participant);
                                              }
@@ -50,7 +50,7 @@ public class Surround3 extends Phases
       super.onStartPhase(game);
       game.setAgent(_agent);
       
-      game.getInnerGame().resetBoard();
+      game.getInnerGame().doResetBoard();
       game.getInnerGame().setBoardData(0, 0, 0);
       game.getInnerGame().setBoardData(1, 0, 0);
       game.getInnerGame().setBoardData(2, 0, 0);
@@ -92,7 +92,7 @@ public class Surround3 extends Phases
          }
       }
       LOG.fine("Post-command: Finished Surround3 phase");
-      game.getInnerGame().resetBoard();
+      game.getInnerGame().doResetBoard();
       return Stop1.INSTANCE;
    }
    

@@ -73,8 +73,8 @@ public enum Commands
             cards.get(0).setPosition(new IndexPosition(curve, 1));
             baseGame.playerHandStatus.put(curve, BlackjackGame.PlayerHandStatus.Playing);
 
-            baseGame.dealNewCard(new IndexPosition(BlackjackGame.HAND_PLAYER, 0)).setOwner(user).setPrivate("VR");
-            baseGame.dealNewCard(new IndexPosition(curve, 0)).setOwner(user).setPrivate("VR");
+            baseGame.doDealNewCard(new IndexPosition(BlackjackGame.HAND_PLAYER, 0)).setOwner(user).setPrivate("VR");
+            baseGame.doDealNewCard(new IndexPosition(curve, 0)).setOwner(user).setPrivate("VR");
             baseGame.doSaveState();
         }
 

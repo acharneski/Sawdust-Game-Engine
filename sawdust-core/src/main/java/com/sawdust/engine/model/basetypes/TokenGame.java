@@ -31,6 +31,21 @@ public abstract class TokenGame extends BaseGame {
 		super(config);
 	}
 
+	@Override
+    public TokenGame doAddPlayer(final Participant agent) throws GameException
+    {
+        if (agent instanceof Player)
+        {
+            _displayFilter.put(agent, ((Player) agent).loadAccount().getName());
+        }
+        else
+        {
+            String id = ((Agent<?>) agent).getId();
+            _displayFilter.put(agent, id);
+        }
+        return (TokenGame) super.doAddPlayer(agent);
+    }
+
 	public ArrayList<Token> getCurveCards(final int curve) {
 	    final ArrayList<Token> returnValue = new ArrayList<Token>();
 	    for (final Token card : getTokens())
@@ -42,6 +57,14 @@ public abstract class TokenGame extends BaseGame {
 	    }
 	    return returnValue;
 	}
+
+	@Override
+    public String getDisplayName(final Participant participant)
+    {
+        if (null == participant) return null;
+        if (!_displayFilter.containsKey(participant)) return participant.getId();
+        return _displayFilter.get(participant);
+    }
 
 	public abstract Collection<GameLabel> getLabels(Player access) throws GameException;
 
@@ -85,13 +108,13 @@ public abstract class TokenGame extends BaseGame {
 	    return cardIndex;
 	}
 
-	/**
+    /**
 	 * @return the absolutePositionTokens
 	 * @throws GameException 
 	 */
 	public abstract ArrayList<Token> getTokens();
 
-	@Override
+    @Override
 	public GameFrame getView(final Player access) throws GameException {
 	    final GameFrame returnValue = super.getView(access);
 	    for (final Token t : getTokens())
@@ -108,27 +131,4 @@ public abstract class TokenGame extends BaseGame {
 	    }
 	    return returnValue;
 	}
-
-    @Override
-    public GameState doAddPlayer(final Participant agent) throws GameException
-    {
-        if (agent instanceof Player)
-        {
-            _displayFilter.put(agent, ((Player) agent).loadAccount().getName());
-        }
-        else
-        {
-            String id = ((Agent<?>) agent).getId();
-            _displayFilter.put(agent, id);
-        }
-        return super.doAddPlayer(agent);
-    }
-
-    @Override
-    public String getDisplayName(final Participant participant)
-    {
-        if (null == participant) return null;
-        if (!_displayFilter.containsKey(participant)) return participant.getId();
-        return _displayFilter.get(participant);
-    }
 }

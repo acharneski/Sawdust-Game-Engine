@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -31,33 +30,35 @@ import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.engine.view.geometry.Position;
 import com.sawdust.engine.view.geometry.Vector;
-import com.sawdust.games.go.Stupid1;
 import com.sawdust.games.stop.StopGame;
-import com.sawdust.games.stop.StopGameType;
 import com.sawdust.games.stop.StopIsland;
 import com.sawdust.games.stop.TokenArray;
-import com.sawdust.games.stop.StopGame.GamePhase;
 
+/**
+ * @author acharneski
+ *
+ */
 public abstract class GoGame extends StopGame
 {
-    HashMap<Participant, PlayerScore> _scores = new HashMap<Participant, PlayerScore>();
-
     public static final int ROW_SCORES = -3;
-    private static final Position scorePosition = new Position(525, 150);
-    private static final Vector scroreOffset = new Vector(0, 35);
+    public static final Position scorePosition = new Position(525, 150);
+    public static final Vector scroreOffset = new Vector(0, 35);
 
-    @Override
-    public Position getPosition(IndexPosition key, Player access) throws GameException
+    HashMap<Participant, PlayerScore> _scores = new HashMap<Participant, PlayerScore>();
+    boolean _lastPlayerPassed = false;
+    LinkedList<TokenArray> history = new LinkedList<TokenArray>();
+
+    GoGame()
     {
-        if (key.getCurveIndex() == ROW_SCORES) { return scorePosition.add(scroreOffset.scale(key.getCardIndex())); }
-        return super.getPosition(key, access);
+        super();
     }
 
-    protected GoGame()
+    public GoGame(final GameConfig config)
     {
+        super(config);
     }
 
-    protected GoGame(GoGame game)
+    GoGame(GoGame game)
     {
         super(game);
         for (Entry<Participant, PlayerScore> entry : game._scores.entrySet())
@@ -67,16 +68,219 @@ public abstract class GoGame extends StopGame
         _lastPlayerPassed = game._lastPlayerPassed;
     }
 
-    public GoGame(final GameConfig config)
+    @Override
+    public GoGame doAddPlayer(Participant agent) throws GameException
     {
-        super(config);
+        _scores.put(agent, new PlayerScore());
+        return (GoGame) super.doAddPlayer(agent);
+    }
+
+    public GoGame doCaptureIsland(StopIsland i)
+    {
+        int islandSize = i.getAllPositions().size();
+        Participant playerName = getPlayerManager().playerName(i.getPlayer());
+        PlayerScore playerScore = _scores.get(playerName);
+        playerScore.addPrisoners(islandSize);
+        return this;
+    }
+
+    GoGame doFinishGame(Participant p) throws GameException
+    {
+        int winningScore = 0;
+        Participant winner = null;
+        for (Entry<Participant, PlayerScore> s : _scores.entrySet())
+        {
+            int score = s.getValue().getScore();
+            Participant key = s.getKey();
+            this.doAddMessage("%s has %d points.", getDisplayName(key), score);
+            if (null == winner || score > winningScore)
+            {
+                winner = key;
+            }
+        }
+        setCurrentState(GamePhase.Complete);
+        setLastWinner(getPlayerManager().findPlayer(winner));
+        this.doAddMessage("%s wins!", getDisplayName(winner));
+
+        final GameSession session = getSession();
+        if (null != session)
+        {
+            String displayName = getDisplayName(p);
+            final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(p);
+            final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
+            Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
+            String opponentName = getDisplayName(otherPlayer);
+            if (p instanceof Player)
+            {
+                doRollForLoot(p);
+                
+                String type = "Win/Go";
+                String event = String.format("I won a game of Stop against %s!", opponentName);
+                ((Player) p).logActivity(new ActivityEvent(type, event));
+            }
+            if (otherPlayer instanceof Player)
+            {
+                String type = "Lose/Go";
+                String event = String.format("I lost a game of Stop against %s!", displayName);
+                ((Player) otherPlayer).logActivity(new ActivityEvent(type, event));
+            }
+            final ArrayList<Player> collection = new ArrayList<Player>();
+            if (winner instanceof Player)
+            {
+                collection.add((Player) winner);
+            }
+            session.doSplitWagerPool(collection);
+        }
+        return this;
     }
 
     @Override
-    public StopGame doAddPlayer(Participant agent) throws GameException
+    public GoGame doFinishTurn(final Participant player) throws GameException
     {
-        _scores.put(agent, new PlayerScore());
-        return super.doAddPlayer(agent);
+        // Recalculate territory
+        for (PlayerScore s : _scores.values())
+        {
+            s.setTerritory(0);
+        }
+        ArrayList<StopIsland> islands = getTokenArray().getIslands();
+        HashSet<GoIsland> countedIslands = new HashSet<GoIsland>();
+        for (StopIsland stopIsland : islands)
+        {
+            GoIsland goIsland = (GoIsland) stopIsland;
+            HashMap<GoIsland, Boolean> eyes = goIsland.getEyes();
+            for (GoIsland eye : eyes.keySet())
+            {
+                if (!countedIslands.contains(eye))
+                {
+                    int opposingPlayer = stopIsland.getPlayer();
+                    Participant playerName = getPlayerManager().playerName(opposingPlayer);
+                    PlayerScore playerScore = _scores.get(playerName);
+                    playerScore.setTerritory(playerScore.getTerritory() + eye.getSize());
+                    countedIslands.add(eye);
+                }
+            }
+        }
+
+        final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
+        doAddMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
+        return this;
+    }
+
+    @Override
+    public GoGame doMove(IndexPosition position, Participant player) throws GameException
+    {
+        TokenArray begin = getTokenArray();
+        history.push(begin);
+        while (history.size() > 2)
+        {
+            history.removeLast();
+        }
+        super.doMove(position, player);
+        TokenArray end = getTokenArray();
+        int playerIdx = getPlayerManager().findPlayer(player);
+        for (TokenArray h : history)
+        {
+            if (end.equals(h)) { throw new GameLogicException("Illegal Suicide", Level.FINE); }
+        }
+        if (begin.getScore(playerIdx) > end.getScore(playerIdx)) { throw new GameLogicException("Illegal Suicide"); }
+        _lastPlayerPassed = false;
+        return this;
+    }
+
+    @Override
+    public GoGame doRemoveMember(Participant agent) throws GameException
+    {
+        super.doRemoveMember(agent);
+        _scores.remove(agent);
+        return this;
+    }
+
+    @Override
+    public GoGame doReset()
+    {
+        super.doReset();
+        return this;
+    }
+
+    @Override
+    public GoGame doResetBoard()
+    {
+        for (PlayerScore s : _scores.values())
+        {
+            s.clear();
+        }
+        super.doResetBoard();
+        return this;
+    }
+
+    GoGame doRollForLoot(Participant p) throws GameException
+    {
+        Account account = ((Player) p).loadAccount();
+        GoLoot resource = account.getResource(GoLoot.class);
+        if(null == resource)
+        {
+            resource = new GoLoot();
+        }
+        PromotionConfig promoConfig = resource.getLoot();
+        if(null != promoConfig)
+        {
+            Promotion awardPromotion = account.doAwardPromotion(promoConfig);
+            doAddMessage(awardPromotion.getMessage()).setTo(p.getId());
+        }
+        account.setResource(GoLoot.class, resource);
+        return this;
+    }
+
+    @Override
+    public GoGame doStart() throws GameException
+    {
+        for (PlayerScore s : _scores.values())
+        {
+            s.clear();
+        }
+        return (GoGame) super.doStart();
+    }
+
+    @Override
+    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
+    {
+        final List<AgentFactory<? extends Agent<?>>> agentFactories = new ArrayList<AgentFactory<? extends Agent<?>>>();
+        final PlayerManager playerManager = getPlayerManager();
+        agentFactories.add(new AgentFactory<Stupid1>()
+        {
+            @Override
+            public Stupid1 getAgent(final String string)
+            {
+                return new Stupid1("AI " + playerManager.getPlayerCount());
+            }
+
+            @Override
+            public String getName()
+            {
+                return "Easy";
+            }
+        });
+        agentFactories.add(new AgentFactory<GoAgent1>()
+        {
+            @Override
+            public GoAgent1 getAgent(final String string)
+            {
+                return new GoAgent1("AI " + playerManager.getPlayerCount(), 1, 15);
+            }
+
+            @Override
+            public String getName()
+            {
+                return "Normal";
+            }
+        });
+        return agentFactories;
+    }
+
+    @Override
+    public GameType<?> getGameType()
+    {
+       return GoGameType.INSTANCE;
     }
 
     @Override
@@ -123,8 +327,6 @@ public abstract class GoGame extends StopGame
         return labels;
     }
 
-    boolean _lastPlayerPassed = false;
-
     @Override
     public ArrayList<GameCommand> getMoves(Participant access) throws GameException
     {
@@ -141,9 +343,21 @@ public abstract class GoGame extends StopGame
             {
 
                 @Override
-                public String getHelpText()
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
-                    return "Pass on the opportunity to move and yield play to the opponent. If both player pass in succession, the game is ended.";
+                    if (GoGame.this._lastPlayerPassed)
+                    {
+                        GoGame.this.doFinishTurn(p);
+                        GoGame.this.doFinishGame(p);
+                    }
+                    else
+                    {
+                        GoGame.this._lastPlayerPassed = true;
+                        setLastPosition(null);
+                        GoGame.this.doAddMessage("%s passed!", GoGame.this.getDisplayName(p));
+                        GoGame.this.doFinishTurn(p);
+                    }
+                    return new CommandResult<GameState>(GoGame.this);
                 }
 
                 @Override
@@ -153,21 +367,9 @@ public abstract class GoGame extends StopGame
                 }
 
                 @Override
-                public CommandResult doCommand(Participant p, String commandText) throws GameException
+                public String getHelpText()
                 {
-                    if (GoGame.this._lastPlayerPassed)
-                    {
-                        GoGame.this.finishTurn(p);
-                        GoGame.this.finishGame(p);
-                    }
-                    else
-                    {
-                        GoGame.this._lastPlayerPassed = true;
-                        _lastPosition = null;
-                        GoGame.this.doAddMessage("%s passed!", GoGame.this.getDisplayName(p));
-                        GoGame.this.finishTurn(p);
-                    }
-                    return new CommandResult<GameState>(GoGame.this);
+                    return "Pass on the opportunity to move and yield play to the opponent. If both player pass in succession, the game is ended.";
                 }
             });
         }
@@ -175,164 +377,13 @@ public abstract class GoGame extends StopGame
         return moves;
     }
 
-    protected void finishGame(Participant p) throws GameException
-    {
-        int winningScore = 0;
-        Participant winner = null;
-        for (Entry<Participant, PlayerScore> s : _scores.entrySet())
-        {
-            int score = s.getValue().getScore();
-            Participant key = s.getKey();
-            this.doAddMessage("%s has %d points.", getDisplayName(key), score);
-            if (null == winner || score > winningScore)
-            {
-                winner = key;
-            }
-        }
-        setCurrentState(GamePhase.Complete);
-        setLastWinner(getPlayerManager().findPlayer(winner));
-        this.doAddMessage("%s wins!", getDisplayName(winner));
-
-        final GameSession session = getSession();
-        if (null != session)
-        {
-            String displayName = getDisplayName(p);
-            final int playerIdx = _mplayerManager.getPlayerManager().findPlayer(p);
-            final int otherPlayerIdx = (playerIdx == 0) ? 1 : 0;
-            Participant otherPlayer = _mplayerManager.getPlayerManager().playerName(otherPlayerIdx);
-            String opponentName = getDisplayName(otherPlayer);
-            if (p instanceof Player)
-            {
-                rollForLoot(p);
-                
-                String type = "Win/Go";
-                String event = String.format("I won a game of Stop against %s!", opponentName);
-                ((Player) p).logActivity(new ActivityEvent(type, event));
-            }
-            if (otherPlayer instanceof Player)
-            {
-                String type = "Lose/Go";
-                String event = String.format("I lost a game of Stop against %s!", displayName);
-                ((Player) otherPlayer).logActivity(new ActivityEvent(type, event));
-            }
-            final ArrayList<Player> collection = new ArrayList<Player>();
-            if (winner instanceof Player)
-            {
-                collection.add((Player) winner);
-            }
-            session.doSplitWagerPool(collection);
-        }
-    }
-
-    private void rollForLoot(Participant p) throws GameException
-    {
-        Account account = ((Player) p).loadAccount();
-        GoLoot resource = account.getResource(GoLoot.class);
-        if(null == resource)
-        {
-            resource = new GoLoot();
-        }
-        PromotionConfig promoConfig = resource.getLoot();
-        if(null != promoConfig)
-        {
-            Promotion awardPromotion = account.doAwardPromotion(promoConfig);
-            addMessage(awardPromotion.getMessage()).setTo(p.getId());
-        }
-        account.setResource(GoLoot.class, resource);
-    }
-
     @Override
-    public GameState doRemoveMember(Participant agent) throws GameException
+    public Position getPosition(IndexPosition key, Player access) throws GameException
     {
-        super.doRemoveMember(agent);
-        _scores.remove(agent);
-        return this;
+        if (key.getCurveIndex() == ROW_SCORES) { return scorePosition.add(scroreOffset.scale(key.getCardIndex())); }
+        return super.getPosition(key, access);
     }
-
-    @Override
-    public GameState doReset()
-    {
-        super.doReset();
-        return this;
-    }
-
-    @Override
-    public GameState doStart() throws GameException
-    {
-        for (PlayerScore s : _scores.values())
-        {
-            s.clear();
-        }
-        return super.doStart();
-    }
-
-    @Override
-    public void finishTurn(final Participant player) throws GameException
-    {
-        // Recalculate territory
-        for (PlayerScore s : _scores.values())
-        {
-            s.setTerritory(0);
-        }
-        ArrayList<StopIsland> islands = getTokenArray().getIslands();
-        HashSet<GoIsland> countedIslands = new HashSet<GoIsland>();
-        for (StopIsland stopIsland : islands)
-        {
-            GoIsland goIsland = (GoIsland) stopIsland;
-            HashMap<GoIsland, Boolean> eyes = goIsland.getEyes();
-            for (GoIsland eye : eyes.keySet())
-            {
-                if (!countedIslands.contains(eye))
-                {
-                    int opposingPlayer = stopIsland.getPlayer();
-                    Participant playerName = getPlayerManager().playerName(opposingPlayer);
-                    PlayerScore playerScore = _scores.get(playerName);
-                    playerScore.setTerritory(playerScore.getTerritory() + eye.getSize());
-                    countedIslands.add(eye);
-                }
-            }
-        }
-
-        final Participant gotoNextPlayer = _mplayerManager.getPlayerManager().gotoNextPlayer();
-        doAddMessage("It is now %s's turn", getDisplayName(gotoNextPlayer));
-    }
-
-    @Override
-    public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
-    {
-        final List<AgentFactory<? extends Agent<?>>> agentFactories = new ArrayList<AgentFactory<? extends Agent<?>>>();
-        final PlayerManager playerManager = getPlayerManager();
-        agentFactories.add(new AgentFactory<Stupid1>()
-        {
-            @Override
-            public Stupid1 getAgent(final String string)
-            {
-                return new Stupid1("AI " + playerManager.getPlayerCount());
-            }
-
-            @Override
-            public String getName()
-            {
-                return "Easy";
-            }
-        });
-        agentFactories.add(new AgentFactory<GoAgent1>()
-        {
-            @Override
-            public GoAgent1 getAgent(final String string)
-            {
-                return new GoAgent1("AI " + playerManager.getPlayerCount(), 1, 15);
-            }
-
-            @Override
-            public String getName()
-            {
-                return "Normal";
-            }
-        });
-        return agentFactories;
-    }
-
+    
     @Override
     public TokenArray getTokenArray()
     {
@@ -341,52 +392,6 @@ public abstract class GoGame extends StopGame
             _tokenArray = new GoTokenArray(NUM_ROWS, NUM_ROWS, this);
         }
         return new GoTokenArray((GoTokenArray) _tokenArray);
-    }
-
-    public void captureIsland(StopIsland i)
-    {
-        int islandSize = i.getAllPositions().size();
-        Participant playerName = getPlayerManager().playerName(i.getPlayer());
-        PlayerScore playerScore = _scores.get(playerName);
-        playerScore.addPrisoners(islandSize);
-    }
-
-    LinkedList<TokenArray> history = new LinkedList<TokenArray>();
-
-    @Override
-    public void doMove(IndexPosition position, Participant player) throws GameException
-    {
-        TokenArray begin = getTokenArray();
-        history.push(begin);
-        while (history.size() > 2)
-        {
-            history.removeLast();
-        }
-        super.doMove(position, player);
-        TokenArray end = getTokenArray();
-        int playerIdx = getPlayerManager().findPlayer(player);
-        for (TokenArray h : history)
-        {
-            if (end.equals(h)) { throw new GameLogicException("Illegal Suicide", Level.FINE); }
-        }
-        if (begin.getScore(playerIdx) > end.getScore(playerIdx)) { throw new GameLogicException("Illegal Suicide"); }
-        _lastPlayerPassed = false;
-    }
-
-    @Override
-    public void resetBoard()
-    {
-        for (PlayerScore s : _scores.values())
-        {
-            s.clear();
-        }
-        super.resetBoard();
-    }
-    
-    @Override
-    public GameType<?> getGameType()
-    {
-       return GoGameType.INSTANCE;
     }
 
 }
