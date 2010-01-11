@@ -19,12 +19,15 @@ import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.entities.Promotion;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.BaseGame;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.PersistantTokenGame;
 import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.MultiPlayer;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexPosition;
@@ -103,10 +106,10 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void doAddPlayer(final Participant agent) throws GameException
+    public WordHuntGame doAddPlayer(final Participant agent) throws GameException
     {
-        super.doAddPlayer(agent);
         _mplayerManager.addMember(this, agent);
+        return (WordHuntGame) super.doAddPlayer(agent);
     }
 
     private boolean adjacent(final IndexPosition position, final IndexPosition prevPosition)
@@ -289,13 +292,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
             {
 
                 @Override
-                public boolean doCommand(Participant p, String commandText) throws GameException
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
                     ArrayList<ArrayList<IndexPosition>> paths = findWord(p, commandText);
-                    if(null == paths) return false;
+                    if(null == paths) return null;
                     currentPath.put(p.getId(), paths.get(0));
                     enterWord(p,commandText);
-                    return true;
+                    return new CommandResult<WordHuntGame>(WordHuntGame.this);
                     
                 }
 
@@ -340,7 +343,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                             }
 
                             @Override
-                            public boolean doCommand(Participant p, String commandText) throws GameException
+                            public CommandResult doCommand(Participant p, String commandText) throws GameException
                             {
                                 Player user = (Player) p;
                                 if ((null != prevPosition) && !adjacent(position, prevPosition))
@@ -352,7 +355,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
                                     token.selectedFor.add(user.getUserId());
                                     setSpellingBuffer(user.getUserId(), token.letter);
 
-                                    WordHuntGame.this.saveState();
+                                    WordHuntGame.this.doSaveState();
                                 }
                                 else
                                 {
@@ -364,9 +367,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
                                     setSpellingBuffer(user.getUserId(), currentWord);
 
                                     maybeComplete();
-                                    WordHuntGame.this.saveState();
+                                    WordHuntGame.this.doSaveState();
                                 }
-                                return true;
+                                return new CommandResult<WordHuntGame>(WordHuntGame.this);
                             }
                         });
                     }
@@ -374,13 +377,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
             }
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p, String commandText) throws GameException
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
                     final String currentWord = getSpellingBuffer(user.getUserId());
                     enterWord(user, currentWord);
-                    return true;
+                    return new CommandResult<WordHuntGame>(WordHuntGame.this);
                 }
 
                 public String getCommandText()
@@ -395,13 +398,13 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p, String commandText) throws GameException
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
                     clearCurrentWord(user.getUserId());
-                    WordHuntGame.this.saveState();
-                    return true;
+                    WordHuntGame.this.doSaveState();
+                    return new CommandResult<WordHuntGame>(WordHuntGame.this);
                 }
 
                 public String getCommandText()
@@ -416,14 +419,14 @@ public abstract class WordHuntGame extends PersistantTokenGame
             });
             arrayList.add(new GameCommand()
             {
-                public boolean doCommand(Participant p, String commandText) throws GameException
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
                     Player user = (Player) p;
                     GameSession game = WordHuntGame.this.getSession();
                     playerStatus.put(user.getUserId(), PlayerState.Complete);
                     maybeComplete();
-                    WordHuntGame.this.saveState();
-                    return true;
+                    WordHuntGame.this.doSaveState();
+                    return new CommandResult<WordHuntGame>(WordHuntGame.this);
                 }
 
                 public String getCommandText()
@@ -694,9 +697,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void doReset()
+    public WordHuntGame doReset()
     {
-        // TODO Auto-generated method stub
+        return this;
     }
 
     private void setSpellingBuffer(final String userId, final String string)
@@ -705,7 +708,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void doStart() throws GameException
+    public WordHuntGame doStart() throws GameException
     {
         final GameSession session = getSession();
         session.doUnitWager();
@@ -732,12 +735,14 @@ public abstract class WordHuntGame extends PersistantTokenGame
             final BoardToken token = generateToken(chainSize, getMarkovChain(), tokenArray, p);
             add(token);
         }
+        return this;
     }
 
     @Override
-    public void doUpdate() throws GameException
+    public WordHuntGame doUpdate() throws GameException
     {
         _mplayerManager.update(this);
+        return this;
     }
 
     @Override
@@ -808,10 +813,10 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public void doRemoveMember(Participant agent) throws GameException
+    public WordHuntGame doRemoveMember(Participant agent) throws GameException
     {
-        super.doRemoveMember(agent);
         _mplayerManager.addMember(this, agent);
+        return (WordHuntGame) super.doRemoveMember(agent);
     }
 
     private LanguageProvider _language;
@@ -860,7 +865,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         if (wordList.contains(currentWord))
         {
             WordHuntGame.this.doAddMessage("Already Entered: " + currentWord).setTo(p.getId());
-            WordHuntGame.this.saveState();
+            WordHuntGame.this.doSaveState();
         }
         else if (WordHuntGame.this.verifyWord(currentWord))
         {
@@ -874,7 +879,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
         }
         clearCurrentWord(p.getId());
         maybeComplete();
-        WordHuntGame.this.saveState();
+        WordHuntGame.this.doSaveState();
     }
 
     private void explodeWord(Participant p, ArrayList<IndexPosition> wordPath)

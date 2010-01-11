@@ -28,134 +28,62 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void doUpdate() throws GameException
-    {
-    }
-
-    @Override
-    public GameFrame getView(Player access) throws GameException
+    public Message doAddMessage(MessageType type, String msg, Object... params)
     {
         return null;
     }
 
     @Override
-    public void doStart() throws GameException
-    {
-    }
-
-    @Override
-    public void setWidth(int width)
-    {
-    }
-
-    @Override
-    public void setVersionNumber(int i)
-    {
-    }
-
-    @Override
-    public void setTimeOffset(int timeOffset)
-    {
-    }
-
-    @Override
-    public void setSilent(boolean b)
-    {
-    }
-
-    @Override
-    public void setParentGame(GameState parentGame)
-    {
-    }
-
-    @Override
-    public void setHeight(int height)
-    {
-    }
-
-    @Override
-    public void saveState() throws GameException
-    {
-    }
-
-    @Override
-    public void doReset()
-    {
-    }
-
-    @Override
-    public void doRemoveMember(Participant email) throws GameException
-    {
-    }
-
-    @Override
-    public boolean isInPlay()
-    {
-        return false;
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getTimeOffset()
-    {
-        return 0;
-    }
-
-    @Override
-    public com.sawdust.engine.controller.entities.GameSession getSession()
+    public Message doAddMessage(String msg, Object... params)
     {
         return null;
     }
 
     @Override
-    public GameState getParentGame()
+    public GameState doAddPlayer(Participant agent) throws GameException
     {
-        return null;
+        return this;
     }
 
     @Override
-    public ArrayList<Message> getMessages()
+    public GameState doAdvanceTime(int milliseconds)
     {
-        return null;
+        return this;
+        
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+    public GameState doRemoveMember(Participant email) throws GameException
     {
-        return null;
+        return this;
     }
 
     @Override
-    public GameCommand getMove(String commandText, Participant access) throws GameException
+    public GameState doReset()
     {
-        return null;
+        return this;
     }
 
     @Override
-    public String getKeywords()
+    public GameState doSaveState() throws GameException
     {
-        return null;
+        return this;
     }
 
     @Override
-    public int getHeight()
+    public GameState doStart() throws GameException
     {
-        return 0;
+        return this;
     }
 
     @Override
-    public GameType<?> getGameType()
+    public GameState doUpdate() throws GameException
     {
-        return null;
+        return this;
     }
 
     @Override
-    public Participant getCurrentPlayer()
+    public List<AgentFactory<?>> getAgentFactories()
     {
         return null;
     }
@@ -167,7 +95,7 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public List<AgentFactory<?>> getAgentFactories()
+    public Participant getCurrentPlayer()
     {
         return null;
     }
@@ -179,25 +107,57 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void doAdvanceTime(int milliseconds)
-    {
-    }
-
-    @Override
-    public Message doAddMessage(String msg, Object... params)
+    public GameType<?> getGameType()
     {
         return null;
     }
 
     @Override
-    public Message doAddMessage(MessageType type, String msg, Object... params)
+    public int getHeight()
+    {
+        return 0;
+    }
+
+    @Override
+    public String getKeywords()
     {
         return null;
     }
 
     @Override
-    public void doAddPlayer(Participant agent) throws GameException
+    public ArrayList<Message> getMessages()
     {
+        return null;
+    }
+
+    @Override
+    public GameCommand getMove(String commandText, Participant access) throws GameException
+    {
+        return null;
+    }
+
+    @Override
+    public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+    {
+        return null;
+    }
+
+    @Override
+    public GameState getParentGame()
+    {
+        return null;
+    }
+
+    @Override
+    public com.sawdust.engine.controller.entities.GameSession getSession()
+    {
+        return null;
+    }
+
+    @Override
+    public int getTimeOffset()
+    {
+        return 0;
     }
 
     public int getUpdateTime()
@@ -206,8 +166,63 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public void setConfig(GameConfig newConfig) throws GameException
+    public GameFrame getView(Player access) throws GameException
     {
+        return null;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean isInPlay()
+    {
+        return false;
+    }
+
+    @Override
+    public GameState setConfig(GameConfig newConfig) throws GameException
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setHeight(int height)
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setParentGame(GameState parentGame)
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setSilent(boolean b)
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setTimeOffset(int timeOffset)
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setVersionNumber(int i)
+    {
+        return this;
+    }
+
+    @Override
+    public GameState setWidth(int width)
+    {
+        return this;
     }
 
 }

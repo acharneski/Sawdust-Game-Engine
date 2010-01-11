@@ -11,6 +11,7 @@ import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexCard;
@@ -87,9 +88,9 @@ final class OpenMakingPhase extends GamePhase
 				}
 				
 				@Override
-				public boolean doCommand(Participant p, String commandText) throws GameException {
+				public CommandResult doCommand(Participant p, String commandText) throws GameException {
                     com.sawdust.games.euchre.Command.CallSuit.doCommand((Player) p, game.getSession(), suit.fullString());
-					return true;
+					return new CommandResult<EuchreGame>(game);
 				}
 			});
         }

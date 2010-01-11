@@ -15,11 +15,13 @@ import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.controller.exceptions.InputException;
 import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.MultiPlayerCardGame;
 import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexCard;
@@ -548,9 +550,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p, String commandText) throws GameException {
+						public CommandResult doCommand(Participant p, String commandText) throws GameException {
                             com.sawdust.games.poker.Commands.Drop_Cards.doCommand((Player)p, getSession(), cardNumberStr);
-                            return true;
+                            return new CommandResult<PokerGame>(PokerGame.this);
 						}
 					});
                 }
@@ -569,9 +571,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p, String commandText) throws GameException {
+					public CommandResult doCommand(Participant p, String commandText) throws GameException {
                         com.sawdust.games.poker.Commands.Draw_Cards.doCommand((Player) p, getSession(), "");
-                        return true;
+                        return new CommandResult<PokerGame>(PokerGame.this);
 					}
 				});
             }
@@ -605,9 +607,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p, String commandText) throws GameException {
+					public CommandResult doCommand(Participant p, String commandText) throws GameException {
                         com.sawdust.games.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
-                        return true;
+                        return new CommandResult<PokerGame>(PokerGame.this);
 					}
 				});
             }
@@ -629,9 +631,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p, String commandText) throws GameException {
+					public CommandResult doCommand(Participant p, String commandText) throws GameException {
                         com.sawdust.games.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
-						return true;
+                        return new CommandResult<PokerGame>(PokerGame.this);
 					}
 				});
             }
@@ -654,9 +656,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p, String commandText) throws GameException {
+						public CommandResult doCommand(Participant p, String commandText) throws GameException {
                             com.sawdust.games.poker.Commands.Bet.doCommand(p, getSession(), betAmt);
-                            return true;
+                            return new CommandResult<PokerGame>(PokerGame.this);
 						}
 					});
                 }
@@ -682,9 +684,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 						}
 						
 						@Override
-						public boolean doCommand(Participant p, String commandText) throws GameException {
+						public CommandResult doCommand(Participant p, String commandText) throws GameException {
                             com.sawdust.games.poker.Commands.Bet.doCommand((Player) p, getSession(), betAmt);
-							return true;
+                            return new CommandResult<PokerGame>(PokerGame.this);
 						}
 					});
                 }
@@ -704,9 +706,9 @@ public abstract class PokerGame extends MultiPlayerCardGame
 					}
 					
 					@Override
-					public boolean doCommand(Participant p, String commandText) throws GameException {
+					public CommandResult doCommand(Participant p, String commandText) throws GameException {
                         com.sawdust.games.poker.Commands.Fold.doCommand((Player) p, getSession(), "");
-                        return true;
+                        return new CommandResult<PokerGame>(PokerGame.this);
 					}
 				});
             }
@@ -811,10 +813,11 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void doReset()
+    public GameState doReset()
     {
         clearTokens();
         _currentPhase = GamePhase.Null;
+        return this;
     }
 
     protected void setCurrentPhase(final GamePhase currentPhase)
@@ -824,7 +827,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void doStart() throws GameException
+    public GameState doStart() throws GameException
     {
         boolean isntComplete = getCurrentPhase() != GamePhase.Complete;
         boolean isntNull = getCurrentPhase() != GamePhase.Null;
@@ -857,10 +860,11 @@ public abstract class PokerGame extends MultiPlayerCardGame
         getPlayerManager().setCurrentPlayer(0);
         final Participant nextPlayer = getPlayerManager().gotoNextPlayer();
         this.doAddMessage(MessageType.Compact, "%s's turn: ", getDisplayName(nextPlayer));
+        return this;
     }
 
     @Override
-    public void doUpdate() throws GameException
+    public GameState doUpdate() throws GameException
     {
         super.doUpdate();
         if (getCurrentPhase() == GamePhase.Drawing)
@@ -873,6 +877,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 }
             }
         }
+        return this;
     }
 
 	@Override

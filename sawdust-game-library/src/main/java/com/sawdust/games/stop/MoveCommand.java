@@ -6,6 +6,7 @@ package com.sawdust.games.stop;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.IndexPosition;
 
@@ -36,12 +37,12 @@ public final class MoveCommand extends GameCommand
    }
    
    @Override
-   public boolean doCommand(Participant p, String commandText) throws GameException
+   public CommandResult doCommand(Participant p, String commandText) throws GameException
    {
       final IndexPosition position = new IndexPosition(pos.row, pos.col);
       this.stopGame.doMove(position, p);
-      this.stopGame.saveState();
-      return true;
+      this.stopGame.doSaveState();
+      return new CommandResult<StopGame>(this.stopGame);
    }
    
    public ArrayPosition getPosition()

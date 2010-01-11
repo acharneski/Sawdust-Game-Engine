@@ -22,15 +22,15 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
     }
     
     @Override
-    public void doReset()
+    public TutorialGame doReset()
     {
-        super.doReset();
+        return (TutorialGame) super.doReset();
     }
     
     protected LoadedDeck _deck = null;
 
     @Override
-    public void doStart() throws GameException
+    public TutorialGameBase<BlackjackGame> doStart() throws GameException
     {
        if(null == _deck)
        {
@@ -51,7 +51,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
        }
         
        getInnerGame().setDeck(_deck);
-       super.doStart();
+       return super.doStart();
     }
     
     @Override
@@ -80,7 +80,7 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
    }
 
    @Override
-   public void setParentGame(GameState parentGame)
+   public TutorialGameBase<BlackjackGame> setParentGame(GameState parentGame)
    {
       throw new RuntimeException("Not Implemented");
    }

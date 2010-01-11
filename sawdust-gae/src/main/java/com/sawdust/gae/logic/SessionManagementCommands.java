@@ -10,6 +10,7 @@ import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.gae.datastore.entities.GameSession;
 import com.sawdust.gae.datastore.entities.SessionMember;
@@ -57,7 +58,7 @@ public enum SessionManagementCommands
          
          ((GameSession) gameSession).createOpenInvite(user);
          baseGame.doAddMessage("Created public game listing at the request of %s", baseGame.getDisplayName(user));
-         baseGame.saveState();
+         baseGame.doSaveState();
       }
       
       public String getCommandText()
@@ -103,7 +104,7 @@ public enum SessionManagementCommands
          member.setMemberStatus(MemberStatus.Quit);
          final GameState baseGame = gameSession.getState();
          baseGame.doAddMessage("%s leaves the game.", baseGame.getDisplayName(user));
-         baseGame.saveState();
+         baseGame.doSaveState();
       }
       
       public String getCommandText()
@@ -131,7 +132,7 @@ public enum SessionManagementCommands
          }
          else throw new GameLogicException("Command restricted to owner: " + baseGame.getDisplayName(owner));
          baseGame.doReset();
-         baseGame.saveState();
+         baseGame.doSaveState();
          
       }
       
@@ -158,12 +159,12 @@ public enum SessionManagementCommands
          if (null == player || player.equals(user))
          {
             baseGame.doAddMessage("%s (game owner) says \"%s\"", baseGame.getDisplayName(user), param);
-            baseGame.saveState();
+            baseGame.doSaveState();
          }
          else
          {
             baseGame.doAddMessage("%s says \"%s\"", baseGame.getDisplayName(user), param);
-            baseGame.saveState();
+            baseGame.doSaveState();
          }
       }
       
@@ -184,7 +185,7 @@ public enum SessionManagementCommands
       {
          final GameState state = game.getState();
          state.doUpdate();
-         state.saveState();
+         state.doSaveState();
          
          SessionMember findMember = ((GameSession) game).findMember(user.getId());
          if (null != findMember)
@@ -231,11 +232,11 @@ public enum SessionManagementCommands
          }
          
          @Override
-         public boolean doCommand(Participant p, String commandText) throws GameException
+         public CommandResult doCommand(Participant p, String commandText) throws GameException
          {
             com.sawdust.engine.controller.entities.GameSession session = game.getSession();
             SessionManagementCommands.this.doCommand((Player) p, session, "");
-            return true;
+            return new CommandResult<GameState>(game);
          }
       };
    }

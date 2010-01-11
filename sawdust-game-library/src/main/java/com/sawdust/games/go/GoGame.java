@@ -18,11 +18,13 @@ import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.model.players.PlayerManager;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexPosition;
@@ -71,10 +73,10 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void doAddPlayer(Participant agent) throws GameException
+    public StopGame doAddPlayer(Participant agent) throws GameException
     {
-        super.doAddPlayer(agent);
         _scores.put(agent, new PlayerScore());
+        return super.doAddPlayer(agent);
     }
 
     @Override
@@ -151,7 +153,7 @@ public abstract class GoGame extends StopGame
                 }
 
                 @Override
-                public boolean doCommand(Participant p, String commandText) throws GameException
+                public CommandResult doCommand(Participant p, String commandText) throws GameException
                 {
                     if (GoGame.this._lastPlayerPassed)
                     {
@@ -165,7 +167,7 @@ public abstract class GoGame extends StopGame
                         GoGame.this.doAddMessage("%s passed!", GoGame.this.getDisplayName(p));
                         GoGame.this.finishTurn(p);
                     }
-                    return true;
+                    return new CommandResult<GameState>(GoGame.this);
                 }
             });
         }
@@ -240,27 +242,28 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public void doRemoveMember(Participant agent) throws GameException
+    public GameState doRemoveMember(Participant agent) throws GameException
     {
         super.doRemoveMember(agent);
         _scores.remove(agent);
+        return this;
     }
 
     @Override
-    public void doReset()
+    public GameState doReset()
     {
         super.doReset();
-        // _scores.clear();
+        return this;
     }
 
     @Override
-    public void doStart() throws GameException
+    public GameState doStart() throws GameException
     {
         for (PlayerScore s : _scores.values())
         {
             s.clear();
         }
-        super.doStart();
+        return super.doStart();
     }
 
     @Override

@@ -46,47 +46,51 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
 
     static final UserService userService = com.google.appengine.api.users.UserServiceFactory.getUserService();
 
-    public static void doCommand(final String cmd, final com.sawdust.engine.controller.entities.GameSession gameSession, final GameState tokenGame,
-            final Player player) throws GameException
+    public static <T extends GameState> com.sawdust.engine.model.state.CommandResult doCommand(final String cmd, final GameSession gameSession, final T tokenGame, final Player player)
+            throws GameException
     {
         if ((null != cmd) && (null != tokenGame))
         {
-            boolean handled = false;
+            com.sawdust.engine.model.state.CommandResult newGame = null;
             for (final SessionManagementCommands thidcmd : com.sawdust.gae.logic.SessionManagementCommands.values())
             {
                 GameCommand gameCommand = thidcmd.getGameCommand(tokenGame);
-                if (cmd.startsWith(gameCommand.getCommandText()) && gameCommand.doCommand(player, cmd))
+                boolean startsWith = cmd.startsWith(gameCommand.getCommandText());
+                if (startsWith)
                 {
-                    handled = true;
+                    newGame = gameCommand.doCommand(player, cmd);
                     break;
                 }
             }
-            if (!handled)
+            if (null == newGame)
             {
                 for (final GameCommand thisCmd : tokenGame.getMoves(player))
                 {
-                    if (cmd.startsWith(thisCmd.getCommandText()) && thisCmd.doCommand(player, cmd))
+                    boolean startsWith = cmd.startsWith(thisCmd.getCommandText());
+                    if (startsWith)
                     {
-                        handled = true;
+                        newGame = thisCmd.doCommand(player, cmd);
+                        break;
                     }
                 }
             }
-            if (!handled)
+            if (null == newGame)
             {
                 SessionManagementCommands.Say.doCommand(player, gameSession, cmd);
+                return new com.sawdust.engine.model.state.CommandResult<GameState>(tokenGame);
             }
-            if (handled)
+            else
             {
-                tokenGame.doUpdate();
+                return newGame;
             }
         }
+        return null;
     }
 
     private static com.sawdust.gae.logic.SessionToken getSessionToken2(final AccessToken accessData,
             final HttpServletRequest threadLocalRequest, final HttpServletResponse threadLocalResponse)
     {
-        final com.sawdust.gae.logic.User user = com.sawdust.gae.logic.User.getUser(threadLocalRequest, threadLocalResponse,
-                accessData);
+        final com.sawdust.gae.logic.User user = com.sawdust.gae.logic.User.getUser(threadLocalRequest, threadLocalResponse, accessData);
         final com.sawdust.gae.logic.SessionToken returnValue = new com.sawdust.gae.logic.SessionToken(accessData, user);
         return returnValue;
     }
@@ -113,9 +117,9 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final com.sawdust.gae.logic.SessionToken access = getSessionToken2(access2, request, response);
             final Account account = access.doLoadAccount();
 
-            final com.sawdust.gae.datastore.entities.GameSession newSession = new com.sawdust.gae.datastore.entities.GameSession(account);
+            final GameSession newSession = new GameSession(account);
             final GameState gameObj = Games.NewGame(gameToCreate, game, newSession, access2);
-            
+
             final TinySession tinySession = TinySession.load(newSession);
             final GameLocation gameLocation = new GameLocation(tinySession.getTinyId(), access.getUser().getSite());
             if (gameLocation.site.startsWith("http://apps.facebook.com"))
@@ -127,7 +131,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
                 gameLocation.page = "p/";
             }
             String redirectUrl = gameLocation.getRedirectUrl();
-            if(redirectUrl.startsWith("/")) redirectUrl = "http://sawdust-games.appspot.com" + redirectUrl;
+            if (redirectUrl.startsWith("/")) redirectUrl = "http://sawdust-games.appspot.com" + redirectUrl;
             newSession.setUrl(redirectUrl);
 
             if (gameObj instanceof BaseGame)
@@ -136,7 +140,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             }
 
             newSession.doUpdateConfig(game);
-            gameObj.saveState();
+            gameObj.doSaveState();
             final Player player = account.getPlayer();
             newSession.addPlayer(player);
 
@@ -148,7 +152,7 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
                 }
                 else
                 {
-                    newSession.setStatus(com.sawdust.engine.controller.entities.GameSession.SessionStatus.Inviting, gameObj);
+                    newSession.setStatus(SessionStatus.Inviting, gameObj);
                     if (game.getProperties().get(GameConfig.PUBLIC_INVITES).getBoolean())
                     {
                         newSession.createOpenInvite(player);
@@ -191,14 +195,14 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
             final com.sawdust.gae.logic.SessionToken access = getSessionToken(access2);
             LOG.info(String.format("Command=%s;\tUser=%s", cmd, access.getUserId()));
 
-            com.sawdust.engine.controller.entities.GameSession gameSession;
+            GameSession gameSession;
             gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Cannot load session");
             final int gameVersion = gameSession.getLatestVersionNumber();
             final GameState tokenGame = gameSession.getState();
             final Account loadAccount = access.doLoadAccount();
             final Player player = loadAccount.getPlayer();
-            doCommand(cmd, gameSession, tokenGame, player);
+            final com.sawdust.engine.model.state.CommandResult newGame = doCommand(cmd, gameSession, tokenGame, player);
 
             final CommandResult commandResult = new CommandResult();
             for (final GameState intermediateState : gameSession.doGetStatesSince(gameVersion))
@@ -258,8 +262,6 @@ public class SawdustGameService_Google extends RemoteServiceServlet implements S
         {
             DataStore.Clear();
             final com.sawdust.gae.logic.SessionToken access = getSessionToken(accessData);
-            // System.out.println(String.format("Update=%s;\tUser=%s",
-            // gameVersion, access.getUserId()));
 
             GameSession gameSession = access.doLoadSession();
             if (null == gameSession) throw new InputException("Cannot load session");

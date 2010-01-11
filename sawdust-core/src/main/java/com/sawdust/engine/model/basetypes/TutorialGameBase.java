@@ -12,6 +12,7 @@ import com.sawdust.engine.model.TutorialPhase;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.engine.view.game.GameFrame;
@@ -61,7 +62,7 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
          {
             if (phase.allowCommand(TutorialGameBase.this, m))
             {
-               returnValue.add(new GameCommand()
+               returnValue.add(new GameCommand<TutorialGameBase<S>>()
                {
                   @Override
                   public String getHelpText()
@@ -76,12 +77,12 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
                   }
                   
                   @Override
-                  public boolean doCommand(Participant p, String commandText) throws GameException
+                  public CommandResult doCommand(Participant p, String commandText) throws GameException
                   {
                      setPhase(phase.preCommand(TutorialGameBase.this, m, p));
-                     boolean cmdResult = m.doCommand(p, commandText);
+                     CommandResult cmdResult = m.doCommand(p, commandText);
                      setPhase(phase.postCommand(TutorialGameBase.this, m, p));
-                     TutorialGameBase.this.saveState();
+                     TutorialGameBase.this.doSaveState();
                      return cmdResult;
                   }
                });
@@ -92,17 +93,19 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
    
    @Override
-   public void doReset()
+   public TutorialGameBase doReset()
    {
       getInnerGame().doReset();
       _isFirstPlay = false;
+      return this;
    }
    
    @Override
-   public void doStart() throws GameException
+   public TutorialGameBase<S> doStart() throws GameException
    {
       getInnerGame().doStart();
       _isFirstPlay = false;
+      return this;
    }
    
    @Override
@@ -163,9 +166,10 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void doUpdate() throws GameException
+   public TutorialGameBase<S> doUpdate() throws GameException
    {
       getInnerGame().doUpdate();
+      return this;
    }
 
    public S getInnerGame()
@@ -175,9 +179,10 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    
 
    @Override
-   public void doAddPlayer(Participant agent) throws GameException
+   public TutorialGameBase<S> doAddPlayer(Participant agent) throws GameException
    {
       _innerGame.doAddPlayer(agent);
+      return this;
    }
 
    @Override
@@ -241,27 +246,31 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void doRemoveMember(Participant email) throws GameException
+   public TutorialGameBase<S> doRemoveMember(Participant email) throws GameException
    {
       _innerGame.doRemoveMember(email);
+      return this;
    }
 
    @Override
-   public void setHeight(int height)
+   public TutorialGameBase<S> setHeight(int height)
    {
       _innerGame.setHeight(height);
+      return this;
    }
 
    @Override
-   public void setSilent(boolean b)
+   public TutorialGameBase<S> setSilent(boolean b)
    {
       _innerGame.setSilent(b);
+      return this;
    }
 
    @Override
-   public void setWidth(int width)
+   public TutorialGameBase<S> setWidth(int width)
    {
       _innerGame.setWidth(width);
+      return this;
    }
    @Override
    public int getTimeOffset()
@@ -270,24 +279,26 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void setTimeOffset(int timeOffset)
+   public TutorialGameBase<S> setTimeOffset(int timeOffset)
    {
       _innerGame.setTimeOffset(timeOffset);
-      
+      return this;
    }
 
    @Override
-   public void setVersionNumber(int i)
+   public TutorialGameBase<S> setVersionNumber(int i)
    {
       _innerGame.setVersionNumber(i);
+      return this;
    }
 
-   public void saveState() throws GameException
+   public GameState doSaveState() throws GameException
    {
       getSession().setState(this);
+      return this;
    }
 
-   public void setParentGame(GameState _parentGame)
+   public TutorialGameBase<S> setParentGame(GameState _parentGame)
    {
       throw new RuntimeException("Not Implemented");
    }
@@ -297,9 +308,10 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       throw new RuntimeException("Not Implemented");
    }
 
-   public void doAdvanceTime(int milliseconds)
+   public TutorialGameBase<S> doAdvanceTime(int milliseconds)
    {
       _innerGame.doAdvanceTime(milliseconds);
+      return this;
    }
 
    public int getUpdateTime()
@@ -308,8 +320,9 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
 
    @Override
-   public void setConfig(GameConfig newConfig) throws GameException
+   public TutorialGameBase<S> setConfig(GameConfig newConfig) throws GameException
    {
+       return this;
    }
 
 }

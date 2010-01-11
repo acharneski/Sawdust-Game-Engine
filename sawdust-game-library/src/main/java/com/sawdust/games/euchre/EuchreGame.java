@@ -15,6 +15,7 @@ import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.ComparableList;
 import com.sawdust.engine.model.GameModification;
 import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.MultiPlayerCardGame;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
@@ -432,10 +433,11 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void doReset()
+    public GameState doReset()
     {
         clearTokens();
         setCurrentPhase(EuchreGame.DEALING);
+        return this;
     }
 
     public void setCurrentPhase(final GamePhase pcurrentPhase)
@@ -444,7 +446,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public void doStart() throws GameException
+    public GameState doStart() throws GameException
     {
         final GameSession session = getSession();
         session.doUnitWager();
@@ -461,6 +463,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         
         session.setStatus(SessionStatus.Playing, this);
         doCommand(EuchreCommand.Deal);
+        return this;
     }
 
 

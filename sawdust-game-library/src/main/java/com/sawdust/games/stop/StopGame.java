@@ -16,6 +16,7 @@ import com.sawdust.engine.controller.exceptions.SawdustSystemError;
 import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.GameType;
 import com.sawdust.engine.model.basetypes.BaseGame;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.MultiPlayerGame;
 import com.sawdust.engine.model.basetypes.TokenGame;
 import com.sawdust.engine.model.players.ActivityEvent;
@@ -70,10 +71,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void doRemoveMember(Participant agent) throws GameException
+   public GameState doRemoveMember(Participant agent) throws GameException
    {
-      super.doRemoveMember(agent);
       _mplayerManager.removeMember(this, agent);
+      return super.doRemoveMember(agent);
    }
    
    protected StopGame(StopGame obj)
@@ -101,10 +102,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void doAddPlayer(final Participant agent) throws GameException
+   public StopGame doAddPlayer(final Participant agent) throws GameException
    {
-      super.doAddPlayer(agent);
       _mplayerManager.addMember(this, agent);
+      return (StopGame) super.doAddPlayer(agent);
    }
    
    public void doMove(final IndexPosition position, final Participant player) throws GameException
@@ -122,7 +123,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
       if (null != boardValue && -1 != boardValue.value) throw new GameLogicException("Can only place tiles at empty nodes");
       setBoardData(row, col, playerIdx);
       this.doAdvanceTime(500);
-      this.saveState();
+      this.doSaveState();
       this.doAdvanceTime(500);
 
       final TokenArray ta = getTokenArray();
@@ -378,13 +379,14 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void doReset()
+   public GameState doReset()
    {
       _currentState = GamePhase.Lobby;
+      return this;
    }
    
    @Override
-   public void doStart() throws GameException
+   public GameState doStart() throws GameException
    {
       if (2 > _mplayerManager.getPlayerManager().getPlayerCount())
       {
@@ -416,6 +418,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
          doAddMessage("It is now %s's turn", getDisplayName(nextPlayer));
       }
       _currentState = GamePhase.Playing;
+      return this;
    }
 
    public void resetBoard()
@@ -433,9 +436,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
    }
    
    @Override
-   public void doUpdate() throws GameException
+   public GameState doUpdate() throws GameException
    {
       _mplayerManager.update(this);
+      return this;
    }
    
    @Override

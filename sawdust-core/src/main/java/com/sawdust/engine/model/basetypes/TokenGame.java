@@ -110,7 +110,7 @@ public abstract class TokenGame extends BaseGame {
 	}
 
     @Override
-    public void doAddPlayer(final Participant agent) throws GameException
+    public GameState doAddPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -121,7 +121,7 @@ public abstract class TokenGame extends BaseGame {
             String id = ((Agent<?>) agent).getId();
             _displayFilter.put(agent, id);
         }
-        super.doAddPlayer(agent);
+        return super.doAddPlayer(agent);
     }
 
     @Override

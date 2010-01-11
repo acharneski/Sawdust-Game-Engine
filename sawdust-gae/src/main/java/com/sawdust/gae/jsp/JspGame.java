@@ -22,6 +22,7 @@ import com.sawdust.engine.view.game.GameLabel;
 import com.sawdust.engine.view.game.Message;
 import com.sawdust.gae.SawdustGameService_Google;
 import com.sawdust.gae.datastore.DataStore;
+import com.sawdust.gae.datastore.entities.GameSession;
 import com.sawdust.gae.logic.SessionToken;
 
 public class JspGame implements Serializable
@@ -29,7 +30,7 @@ public class JspGame implements Serializable
     private static final Logger LOG = Logger.getLogger(JspGame.class.getName());
 
     private volatile GameState _game;
-    private volatile com.sawdust.engine.controller.entities.GameSession _gameSession;
+    private volatile GameSession _gameSession;
     private volatile GameFrame _gwtGame = null;
     private volatile boolean _isInitialized = false;
     private volatile HttpServletRequest _request = null;
@@ -41,7 +42,7 @@ public class JspGame implements Serializable
     {
         init();
         SawdustGameService_Google.doCommand(cmd, _gameSession, _game, _player);
-        _game.saveState();
+        _game.doSaveState();
         setGame((null == _game) ? null : _game.getView(_player));
         DataStore.Save();
     }

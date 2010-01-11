@@ -9,9 +9,11 @@ import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
 import com.sawdust.engine.model.GameType;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.basetypes.IndexCardGame;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexCard;
@@ -74,11 +76,11 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public void doAddPlayer(final Participant s) throws GameException
+    public GameState doAddPlayer(final Participant s) throws GameException
     {
         if (null != _owner) throw new GameLogicException(String.format("This game is already inhabited by %s", _owner));
         _owner = s;
-        // start();
+        return this;
     }
     
     @Override
@@ -112,13 +114,13 @@ public abstract class BlackjackGame extends IndexCardGame
          * to "stand on R-B-0034 all 17's."
          */
         int dealerScore = getScore(HAND_DEALER);
-        this.saveState();
+        this.doSaveState();
         this.doAdvanceTime(DEALER_PAUSE_MS);
         while (dealerScore < 17)
         {
             this.doAddMessage("Dealer has %d; dealer hits", dealerScore);
             dealerScore = hit(HAND_DEALER);
-            this.saveState();
+            this.doSaveState();
             this.doAdvanceTime(DEALER_PAUSE_MS);
         }
         this.doAddMessage("Dealer has %d", dealerScore);
@@ -323,10 +325,10 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p, String commandText) throws GameException
+                    public CommandResult doCommand(Participant p, String commandText) throws GameException
                     {
                         o.doCommand(p, BlackjackGame.this, "");
-                        return true;
+                        return new CommandResult<GameState>(BlackjackGame.this);
                     }
                 });
             }
@@ -339,7 +341,7 @@ public abstract class BlackjackGame extends IndexCardGame
                             throws GameException
                     {
                         BlackjackGame.this.doHit(i);
-                        BlackjackGame.this.saveState();
+                        BlackjackGame.this.doSaveState();
                     }
                     
                     public String getCommandText()
@@ -353,10 +355,10 @@ public abstract class BlackjackGame extends IndexCardGame
                     }
                     
                     @Override
-                    public boolean doCommand(Participant p, String commandText) throws GameException
+                    public CommandResult doCommand(Participant p, String commandText) throws GameException
                     {
                         doCommand(p, BlackjackGame.this.getSession(), "");
-                        return true;
+                        return new CommandResult<GameState>(BlackjackGame.this);
                     }
                 });
             }
@@ -455,14 +457,15 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public void doReset()
+    public GameState doReset()
     {
         clearTokens();
         _currentPhase = GamePhases.Null;
+        return this;
     }
     
     @Override
-    public void doStart() throws GameException
+    public GameState doStart() throws GameException
     {
         if (GamePhases.Playing != _currentPhase) 
         {
@@ -573,6 +576,8 @@ public abstract class BlackjackGame extends IndexCardGame
                 }
             }
         }
+        return this;
+        
     }
     
     @Override
@@ -585,9 +590,9 @@ public abstract class BlackjackGame extends IndexCardGame
     }
     
     @Override
-    public void doUpdate() throws GameException
+    public GameState doUpdate() throws GameException
     {
-        // Do nothing
+        return this;
     }
     
     @Override

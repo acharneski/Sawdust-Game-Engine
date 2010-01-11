@@ -13,6 +13,7 @@ import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.view.cards.Suits;
 
@@ -34,7 +35,7 @@ public enum Command
             {
                 throw new SawdustSystemError(e);
             }
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -58,7 +59,7 @@ public enum Command
             final GameSession gameSession = game;
             if (SessionStatus.Playing == gameSession.getStatus()) throw new GameLogicException("A game is in progress");
             gameSession.setStatus(SessionStatus.Closed, baseGame);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -83,7 +84,7 @@ public enum Command
             final boolean notCurrentPlayer = (user == null) || !user.equals(euchreGame.getCurrentPlayer());
             if (notCurrentPlayer) throw new GameLogicException("It is not your turn");
             euchreGame.doCommand(EuchreCommand.Pass);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -129,7 +130,7 @@ public enum Command
 
             if (!user.equals(euchreGame.getCurrentPlayer())) throw new GameLogicException("It is not your turn");
             euchreGame.doCommand(EuchreCommand.Play, user, cardIndexToPlay);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -164,9 +165,9 @@ public enum Command
 			}
 			
 			@Override
-			public boolean doCommand(Participant p, String commandText) throws GameException {
+			public CommandResult doCommand(Participant p, String commandText) throws GameException {
 				Command.this.doCommand(p, game.getSession(), "");
-				return true;
+				return new CommandResult<GameState>(game);
 			}
 		};
 	}

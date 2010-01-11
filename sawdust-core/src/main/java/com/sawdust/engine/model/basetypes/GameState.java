@@ -24,16 +24,22 @@ public interface GameState extends Serializable, Cloneable
     @Deprecated
     Message doAddMessage(final String msg, final Object... params);
 
-    void doAddPlayer(final Participant agent) throws GameException;
+    GameState doAddPlayer(final Participant agent) throws GameException;
 
-    public void doAdvanceTime(int milliseconds);
+    GameState doAdvanceTime(int milliseconds);
 
-    void doRemoveMember(final Participant email) throws GameException;
+    GameState doRemoveMember(final Participant email) throws GameException;
 
-    void doReset();
+    GameState doReset();
 
-    void doUpdate() throws GameException;
+    @Deprecated
+    GameState doSaveState() throws GameException;
     
+    GameState doStart() throws GameException;
+
+    @Deprecated
+    GameState doUpdate() throws GameException;
+
     List<AgentFactory<? extends Agent<?>>> getAgentFactories();
 
     GameConfig getConfig();
@@ -48,6 +54,7 @@ public interface GameState extends Serializable, Cloneable
 
     String getKeywords();
 
+    @Deprecated
     ArrayList<Message> getMessages();
 
     GameCommand getMove(String commandText, Participant access) throws GameException;
@@ -68,22 +75,25 @@ public interface GameState extends Serializable, Cloneable
 
     boolean isInPlay();
 
-    void saveState() throws GameException;
+    @Deprecated
+    GameState setConfig(GameConfig newConfig) throws GameException;
 
-    void setConfig(GameConfig newConfig) throws GameException;
+    @Deprecated
+    GameState setHeight(final int height);
 
-    void setHeight(final int height);
+    @Deprecated
+    GameState setParentGame(GameState _parentGame);
 
-    void setParentGame(GameState _parentGame);
+    @Deprecated
+    GameState setSilent(boolean b);
 
-    void setSilent(boolean b);
+    @Deprecated
+    GameState setTimeOffset(int timeOffset);
 
-    void setTimeOffset(int timeOffset);
+    @Deprecated
+    GameState setVersionNumber(int i);
 
-    void setVersionNumber(int i);
-
-    void setWidth(final int width);
-
-    void doStart() throws GameException;
+    @Deprecated
+   GameState setWidth(final int width);
 
 }

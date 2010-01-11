@@ -22,7 +22,7 @@ public enum Commands
         public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
             baseGame.doStay();
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -42,7 +42,7 @@ public enum Commands
             baseGame.getSession().doUnitWager();
             baseGame.doHit(0);
             if (GamePhases.Playing == baseGame.getCurrentPhase()) baseGame.doStay();
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -75,7 +75,7 @@ public enum Commands
 
             baseGame.dealNewCard(new IndexPosition(BlackjackGame.HAND_PLAYER, 0)).setOwner(user).setPrivate("VR");
             baseGame.dealNewCard(new IndexPosition(curve, 0)).setOwner(user).setPrivate("VR");
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()

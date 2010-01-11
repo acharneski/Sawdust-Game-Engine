@@ -10,6 +10,7 @@ import com.sawdust.engine.model.SessionFactory;
 import com.sawdust.engine.model.basetypes.TutorialGameBase;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.games.go.GoGame;
@@ -45,7 +46,7 @@ public class TutorialGame extends TutorialGameBase<GoGame>
    }
 
    @Override
-   public void doReset()
+   public TutorialGameBase doReset()
    {
       super.doReset();
       try
@@ -56,13 +57,15 @@ public class TutorialGame extends TutorialGameBase<GoGame>
       {
          LOG.warning(Util.getFullString(e));
       }
+      return this;
    }
    
    @Override
-   public void doStart() throws GameException
+   public TutorialGameBase<GoGame> doStart() throws GameException
    {
       super.doStart();
       setPhase(Welcome1.INSTANCE);
+      return this;
    }
    
    @Override
@@ -93,11 +96,11 @@ public class TutorialGame extends TutorialGameBase<GoGame>
             }
             
             @Override
-            public boolean doCommand(Participant p, String commandText) throws GameException
+            public CommandResult doCommand(Participant p, String commandText) throws GameException
             {
                getPhase().onStartPhase(TutorialGame.this);
-               TutorialGame.this.saveState();
-               return true;
+               TutorialGame.this.doSaveState();
+               return new CommandResult<TutorialGame>(TutorialGame.this);
             }
          });
       }

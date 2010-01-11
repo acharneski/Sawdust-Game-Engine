@@ -69,7 +69,7 @@ public class DataStorePerfTest extends TestCase
         _account = _access1.doLoadAccount();
         _session = new GameSession(_account);
         _blackjackGame = getGame(_session, _accessData, _account);
-        _blackjackGame.saveState();
+        _blackjackGame.doSaveState();
         _blackjackGame.setDeck(_deck);
         _player1 = _account.getPlayer();
     }
@@ -115,7 +115,7 @@ public class DataStorePerfTest extends TestCase
 
     private void reset() throws GameException
     {
-        _blackjackGame.saveState();
+        _blackjackGame.doSaveState();
         down();
         up(_id);
     }

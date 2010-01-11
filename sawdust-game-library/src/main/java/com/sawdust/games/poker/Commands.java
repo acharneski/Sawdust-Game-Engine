@@ -32,7 +32,7 @@ public enum Commands
             final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doBet(user, bet);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -54,7 +54,7 @@ public enum Commands
             final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doDraw(user);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -93,7 +93,7 @@ public enum Commands
                 cardIndex.add(cardSlot);
             }
             pokerGame.dropCards(email, cardIndex);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()
@@ -116,7 +116,7 @@ public enum Commands
             final GameState baseGame = game.getState();
             final PokerGame pokerGame = (PokerGame) baseGame;
             pokerGame.doFold(user);
-            baseGame.saveState();
+            baseGame.doSaveState();
         }
 
         public String getCommandText()

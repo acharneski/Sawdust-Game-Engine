@@ -61,7 +61,7 @@ public class Normal1 extends Agent<EuchreGame>
         final boolean isSamePlayer = playerManager.getCurrentPlayer().equals(player);
         if (isSamePlayer)
         {
-            game.saveState();
+            game.doSaveState();
             Move(game, player);
         }
     }
@@ -129,7 +129,7 @@ public class Normal1 extends Agent<EuchreGame>
         final boolean isSamePlayer = playerManager.getCurrentPlayer().equals(player);
         if (isSamePlayer && (newScore > originalScore))
         {
-            game.saveState();
+            game.doSaveState();
             Move(game, player);
         }
     }

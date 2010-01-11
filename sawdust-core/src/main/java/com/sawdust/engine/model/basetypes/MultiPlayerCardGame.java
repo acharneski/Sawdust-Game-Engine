@@ -61,7 +61,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void doAddPlayer(final Participant agent) throws GameException
+    public MultiPlayerCardGame doAddPlayer(final Participant agent) throws GameException
     {
         if (agent instanceof Player)
         {
@@ -71,8 +71,9 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
         {
             _displayFilter.put(agent, ((Agent<?>) agent).getId());
         }
-        super.doAddPlayer(agent);
+        GameState newGame = super.doAddPlayer(agent);
         _mplayerManager.addMember(this, agent);
+        return (MultiPlayerCardGame) newGame;
     }
 
     @Override
@@ -133,10 +134,10 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void doRemoveMember(final Participant email) throws GameException
+    public GameState doRemoveMember(final Participant email) throws GameException
     {
-        super.doRemoveMember(email);
         _mplayerManager.removeMember(this, email);
+        return super.doRemoveMember(email);
     }
 
     public void setPlayerManager(final PlayerManager playerManager)
@@ -155,9 +156,10 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public void doUpdate() throws GameException
+    public GameState doUpdate() throws GameException
     {
         _mplayerManager.update(this);
+        return this;
     }
 
     @Override

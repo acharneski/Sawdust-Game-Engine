@@ -13,6 +13,7 @@ import com.sawdust.engine.controller.exceptions.InputException;
 import com.sawdust.engine.model.AgentFactory;
 import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.GameState;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexPosition;
@@ -85,7 +86,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
             returnValue.add(new GameCommand()
             {
                 @Override
-                public boolean doCommand(final Participant p, String commandText) throws GameException
+                public CommandResult doCommand(final Participant p, String commandText) throws GameException
                 {
                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
                     Agent<?> agent = f.getAgent("AI " + playerNumber);
@@ -93,9 +94,9 @@ public class MultiPlayer implements IMultiPlayer, Serializable
                     if(null != session)
                     {
                         session.addPlayer(agent);
-                        game.saveState();
+                        game.doSaveState();
                     }
-                    return true;
+                    return new CommandResult<GameState>(game);
                 }
 
                 @Override
@@ -225,7 +226,7 @@ public class MultiPlayer implements IMultiPlayer, Serializable
             agent.Move(game, agent);
             game._timeOffset += 1000;
             GameSession session = game.getSession();
-            game.saveState();
+            game.doSaveState();
             final Participant nextPlayer = _playerManager.getCurrentPlayer();
             if (nextPlayer.equals(agent))
             {

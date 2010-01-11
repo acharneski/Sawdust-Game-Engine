@@ -36,7 +36,7 @@ public class TutorialGame extends TutorialGameBase<StopGame>
    }
 
    @Override
-   public void doReset()
+   public TutorialGame doReset()
    {
       super.doReset();
       try
@@ -47,13 +47,14 @@ public class TutorialGame extends TutorialGameBase<StopGame>
       {
          LOG.warning(Util.getFullString(e));
       }
+      return this;
    }
    
    @Override
-   public void doStart() throws GameException
+   public TutorialGameBase<StopGame> doStart() throws GameException
    {
-      super.doStart();
       setPhase(Welcome1.INSTANCE);
+      return super.doStart();
    }
    
    @Override

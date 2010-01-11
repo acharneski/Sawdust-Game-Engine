@@ -51,7 +51,7 @@ public class BlackjackTests extends TestCase
         com.sawdust.gae.datastore.entities.Account account = access1.doLoadAccount();
         com.sawdust.engine.controller.entities.GameSession session = new GameSession(account);
         BlackjackGame blackjackGame = getGame(session, accessData, account);
-        blackjackGame.saveState();
+        blackjackGame.doSaveState();
         blackjackGame.setDeck(deck);
         Player player1 = account.getPlayer();
 
@@ -111,7 +111,7 @@ public class BlackjackTests extends TestCase
         com.sawdust.gae.datastore.entities.Account account = access1.doLoadAccount();
         com.sawdust.engine.controller.entities.GameSession session = new GameSession(account);
         BlackjackGame blackjackGame = getGame(session, accessData, account);
-        blackjackGame.saveState();
+        blackjackGame.doSaveState();
         blackjackGame.setDeck(deck);
         Player player1 = account.getPlayer();
 

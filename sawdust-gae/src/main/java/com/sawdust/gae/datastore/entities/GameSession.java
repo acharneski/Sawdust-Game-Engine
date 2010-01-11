@@ -183,7 +183,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (null != _game)
         {
             _game.doAddPlayer(p);
-            _game.saveState();
+            _game.doSaveState();
             doUpdateStatus();
         }
     }
@@ -783,7 +783,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         }
         if (_dirtyGame)
         {
-            lgame.saveState();
+            lgame.doSaveState();
         }
     }
 
@@ -804,7 +804,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         {
             tokenGame2.doStart();
             tokenGame2.doUpdate();
-            tokenGame2.saveState();
+            tokenGame2.doSaveState();
         }
     }
 

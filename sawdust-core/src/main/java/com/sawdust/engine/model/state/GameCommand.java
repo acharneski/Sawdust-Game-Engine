@@ -1,17 +1,13 @@
 package com.sawdust.engine.model.state;
 
 import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.view.game.ClientCommand;
 
-public abstract class GameCommand
+public abstract class GameCommand<T extends GameState>
 {
-    /**
-     * @param commandText TODO
-     * @throws com.sawdust.engine.view.GameException 
-	 * 
-	 */
-    public abstract boolean doCommand(final Participant p, String commandText) throws GameException;
+    public abstract CommandResult<T> doCommand(final Participant p, String parameters) throws GameException;
 
     public abstract String getCommandText();
 
