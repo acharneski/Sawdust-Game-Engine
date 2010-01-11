@@ -52,6 +52,16 @@ public class Token implements Serializable
         }
     }
 
+    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
+    {
+        throw new NotSerializableException();
+    }
+
+    private Object writeReplace()
+    {
+        return new SerialForm(this);
+    }
+
     private static final Logger LOG = Logger.getLogger(Token.class.getName());
     
     final HashMap<IndexPosition, String> _moveCommands = new HashMap<IndexPosition, String>();
@@ -193,11 +203,6 @@ public class Token implements Serializable
         return (null == baseImageId);
     }
 
-    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
-    {
-        throw new NotSerializableException();
-    }
-
     public void setArt(final String art)
     {
         _art = art;
@@ -279,11 +284,6 @@ public class Token implements Serializable
         }
         LOG.finer(String.format("Final Art: %s", returnValue.getBaseImageId()));
         return returnValue;
-    }
-
-    private Object writeReplace()
-    {
-        return new SerialForm(this);
     }
 
 }

@@ -26,7 +26,7 @@ public class Normal1 extends Agent<EuchreGame>
 
     public Normal1(final String s)
     {
-        super(s);
+        super(s, new MoveFactory<EuchreGame>());
     }
 
     private void doMaking(final EuchreGame game, final boolean isInitMaking) throws GameException

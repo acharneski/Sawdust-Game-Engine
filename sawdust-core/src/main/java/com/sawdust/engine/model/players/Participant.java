@@ -1,13 +1,45 @@
 package com.sawdust.engine.model.players;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
-public abstract class Participant implements Serializable
+import com.sawdust.engine.model.state.IndexPosition;
+
+public class Participant implements Serializable
 {
+    protected static class SerialForm implements Serializable
+    {
+        String _id;
+        
+        protected SerialForm(){}
+        protected SerialForm(Participant obj)
+        {
+            _id = obj._id;
+        }
+        private Object readResolve()
+        {
+            return new Participant(this);
+        }
+    }
+
+    private void readObject(ObjectInputStream s) throws  IOException, ClassNotFoundException
+    {
+        throw new NotSerializableException();
+    }
+
+    private Object writeReplace()
+    {
+        return new SerialForm(this);
+    }
+
     protected String _id;
 
-    protected Participant()
+    protected Participant(SerialForm obj)
     {
+        _id = obj._id;
     }
 
     protected Participant(final String id)

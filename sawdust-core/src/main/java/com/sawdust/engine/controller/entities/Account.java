@@ -26,4 +26,6 @@ public interface Account extends Bank
     <T extends Serializable> void setResource(Class<T> c, T markovChain);
 
     Promotion doAwardPromotion(PromotionConfig p) throws GameException;
+
+    void doLogActivity(ActivityEvent event);
 }
