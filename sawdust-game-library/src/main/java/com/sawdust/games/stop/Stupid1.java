@@ -16,14 +16,15 @@ import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.games.stop.StopGame.GamePhase;
+import com.sawdust.engine.model.players.MoveFactory;
 
-public class Stupid1 extends Agent<StopGame>
+public class Stupid1 extends MoveFactory<StopGame>
 {
     private static final Logger LOG = Logger.getLogger(Stupid1.class.getName());
 
-    public Stupid1(final String s)
+    public static Agent<StopGame> getAgent(final String s)
     {
-        super(s);
+        return new Agent<StopGame>(s, new Stupid1());
     }
 
     @Override

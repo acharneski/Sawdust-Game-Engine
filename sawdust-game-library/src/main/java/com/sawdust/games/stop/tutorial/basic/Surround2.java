@@ -28,23 +28,15 @@ public class Surround2 extends Phases
 
     public static final Surround2 INSTANCE = new Surround2();
 
-    private Agent<StopGame> _agent = new StopAgent1<StopGame>("Do Nothing", 1, 30)
+    private Agent<StopGame> _agent = new Agent<StopGame>("Do Nothing", new StopAgent1(1, 30)
     {
-
         @Override
-        public GameCommand<StopGame> getMove(final StopGame game, final Participant participant) throws GameException
+        public GameCommand<StopGame> getMove(StopGame game, Participant participant) throws GameException
         {
-            return new GameCommand<StopGame>()
-            {
-                @Override
-                public CommandResult<StopGame> doCommand(Participant p, String parameters) throws GameException
-                {
-                    return new CommandResult<StopGame>(game.doFinishTurn(participant));
-                }
-            };
+            return super.getMove(game, participant);
         }
 
-    };
+    });
 
     @Override
     public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException

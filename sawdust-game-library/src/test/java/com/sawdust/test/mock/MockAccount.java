@@ -8,6 +8,7 @@ import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.entities.Promotion;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.Bank;
+import com.sawdust.engine.view.game.ActivityEvent;
 
 public class MockAccount implements Account
 {
@@ -80,6 +81,12 @@ public class MockAccount implements Account
 
     @Override
     public Promotion doAwardPromotion(PromotionConfig p) throws GameException
+    {
+        throw new RuntimeException("Not Implemented");
+    }
+
+    @Override
+    public void doLogActivity(ActivityEvent event)
     {
         throw new RuntimeException("Not Implemented");
     }

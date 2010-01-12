@@ -114,7 +114,7 @@ public abstract class PokerGame extends MultiPlayerCardGame
     {
         super(getNumberOfPlayers(config), config);
         NUMBER_OF_PLAYERS = getNumberOfPlayers(config);
-        setTimeoutAgent(new Stupid1("Timeout"));
+        setTimeoutAgent(Stupid1.getAgent("Timeout"));
         initPositions(NUMBER_OF_PLAYERS, NUMBER_OF_CARDS);
     }
 
@@ -364,13 +364,13 @@ public abstract class PokerGame extends MultiPlayerCardGame
     public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
         final List<AgentFactory<? extends Agent<?>>> agentFactories = super.getAgentFactories();
-        agentFactories.add(new AgentFactory<Stupid1>()
+        agentFactories.add(new AgentFactory<Agent<PokerGame>>()
         {
 
             @Override
-            public Stupid1 getAgent(final String id)
+            public Agent<PokerGame> getAgent(final String id)
             {
-                return new Stupid1(id);
+                return Stupid1.getAgent(id);
             }
 
             @Override
@@ -379,13 +379,13 @@ public abstract class PokerGame extends MultiPlayerCardGame
                 return "Easy";
             }
         });
-        agentFactories.add(new AgentFactory<Regular1>()
+        agentFactories.add(new AgentFactory<Agent<PokerGame>>()
         {
 
             @Override
-            public Regular1 getAgent(final String id)
+            public Agent<PokerGame> getAgent(final String id)
             {
-                return new Regular1(id);
+                return Regular1.getAgent(id);
             }
 
             @Override

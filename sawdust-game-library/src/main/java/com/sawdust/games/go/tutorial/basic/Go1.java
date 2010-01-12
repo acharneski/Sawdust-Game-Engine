@@ -26,7 +26,7 @@ public class Go1 extends Phases
 
     public static final Phases INSTANCE = new Go1();
 
-    private Agent<GoGame> _agent = new GoAgent1("Do Nothing", 1, 30)
+    private Agent<GoGame> _agent = new Agent<GoGame>("Do Nothing", new GoAgent1(1, 30)
     {
         @Override
         public GameCommand<GoGame> getMove(GoGame game, Participant participant) throws GameException
@@ -35,7 +35,7 @@ public class Go1 extends Phases
             return super.getMove(game, participant);
         }
 
-    };
+    });
 
     @Override
     public void doOnStartPhase(TutorialGameBase<GoGame> game) throws GameException

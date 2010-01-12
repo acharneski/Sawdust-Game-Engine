@@ -370,7 +370,8 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         }
     }
     
-    void logActivity(ActivityEvent event)
+    @Override
+    public void doLogActivity(ActivityEvent event)
     {
         UserLogic logic = getLogic();
         if(null != logic) 

@@ -9,12 +9,16 @@ import java.util.logging.Logger;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.basetypes.BaseGame;
+import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.state.GameCommand;
+import com.sawdust.games.euchre.EuchreGame;
+import com.sawdust.games.euchre.ai.Stupid1;
 import com.sawdust.games.stop.ArrayPosition;
 import com.sawdust.games.stop.BoardData;
 import com.sawdust.games.stop.MoveCommand;
 import com.sawdust.games.stop.StopAgent1;
+import com.sawdust.games.stop.StopGame;
 import com.sawdust.games.stop.StopIsland;
 import com.sawdust.games.stop.StopGame.GamePhase;
 
@@ -22,17 +26,16 @@ public class GoAgent1 extends StopAgent1<GoGame>
 {
    private static final Logger LOG        = Logger.getLogger(GoAgent1.class.getName());
    
-   protected int               _depth     = 1;
-   
-   protected int               _expansion = 10;
-   
-   public GoAgent1(String s, int depth, int expansion)
+   public GoAgent1(int depth, int expansion)
    {
-      super(s, depth, expansion);
-      _depth = depth;
-      _expansion = expansion;
+      super(depth, expansion);
    }
-   
+
+   public static Agent<? extends StopGame> getAgent(String s, int depth, int expansion)
+   {
+       return new Agent<StopGame>(s, new GoAgent1(depth, expansion));
+   }
+
    @Override
    protected BaseGame cloneForSimulation(BaseGame game) throws CloneNotSupportedException
    {

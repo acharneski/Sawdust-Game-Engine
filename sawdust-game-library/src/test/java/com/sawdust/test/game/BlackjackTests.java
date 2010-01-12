@@ -11,6 +11,7 @@ import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.model.players.AccountFactory;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.cards.Ranks;
@@ -34,21 +35,15 @@ public class BlackjackTests extends TestCase
         LoadedDeck deck = new LoadedDeck();
         blackjackGame.setDeck(deck);
         final MockSessionToken access1 = new MockSessionToken("test1", session);
-        Player player1 = new Player(access1.getUserId(), false)
+        Player player1 = new Player(access1.getUserId(), false, new AccountFactory()
         {
+            
             @Override
             public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
-
-            @Override
-            public void doLogActivity(ActivityEvent event)
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        });
 
         Date now = new Date(0);
 
@@ -111,21 +106,15 @@ public class BlackjackTests extends TestCase
         LoadedDeck deck = new LoadedDeck();
         blackjackGame.setDeck(deck);
         final MockSessionToken access1 = new MockSessionToken("test1", session);
-        Player player1 = new Player(access1.getUserId(), false)
+        Player player1 = new Player(access1.getUserId(), false, new AccountFactory()
         {
+            
             @Override
             public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
-
-            @Override
-            public void doLogActivity(ActivityEvent event)
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        });
 
         Date now = new Date(0);
 

@@ -79,7 +79,7 @@ public abstract class EuchreGame extends MultiPlayerCardGame
         setDeck(new EuchreDeck());
         getDeck().setSeed(deck.getSeed());
         
-        setTimeoutAgent(new Stupid1("Timeout"));
+        setTimeoutAgent(Stupid1.getAgent("Timeout"));
         doInitializeModules();
     }
 
@@ -168,13 +168,13 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     public List<AgentFactory<? extends Agent<?>>> getAgentFactories()
     {
         final List<AgentFactory<? extends Agent<?>>> agentFactories = super.getAgentFactories();
-        agentFactories.add(new AgentFactory<Stupid1>()
+        agentFactories.add(new AgentFactory<Agent<EuchreGame>>()
         {
 
             @Override
-            public Stupid1 getAgent(final String id)
+            public Agent<EuchreGame> getAgent(final String id)
             {
-                return new Stupid1(id);
+                return Stupid1.getAgent(id);
             }
 
             @Override
@@ -183,13 +183,13 @@ public abstract class EuchreGame extends MultiPlayerCardGame
                 return "Easy";
             }
         });
-        agentFactories.add(new AgentFactory<Normal1>()
+        agentFactories.add(new AgentFactory<Agent<EuchreGame>>()
         {
 
             @Override
-            public Normal1 getAgent(final String id)
+            public Agent<EuchreGame> getAgent(final String id)
             {
-                return new Normal1(id);
+                return Normal1.getAgent(id);
             }
 
             @Override

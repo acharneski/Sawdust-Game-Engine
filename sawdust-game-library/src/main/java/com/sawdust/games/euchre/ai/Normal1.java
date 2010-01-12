@@ -3,6 +3,7 @@ package com.sawdust.games.euchre.ai;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import com.sawdust.engine.model.players.MoveFactory;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
@@ -18,15 +19,42 @@ import com.sawdust.games.euchre.EuchreLayout;
 import com.sawdust.games.euchre.GamePhase;
 import com.sawdust.games.euchre.TeamStatus;
 
-public class Normal1 extends Agent<EuchreGame>
+public class Normal1 extends MoveFactory<EuchreGame>
 {
     private static final Logger LOG = Logger.getLogger(Normal1.class.getName());
-
     private static final int SUIT_COUNT_THRESHOLD = 2;
 
-    public Normal1(final String s)
+    public static Agent<EuchreGame> getAgent(final String s)
     {
-        super(s, new MoveFactory<EuchreGame>());
+        return new Agent<EuchreGame>(s, new Normal1());
+    }
+
+    @Override
+    public GameCommand<EuchreGame> getMove(final EuchreGame game, final Participant participant) throws GameException
+    {
+        return new GameCommand<EuchreGame>()
+        {
+            @Override
+            public CommandResult<EuchreGame> doCommand(Participant p, String parameters) throws GameException
+            {
+                final GamePhase currentPhase = game.getCurrentPhase();
+                final boolean isInitMaking = currentPhase.equals(EuchreGame.INITIAL_MAKING);
+                final boolean isOpenMaking = currentPhase.equals(EuchreGame.OPEN_MAKING);
+                if (isInitMaking || isOpenMaking)
+                {
+                    doMaking(game, isInitMaking);
+                }
+                else if (currentPhase.equals(EuchreGame.PLAYING))
+                {
+                    doPlayCards(game, participant);
+                }
+                else
+                {
+                    LOG.warning("Failed force move");
+                }
+                return new CommandResult<EuchreGame>(game);
+            }
+        };
     }
 
     private void doMaking(final EuchreGame game, final boolean isInitMaking) throws GameException
@@ -51,7 +79,7 @@ public class Normal1 extends Agent<EuchreGame>
         }
         else
         {
-            if (trumpCount > (SUIT_COUNT_THRESHOLD-1))
+            if (trumpCount > (SUIT_COUNT_THRESHOLD - 1))
             {
                 game.doCommand(EuchreCommand.Call, highestSuit);
             }
@@ -142,7 +170,8 @@ public class Normal1 extends Agent<EuchreGame>
         Suits highestSuit = Suits.Null;
         for (int cardIndexToPlay = 0; cardIndexToPlay < EuchreGame.NUMBER_OF_CARDS; cardIndexToPlay++)
         {
-            final IndexCard cardToPlay = (IndexCard) game.getToken(new IndexPosition(playerManager.getCurrentPlayerIndex(), cardIndexToPlay));
+            final IndexCard cardToPlay = (IndexCard) game.getToken(new IndexPosition(playerManager.getCurrentPlayerIndex(),
+                    cardIndexToPlay));
             if (null == cardToPlay)
             {
                 continue;
@@ -165,33 +194,5 @@ public class Normal1 extends Agent<EuchreGame>
             }
         }
         return highestSuit;
-    }
-
-    @Override
-    public GameCommand<EuchreGame> getMove(final EuchreGame game, final Participant player) throws GameException
-    {
-        return new GameCommand<EuchreGame>()
-        {
-            @Override
-            public CommandResult<EuchreGame> doCommand(Participant p, String parameters) throws GameException
-            {
-                final GamePhase currentPhase = game.getCurrentPhase();
-                final boolean isInitMaking = currentPhase.equals(EuchreGame.INITIAL_MAKING);
-                final boolean isOpenMaking = currentPhase.equals(EuchreGame.OPEN_MAKING);
-                if (isInitMaking || isOpenMaking)
-                {
-                    doMaking(game, isInitMaking);
-                }
-                else if (currentPhase.equals(EuchreGame.PLAYING))
-                {
-                    doPlayCards(game, player);
-                }
-                else
-                {
-                    LOG.warning("Failed force move");
-                }
-                return new CommandResult<EuchreGame>(game);
-            }
-        };
     }
 }

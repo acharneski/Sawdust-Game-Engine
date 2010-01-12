@@ -27,24 +27,15 @@ public class Surround3 extends Phases
 
     public static final Surround3 INSTANCE = new Surround3();
 
-    private Agent<GoGame> _agent = new GoAgent1("Do Nothing", 1, 30)
+    private Agent<GoGame> _agent = new Agent<GoGame>("Do Nothing", new GoAgent1(1, 30)
     {
         @Override
-        public GameCommand<GoGame> getMove(final GoGame game, final Participant participant) throws GameException
+        public GameCommand<GoGame> getMove(GoGame game, Participant participant) throws GameException
         {
-            return new GameCommand<GoGame>()
-            {
-                @Override
-                public CommandResult<GoGame> doCommand(Participant p, String parameters) throws GameException
-                {
-                    LOG.fine("_agent.Move");
-                    game.doFinishTurn(participant);
-                    return new CommandResult<GoGame>(game);
-                }
-            };
+            LOG.fine("_agent.Move");
+            return super.getMove(game, participant);
         }
-
-    };
+    });
 
     @Override
     public void doOnStartPhase(TutorialGameBase<GoGame> game) throws GameException

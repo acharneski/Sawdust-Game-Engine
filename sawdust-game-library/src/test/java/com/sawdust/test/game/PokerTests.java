@@ -10,6 +10,7 @@ import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.model.players.AccountFactory;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.cards.Ranks;
 import com.sawdust.engine.view.cards.Suits;
@@ -49,38 +50,26 @@ public class PokerTests extends TestCase
         game.setDeck(deck);
         access1 = new MockSessionToken("test1", session);
         final MockSessionToken accessF1 = access1;
-        Player player1 = new Player(accessF1.getUserId(), false)
+        Player player1 = new Player(accessF1.getUserId(), false, new AccountFactory()
         {
+            
             @Override
             public Account getAccount()
             {
                 return accessF1.doLoadAccount();
             }
-
-            @Override
-            public void doLogActivity(ActivityEvent event)
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        });
         access2 = new MockSessionToken("test2", session);
         final MockSessionToken accessF2 = access2;
-        player2 = new Player(access2.getUserId(), false)
+        player2 = new Player(access2.getUserId(), false, new AccountFactory()
         {
+            
             @Override
             public Account getAccount()
             {
                 return accessF2.doLoadAccount();
             }
-
-            @Override
-            public void doLogActivity(ActivityEvent event)
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        });
         session.addPlayer(player1);
         game.doAddPlayer(player1);
         session.addPlayer(player2);

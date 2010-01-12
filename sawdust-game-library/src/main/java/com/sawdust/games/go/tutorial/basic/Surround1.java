@@ -1,6 +1,7 @@
 package com.sawdust.games.go.tutorial.basic;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.controller.exceptions.GameLogicException;
@@ -26,21 +27,18 @@ public class Surround1 extends Phases
     }
 
     public static final Surround1 INSTANCE = new Surround1();
-    private Agent<GoGame> _agent = new GoAgent1("Do Nothing", 1, 30)
+
+    private static final Logger LOG = Logger.getLogger(Surround1.class.getName());
+    private Agent<GoGame> _agent = new Agent<GoGame>("Do Nothing", new GoAgent1(1, 30)
     {
         @Override
-        public GameCommand<GoGame> getMove(final GoGame game, final Participant participant) throws GameException
+        public GameCommand<GoGame> getMove(GoGame game, Participant participant) throws GameException
         {
-            return new GameCommand<GoGame>()
-            {
-                @Override
-                public CommandResult<GoGame> doCommand(Participant p, String parameters) throws GameException
-                {
-                    return new CommandResult<GoGame>(game.doFinishTurn(participant));
-                }
-            };
+            LOG.fine("_agent.Move");
+            return super.getMove(game, participant);
         }
-    };
+
+    });
 
     @Override
     public void doOnStartPhase(TutorialGameBase<GoGame> game) throws GameException

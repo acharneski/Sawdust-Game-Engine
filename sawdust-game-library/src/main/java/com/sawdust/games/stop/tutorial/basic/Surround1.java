@@ -25,23 +25,15 @@ public class Surround1 extends Phases
    public Surround1() {}
    
    public static final Surround1 INSTANCE = new Surround1();
-   private Agent<StopGame> _agent = new StopAgent1<StopGame>("Do Nothing", 1, 30) {
 
-      @Override
-      public GameCommand<StopGame> getMove(final StopGame game, final Participant participant) throws GameException
-      {
-        return new GameCommand<StopGame>()
-        {
-            @Override
-            public CommandResult<StopGame> doCommand(Participant p, String parameters) throws GameException
-            {
-                game.doFinishTurn(participant);
-                return new CommandResult<StopGame>(game);
-            }
-        };
-      }
-      
-   };
+   private Agent<StopGame> _agent = new Agent<StopGame>("Do Nothing", new StopAgent1(1, 30)
+   {
+       @Override
+       public GameCommand<StopGame> getMove(StopGame game, Participant participant) throws GameException
+       {
+           return super.getMove(game, participant);
+       }
+   });
 
    @Override
    public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException

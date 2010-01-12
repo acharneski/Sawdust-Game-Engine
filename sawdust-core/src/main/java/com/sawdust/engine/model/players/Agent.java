@@ -11,7 +11,8 @@ import com.sawdust.engine.model.state.GameCommand;
 
 public class Agent<G extends GameState> extends Participant
 {
-
+    final MoveFactory moveFactory;
+    
     protected static class SerialForm<G extends GameState> extends Participant.SerialForm implements Serializable
     {
         MoveFactory moveFactory;
@@ -51,8 +52,6 @@ public class Agent<G extends GameState> extends Participant
         moveFactory = moves;
     }
 
-    final MoveFactory moveFactory;
-    
     public GameCommand<G> getMove(G game, Participant participant) throws GameException
     {
         return moveFactory.getMove(game,participant);

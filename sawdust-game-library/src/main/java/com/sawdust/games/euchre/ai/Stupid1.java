@@ -12,12 +12,13 @@ import com.sawdust.engine.view.cards.Suits;
 import com.sawdust.games.euchre.EuchreCommand;
 import com.sawdust.games.euchre.EuchreGame;
 import com.sawdust.games.euchre.TeamStatus;
+import com.sawdust.engine.model.players.MoveFactory;
 
-public class Stupid1 extends Agent<EuchreGame>
+public class Stupid1 extends MoveFactory<EuchreGame>
 {
-    public Stupid1(final String s)
+    public static Agent<EuchreGame> getAgent(final String s)
     {
-        super(s);
+        return new Agent<EuchreGame>(s,new Stupid1());
     }
 
     @Override

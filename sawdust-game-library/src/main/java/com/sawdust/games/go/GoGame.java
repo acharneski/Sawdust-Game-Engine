@@ -246,12 +246,12 @@ public abstract class GoGame extends StopGame
     {
         final List<AgentFactory<? extends Agent<?>>> agentFactories = new ArrayList<AgentFactory<? extends Agent<?>>>();
         final PlayerManager playerManager = getPlayerManager();
-        agentFactories.add(new AgentFactory<Stupid1>()
+        agentFactories.add(new AgentFactory<Agent<StopGame>>()
         {
             @Override
-            public Stupid1 getAgent(final String string)
+            public Agent<StopGame> getAgent(final String string)
             {
-                return new Stupid1("AI " + playerManager.getPlayerCount());
+                return Stupid1.getAgent("AI " + playerManager.getPlayerCount());
             }
 
             @Override
@@ -260,12 +260,12 @@ public abstract class GoGame extends StopGame
                 return "Easy";
             }
         });
-        agentFactories.add(new AgentFactory<GoAgent1>()
+        agentFactories.add(new AgentFactory<Agent<? extends StopGame>>()
         {
             @Override
-            public GoAgent1 getAgent(final String string)
+            public Agent<? extends StopGame> getAgent(final String string)
             {
-                return new GoAgent1("AI " + playerManager.getPlayerCount(), 1, 15);
+                return GoAgent1.getAgent("AI " + playerManager.getPlayerCount(), 1, 15);
             }
 
             @Override

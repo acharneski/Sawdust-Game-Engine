@@ -335,12 +335,12 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     {
         final List<AgentFactory<? extends Agent<?>>> agentFactories = super.getAgentFactories();
         final PlayerManager playerManager = getPlayerManager();
-        agentFactories.add(new AgentFactory<Stupid1>()
+        agentFactories.add(new AgentFactory<Agent<StopGame>>()
         {
             @Override
-            public Stupid1 getAgent(final String string)
+            public Agent<StopGame> getAgent(final String string)
             {
-                return new Stupid1("AI " + playerManager.getPlayerCount());
+                return Stupid1.getAgent("AI " + playerManager.getPlayerCount());
             }
 
             @Override
@@ -349,12 +349,12 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
                 return "Easy";
             }
         });
-        agentFactories.add(new AgentFactory<StopAgent1<StopGame>>()
+        agentFactories.add(new AgentFactory<Agent<StopGame>>()
         {
             @Override
-            public StopAgent1<StopGame> getAgent(final String string)
+            public Agent<StopGame> getAgent(final String string)
             {
-                return new StopAgent1<StopGame>("AI " + playerManager.getPlayerCount(), 1, 15);
+                return (Agent<StopGame>) StopAgent1.getAgent("AI " + playerManager.getPlayerCount(), 1, 15);
             }
 
             @Override

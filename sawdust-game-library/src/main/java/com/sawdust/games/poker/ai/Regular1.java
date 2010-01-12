@@ -16,8 +16,9 @@ import com.sawdust.games.poker.PokerHand;
 import com.sawdust.games.poker.PokerHandPattern;
 import com.sawdust.games.poker.PokerGame.GamePhase;
 import com.sawdust.games.poker.PokerGame.PlayerState;
+import com.sawdust.engine.model.players.MoveFactory;
 
-public class Regular1 extends Agent<PokerGame>
+public class Regular1 extends MoveFactory<PokerGame>
 {
     private static final Logger LOG = Logger.getLogger(Regular1.class.getName());
 
@@ -25,9 +26,9 @@ public class Regular1 extends Agent<PokerGame>
     private final double _courage = 1 + Math.random() * 5;
     private final double _richness = 2 + Math.random() * 5;
 
-    public Regular1(final String s)
+    public static Agent<PokerGame> getAgent(final String s)
     {
-        super(s);
+        return new Agent<PokerGame>(s, new Regular1());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.sawdust.games.go;
 import java.util.ArrayList;
 
 import com.sawdust.engine.controller.exceptions.GameException;
+import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.games.stop.StopGame;
@@ -11,9 +12,9 @@ import com.sawdust.games.stop.StopGame.GamePhase;
 public class Stupid1 extends com.sawdust.games.stop.Stupid1
 {
 
-   public Stupid1(String s)
+   public static Agent<StopGame> getAgent(String s)
    {
-      super(s);
+      return new Agent<StopGame>(s, new Stupid1());
    }
 
    @Override

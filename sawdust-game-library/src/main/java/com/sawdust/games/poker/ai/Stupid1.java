@@ -9,12 +9,13 @@ import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.games.poker.PokerGame;
 import com.sawdust.games.poker.PokerGame.GamePhase;
 import com.sawdust.games.poker.PokerGame.PlayerState;
+import com.sawdust.engine.model.players.MoveFactory;
 
-public class Stupid1 extends Agent<PokerGame>
+public class Stupid1 extends MoveFactory<PokerGame>
 {
-    public Stupid1(final String s)
+    public static Agent<PokerGame> getAgent(final String s)
     {
-        super(s);
+        return new Agent<PokerGame>(s,new Stupid1());
     }
 
     @Override

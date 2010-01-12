@@ -30,8 +30,8 @@ public class GoAI extends GenericPlayTest implements Serializable
 			}
 		};
 		testGame(game, 
-		        new GoAgent1("Mario",1,10), 
-		        new GoAgent1("Luigi",0,10)
+		        GoAgent1.getAgent("Mario",1,10), 
+		        GoAgent1.getAgent("Luigi",0,10)
 		        );
 	}
 }

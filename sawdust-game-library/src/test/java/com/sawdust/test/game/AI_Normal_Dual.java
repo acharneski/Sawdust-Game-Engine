@@ -29,7 +29,7 @@ public class AI_Normal_Dual extends GenericPlayTest {
 				}
 				return session;
 			}
-		}, new Regular1("test1"), new Regular1("test2"));
+		}, Regular1.getAgent("test1"), Regular1.getAgent("test2"));
 	}
 
 	@Test(timeout = 10000)
@@ -45,7 +45,7 @@ public class AI_Normal_Dual extends GenericPlayTest {
 				}
 				return session;
 			}
-		}, new Normal1("test1"), new Normal1("test2"), new Normal1("test3"), new Normal1("test4"));
+		}, Normal1.getAgent("test1"), Normal1.getAgent("test2"), Normal1.getAgent("test3"), Normal1.getAgent("test4"));
 	}
 
 	@Test(timeout = 10000)
@@ -62,6 +62,6 @@ public class AI_Normal_Dual extends GenericPlayTest {
 				return session;
 			}
 		};
-		testGame(game, new GoAgent1("test1", 1, 15), new GoAgent1("test2", 1, 15));
+		testGame(game, GoAgent1.getAgent("test1", 1, 15), GoAgent1.getAgent("test2", 1, 15));
 	}
 }

@@ -12,6 +12,7 @@ import com.sawdust.engine.controller.HttpResponse;
 import com.sawdust.engine.controller.LanguageProvider;
 import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.model.players.AccountFactory;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.config.GameConfig;
@@ -31,21 +32,15 @@ public class WordHuntTests extends TestCase
         WordHuntGame blackjackGame = getGame();
         GameSession session = blackjackGame.getSession();
         final MockSessionToken access1 = new MockSessionToken("test1", session);
-        Player player1 = new Player(access1.getUserId(), false)
+        Player player1 = new Player(access1.getUserId(), false, new AccountFactory()
         {
+            
             @Override
             public Account getAccount()
             {
                 return access1.doLoadAccount();
             }
-
-            @Override
-            public void doLogActivity(ActivityEvent event)
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        });
         Date now = new Date(0);
 
         Util.assertEqual(access1.doLoadAccount().getBalance(), 10);

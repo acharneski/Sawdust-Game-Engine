@@ -14,6 +14,7 @@ import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.view.game.GameFrame;
 import com.sawdust.engine.view.game.Notification;
 import com.sawdust.games.go.GoAgent1;
+import com.sawdust.games.go.GoGame;
 import com.sawdust.games.stop.StopAgent1;
 import com.sawdust.games.stop.StopGame;
 import com.sawdust.games.stop.StopIsland;
@@ -29,9 +30,8 @@ public class Stop1 extends Phases
 
     public static final Stop1 INSTANCE = new Stop1();
 
-    private Agent<StopGame> _agent = new StopAgent1<StopGame>("Do Nothing", 1, 30)
+    private Agent<StopGame> _agent = new Agent<StopGame>("Do Nothing", new StopAgent1(1, 30)
     {
-
         @Override
         public GameCommand<StopGame> getMove(StopGame game, Participant participant) throws GameException
         {
@@ -39,7 +39,7 @@ public class Stop1 extends Phases
             return super.getMove(game, participant);
         }
 
-    };
+    });
 
     @Override
     public void doOnStartPhase(TutorialGameBase<StopGame> game) throws GameException

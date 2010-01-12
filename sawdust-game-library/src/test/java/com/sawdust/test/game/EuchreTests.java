@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.sawdust.engine.controller.entities.Account;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.model.LoadedDeck;
+import com.sawdust.engine.model.players.AccountFactory;
 import com.sawdust.engine.model.players.Player;
 import com.sawdust.engine.view.cards.Ranks;
 import com.sawdust.engine.view.cards.Suits;
@@ -70,62 +71,42 @@ public class EuchreTests extends TestCase
 		final MockSessionToken access2 = new MockSessionToken("test2",session);
 		final MockSessionToken access3 = new MockSessionToken("test3",session);
 		final MockSessionToken access4 = new MockSessionToken("test4",session);
-		Player player1 = new Player(access1.getUserId(), false){
-			@Override
-			public Account getAccount()
-			{
-				return access1.doLoadAccount();
-			}
-
+        Player player1 = new Player(access1.getUserId(), false, new AccountFactory()
+        {
+            
             @Override
-            public void doLogActivity(ActivityEvent event)
+            public Account getAccount()
             {
-                // TODO Auto-generated method stub
-                
+                return access1.doLoadAccount();
             }
-		};
-		Player player2 = new Player(access2.getUserId(), false){
-			@Override
-			public Account getAccount()
-			{
-				return access2.doLoadAccount();
-			}
-
+        });
+		Player player2 = new Player(access2.getUserId(), false, new AccountFactory()
+        {
+            
             @Override
-            public void doLogActivity(ActivityEvent event)
+            public Account getAccount()
             {
-                // TODO Auto-generated method stub
-                
+                return access2.doLoadAccount();
             }
-		};
-		Player player3 = new Player(access3.getUserId(), false){
-			@Override
-			public Account getAccount()
-			{
-				return access3.doLoadAccount();
-			}
-
+        });
+		Player player3 = new Player(access3.getUserId(), false, new AccountFactory()
+        {
+            
             @Override
-            public void doLogActivity(ActivityEvent event)
+            public Account getAccount()
             {
-                // TODO Auto-generated method stub
-                
+                return access3.doLoadAccount();
             }
-		};
-		Player player4 = new Player(access4.getUserId(), false){
-			@Override
-			public Account getAccount()
-			{
-				return access4.doLoadAccount();
-			}
-
+        });
+		Player player4 = new Player(access4.getUserId(), false, new AccountFactory()
+        {
+            
             @Override
-            public void doLogActivity(ActivityEvent event)
+            public Account getAccount()
             {
-                // TODO Auto-generated method stub
-                
+                return access4.doLoadAccount();
             }
-		};
+        });
 		
 
 		session.addPlayer(player1);

@@ -52,7 +52,7 @@ public class Player extends Participant implements Serializable
         _account = obj._account;
     }
 
-    protected Player(final String userId, final boolean isAdmin, AccountFactory accountFactory)
+    public Player(final String userId, final boolean isAdmin, AccountFactory accountFactory)
     {
         super(userId);
         _isAdmin = isAdmin;
