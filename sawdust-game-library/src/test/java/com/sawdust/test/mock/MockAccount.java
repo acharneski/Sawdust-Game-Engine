@@ -88,7 +88,6 @@ public class MockAccount implements Account
     @Override
     public void doLogActivity(ActivityEvent event)
     {
-        throw new RuntimeException("Not Implemented");
     }
 
 }
