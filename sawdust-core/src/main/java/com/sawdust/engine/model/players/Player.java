@@ -18,7 +18,11 @@ public class Player extends Participant implements Serializable
         boolean _isAdmin;
         AccountFactory _account;
         
-        protected SerialForm(){}
+        protected SerialForm()
+        {
+            super();
+        }
+
         protected SerialForm(Player obj)
         {
             super(obj);

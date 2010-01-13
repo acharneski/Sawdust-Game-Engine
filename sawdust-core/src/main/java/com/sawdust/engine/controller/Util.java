@@ -212,19 +212,40 @@ public class Util
             }
             catch (Throwable e)
             {
-                LOG.warning(e.toString());
+                LOG.warning("Error serializing object: " + Util.getFullString(e));
             }
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
             throw new SawdustSystemError(e);
+        }
+        if(null != data || 0 < data.length)
+        {
+        	assert(serializationEchoTest(obj, data));
         }
         return data;
     }
 
+	private static <T> boolean serializationEchoTest(final T obj, byte[] data) {
+		Serializable fromBytes = fromBytes(data);
+		boolean equals = fromBytes.equals(obj);
+		if(!equals)
+		{
+			LOG.warning(String.format("Serialization echo test failed: \n\tOriginal: %s \n\tResult:   %s", 
+					obj.toString(),
+					fromBytes.toString()
+			));
+		}
+		return equals;
+	}
+
     public static Serializable fromBytes(final byte[] data)
     {
+    	if(null == data || 0 == data.length)
+    	{
+    		LOG.info("Deserializing null or 0-length byte array");
+    		return null;
+    	}
         Serializable copiedObj = null;
         try
         {

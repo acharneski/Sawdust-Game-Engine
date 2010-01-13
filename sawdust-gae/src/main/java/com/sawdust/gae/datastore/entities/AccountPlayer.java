@@ -12,13 +12,17 @@ import java.util.logging.Logger;
 import com.sawdust.engine.model.players.AccountFactory;
 import com.sawdust.engine.model.players.Player;
 
-public final class AccountPlayer extends Player
+public final class AccountPlayer extends Player implements Serializable
 {
     private static final Logger LOG = Logger.getLogger(Object.class.getName());
 
     protected static class SerialForm extends Player.SerialForm implements Serializable
     {
-        protected SerialForm(){}
+        protected SerialForm()
+        {
+            super();
+        }
+
         protected SerialForm(Player obj)
         {
             super(obj);
@@ -47,13 +51,18 @@ public final class AccountPlayer extends Player
 
     public AccountPlayer(final Account account2)
     {
-        super(account2.getUserId(), account2.isAdmin(), new AccountFactory()
+        super(account2.getUserId(), account2.isAdmin(), getAccountFactory(account2));
+    }
+
+	private static AccountFactory getAccountFactory(Account account2) {
+    	final String accountId = account2.getUserId();
+		return new AccountFactory()
         {
             @Override
             public Account getAccount()
             {
-                return Account.Load(account2.getUserId());
+                return Account.Load(accountId);
             }
-        });
-    }
+        };
+	}
 }

@@ -38,6 +38,11 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         Facebook, Mobile, Standard
     }
 
+    private static Key generateKey(String userId)
+    {
+        return (KeyFactory.createKey(Account.class.getSimpleName(), userId));
+    }
+
     @Persistent
     private Blob logicProvider;
 
@@ -63,18 +68,6 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
             }
         }
         return myData;
-    }
-
-    @Override
-    public boolean isValid()
-    {
-        if(!getUserId().contains("@")) return false;
-        if(getUserId().endsWith("@guest.null"))
-        {
-            long t = new Date().getTime() - getUpdated().getTime();
-            if(t > (1000*60*60*24*1)) return false;
-        }
-        return super.isValid();
     }
 
     public static Account Load(final String userId)
@@ -145,6 +138,10 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
     @Persistent
     private HashSet<Key> sessions = new HashSet<Key>();
 
+    @Persistent
+    @Serialized
+    private HashMap<Class, Key> resources = new HashMap<Class, Key>();
+
     protected Account()
     {
         super();
@@ -158,11 +155,6 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         if (this != DataStore.Add(this)) throw new AssertionError();
     }
 
-    private static Key generateKey(String userId)
-    {
-        return (KeyFactory.createKey(Account.class.getSimpleName(), userId));
-    }
-
     public void addSession(final GameSession session2)
     {
         final Key id2 = session2.getKey();
@@ -172,6 +164,91 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         }
         super.update();
         sessions.add(id2);
+    }
+
+    @Override
+    public com.sawdust.engine.controller.entities.Promotion doAwardPromotion(PromotionConfig p) throws GameException
+    {
+        Promotion promo = Promotion.load(this, p);
+        return promo;
+    }
+
+    @Override
+    public void doLogActivity(ActivityEvent event)
+    {
+        UserLogic logic = getLogic();
+        if(null != logic) 
+        {
+            LOG.info(String.format("SUPRESS Facebook event: %s", event.event));
+            try
+            {
+                //logic.publishActivity(event.event);
+            }
+            catch (Exception e)
+            {
+                LOG.warning(Util.getFullString(e));
+            }
+        }
+        new ActivityEventRecord(getAccount(),event);
+    }
+
+    public void doRemoveSession(final com.sawdust.engine.controller.entities.GameSession gameSession)
+    {
+        final Key id2 = ((GameSession) gameSession).getKey();
+        if (null == id2)
+        {
+            LOG.warning("Warning: null key");
+        }
+        else
+        {
+            super.update();
+            sessions.remove(id2);
+        }
+    }
+
+    public void doWithdraw(int amount, final Bank depositTarget, final String description) throws GameException
+    {
+        final int finalAmt = getBalance() - amount;
+        super.update();
+        if (finalAmt < 0)
+        {
+            String errMsg = String.format("Insufficient credits. Current Balance = %d; Required = %d", getBalance(), amount);
+            LOG.info(errMsg);
+            throw new GameLogicException(errMsg);
+        }
+        if (finalAmt < MIN_CREDITS)
+        {
+            String msg = String.format("Overdraft Protection");
+            MoneyTransaction.Transfer(getAccount(), null, finalAmt - MIN_CREDITS, msg);
+        }
+        if (null != depositTarget)
+        {
+            if (depositTarget instanceof Account)
+            {
+                LOG.fine(String.format("Withdrawl: %d (%s) from account %s to account %s", amount, description, ((Account) depositTarget)
+                        .getName(), getName()));
+                MoneyAccount account = ((Account) depositTarget).getAccount();
+                MoneyTransaction.Transfer(getAccount(), account, amount, description);
+            }
+            else if (depositTarget instanceof GameSession)
+            {
+                LOG.fine(String.format("Withdrawl: %d (%s) from session %s to account %s", amount, description,
+                        ((GameSession) depositTarget).getName(), getName()));
+                MoneyAccount account = ((GameSession) depositTarget).getBankAccount();
+                MoneyTransaction.Transfer(getAccount(), account, amount, description);
+            }
+            else
+            {
+                LOG.warning(String
+                        .format("Withdrawl: %d (%s) from UNKNOWN %s to account %s", amount, description, depositTarget, getName()));
+                depositTarget.doWithdraw(-amount, null, description);
+            }
+        }
+        else
+        {
+            LOG.fine(String.format("Withdrawl: %d (%s) from system to %s", amount, description, getName()));
+            MoneyTransaction.Transfer(getAccount(), null, amount, description);
+        }
     }
 
     @Override
@@ -236,6 +313,23 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         return interfacePreference;
     }
 
+    public <T extends UserLogic> T getLogic()
+    {
+        if(null == this.logicProvider) return null;
+        T fromBytes = null;
+        try
+        {
+            
+            fromBytes = (T) Util.fromBytes(this.logicProvider.getBytes());
+            LOG.fine(String.format("Get UserLogic: %d bytes: %s", this.logicProvider.getBytes().length, fromBytes.toString()));
+        }
+        catch (Exception e)
+        {
+            LOG.warning(String.format("Get UserLogic: %s", Util.getFullString(e)));
+        }
+        return fromBytes;
+    }
+
     public String getName()
     {
         if (null == displayName)
@@ -248,6 +342,20 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
     public Player getPlayer()
     {
         return new AccountPlayer(this);
+    }
+
+    @Override
+    public <T extends Serializable> T getResource(Class<T> c)
+    {
+        if (!resources.containsKey(c)) return null;
+        Key key = resources.get(c);
+        SessionResource get = DataStore.Get(SessionResource.class, key);
+        if (null == get)
+        {
+            LOG.warning("null == get");
+            return null;
+        }
+        return get.getData(c);
     }
 
     public GameSession getSession(final String sessionID) throws GameException
@@ -290,19 +398,17 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
     {
         return (isAdmin == 1);
     }
-
-    public void doRemoveSession(final com.sawdust.engine.controller.entities.GameSession gameSession)
+    
+    @Override
+    public boolean isValid()
     {
-        final Key id2 = ((GameSession) gameSession).getKey();
-        if (null == id2)
+        if(!getUserId().contains("@")) return false;
+        if(getUserId().endsWith("@guest.null"))
         {
-            LOG.warning("Warning: null key");
+            long t = new Date().getTime() - getUpdated().getTime();
+            if(t > (1000*60*60*24*1)) return false;
         }
-        else
-        {
-            super.update();
-            sessions.remove(id2);
-        }
+        return super.isValid();
     }
 
     public void setAdmin(final boolean pIsAdmin)
@@ -320,125 +426,19 @@ public class Account extends DataObj implements com.sawdust.engine.controller.en
         interfacePreference = pinterfacePreference;
     }
 
-    public void setName(final String pdisplayName)
-    {
-        displayName = pdisplayName;
-    }
-
-    public void doWithdraw(int amount, final Bank depositTarget, final String description) throws GameException
-    {
-        final int finalAmt = getBalance() - amount;
-        super.update();
-        if (finalAmt < 0)
-        {
-            String errMsg = String.format("Insufficient credits. Current Balance = %d; Required = %d", getBalance(), amount);
-            LOG.info(errMsg);
-            throw new GameLogicException(errMsg);
-        }
-        if (finalAmt < MIN_CREDITS)
-        {
-            String msg = String.format("Overdraft Protection");
-            MoneyTransaction.Transfer(getAccount(), null, finalAmt - MIN_CREDITS, msg);
-        }
-        if (null != depositTarget)
-        {
-            if (depositTarget instanceof Account)
-            {
-                LOG.fine(String.format("Withdrawl: %d (%s) from account %s to account %s", amount, description, ((Account) depositTarget)
-                        .getName(), getName()));
-                MoneyAccount account = ((Account) depositTarget).getAccount();
-                MoneyTransaction.Transfer(getAccount(), account, amount, description);
-            }
-            else if (depositTarget instanceof GameSession)
-            {
-                LOG.fine(String.format("Withdrawl: %d (%s) from session %s to account %s", amount, description,
-                        ((GameSession) depositTarget).getName(), getName()));
-                MoneyAccount account = ((GameSession) depositTarget).getBankAccount();
-                MoneyTransaction.Transfer(getAccount(), account, amount, description);
-            }
-            else
-            {
-                LOG.warning(String
-                        .format("Withdrawl: %d (%s) from UNKNOWN %s to account %s", amount, description, depositTarget, getName()));
-                depositTarget.doWithdraw(-amount, null, description);
-            }
-        }
-        else
-        {
-            LOG.fine(String.format("Withdrawl: %d (%s) from system to %s", amount, description, getName()));
-            MoneyTransaction.Transfer(getAccount(), null, amount, description);
-        }
-    }
-    
-    @Override
-    public void doLogActivity(ActivityEvent event)
-    {
-        UserLogic logic = getLogic();
-        if(null != logic) 
-        {
-            LOG.info(String.format("SUPRESS Facebook event: %s", event.event));
-            try
-            {
-                //logic.publishActivity(event.event);
-            }
-            catch (Exception e)
-            {
-                LOG.warning(Util.getFullString(e));
-            }
-        }
-        new ActivityEventRecord(getAccount(),event);
-    }
-
     public void setLogic(UserLogic userLogic)
     {
         this.logicProvider = new Blob(Util.toBytes(userLogic));
     }
 
-    public <T extends UserLogic> T getLogic()
+    public void setName(final String pdisplayName)
     {
-        if(null == this.logicProvider) return null;
-        T fromBytes = null;
-        try
-        {
-            
-            fromBytes = (T) Util.fromBytes(this.logicProvider.getBytes());
-            LOG.fine(String.format("Get UserLogic: %d bytes: %s", this.logicProvider.getBytes().length, fromBytes.toString()));
-        }
-        catch (Exception e)
-        {
-            LOG.warning(String.format("Get UserLogic: %s", Util.getFullString(e)));
-        }
-        return fromBytes;
-    }
-
-    @Persistent
-    @Serialized
-    private HashMap<Class, Key> resources = new HashMap<Class, Key>();
-
-    @Override
-    public <T extends Serializable> T getResource(Class<T> c)
-    {
-        if (!resources.containsKey(c)) return null;
-        Key key = resources.get(c);
-        SessionResource get = DataStore.Get(SessionResource.class, key);
-        if (null == get)
-        {
-            LOG.warning("null == get");
-            return null;
-        }
-        return get.getData(c);
+        displayName = pdisplayName;
     }
 
     @Override
     public <T extends Serializable> void setResource(Class<T> c, T markovChain)
     {
         resources.put(c, new SessionResource(this, markovChain).getKey());
-    }
-
-    @Override
-    public com.sawdust.engine.controller.entities.Promotion doAwardPromotion(PromotionConfig p) throws GameException
-    {
-        Promotion promo = Promotion.load(this, p);
-        return promo;
     }
 }
