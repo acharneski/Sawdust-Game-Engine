@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.sawdust.engine.model.LoadedDeck;
-import com.sawdust.engine.model.Pair;
+import com.sawdust.engine.view.Pair;
 
 public class CardDeck implements Serializable
 {

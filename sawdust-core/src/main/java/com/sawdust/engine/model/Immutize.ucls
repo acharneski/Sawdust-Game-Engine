@@ -1,7 +1,7 @@
 <class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.model.Pair" project="sawdust-core" 
-    file="/sawdust-core/src/main/java/com/sawdust/engine/model/Pair.java" binary="false">    
+  <class corner="BOTTOM_RIGHT" language="java" name="com.sawdust.engine.view.Pair" project="sawdust-core" 
+    file="/sawdust-core/src/main/java/com/sawdust/engine/view/Pair.java" binary="false">    
     <position x="489" y="37" width="121" height="100"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
@@ -84,6 +84,36 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
+      navigable="false">      
+      <attribute name="_members"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.MultiPlayer" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" binary="false" 
+      navigable="false">      
+      <attribute name="_playerManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="sawdust-core" name="com.sawdust.engine.model.players.Player" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Player.java" binary="false"/>    
+    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
+      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false"/>  
+  </generalization>  
   <generalization>    
     <source project="sawdust-core" name="com.sawdust.engine.model.state.IndexCard" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/state/IndexCard.java" binary="false"/>    
@@ -98,36 +128,6 @@
     </source>    
     <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
       file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false" 
-      navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
-      navigable="false">      
-      <attribute name="_members"/>      
-      <multiplicity minimum="0" maximum="2147483647"/>    
-    </source>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false" 
-      navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.players.Player" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Player.java" binary="false"/>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.players.Participant" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/Participant.java" binary="false"/>  
-  </generalization>  
-  <association>    
-    <source project="sawdust-core" name="com.sawdust.engine.model.players.MultiPlayer" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java" binary="false" 
-      navigable="false">      
-      <attribute name="_playerManager"/>      
-      <multiplicity minimum="0" maximum="1"/>    
-    </source>    
-    <target project="sawdust-core" name="com.sawdust.engine.model.players.PlayerManager" 
-      file="/sawdust-core/src/main/java/com/sawdust/engine/model/players/PlayerManager.java" binary="false" 
       navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  

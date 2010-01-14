@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='gameCreator'>
 	<inherits name='com.google.gwt.user.User' />
-
 	<inherits name="com.google.gwt.user.Debug" />
-	<set-property name="gwt.enableDebugId" value="true" />
     <inherits name="com.gwittit.GwtFacebook"/>
-<!-- 
- -->
+    <inherits name='com.sawdust.engine.SawdustEngine' />
+    <inherits name='com.sawdust.gwt.ArtLibrary' />
 
-	<inherits name='com.sawdust.engine.SawdustEngine' />
+	<set-property name="gwt.enableDebugId" value="true" />
+
 	<stylesheet src="gwt/sawdust/sawdust.css" />
-	<source path="common\gwt" />
-	<source path="client\gwt" />
+
+	<source path="common/gwt" />
+	<source path="client/gwt" />
+
 	<entry-point class='com.sawdust.client.gwt.GameCreator' />
 </module>

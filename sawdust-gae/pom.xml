@@ -124,14 +124,19 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource> <directory>src/main/java</directory>
-			<filtering>true</filtering> <includes> <include>**/gwt/**</include>
-			<include>**/*.gwt.xml</include> </includes> </resource>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
+	<resources>
+		<resource>
+			<directory>src/main/java</directory>
+			<filtering>true</filtering>
+			<includes>
+				<include>**/gwt/**</include>
+				<include>**/*.gwt.xml</include>
+			</includes>
+		</resource>
+		<resource>
+			<directory>src/main/resources</directory>
+		</resource>
+	</resources>
 
 		<plugins>
 			<plugin>

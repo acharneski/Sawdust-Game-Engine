@@ -1,4 +1,4 @@
-package com.sawdust.engine.model;
+package com.sawdust.engine.view;
 
 public class Pair<T1, T2>
 {

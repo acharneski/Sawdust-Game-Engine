@@ -18,16 +18,16 @@ public class LetterGenerator1 extends ArtLibraryGenerator<LetterArt>
 
     public static void main(String[] args) throws IOException
     {
-        new LetterGenerator1(args[0], args[1]).createLibrary();
+        new LetterGenerator1(args[0], args[1], args[2]).createLibrary();
     }
 
     static final int size = 50;
     static final String letters[] =
     { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-    public LetterGenerator1(String string, String string2)
+    public LetterGenerator1(String string, String string2, String s3)
     {
-        super(string, string2);
+        super(string, string2, "com.sawdust.gwt.art.generated", s3);
     }
 
     @Override

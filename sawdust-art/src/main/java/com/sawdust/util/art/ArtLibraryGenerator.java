@@ -11,18 +11,15 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
     protected final String _inputPath;
     protected final String _basePath;
     protected final String _nameSpace;
-
-    public ArtLibraryGenerator(String inputPath, String resourceOutputPath)
-    {
-        this(inputPath, resourceOutputPath, "com.sawdust.gwt.art");
-    }
+    protected final String _codePath;
     
-    public ArtLibraryGenerator(String inputPath, String outputPath, String nameSpace)
+    public ArtLibraryGenerator(String inputPath, String outputPath, String nameSpace, String codePath)
     {
         super();
         this._nameSpace = nameSpace;
         this._inputPath = inputPath;
         this._basePath = outputPath;
+        this._codePath = codePath;
     }
 
     abstract T[] getTokenSet();
@@ -34,7 +31,7 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
         HashMap<String, String> files = new HashMap<String, String>();
         String libraryKey = getKey();
         String libraryNameSpace = _nameSpace + "." + libraryKey;
-        String libraryPath = _basePath + "/" + libraryNameSpace.replaceAll("\\.", "/") + "/";
+        String libraryPath = _codePath + "/" + libraryNameSpace.replaceAll("\\.", "/") + "/";
         File interfaceFile = new File(libraryPath + "xface.java");
         File enumFile = new File(libraryPath + "enumArt.java");
         File singletonFile = new File(libraryPath + "singleton.java");
@@ -54,6 +51,7 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
             enumWriter.write(String.format("package %s;\n", libraryNameSpace));
             enumWriter.write(String.format("import com.google.gwt.user.client.ui.ImageBundle;\n"));
             enumWriter.write(String.format("import com.google.gwt.user.client.ui.AbstractImagePrototype;\n"));
+            enumWriter.write(String.format("import com.sawdust.gwt.art.GwtSawdustArt;\n"));
             enumWriter.write(String.format("public enum enumArt implements GwtSawdustArt \n{\n", libraryKey));
 
             singletonWriter = new FileWriter(singletonFile);
@@ -75,7 +73,6 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
             		"         " +
             		"     }\n" +
             		"}\n"));
-            singletonWriter.close();
             
             
             for (T token : getTokenSet())
@@ -89,11 +86,13 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
 
                 enumWriter.write(String.format("%s%s\n", libraryKey, tokenKey));
                 enumWriter.write(String.format("{\n"));
-                enumWriter.write(String.format("AbstractImagePrototype getImage() {\n return singleton.instance().get%s(); \n}\n", tokenKey));
-                enumWriter.write(String.format("String getId() {\n return \"%s\"; \n}\n", tokenKey));
+                enumWriter.write(String.format("public AbstractImagePrototype getImage() {\n return singleton.instance().get%s(); \n}\n", tokenKey));
+                enumWriter.write(String.format("public String getId() {\n return \"%s\"; \n}\n", tokenKey));
                 enumWriter.write(String.format("\n},\n", tokenKey));
             }
             
+            singletonWriter.close();
+
             interfaceWriter.write(String.format("}"));
             interfaceWriter.close();
             
@@ -118,8 +117,7 @@ public abstract class ArtLibraryGenerator<T extends ArtToken>
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error saving image", e);
         }
         return relativePath;
     }

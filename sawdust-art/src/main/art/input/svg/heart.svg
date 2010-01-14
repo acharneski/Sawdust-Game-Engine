@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="500"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.46+devel 22040"
+   sodipodi:docname="heart.svg"
+   inkscape:export-filename="C:\site\Sawdust\Sawdust Game Engine\ArtGenerator\input\svg\heart.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3814">
+      <stop
+         style="stop-color:#870000;stop-opacity:1;"
+         offset="0"
+         id="stop3816" />
+      <stop
+         style="stop-color:#f8001d;stop-opacity:0.84070796;"
+         offset="1"
+         id="stop3818" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3814"
+       id="radialGradient3826"
+       cx="250"
+       cy="249.52026"
+       fx="250"
+       fy="249.52026"
+       r="111.40865"
+       gradientTransform="matrix(1,0,0,1.0838153,0,-20.913609)"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       id="filter3884">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.1357752"
+         id="feGaussianBlur3886" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="469.75977"
+     inkscape:cy="241.09513"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     showborder="true"
+     borderlayer="false"
+     inkscape:showpageshadow="true"
+     inkscape:window-width="1680"
+     inkscape:window-height="960"
+     inkscape:window-x="1276"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2826"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       dotted="true"
+       spacingx="10px"
+       spacingy="10px" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="250,250"
+       id="guide2828" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="250,250"
+       id="guide2830" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="140,250"
+       id="guide2832" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="360,250"
+       id="guide2840" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="40,350"
+       id="guide2842" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-140,130"
+       id="guide2844" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-160,300"
+       id="guide2846" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-552.36218)">
+    <path
+       style="fill:url(#radialGradient3826);stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;marker-start:none;stroke:#000000;stroke-opacity:1;fill-opacity:1;stroke-linejoin:round;filter:url(#filter3884)"
+       d="m 238.6949,355.42268 c -52.80769,-60.8946 -87.84526,-113.42787 -95.73043,-143.53256 -2.34645,-8.95851 -2.46127,-15.02474 -0.4967,-26.24247 3.19162,-18.22414 10.45955,-33.7787 20.53113,-43.94 8.64061,-8.71758 12.36144,-10.44293 22.5011,-10.43375 7.22972,0.007 8.62359,0.34354 14.47644,3.5 13.91543,7.50463 30.03844,27.76524 43.16536,54.24276 3.47663,7.0125 6.56282,12.75 6.8582,12.75 0.29538,0 3.38157,-5.7375 6.8582,-12.75 13.12692,-26.47752 29.24993,-46.73813 43.16536,-54.24276 5.85285,-3.15646 7.24672,-3.49346 14.47644,-3.5 10.13966,-0.009 13.86049,1.71617 22.5011,10.43375 10.07158,10.1613 17.33951,25.71586 20.53113,43.94 1.96457,11.21773 1.84975,17.28396 -0.4967,26.24247 -5.47316,20.89593 -22.74654,50.68203 -51.83072,89.37654 -17.24503,22.94334 -53.40349,66.5 -55.20481,66.5 -0.33024,0 -5.41753,-5.55479 -11.3051,-12.34398 z"
+       id="path2850"
+       transform="translate(0,552.36218)" />
+  </g>
+</svg>
