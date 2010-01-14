@@ -11,7 +11,9 @@ public class ArtManager
 
     private ArtManager()
     {
-        addArtLibrary("letters1", com.sawdust.gwt.art.generated.cards1.enumArt.values());
+        addArtLibrary("CARD1", com.sawdust.gwt.art.generated.cards1.enumArt.values());
+        addArtLibrary("WORD1", com.sawdust.gwt.art.generated.letters1.enumArt.values());
+        addArtLibrary("GO1", com.sawdust.gwt.art.go1.enumArt.values());
     }
     HashMap<String,HashMap<String,GwtSawdustArt>> art = new HashMap<String, HashMap<String,GwtSawdustArt>>();
 

@@ -15,10 +15,10 @@
 
 <%final Logger LOG = Logger.getLogger("tinySession");%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
+<jsp:setProperty name="user" property="request" value="<%=request%>" />
 
-<jsp:useBean id="requestData" class="com.sawdust.gae.jsp.JspRequestInfoBean" scope="request"/>
+<jsp:useBean id="requestData" class="com.sawdust.gae.jsp.JspRequestInfoBean" scope="request" />
 
 <%
 String title = "Play";

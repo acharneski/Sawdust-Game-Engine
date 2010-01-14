@@ -36,7 +36,7 @@ public class LetterGenerator1 extends ArtLibraryGenerator<LetterArt>
         ArrayList<LetterArt> returnList = new ArrayList<LetterArt>(); 
         for (String letter : letters)
         {
-            returnList.add(new LetterArt(this, letter+"1", Color.WHITE, size));
+            returnList.add(new LetterArt(this, letter, Color.WHITE, size));
             returnList.add(new LetterArt(this, letter+"2", Color.GREEN, size));
         }
         return returnList.toArray(new LetterArt[]{});

@@ -14,7 +14,7 @@
 
 <html>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <head>

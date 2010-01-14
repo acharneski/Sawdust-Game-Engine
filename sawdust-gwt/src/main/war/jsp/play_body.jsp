@@ -9,7 +9,7 @@
 <%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
 <%@ page import="com.sawdust.gae.datastore.entities.Account" %>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
 <jsp:setProperty name="user" property="request" value="<%=request%>"/>
 
 <%

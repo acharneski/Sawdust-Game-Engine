@@ -49,7 +49,7 @@
     
     boolean t1 = null != user.getEmail();
     String t2 = user.getLoginUrl();
-    GameConfig gameConfig = game.getPrototypeConfig(user.getAccount());
+    GameConfig gameConfig = game.getBaseConfig(user.getAccount());
     String id;
     HashSet<String> params = new HashSet<String>();
     Enumeration parameterNames = request.getParameterNames();
