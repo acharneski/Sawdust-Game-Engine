@@ -8,7 +8,7 @@
 <%@ page import="com.sawdust.gae.datastore.entities.TinySession"%>
 <%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <%
     GameSession s = (GameSession) JspLib.Instance.loadSessionFromTinyUrlRequest(request,user);

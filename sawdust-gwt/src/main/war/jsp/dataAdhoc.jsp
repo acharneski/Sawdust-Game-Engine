@@ -8,9 +8,7 @@
 <%@ taglib prefix="wc" tagdir="/WEB-INF/tags/webClient"%>
 
 
-<%@page import="java.text.DateFormat"%><jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-<jsp:setProperty name="user" property="response" value="<%=response%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <%
 String query = request.getParameter("query");

@@ -14,9 +14,7 @@
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig"%>
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig.PropertyType"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
-<jsp:setProperty property="request" name="user" value="<%=request%>" />
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
     String gameName = request.getParameter("game");
     GameType game = null;

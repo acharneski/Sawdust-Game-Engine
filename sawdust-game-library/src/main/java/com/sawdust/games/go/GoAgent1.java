@@ -113,4 +113,9 @@ public class GoAgent1 extends StopAgent1<GoGame>
       }
       return -1000;
    }
+
+public static Participant getAgent(String string, int i, int j)
+{
+    return new GoAgent1(string, i, j);
+}
 }

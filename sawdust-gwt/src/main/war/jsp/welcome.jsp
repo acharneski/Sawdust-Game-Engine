@@ -7,9 +7,7 @@
 <%@ page import="com.sawdust.gae.jsp.JspLib"%>
 <%@ page import="com.sawdust.engine.model.GameType"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <h1>Welcome!</h1>
 <h2>Please choose a game:</h2>
 

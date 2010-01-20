@@ -5,8 +5,7 @@
 
 <%@ page import="com.sawdust.gae.datastore.DataStore"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <%
 if(user.setAccountData(request))

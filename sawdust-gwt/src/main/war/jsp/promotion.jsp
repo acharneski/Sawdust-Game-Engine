@@ -14,8 +14,7 @@
 
 <html>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">

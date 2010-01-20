@@ -96,4 +96,6 @@ public interface GameSession extends Bank
 
     void setUnitWager(int anteInteger) throws GameException;
 
+    void setAgentEnabled(boolean b);
+
 }

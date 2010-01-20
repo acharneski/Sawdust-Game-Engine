@@ -5,9 +5,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
-<jsp:setProperty name="user" property="request" value="<%=request%>" />
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
     String showGameListing = null;
     String gameName = request.getParameter("game");

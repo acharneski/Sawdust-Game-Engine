@@ -61,19 +61,33 @@ public class DataStorePerfTest extends TestCase
     private void up() throws GameException
     {
         initAppEngine();
-        
-        _deck = new LoadedDeck();
         _accessData = new AccessToken(USER_ID_1);
         _user = new User(UserTypes.Member, USER_ID_1, null);
         _access1 = new SessionToken(_accessData, _user);
         _account = _access1.doLoadAccount();
+        _player1 = _account.getPlayer();
+        
         _session = new GameSession(_account);
         _blackjackGame = getGame(_session, _accessData, _account);
         _blackjackGame.saveState();
+        _deck = new LoadedDeck();
         _blackjackGame.setDeck(_deck);
-        _player1 = _account.getPlayer();
     }
 
+    private void up(String id) throws GameException
+    {
+        initAppEngine();
+        _accessData = new AccessToken(USER_ID_1);
+        _user = new User(UserTypes.Member, USER_ID_1, null);
+        _access1 = new SessionToken(_accessData, _user);
+        _account = _access1.doLoadAccount();
+        _player1 = _account.getPlayer();
+        
+        _session = GameSession.load(id, _player1);
+        if(null == _session) throw new RuntimeException("Unknown Session: " + id);
+        _blackjackGame = (BlackjackGame) _session.getState();
+    }
+    
     private void initAppEngine()
     {
         DataStore.initTest();
@@ -91,21 +105,7 @@ public class DataStorePerfTest extends TestCase
         LocalDatastoreService lds = (LocalDatastoreService) apiProxyLocalImpl.getService("datastore_v3");
         lds.setStoreDelay(0);
     }
-    
-    private void up(String id) throws GameException
-    {
-        initAppEngine();
         
-        _accessData = new AccessToken(USER_ID_1);
-        _user = new User(UserTypes.Member, USER_ID_1, null);
-        _access1 = new SessionToken(_accessData, _user);
-        _account = _access1.doLoadAccount();
-        _player1 = _account.getPlayer();
-        _session = GameSession.load(id, _player1);
-        if(null == _session) throw new RuntimeException("Unknown Session: " + id);
-        _blackjackGame = (BlackjackGame) _session.getState();
-    }
-    
     @Override
     protected void tearDown() throws Exception
     {

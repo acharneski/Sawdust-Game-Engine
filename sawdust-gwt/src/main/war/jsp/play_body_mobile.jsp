@@ -14,9 +14,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="com.sawdust.engine.model.basetypes.GameState" %>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
     TinySession tsession = JspLib.Instance.getTinySession(request);
     boolean isSessionDefined = false;

@@ -10,10 +10,7 @@
 
 <%@page import="java.text.DateFormat"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser"/>
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-<jsp:setProperty name="user" property="response" value="<%=response%>"/>
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
 String id = request.getParameter("id");
 if(null == id) id = user.getAccount().getUserId(); 

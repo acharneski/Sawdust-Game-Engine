@@ -7,9 +7,8 @@
 <%@ page import="com.sawdust.gae.datastore.entities.Account"%>
 <%@ page import="java.net.URLEncoder"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request" />
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-<jsp:setProperty name="user" property="response" value="<%=response%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
+
 
 <c:choose>
 <c:when test="<%=null != user.getEmail()%>">

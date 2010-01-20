@@ -16,12 +16,12 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Image;
 import com.sawdust.client.gwt.GameClient;
-import com.sawdust.client.gwt.art.ArtManager;
 import com.sawdust.client.gwt.util.CommandExecutor;
 import com.sawdust.client.gwt.util.EventListener;
 import com.sawdust.engine.view.game.Token;
 import com.sawdust.engine.view.geometry.Position;
 import com.sawdust.engine.view.geometry.Vector;
+import com.sawdust.gwt.art.ArtManager;
 
 /**
  * @author Administrator

@@ -22,14 +22,25 @@ import com.sawdust.games.stop.StopGame.GamePhase;
 
 final class DummyGame implements GameState, Serializable
 {
-    DummyGame()
+    @Override
+	public int hashCode() {
+		return 957933997;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
+
+	DummyGame()
     {
         super();
-    }
-
-    @Override
-    public void doUpdate() throws GameException
-    {
     }
 
     @Override
@@ -70,11 +81,6 @@ final class DummyGame implements GameState, Serializable
 
     @Override
     public void setHeight(int height)
-    {
-    }
-
-    @Override
-    public void saveState() throws GameException
     {
     }
 
@@ -208,6 +214,18 @@ final class DummyGame implements GameState, Serializable
     @Override
     public void setConfig(GameConfig newConfig) throws GameException
     {
+    }
+
+    @Override
+    public void doUpdate() throws GameException
+    {
+        throw new RuntimeException("Not Implemented");
+    }
+
+    @Override
+    public void saveState() throws GameException
+    {
+        throw new RuntimeException("Not Implemented");
     }
 
 }

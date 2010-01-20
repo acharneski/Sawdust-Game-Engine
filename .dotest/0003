@@ -1,0 +1,422 @@
+From c57901236752119648eb47053266e761731a7a1d Mon Sep 17 00:00:00 2001
+From: Andrew Charneski <acharneski@gmail.com>
+Date: Fri, 29 Jan 2010 06:55:37 -0800
+Subject: Synch files with desktop
+
+---
+ .../engine/controller/entities/GameSession.java    |    6 +++-
+ .../sawdust/engine/model/basetypes/BaseGame.java   |   16 ---------
+ .../sawdust/engine/model/basetypes/GameState.java  |    3 --
+ .../engine/model/basetypes/TutorialGameBase.java   |    3 +-
+ .../sawdust/engine/model/players/MultiPlayer.java  |   21 ++++++++-----
+ .../sawdust/engine/model/state/CommandResult.java  |   27 ++++++++++++++--
+ .../gae/datastore/entities/GameSession.java        |   33 +++++++++++++------
+ .../test/java/com/sawdust/test/gae/GameTest.java   |    2 +-
+ .../com/sawdust/games/blackjack/BlackjackGame.java |    9 +++--
+ .../java/com/sawdust/games/blackjack/Commands.java |   23 +++++++++-----
+ 10 files changed, 87 insertions(+), 56 deletions(-)
+
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/controller/entities/GameSession.java b/sawdust-core/src/main/java/com/sawdust/engine/controller/entities/GameSession.java
+index 07f433ed334f33316d5aed6452b607873f649dba..16ccd54c3de0a129af287a360f912760874ba4c0 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/controller/entities/GameSession.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/controller/entities/GameSession.java
+@@ -6,9 +6,11 @@ import java.util.List;
+ 
+ import com.sawdust.engine.controller.exceptions.GameException;
+ import com.sawdust.engine.model.Bank;
++import com.sawdust.engine.model.basetypes.BaseGame;
+ import com.sawdust.engine.model.basetypes.GameState;
+ import com.sawdust.engine.model.players.Participant;
+ import com.sawdust.engine.model.players.Player;
++import com.sawdust.engine.model.state.CommandResult;
+ import com.sawdust.engine.view.config.GameConfig;
+ 
+ public interface GameSession extends Bank
+@@ -44,7 +46,7 @@ public interface GameSession extends Bank
+ 
+     void addAgent(String name);
+ 
+-    void addPlayer(Participant p) throws GameException;
++    void addPlayer(Participant p, CommandResult<GameState> commandResult) throws GameException;
+ 
+     List<GameState> doGetStatesSince(int versionNumber);
+ 
+@@ -98,4 +100,6 @@ public interface GameSession extends Bank
+ 
+     void setAgentEnabled(boolean b);
+ 
++    void save(CommandResult<? extends GameState> moveResult);
++
+ }
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java
+index 61fc36495d6561954cbfd1a34c6944f076828492..2e2fd9f0e0cf178821deece4d2414c2fa654ffc0 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/BaseGame.java
+@@ -186,21 +186,6 @@ public abstract class BaseGame implements GameState
+     public abstract GameState doReset();
+ 
+     @Override
+-    public GameState doSaveState() throws GameException
+-    {
+-        if (null != this._parentGame)
+-        {
+-            _parentGame.doSaveState();
+-        }
+-        else
+-        {
+-            GameSession session = this.getSession();
+-            if (null != session) session.setState(this);
+-        }
+-        return this;
+-    }
+-
+-    @Override
+     public abstract GameState doStart() throws GameException;
+ 
+     @Override
+@@ -387,7 +372,6 @@ public abstract class BaseGame implements GameState
+         thisProperties.get(GameConfig.ANTE).value = anteString;
+         thisProperties.get(GameConfig.ANTE).defaultValue = anteString;
+         this.getSession().setUnitWager(anteInteger);
+-        doSaveState();
+         return this;
+     }
+ 
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java
+index 14f707dd2a14717fc2d2467db65e5182cc6baac5..c728cabbd9277487800c9d8911a835758164d8e3 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/GameState.java
+@@ -31,9 +31,6 @@ public interface GameState extends Serializable, Cloneable
+     GameState doRemoveMember(final Participant email) throws GameException;
+ 
+     GameState doReset();
+-
+-    @Deprecated
+-    GameState doSaveState() throws GameException;
+     
+     GameState doStart() throws GameException;
+ 
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TutorialGameBase.java b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TutorialGameBase.java
+index 18ead9d8161d6d429cf9e704351be8bcb9c7e411..18feedd8f21400e4ef0cad8bd979a481232d7642 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TutorialGameBase.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/model/basetypes/TutorialGameBase.java
+@@ -40,8 +40,9 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
+       try
+       {
+          Agent<S> agent = getInitAgent();
+-         this.getSession().addPlayer(agent);
++         //this.getSession().addPlayer(agent);
+          _innerGame.doAddPlayer(agent);
++         assert(false): "NI: need a way to add the agent to the game on game startup";
+       }
+       catch (GameException e)
+       {
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java b/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java
+index 430929fa58d6fe2da7a83349dc3bebfb9a47a183..66f4a92374791ef6cd38caa1c7b8f1f29e8c3d8d 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/model/players/MultiPlayer.java
+@@ -83,20 +83,25 @@ public class MultiPlayer implements IMultiPlayer, Serializable
+         {
+             final Agent<BaseGame> agent = (Agent<BaseGame>) currentPlayer;
+             GameCommand<BaseGame> move = agent.getMove(game, agent);
+-            move.doCommand(agent, null);
++            CommandResult<BaseGame> moveResult = move.doCommand(agent, null);
+             game._timeOffset += 1000;
+-            GameSession session = game.getSession();
+-            game.doSaveState();
++            game.getSession().save(moveResult);
+             final Participant nextPlayer = _playerManager.getCurrentPlayer();
+             if (nextPlayer.equals(agent))
+             {
+-                if (game.isInPlay()) throw new GameLogicException("Wedged Agent!");
++                if (game.isInPlay()) 
++                {
++                    throw new GameLogicException("Wedged Agent!");
++                }
+                 else
+                 {
+                     break;
+                 }
+             }
+-            currentPlayer = nextPlayer;
++            else
++            {
++                currentPlayer = nextPlayer;
++            }
+         }
+         return this;
+     }
+@@ -182,15 +187,15 @@ public class MultiPlayer implements IMultiPlayer, Serializable
+                 @Override
+                 public CommandResult doCommand(final Participant p, String commandText) throws GameException
+                 {
++                    CommandResult<GameState> commandResult = new CommandResult<GameState>();
+                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
+                     Agent<?> agent = f.getAgent("AI " + playerNumber);
+                     GameSession session = game.getSession();
+                     if(null != session)
+                     {
+-                        session.addPlayer(agent);
+-                        game.doSaveState();
++                        session.addPlayer(agent, commandResult);
+                     }
+-                    return new CommandResult<GameState>(game);
++                    return commandResult;
+                 }
+ 
+                 @Override
+diff --git a/sawdust-core/src/main/java/com/sawdust/engine/model/state/CommandResult.java b/sawdust-core/src/main/java/com/sawdust/engine/model/state/CommandResult.java
+index a879d448fc37cf3ebe5108436f8e0e8662ad4284..8b5071b7d796346508ebe8ec992dbfaefd161575 100644
+--- a/sawdust-core/src/main/java/com/sawdust/engine/model/state/CommandResult.java
++++ b/sawdust-core/src/main/java/com/sawdust/engine/model/state/CommandResult.java
+@@ -2,20 +2,39 @@ package com.sawdust.engine.model.state;
+ 
+ import java.util.ArrayList;
+ 
++import com.sawdust.engine.controller.Util;
+ import com.sawdust.engine.model.basetypes.GameState;
+ 
+ public class CommandResult<T extends GameState>
+ {
+-    public final T state[];
++    public final ArrayList<T> state;
+ 
+     public CommandResult(T... p)
+     {
+         super();
+-        ArrayList<T> arrayList = new ArrayList<T>(p.length);
++        state = new ArrayList<T>(p.length);
+         for(int i=0;i<p.length;i++)
+         {
+-            arrayList.add(p[i]);
++            state.add(p[i]);
+         }
+-        state = arrayList.toArray(p);
++    }
++
++    public T addState(T game)
++    {
++        T copy = Util.Copy(game);
++        state.add(copy);
++        return copy;
++    }
++
++    public CommandResult()
++    {
++        super();
++        state = new ArrayList<T>();
++    }
++
++    public T getLatestState()
++    {
++        int lastIndex = state.size()-1;
++        return lastIndex<0?null:state.get(lastIndex);
+     }
+ }
+diff --git a/sawdust-gae/src/main/java/com/sawdust/gae/datastore/entities/GameSession.java b/sawdust-gae/src/main/java/com/sawdust/gae/datastore/entities/GameSession.java
+index c96f6273e92d5d51452cc749960a043e64b200cf..d6b4f7e38917acc01b02ae9fd690ee238b547036 100644
+--- a/sawdust-gae/src/main/java/com/sawdust/gae/datastore/entities/GameSession.java
++++ b/sawdust-gae/src/main/java/com/sawdust/gae/datastore/entities/GameSession.java
+@@ -30,6 +30,8 @@ import com.sawdust.engine.model.basetypes.MultiPlayerGame;
+ import com.sawdust.engine.model.players.Agent;
+ import com.sawdust.engine.model.players.Participant;
+ import com.sawdust.engine.model.players.Player;
++import com.sawdust.engine.model.state.CommandResult;
++import com.sawdust.engine.model.state.GameCommand;
+ import com.sawdust.engine.view.config.GameConfig;
+ import com.sawdust.gae.datastore.DataObj;
+ import com.sawdust.gae.datastore.DataStore;
+@@ -158,7 +160,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+         return KeyFactory.createKey(GameSession.class.getSimpleName(), keyString);
+     }
+ 
+-    public void addPlayer(final Participant p) throws GameException
++    public void addPlayer(final Participant p, CommandResult<GameState> commandResult) throws GameException
+     {
+         if ((sessionStatus != SessionStatus.Inviting) && (sessionStatus != SessionStatus.Initializing))
+             throw new GameLogicException("This session is not in the invite mode!");
+@@ -181,13 +183,14 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+             addAgent(p.getId());
+         }
+ 
+-        final GameState _game = getState();
++        GameState _game = getState();
+         if (null != _game)
+         {
+-            _game.doAddPlayer(p);
+-            _game.doSaveState();
+-            doUpdateStatus();
++            _game = _game.doAddPlayer(p);
++            //this.setState(_game);
++            commandResult.addState(_game);
+         }
++        doUpdateStatus();
+     }
+ 
+     public void doUnitWager() throws GameException
+@@ -736,7 +739,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+                     {
+                         final MultiPlayerGame multiPlayerCardGame = (MultiPlayerGame) lgame;
+                         Participant currentPlayer = multiPlayerCardGame.getPlayerManager().getCurrentPlayer();
+-                        multiPlayerCardGame.doForceMove(currentPlayer).doCommand(currentPlayer, null);
++                        GameCommand<MultiPlayerGame> forcedMove = multiPlayerCardGame.doForceMove(currentPlayer);
++                        CommandResult<MultiPlayerGame> commandResult = forcedMove.doCommand(currentPlayer, null);
++                        save(commandResult);
+                         _dirtyGame = true;
+                     }
+                 }
+@@ -792,10 +797,15 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+         }
+         if (_dirtyGame)
+         {
+-            lgame.doSaveState();
++            setState(lgame);
+         }
+     }
+ 
++    private void save(CommandResult<? extends GameState> commandResult)
++    {
++        throw new RuntimeException("Not implement: Need to save frame states in-order");
++    }
++
+     private boolean areTriggersEnabled()
+     {
+         if (sessionStatus == SessionStatus.Initializing) return false;
+@@ -808,12 +818,12 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+         if (getReadyPlayers() < requiredPlayers) return;
+         // if (isPlaying()) { throw new GameLogicException(""); }
+ 
+-        final GameState tokenGame2 = getState();
++        GameState tokenGame2 = getState();
+         if (null != tokenGame2)
+         {
+             tokenGame2.doStart();
+-            tokenGame2.moveAgents();
+-            tokenGame2.doSaveState();
++            tokenGame2 = tokenGame2.moveAgents();
++            setState(tokenGame2);
+         }
+     }
+ 
+@@ -908,7 +918,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
+         if (null != latestState)
+         {
+             currentConfig = latestState.getConfig();
+-            latestState.setConfig(newConfig);
++            latestState = latestState.setConfig(newConfig);
++            setState(latestState);
+         }
+         this.setGame(newConfig.getGameName());
+         this.setMoveTimeout(Integer.parseInt(newConfig.getProperties().get(GameConfig.MOVE_TIMEOUT).value));
+diff --git a/sawdust-gae/src/test/java/com/sawdust/test/gae/GameTest.java b/sawdust-gae/src/test/java/com/sawdust/test/gae/GameTest.java
+index fccdb2ad36f2cbced03a4b47ab5584b34a96c1f8..307af1c6d7cb0893cea8a7b51ff541b7605e8eea 100755
+--- a/sawdust-gae/src/test/java/com/sawdust/test/gae/GameTest.java
++++ b/sawdust-gae/src/test/java/com/sawdust/test/gae/GameTest.java
+@@ -61,7 +61,7 @@ public abstract class GameTest<T extends GameState> extends LocalGaeTest
+         PlayerContext firstPlayer = _players.get(0);
+         _session = new GameSession(firstPlayer.account);
+         _game = getGame(_session, firstPlayer.accessToken, firstPlayer.account);
+-        _game.doSaveState();
++        _session.setState(_game);
+         _sessionId = _session.getStringId();
+     }
+ 
+diff --git a/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/BlackjackGame.java b/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/BlackjackGame.java
+index e3613b9cbf087e0ceb69a210cc2061ad4df7dacc..56817eac0b8eb2a911ae1acbf69bd13cfa914402 100644
+--- a/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/BlackjackGame.java
++++ b/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/BlackjackGame.java
+@@ -484,10 +484,13 @@ public abstract class BlackjackGame extends IndexCardGame
+                 if (0 == getCurveCards(i).size()) continue;
+                 returnValue.add(new GameCommand()
+                 {
+-                    public void doCommand(final Participant user, final GameSession gameSession, final String param) throws GameException
++                    public CommandResult doCommand(final Participant user, final GameSession gameSession, final String param) throws GameException
+                     {
+-                        BlackjackGame.this.doHit(i);
+-                        BlackjackGame.this.doSaveState();
++                        
++                        CommandResult<GameState> commandResult = new CommandResult<GameState>();
++                        BlackjackGame newGame = BlackjackGame.this.doHit(i);
++                        commandResult.addState(newGame);
++                        return commandResult;
+                     }
+ 
+                     @Override
+diff --git a/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/Commands.java b/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/Commands.java
+index b7ab5eb248606e47b43911fe832b46d85709bcd4..cb465f58c876a3e967c35ab9da077fd447de012b 100644
+--- a/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/Commands.java
++++ b/sawdust-game-library/src/main/java/com/sawdust/games/blackjack/Commands.java
+@@ -9,6 +9,7 @@ import java.util.ArrayList;
+ import com.sawdust.engine.controller.entities.GameSession;
+ import com.sawdust.engine.controller.exceptions.GameException;
+ import com.sawdust.engine.model.players.Participant;
++import com.sawdust.engine.model.state.CommandResult;
+ import com.sawdust.engine.model.state.IndexCard;
+ import com.sawdust.engine.model.state.IndexPosition;
+ import com.sawdust.engine.model.state.Token;
+@@ -19,10 +20,12 @@ public enum Commands
+ {
+     Stay
+     {
+-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
++        public CommandResult<BlackjackGame> doCommand(final Participant user, BlackjackGame baseGame, final String param) throws GameException
+         {
+-            baseGame.doStay();
+-            baseGame.doSaveState();
++            baseGame = baseGame.doStay();
++            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
++            commandResult.addState(baseGame);
++            return commandResult;
+         }
+ 
+         public String getCommandText()
+@@ -37,12 +40,14 @@ public enum Commands
+     },
+     DoubleDown
+     {
+-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
++        public CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
+         {
++            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
+             baseGame.getSession().doUnitWager();
+             baseGame.doHit(0);
+             if (GamePhases.Playing == baseGame.getCurrentPhase()) baseGame.doStay();
+-            baseGame.doSaveState();
++            commandResult.addState(baseGame);
++            return commandResult;
+         }
+ 
+         public String getCommandText()
+@@ -66,8 +71,9 @@ public enum Commands
+     },
+     SplitPair
+     {
+-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
++        public CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
+         {
++            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
+             ArrayList<Token> cards = baseGame.getCurveCards(BlackjackGame.HAND_PLAYER);
+             int curve = BlackjackGame.HAND_DEALER+1;
+             cards.get(0).setPosition(new IndexPosition(curve, 1));
+@@ -75,7 +81,8 @@ public enum Commands
+ 
+             baseGame.doDealNewCard(new IndexPosition(BlackjackGame.HAND_PLAYER, 0)).setOwner(user).setPrivate("VR");
+             baseGame.doDealNewCard(new IndexPosition(curve, 0)).setOwner(user).setPrivate("VR");
+-            baseGame.doSaveState();
++            commandResult.addState(baseGame);
++            return commandResult;
+         }
+ 
+         public String getCommandText()
+@@ -100,7 +107,7 @@ public enum Commands
+         }
+     };
+     
+-    public abstract void doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException;
++    public abstract CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException;
+     
+     public abstract String getCommandText();
+     
+-- 
+1.5.6.3
+
