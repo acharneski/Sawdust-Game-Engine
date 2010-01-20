@@ -17,9 +17,9 @@ public class CardGenerator1 extends ArtLibraryGenerator<CardArt>
     String resourcePath = "";
     String outputPath = "";
 
-    public CardGenerator1(String inputPath, String basePath)
+    public CardGenerator1(String inputPath, String basePath, String codePath)
     {
-        super(inputPath, basePath);
+        super(inputPath, basePath, "com.sawdust.gwt.art.generated", codePath);
         resourcePath = inputPath;
         outputPath = basePath;
     }
@@ -30,7 +30,7 @@ public class CardGenerator1 extends ArtLibraryGenerator<CardArt>
      */
     public static void main(String[] args) throws IOException
     {
-        new CardGenerator1(args[0], args[1]).createLibrary();
+        new CardGenerator1(args[0], args[1], args[2]).createLibrary();
     }
 
     double getSize(Ranks r)

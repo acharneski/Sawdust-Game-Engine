@@ -136,6 +136,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
     @Persistent
     private String _url;
 
+    private boolean _agentEnabled = true;
+
     protected GameSession()
     {
         super();
@@ -928,5 +930,11 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
             }
         }
         return cnt;
+    }
+
+    @Override
+    public void setAgentEnabled(boolean b)
+    {
+        _agentEnabled  = b;
     }
 }

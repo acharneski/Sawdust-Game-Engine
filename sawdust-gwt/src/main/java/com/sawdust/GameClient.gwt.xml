@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='gameClient'>
-
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name="com.google.gwt.user.Debug" />
-    <set-property name="gwt.enableDebugId" value="true" />
     <inherits name="com.gwittit.GwtFacebook"/>
 	<inherits name='com.sawdust.engine.SawdustEngine' />
+    <inherits name='com.sawdust.gwt.ArtLibrary' />
+
+    <set-property name="gwt.enableDebugId" value="true" />
 
 	<source path="common/gwt" />
 	<source path="client/gwt" />

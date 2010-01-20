@@ -5,9 +5,7 @@
 <%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
 <%@ page import="com.sawdust.engine.controller.entities.GameSession.SessionStatus"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request" />
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <div class="sdge-game-listing">
 <h2>Open Game Sessions:</h2>
 <%

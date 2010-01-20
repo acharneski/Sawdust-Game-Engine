@@ -5,9 +5,7 @@
 <%@ page import="com.sawdust.gae.datastore.entities.GameSession"%>
 <%@ page import="com.sawdust.gae.datastore.entities.Account.InterfacePreference"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
-<jsp:setProperty name="user" property="request" value="<%=request%>" />
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
     boolean showGameListing = true;
     String gameName = request.getParameter("game");

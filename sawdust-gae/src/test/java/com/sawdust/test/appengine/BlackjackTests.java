@@ -35,7 +35,6 @@ public class BlackjackTests extends TestCase
 {
 
     @Test(timeout = 10000)
-
     public void testGameLose() throws Exception
     {
         DataStore.Clear();

@@ -224,4 +224,11 @@ public class MockGameSession implements GameSession, Serializable
         assert(false);
         return 1;
     }
+
+    @Override
+    public void setAgentEnabled(boolean b)
+    {
+        throw new RuntimeException("Not implemented");
+        
+    }
 }

@@ -14,9 +14,7 @@
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig"%>
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig.PropertyType"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" />
-<jsp:setProperty property="request" name="user" value="<%=request%>" />
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 <%
     String gameName = request.getParameter("game");
     GameType game = null;
@@ -31,7 +29,7 @@
     }
     boolean t1 = null != user.getEmail();
     String t2 = user.getLoginUrl();
-    GameConfig gameConfig = game.getPrototypeConfig(user.getAccount());
+    GameConfig gameConfig = game.getBaseConfig(user.getAccount());
 %>
 
 <h1><%=game.getName()%></h1>

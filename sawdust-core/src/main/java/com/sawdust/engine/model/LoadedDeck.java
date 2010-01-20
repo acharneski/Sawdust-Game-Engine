@@ -2,6 +2,7 @@ package com.sawdust.engine.model;
 
 import java.util.LinkedList;
 
+import com.sawdust.engine.view.Pair;
 import com.sawdust.engine.view.cards.Card;
 import com.sawdust.engine.view.cards.CardDeck;
 import com.sawdust.engine.view.cards.Ranks;

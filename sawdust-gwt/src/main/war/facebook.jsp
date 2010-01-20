@@ -23,10 +23,7 @@ if(request.getPathInfo().startsWith("/f/"))
 }
 %>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser">
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
-<jsp:setProperty name="user" property="response" value="<%=response%>"/>
-
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <%
   String perm = FacebookUser.GetFbParam(request, "fb_sig_ext_perms");

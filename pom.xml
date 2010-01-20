@@ -69,6 +69,7 @@
 	</organization>
 	<modules>
         <module>sawdust-core</module>
+        <module>sawdust-art</module>
         <module>sawdust-game-library</module>
         <module>sawdust-gae</module>
         <module>sawdust-gwt</module>

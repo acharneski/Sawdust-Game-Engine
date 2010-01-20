@@ -15,8 +15,7 @@
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig"%>
 <%@ page import="com.sawdust.engine.view.config.PropertyConfig.PropertyType"%>
 
-<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request" />
-<jsp:setProperty name="user" property="request" value="<%=request%>"/>
+<jsp:useBean id="user" class="com.sawdust.gae.jsp.JspUser" scope="request"/><jsp:setProperty name="user" property="request" value="<%=request%>"/><jsp:setProperty name="user" property="response" value="<%=response%>"/>
 
 <%
     boolean isGameValid = true;
@@ -49,7 +48,7 @@
     
     boolean t1 = null != user.getEmail();
     String t2 = user.getLoginUrl();
-    GameConfig gameConfig = game.getPrototypeConfig(user.getAccount());
+    GameConfig gameConfig = game.getBaseConfig(user.getAccount());
     String id;
     HashSet<String> params = new HashSet<String>();
     Enumeration parameterNames = request.getParameterNames();
