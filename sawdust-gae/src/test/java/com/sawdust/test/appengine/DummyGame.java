@@ -147,7 +147,7 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException
     {
         return null;
     }
@@ -236,9 +236,15 @@ final class DummyGame implements GameState, Serializable
     }
 
     @Override
-    public GameState doUpdate() throws GameException
+    public GameState moveAgents() throws GameException
     {
-        throw new RuntimeException("Not Implemented");
+        return this; // Nothing...
+    }
+
+    @Override
+    public boolean isIntermediateState()
+    {
+        return false;
     }
 
 }

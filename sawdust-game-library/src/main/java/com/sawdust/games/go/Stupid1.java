@@ -21,7 +21,7 @@ public class Stupid1 extends com.sawdust.games.stop.Stupid1
    {
       if(game.getCurrentPhase() == GamePhase.Playing &&  Math.random() > 0.9)
       {
-         ArrayList<GameCommand> commands = game.getMoves(player);
+         ArrayList<GameCommand<?>> commands = game.getMoves(player);
          for (GameCommand gameCommand : commands)
          {
             String commandText = gameCommand.getCommandText();

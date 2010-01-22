@@ -679,6 +679,12 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         final GameStateEntity gameState = new GameStateEntity(this);
         currentState = gameState.getKey();
         localStates.add(gameState);
+
+        if(!newState.isIntermediateState())
+        {
+            LOG.fine("Move Agents");
+            newState.moveAgents();
+        }
     }
 
     public void doUpdateStatus() throws GameException
@@ -806,7 +812,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (null != tokenGame2)
         {
             tokenGame2.doStart();
-            tokenGame2.doUpdate();
+            tokenGame2.moveAgents();
             tokenGame2.doSaveState();
         }
     }

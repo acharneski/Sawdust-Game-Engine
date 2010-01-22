@@ -83,9 +83,9 @@ final class InitialMakingPhase extends GamePhase
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access, final EuchreGame game) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access, final EuchreGame game) throws GameException
     {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         returnValue.add(com.sawdust.games.euchre.Command.PassSuit.getGameCommand(game));
         returnValue.add(com.sawdust.games.euchre.Command.CallSuit.getGameCommand(game));
         return returnValue;

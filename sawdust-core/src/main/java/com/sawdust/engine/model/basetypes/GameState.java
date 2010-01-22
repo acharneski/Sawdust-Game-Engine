@@ -38,7 +38,7 @@ public interface GameState extends Serializable, Cloneable
     GameState doStart() throws GameException;
 
     @Deprecated
-    GameState doUpdate() throws GameException;
+    GameState moveAgents() throws GameException;
 
     List<AgentFactory<? extends Agent<?>>> getAgentFactories();
 
@@ -59,7 +59,7 @@ public interface GameState extends Serializable, Cloneable
 
     GameCommand getMove(String commandText, Participant access) throws GameException;
 
-    ArrayList<GameCommand> getMoves(Participant access) throws GameException;
+    ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException;
 
     GameState getParentGame();
 
@@ -95,5 +95,7 @@ public interface GameState extends Serializable, Cloneable
 
     @Deprecated
    GameState setWidth(final int width);
+
+    boolean isIntermediateState();
 
 }

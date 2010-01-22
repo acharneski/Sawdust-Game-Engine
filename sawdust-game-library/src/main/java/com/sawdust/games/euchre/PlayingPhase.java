@@ -117,9 +117,9 @@ final class PlayingPhase extends GamePhase
     }
     
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access, final EuchreGame game) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access, final EuchreGame game) throws GameException
     {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         
         for (int cardSlot = 0; cardSlot < EuchreGame.NUMBER_OF_CARDS; cardSlot++)
         {

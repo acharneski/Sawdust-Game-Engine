@@ -86,4 +86,11 @@ public class TutorialGame extends TutorialGameBase<StopGame>
          }
       };
    }
+
+@Override
+public boolean isIntermediateState()
+{
+    // TODO Auto-generated method stub
+    return false;
+}
 }

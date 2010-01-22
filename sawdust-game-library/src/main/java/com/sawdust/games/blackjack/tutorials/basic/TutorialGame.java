@@ -84,5 +84,12 @@ public class TutorialGame extends TutorialGameBase<BlackjackGame>
    {
       throw new RuntimeException("Not Implemented");
    }
+
+@Override
+public boolean isIntermediateState()
+{
+    // TODO Auto-generated method stub
+    return false;
+}
     
 }

@@ -57,6 +57,7 @@ public abstract class BaseGame implements GameState
     ArrayList<Message> _newMessages = new ArrayList<Message>();
     GameConfig _config = null;
     Notification _notification = null;
+    protected boolean _intermediateState = false;
     GameCanvas _canvas = null;
     int _height = 500;
     int _width = 600;
@@ -203,7 +204,7 @@ public abstract class BaseGame implements GameState
     public abstract GameState doStart() throws GameException;
 
     @Override
-    public abstract GameState doUpdate() throws GameException;
+    public abstract GameState moveAgents() throws GameException;
 
     @Override
     public boolean equals(final Object obj)
@@ -288,7 +289,7 @@ public abstract class BaseGame implements GameState
     }
 
     @Override
-    public abstract ArrayList<GameCommand> getMoves(Participant access) throws GameException;
+    public abstract ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException;
 
     protected Notification getNotification()
     {
@@ -454,6 +455,16 @@ public abstract class BaseGame implements GameState
         // sb.append(_commands.size() + " commands;");
         if (null != _newMessages) sb.append(_newMessages.size() + " messages;");
         return sb.toString();
+    }
+
+    protected void setIntermediateState(boolean _isIntermediateState)
+    {
+        this._intermediateState = _isIntermediateState;
+    }
+
+    public boolean isIntermediateState()
+    {
+        return _intermediateState;
     }
 
 }

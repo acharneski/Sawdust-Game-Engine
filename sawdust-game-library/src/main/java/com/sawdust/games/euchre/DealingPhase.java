@@ -94,9 +94,9 @@ final class DealingPhase extends GamePhase
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access, final EuchreGame game) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access, final EuchreGame game) throws GameException
     {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         return returnValue;
     }
 

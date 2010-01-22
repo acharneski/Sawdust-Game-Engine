@@ -82,7 +82,8 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         while (currentPlayer instanceof Agent<?>)
         {
             final Agent<BaseGame> agent = (Agent<BaseGame>) currentPlayer;
-            agent.getMove(game, agent).doCommand(agent, null);
+            GameCommand<BaseGame> move = agent.getMove(game, agent);
+            move.doCommand(agent, null);
             game._timeOffset += 1000;
             GameSession session = game.getSession();
             game.doSaveState();
@@ -171,9 +172,9 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         return returnValue;
     }
 
-    public ArrayList<GameCommand> getMoves(final BaseGame game, final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final BaseGame game, final Participant access) throws GameException
     {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         for (final AgentFactory<? extends Agent<?>> f : game.getAgentFactories())
         {
             returnValue.add(new GameCommand()

@@ -105,9 +105,9 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
    }
    
    @Override
-   public TutorialGameBase<S> doUpdate() throws GameException
+   public TutorialGameBase<S> moveAgents() throws GameException
    {
-      getInnerGame().doUpdate();
+      getInnerGame().moveAgents();
       return this;
    }
 
@@ -177,10 +177,10 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       return _innerGame.getMove(commandText, access);
    }
 
-   public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+   public ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException
    {
-      ArrayList<GameCommand> moves = getInnerGame().getMoves(access);
-      ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+      ArrayList<GameCommand<?>> moves = getInnerGame().getMoves(access);
+      ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
       final TutorialPhase<S> phase = getPhase();
       if (null != phase)
       {

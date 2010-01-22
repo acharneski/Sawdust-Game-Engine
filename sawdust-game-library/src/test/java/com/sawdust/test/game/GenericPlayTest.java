@@ -83,7 +83,7 @@ public abstract class GenericPlayTest extends TestCase
 
     private static <T extends GameState> GameCommand<T> doRandomMove(T game, Participant player) throws GameException
     {
-        ArrayList<GameCommand> moves = game.getMoves(player);
+        ArrayList<GameCommand<?>> moves = game.getMoves(player);
         GameCommand randomMember = com.sawdust.engine.controller.Util.randomMember(moves.toArray(new GameCommand[] {}));
         String commandText = randomMember.getCommandText();
         System.out.println("Command: " + commandText);

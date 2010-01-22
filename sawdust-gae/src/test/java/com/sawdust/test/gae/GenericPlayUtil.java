@@ -80,7 +80,7 @@ public class GenericPlayUtil<T extends GameState>
             public GameCommand<T> getMove(T game, Participant participant)
                     throws GameException
             {
-                ArrayList<GameCommand> moves = game.getMoves(participant);
+                ArrayList<GameCommand<?>> moves = game.getMoves(participant);
                 GameCommand randomMove = com.sawdust.engine.controller.Util.randomMember(moves.toArray(new GameCommand[] {}));
                 return randomMove;
             }

@@ -67,7 +67,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     GamePhase _currentState = GamePhase.Lobby;
     int _lastWinner = 0;
     BoardData _boardData[][] = new BoardData[NUM_ROWS][NUM_ROWS];
-    ArrayList<GameCommand> _moves;
+    ArrayList<GameCommand<?>> _moves;
 
     protected StopGame()
     {
@@ -218,6 +218,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
 
     public StopGame doMove(final IndexPosition position, final Participant player) throws GameException
     {
+        _intermediateState = true;
         _moves = null;
         if (!_mplayerManager.getPlayerManager().isCurrentPlayer(player)) throw new GameLogicException("Not your turn!");
         final int playerIdx = _mplayerManager.getPlayerManager().getPlayerIndex(player);
@@ -238,6 +239,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
         ta.cleanIslands(playerIdx, this, true);
         ta.cleanIslands(-1, this, true);
         doFinishTurn(player);
+        _intermediateState = false;
         return this;
 
     }
@@ -324,7 +326,7 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     }
 
     @Override
-    public StopGame doUpdate() throws GameException
+    public StopGame moveAgents() throws GameException
     {
         _mplayerManager.doUpdate(this);
         return this;
@@ -461,10 +463,10 @@ public abstract class StopGame extends TokenGame implements MultiPlayerGame
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access) throws GameException
     {
         if (null != _moves) return _moves;
-        final ArrayList<GameCommand> arrayList = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> arrayList = new ArrayList<GameCommand<?>>();
         _moves = arrayList;
         if (_currentState == GamePhase.Lobby)
         {

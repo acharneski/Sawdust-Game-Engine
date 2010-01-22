@@ -315,7 +315,7 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public WordHuntGame doUpdate() throws GameException
+    public WordHuntGame moveAgents() throws GameException
     {
         _mplayerManager.doUpdate(this);
         return this;
@@ -585,9 +585,9 @@ public abstract class WordHuntGame extends PersistantTokenGame
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access) throws GameException
     {
-        final ArrayList<GameCommand> arrayList = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> arrayList = new ArrayList<GameCommand<?>>();
         if (_currentState == GameState.Lobby)
         {
             arrayList.addAll(_mplayerManager.getMoves(this, access));

@@ -323,9 +323,9 @@ public abstract class EuchreGame extends MultiPlayerCardGame
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access) throws GameException
     {
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         returnValue.addAll(super.getMoves(access));
         returnValue.addAll(getCurrentPhase().getMoves(access, this));
         return returnValue;

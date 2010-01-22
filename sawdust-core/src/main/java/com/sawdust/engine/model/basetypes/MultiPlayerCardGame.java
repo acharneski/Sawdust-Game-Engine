@@ -117,7 +117,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public MultiPlayerCardGame doUpdate() throws GameException
+    public MultiPlayerCardGame moveAgents() throws GameException
     {
         _mplayerManager.doUpdate(this);
         return this;
@@ -140,7 +140,7 @@ public abstract class MultiPlayerCardGame extends IndexCardGame implements Multi
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access) throws GameException
     {
         return _mplayerManager.getMoves(this, access);
     }

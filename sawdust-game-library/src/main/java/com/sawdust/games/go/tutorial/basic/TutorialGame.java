@@ -20,7 +20,6 @@ public class TutorialGame extends TutorialGameBase<GoGame>
 {
    private static final Logger LOG = Logger.getLogger(TutorialGame.class.getName());
 
-   
    protected TutorialGame()
    {
        super();
@@ -69,9 +68,9 @@ public class TutorialGame extends TutorialGameBase<GoGame>
    }
    
    @Override
-   public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+   public ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException
    {
-      ArrayList<GameCommand> moves = new ArrayList<GameCommand>();
+      ArrayList<GameCommand<?>> moves = new ArrayList<GameCommand<?>>();
       
       if (getInnerGame().getCurrentState() == GamePhase.Lobby)
       {
@@ -136,4 +135,11 @@ public class TutorialGame extends TutorialGameBase<GoGame>
          }
       };
    }
+
+@Override
+public boolean isIntermediateState()
+{
+    // TODO Auto-generated method stub
+    return false;
+}
 }

@@ -48,9 +48,9 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
       }
    }
    
-   protected ArrayList<GameCommand> intuition(final S game, Participant participant) throws GameException
+   protected ArrayList<GameCommand<?>> intuition(final S game, Participant participant) throws GameException
    {
-      ArrayList<GameCommand> moves = game.getMoves(participant);
+      ArrayList<GameCommand<?>> moves = game.getMoves(participant);
       Collections.sort(moves, new Comparator<GameCommand>()
       {
          @Override
@@ -65,7 +65,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
    protected GameCommand move_N(S game, int n) throws CloneNotSupportedException, GameException
    {
       Participant participant = game.getPlayerManager().getCurrentPlayer();
-      ArrayList<GameCommand> moves = intuition(game, participant);
+      ArrayList<GameCommand<?>> moves = intuition(game, participant);
       GameCommand bestMove = null;
       int cnt = 0;
       int maxLoop1 = expansionLimit(n);
@@ -77,7 +77,7 @@ public class StopAgent1<S extends StopGame> extends Agent<S>
          {
             S hypotheticalGame = (S) cloneForSimulation(game);
             hypotheticalGame.setSilent(true);
-            ArrayList<GameCommand> moves2 = hypotheticalGame.getMoves(participant);
+            ArrayList<GameCommand<?>> moves2 = hypotheticalGame.getMoves(participant);
             String commandText = thisMove.getCommandText();
             for (GameCommand i : moves2)
             {

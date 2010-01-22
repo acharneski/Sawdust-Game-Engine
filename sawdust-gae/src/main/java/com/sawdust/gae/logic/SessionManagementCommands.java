@@ -184,7 +184,7 @@ public enum SessionManagementCommands
             throws GameException
       {
          final GameState state = game.getState();
-         state.doUpdate();
+         state.moveAgents();
          state.doSaveState();
          
          SessionMember findMember = ((GameSession) game).findMember(user.getId());

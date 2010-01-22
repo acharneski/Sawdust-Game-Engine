@@ -34,7 +34,7 @@ public abstract class GamePhase implements Serializable
 
     public abstract String getId();
 
-    public abstract ArrayList<GameCommand> getMoves(Participant access, EuchreGame game) throws GameException;
+    public abstract ArrayList<GameCommand<?>> getMoves(Participant access, EuchreGame game) throws GameException;
 
     @Override
     public int hashCode()

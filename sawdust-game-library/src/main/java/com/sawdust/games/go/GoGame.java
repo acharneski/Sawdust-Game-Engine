@@ -328,9 +328,9 @@ public abstract class GoGame extends StopGame
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(Participant access) throws GameException
     {
-        ArrayList<GameCommand> moves = new ArrayList<GameCommand>();
+        ArrayList<GameCommand<?>> moves = new ArrayList<GameCommand<?>>();
 
         if (getCurrentState() == GamePhase.Lobby)
         {

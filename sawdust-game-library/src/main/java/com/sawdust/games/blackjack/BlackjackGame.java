@@ -354,7 +354,7 @@ public abstract class BlackjackGame extends IndexCardGame
     }
 
     @Override
-    public BlackjackGame doUpdate() throws GameException
+    public BlackjackGame moveAgents() throws GameException
     {
         return this;
     }
@@ -442,7 +442,7 @@ public abstract class BlackjackGame extends IndexCardGame
     }
 
     @Override
-    public ArrayList<GameCommand> getMoves(final Participant access) throws GameException
+    public ArrayList<GameCommand<?>> getMoves(final Participant access) throws GameException
     {
         /*
          * R-B-0055 After receiving his initial two cards, the player has four standard options: R-B-0056 he can "Hit,"
@@ -450,7 +450,7 @@ public abstract class BlackjackGame extends IndexCardGame
          * casinos or tables, the player may have R-B-0058 a fifth option called "Surrender." At this time, only hit and
          * stand are supported.
          */
-        final ArrayList<GameCommand> returnValue = new ArrayList<GameCommand>();
+        final ArrayList<GameCommand<?>> returnValue = new ArrayList<GameCommand<?>>();
         if (GamePhases.Playing == _currentPhase)
         {
             for (final Commands o : com.sawdust.games.blackjack.Commands.values())
