@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.sawdust.engine.controller.entities.GameSession;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.players.Participant;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.model.state.IndexCard;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
@@ -19,10 +20,12 @@ public enum Commands
 {
     Stay
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
+        public CommandResult<BlackjackGame> doCommand(final Participant user, BlackjackGame baseGame, final String param) throws GameException
         {
-            baseGame.doStay();
-            baseGame.doSaveState();
+            baseGame = baseGame.doStay();
+            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
+            commandResult.addState(baseGame);
+            return commandResult;
         }
 
         public String getCommandText()
@@ -37,12 +40,14 @@ public enum Commands
     },
     DoubleDown
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
+        public CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
+            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
             baseGame.getSession().doUnitWager();
             baseGame.doHit(0);
             if (GamePhases.Playing == baseGame.getCurrentPhase()) baseGame.doStay();
-            baseGame.doSaveState();
+            commandResult.addState(baseGame);
+            return commandResult;
         }
 
         public String getCommandText()
@@ -66,8 +71,9 @@ public enum Commands
     },
     SplitPair
     {
-        public void doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
+        public CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame baseGame, final String param) throws GameException
         {
+            CommandResult<BlackjackGame> commandResult = new CommandResult<BlackjackGame>();
             ArrayList<Token> cards = baseGame.getCurveCards(BlackjackGame.HAND_PLAYER);
             int curve = BlackjackGame.HAND_DEALER+1;
             cards.get(0).setPosition(new IndexPosition(curve, 1));
@@ -75,7 +81,8 @@ public enum Commands
 
             baseGame.doDealNewCard(new IndexPosition(BlackjackGame.HAND_PLAYER, 0)).setOwner(user).setPrivate("VR");
             baseGame.doDealNewCard(new IndexPosition(curve, 0)).setOwner(user).setPrivate("VR");
-            baseGame.doSaveState();
+            commandResult.addState(baseGame);
+            return commandResult;
         }
 
         public String getCommandText()
@@ -100,7 +107,7 @@ public enum Commands
         }
     };
     
-    public abstract void doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException;
+    public abstract CommandResult<BlackjackGame> doCommand(final Participant user, final BlackjackGame blackjackGame, final String param) throws GameException;
     
     public abstract String getCommandText();
     

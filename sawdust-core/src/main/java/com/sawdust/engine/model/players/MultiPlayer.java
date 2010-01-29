@@ -83,20 +83,25 @@ public class MultiPlayer implements IMultiPlayer, Serializable
         {
             final Agent<BaseGame> agent = (Agent<BaseGame>) currentPlayer;
             GameCommand<BaseGame> move = agent.getMove(game, agent);
-            move.doCommand(agent, null);
+            CommandResult<BaseGame> moveResult = move.doCommand(agent, null);
             game._timeOffset += 1000;
-            GameSession session = game.getSession();
-            game.doSaveState();
+            game.getSession().save(moveResult);
             final Participant nextPlayer = _playerManager.getCurrentPlayer();
             if (nextPlayer.equals(agent))
             {
-                if (game.isInPlay()) throw new GameLogicException("Wedged Agent!");
+                if (game.isInPlay()) 
+                {
+                    throw new GameLogicException("Wedged Agent!");
+                }
                 else
                 {
                     break;
                 }
             }
-            currentPlayer = nextPlayer;
+            else
+            {
+                currentPlayer = nextPlayer;
+            }
         }
         return this;
     }
@@ -182,15 +187,15 @@ public class MultiPlayer implements IMultiPlayer, Serializable
                 @Override
                 public CommandResult doCommand(final Participant p, String commandText) throws GameException
                 {
+                    CommandResult<GameState> commandResult = new CommandResult<GameState>();
                     final int playerNumber = MultiPlayer.this.getPlayerManager().getPlayerCount() + 1;
                     Agent<?> agent = f.getAgent("AI " + playerNumber);
                     GameSession session = game.getSession();
                     if(null != session)
                     {
-                        session.addPlayer(agent);
-                        game.doSaveState();
+                        session.addPlayer(agent, commandResult);
                     }
-                    return new CommandResult<GameState>(game);
+                    return commandResult;
                 }
 
                 @Override

@@ -484,10 +484,13 @@ public abstract class BlackjackGame extends IndexCardGame
                 if (0 == getCurveCards(i).size()) continue;
                 returnValue.add(new GameCommand()
                 {
-                    public void doCommand(final Participant user, final GameSession gameSession, final String param) throws GameException
+                    public CommandResult doCommand(final Participant user, final GameSession gameSession, final String param) throws GameException
                     {
-                        BlackjackGame.this.doHit(i);
-                        BlackjackGame.this.doSaveState();
+                        
+                        CommandResult<GameState> commandResult = new CommandResult<GameState>();
+                        BlackjackGame newGame = BlackjackGame.this.doHit(i);
+                        commandResult.addState(newGame);
+                        return commandResult;
                     }
 
                     @Override

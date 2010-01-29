@@ -61,7 +61,7 @@ public abstract class GameTest<T extends GameState> extends LocalGaeTest
         PlayerContext firstPlayer = _players.get(0);
         _session = new GameSession(firstPlayer.account);
         _game = getGame(_session, firstPlayer.accessToken, firstPlayer.account);
-        _game.doSaveState();
+        _session.setState(_game);
         _sessionId = _session.getStringId();
     }
 

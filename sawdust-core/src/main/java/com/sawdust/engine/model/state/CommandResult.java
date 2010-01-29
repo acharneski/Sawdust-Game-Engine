@@ -2,20 +2,39 @@ package com.sawdust.engine.model.state;
 
 import java.util.ArrayList;
 
+import com.sawdust.engine.controller.Util;
 import com.sawdust.engine.model.basetypes.GameState;
 
 public class CommandResult<T extends GameState>
 {
-    public final T state[];
+    public final ArrayList<T> state;
 
     public CommandResult(T... p)
     {
         super();
-        ArrayList<T> arrayList = new ArrayList<T>(p.length);
+        state = new ArrayList<T>(p.length);
         for(int i=0;i<p.length;i++)
         {
-            arrayList.add(p[i]);
+            state.add(p[i]);
         }
-        state = arrayList.toArray(p);
+    }
+
+    public T addState(T game)
+    {
+        T copy = Util.Copy(game);
+        state.add(copy);
+        return copy;
+    }
+
+    public CommandResult()
+    {
+        super();
+        state = new ArrayList<T>();
+    }
+
+    public T getLatestState()
+    {
+        int lastIndex = state.size()-1;
+        return lastIndex<0?null:state.get(lastIndex);
     }
 }

@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.Bank;
+import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.GameState;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
 import com.sawdust.engine.view.config.GameConfig;
 
 public interface GameSession extends Bank
@@ -44,7 +46,7 @@ public interface GameSession extends Bank
 
     void addAgent(String name);
 
-    void addPlayer(Participant p) throws GameException;
+    void addPlayer(Participant p, CommandResult<GameState> commandResult) throws GameException;
 
     List<GameState> doGetStatesSince(int versionNumber);
 
@@ -97,5 +99,7 @@ public interface GameSession extends Bank
     void setUnitWager(int anteInteger) throws GameException;
 
     void setAgentEnabled(boolean b);
+
+    void save(CommandResult<? extends GameState> moveResult);
 
 }

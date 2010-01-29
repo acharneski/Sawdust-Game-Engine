@@ -31,9 +31,6 @@ public interface GameState extends Serializable, Cloneable
     GameState doRemoveMember(final Participant email) throws GameException;
 
     GameState doReset();
-
-    @Deprecated
-    GameState doSaveState() throws GameException;
     
     GameState doStart() throws GameException;
 

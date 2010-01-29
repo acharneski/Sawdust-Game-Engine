@@ -186,21 +186,6 @@ public abstract class BaseGame implements GameState
     public abstract GameState doReset();
 
     @Override
-    public GameState doSaveState() throws GameException
-    {
-        if (null != this._parentGame)
-        {
-            _parentGame.doSaveState();
-        }
-        else
-        {
-            GameSession session = this.getSession();
-            if (null != session) session.setState(this);
-        }
-        return this;
-    }
-
-    @Override
     public abstract GameState doStart() throws GameException;
 
     @Override
@@ -387,7 +372,6 @@ public abstract class BaseGame implements GameState
         thisProperties.get(GameConfig.ANTE).value = anteString;
         thisProperties.get(GameConfig.ANTE).defaultValue = anteString;
         this.getSession().setUnitWager(anteInteger);
-        doSaveState();
         return this;
     }
 

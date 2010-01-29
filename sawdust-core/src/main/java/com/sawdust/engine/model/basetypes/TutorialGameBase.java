@@ -40,8 +40,9 @@ public abstract class TutorialGameBase<S extends GameState> implements GameState
       try
       {
          Agent<S> agent = getInitAgent();
-         this.getSession().addPlayer(agent);
+         //this.getSession().addPlayer(agent);
          _innerGame.doAddPlayer(agent);
+         assert(false): "NI: need a way to add the agent to the game on game startup";
       }
       catch (GameException e)
       {

@@ -30,6 +30,8 @@ import com.sawdust.engine.model.basetypes.MultiPlayerGame;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
+import com.sawdust.engine.model.state.CommandResult;
+import com.sawdust.engine.model.state.GameCommand;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.gae.datastore.DataObj;
 import com.sawdust.gae.datastore.DataStore;
@@ -158,7 +160,7 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         return KeyFactory.createKey(GameSession.class.getSimpleName(), keyString);
     }
 
-    public void addPlayer(final Participant p) throws GameException
+    public void addPlayer(final Participant p, CommandResult<GameState> commandResult) throws GameException
     {
         if ((sessionStatus != SessionStatus.Inviting) && (sessionStatus != SessionStatus.Initializing))
             throw new GameLogicException("This session is not in the invite mode!");
@@ -181,13 +183,14 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
             addAgent(p.getId());
         }
 
-        final GameState _game = getState();
+        GameState _game = getState();
         if (null != _game)
         {
-            _game.doAddPlayer(p);
-            _game.doSaveState();
-            doUpdateStatus();
+            _game = _game.doAddPlayer(p);
+            //this.setState(_game);
+            commandResult.addState(_game);
         }
+        doUpdateStatus();
     }
 
     public void doUnitWager() throws GameException
@@ -736,7 +739,9 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
                     {
                         final MultiPlayerGame multiPlayerCardGame = (MultiPlayerGame) lgame;
                         Participant currentPlayer = multiPlayerCardGame.getPlayerManager().getCurrentPlayer();
-                        multiPlayerCardGame.doForceMove(currentPlayer).doCommand(currentPlayer, null);
+                        GameCommand<MultiPlayerGame> forcedMove = multiPlayerCardGame.doForceMove(currentPlayer);
+                        CommandResult<MultiPlayerGame> commandResult = forcedMove.doCommand(currentPlayer, null);
+                        save(commandResult);
                         _dirtyGame = true;
                     }
                 }
@@ -792,8 +797,13 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         }
         if (_dirtyGame)
         {
-            lgame.doSaveState();
+            setState(lgame);
         }
+    }
+
+    private void save(CommandResult<? extends GameState> commandResult)
+    {
+        throw new RuntimeException("Not implement: Need to save frame states in-order");
     }
 
     private boolean areTriggersEnabled()
@@ -808,12 +818,12 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (getReadyPlayers() < requiredPlayers) return;
         // if (isPlaying()) { throw new GameLogicException(""); }
 
-        final GameState tokenGame2 = getState();
+        GameState tokenGame2 = getState();
         if (null != tokenGame2)
         {
             tokenGame2.doStart();
-            tokenGame2.moveAgents();
-            tokenGame2.doSaveState();
+            tokenGame2 = tokenGame2.moveAgents();
+            setState(tokenGame2);
         }
     }
 
@@ -908,7 +918,8 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
         if (null != latestState)
         {
             currentConfig = latestState.getConfig();
-            latestState.setConfig(newConfig);
+            latestState = latestState.setConfig(newConfig);
+            setState(latestState);
         }
         this.setGame(newConfig.getGameName());
         this.setMoveTimeout(Integer.parseInt(newConfig.getProperties().get(GameConfig.MOVE_TIMEOUT).value));
