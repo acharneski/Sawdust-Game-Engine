@@ -3,15 +3,11 @@ package com.sawdust.games.stop;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import com.sawdust.engine.model.players.Participant;
-import com.sawdust.engine.model.state.IndexPosition;
-import com.sawdust.engine.model.state.Token;
 
 public class TokenArray implements Serializable
 {
