@@ -22,6 +22,9 @@ public class XmlGoBoard
         @XmlAttribute
         int territory;
 
+        @XmlAttribute
+        int prisoners;
+
         public Score()
         {
             super();
@@ -29,11 +32,12 @@ public class XmlGoBoard
             this.territory = territory;
         }
 
-        public Score(String name, int score)
+        public Score(String name, int prisoners, int territory)
         {
-            this();
+            super();
             this.name = name;
-            this.territory = score;
+            this.territory = territory;
+            this.prisoners = prisoners;
         }
 
         @Override
@@ -44,7 +48,7 @@ public class XmlGoBoard
     }
     
     @XmlElement
-    TreeSet<Score> score = new TreeSet<Score>();
+    TreeSet<Score> player = new TreeSet<Score>();
 
     static final Player NON_INITIALIZED = null;
 
@@ -54,8 +58,11 @@ public class XmlGoBoard
     public XmlGoBoard(final GoBoard b)
     {
         board = new XmlBoard(b.board);
-        score.add(new Score("Player 1", 4));
-        score.add(new Score("Player 2", 6));
+        for(Player p : b.getPlayers())
+        {
+            GoScore scoreObj = b.getScore(p);
+            player.add(new Score(p.getName(), scoreObj.prisoners,scoreObj.territory));
+        }
     }
 
 }

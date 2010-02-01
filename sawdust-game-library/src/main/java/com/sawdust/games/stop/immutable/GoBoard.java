@@ -3,11 +3,14 @@ package com.sawdust.games.stop.immutable;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import com.sawdust.games.stop.immutable.XmlGoBoard.Score;
 
 public class GoBoard
 {
@@ -15,15 +18,18 @@ public class GoBoard
     public static final int EMPTY_VALUE = -1;
 
     final Board board;
+    
+    final HashMap<Player,GoScore> scores = new HashMap<Player, GoScore>();
 
     GoBoard(final Board b)
     {
         board = b;
     }
 
-    public GoBoard(final Board b, final Player player, final TokenPosition position)
+    public GoBoard(final GoBoard b, final Player player, final TokenPosition position)
     {
-        board = new Board(b, player, position);
+        board = new Board(b.board, player, position);
+        scores.putAll(b.scores);
     }
 
     public GoBoard()
@@ -34,6 +40,26 @@ public class GoBoard
     public GoBoard(XmlGoBoard unmarshal)
     {
         board = Board.unmarshal(unmarshal.board);
+        for(Score p : unmarshal.player)
+        {
+            Player findPlayer = findPlayer(p.name);
+            scores.put(findPlayer, new GoScore(p.prisoners, p.territory));
+        }
+    }
+
+    private Player findPlayer(String name)
+    {
+        for(Player p : getPlayers())
+        {
+            if(p.getName().equals(name)) return p;
+        }
+        return null;
+    }
+
+    public GoBoard(Board newBoard, HashMap<Player, GoScore> newScores)
+    {
+        board = newBoard;
+        scores.putAll(newScores);
     }
 
     public TokenMove[] getMoves(Player player)
@@ -49,7 +75,14 @@ public class GoBoard
 
     public GoBoard doMove(TokenMove move)
     {
-        GoBoard postMove = new GoBoard(board, move.player, move.position);
+        GoBoard postMove = new GoBoard(this, move.player, move.position);
+        HashMap<Player, GoScore> hashMap = new HashMap<Player, GoScore>();
+        for(Player p1 : getPlayers()) 
+        {
+            GoScore score = getScore(p1);
+            hashMap.put(p1, new GoScore(score.prisoners, 0));
+        }
+        HashMap<Player, GoScore> newScores = hashMap;
         HashSet<Island> surrounded = new HashSet<Island>();
         Board postCapture = postMove.board;
         for(Island i : postCapture.islands)
@@ -68,15 +101,36 @@ public class GoBoard
                 surrounded.add(i);
             }
         }
+        for(Island i : postCapture.open)
+        {
+            HashSet<Player> surrounding = new HashSet<Player>();
+            for(Island o : postCapture.islands)
+            {
+                if(i.isNeigbor(o))
+                {
+                    surrounding.add(o.player);
+                }
+            }
+            if(surrounding.size() == 1)
+            {
+                Player player = surrounding.iterator().next();
+                GoScore score = newScores.get(player);
+                newScores.put(player, new GoScore(score.prisoners, score.territory + i.tokens.length));
+            }
+        }
         for(Island i : surrounded)
         {
+            GoScore score = newScores.get(i.player);
+            int prisoners = score.prisoners;
             for(TokenPosition p : i.tokens)
             {
                 postCapture = postCapture.remove(p);
+                prisoners++;
             }
+            newScores.put(i.player, new GoScore(prisoners, score.territory));
             System.out.println("Island Captured: " + i.tokens.length);
         }
-        return new GoBoard(postCapture);
+        return new GoBoard(postCapture, newScores);
     }
 
     public void toFile(File out)
@@ -119,5 +173,16 @@ public class GoBoard
     public int islandCount(Player p1)
     {
         return board.islandCount(p1);
+    }
+
+    public GoScore getScore(Player p)
+    {
+        if(!scores.containsKey(p)) return new GoScore(0, 0);
+        return scores.get(p);
+    }
+
+    public Player[] getPlayers()
+    {
+        return new Player[]{new Player(1), new Player(2)};
     }
 }
