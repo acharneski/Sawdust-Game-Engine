@@ -16,7 +16,7 @@ public class XmlBoard
     @XmlAttribute
     int cols;
 
-    static final int NON_INITIALIZED = -5;
+    static final player NON_INITIALIZED = null;
 
     public XmlBoard()
     {}
@@ -25,37 +25,46 @@ public class XmlBoard
     {
         rows = board.rows;
         cols = board.cols;
-        int[][] matrix = extractMatrix(board);
+        player[][] matrix = extractMatrix(board);
          text = matrixToString(matrix);
     }
 
-    public int[][] getMatrix()
+    public player[][] getMatrix()
     {
-        int matrix[][] = null;
+        player[][] matrix = null;
         String[] lines = text.split("\n");
-        int w = lines.length;
-        matrix = new int[lines.length][];
-        assert(rows == lines.length);
-        int h = -1;
+        int w = countNonEmpty(lines);
+        matrix = new player[lines.length][];
+        assert(rows == w);
         int y = 0;
         for(String line : lines)
         {
+            if(line.isEmpty()) continue;
             int x = 0;
             String[] tokens = line.split(" ");
-            matrix[y] = new int[tokens.length];
-            assert(cols == tokens.length);
+            int h = countNonEmpty(tokens);
+            matrix[y] = new player[h];
+            assert(cols == h);
             for(String token : tokens)
             {
-                matrix[y][x++] = Integer.parseInt(token);
+                if(token.isEmpty()) continue;
+                matrix[y][x++] = player.parse(token);
             }
             y++;
         }
         return matrix;
     }
 
-    private int[][] extractMatrix(Board board)
+    private int countNonEmpty(String[] lines)
     {
-        int matrix[][] = new int[rows][cols];
+        int r = 0;
+        for(String s : lines) if(!s.isEmpty()) r++;
+        return r;
+    }
+
+    private player[][] extractMatrix(Board board)
+    {
+        player matrix[][] = new player[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 matrix[i][j] = NON_INITIALIZED;
@@ -71,9 +80,9 @@ public class XmlBoard
         return matrix;
     }
 
-    private String matrixToString(int[][] matrix)
+    private String matrixToString(player[][] matrix)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer("\n");
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)

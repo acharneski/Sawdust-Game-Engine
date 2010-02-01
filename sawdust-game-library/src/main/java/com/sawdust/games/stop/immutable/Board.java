@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 public class Board
 {
     private static final Logger LOG = Logger.getLogger(Board.class.getName());
-    public static final int EMPTY_VALUE = -1;
+    public static final player EMPTY_VALUE = new player();
 
     final island[] islands;
     final island[] open;
@@ -21,7 +21,7 @@ public class Board
         open = new island[]{ new island(EMPTY_VALUE, r, cols) };
     }
 
-    public Board(final Board obj, final int player, tokenPosition newPosition)
+    public Board(final Board obj, final player player, tokenPosition newPosition)
     {
         cols = obj.cols;
         rows = obj.rows;
@@ -95,12 +95,25 @@ public class Board
     public static Board unmarshal(XmlBoard from)
     {
         Board temp = new Board(from.rows, from.cols);
-        int[][] matrix = from.getMatrix();
+        player[][] matrix = from.getMatrix();
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
                 temp = temp.doMove(new tokenMove(matrix[x][y], new tokenPosition(x, y)));
             }
         return temp;
+    }
+
+    public int islandCount(player p1)
+    {
+        int cnt = 0;
+        for (island i : islands)
+        {
+            if (i.player == p1)
+            {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 }

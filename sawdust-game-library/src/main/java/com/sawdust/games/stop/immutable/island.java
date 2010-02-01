@@ -10,17 +10,17 @@ import java.util.TreeSet;
 
 class island
 {
-    final int player;
+    final player player;
     final tokenPosition[] tokens;
 
-    public island(final int p, final tokenPosition... t)
+    public island(final player p, final tokenPosition... t)
     {
         super();
         tokens = t;
         player = p;
     }
 
-    public island(final int p, final int rows, final int cols)
+    public island(final com.sawdust.games.stop.immutable.player p, final int rows, final int cols)
     {
         super();
         player = p;
@@ -52,7 +52,7 @@ class island
         return buildIslands(this.player, positions);
     }
 
-    public static island[] buildIslands(final int player, Set<tokenPosition> positions)
+    public static island[] buildIslands(final player player2, Set<tokenPosition> positions)
     {
         HashSet<island> newIslands = new HashSet<island>();
         while (!positions.isEmpty())
@@ -66,7 +66,7 @@ class island
                 {
                     if (null == isl)
                     {
-                        isl = new island(player, p);
+                        isl = new island(player2, p);
                         positions.remove(p);
                         anythingChanged++;
                         break;
@@ -139,7 +139,7 @@ class island
     {
         int result = 0;
         for(tokenPosition t : tokens) result ^= t.hashCode();
-        result = result * player;
+        result = result * player.hashCode();
         return result;
     }
 

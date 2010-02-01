@@ -7,9 +7,9 @@ package com.sawdust.games.stop.immutable;
 public class tokenMove
 {
     final tokenPosition position;
-    final int player;
+    final player player;
 
-    public tokenMove(final int player, final tokenPosition position)
+    public tokenMove(final player player, final tokenPosition position)
     {
         super();
         this.player = player;

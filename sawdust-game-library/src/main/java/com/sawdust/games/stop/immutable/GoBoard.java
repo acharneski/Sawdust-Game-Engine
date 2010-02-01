@@ -16,12 +16,12 @@ public class GoBoard
         board = b;
     }
 
-    public GoBoard(final Board b, final int player, final tokenPosition position)
+    public GoBoard(final Board b, final player player, final tokenPosition position)
     {
         board = new Board(b, player, position);
     }
 
-    public tokenMove[] getMoves(int player)
+    public tokenMove[] getMoves(player player)
     {
         HashSet<tokenMove> moves = new HashSet<tokenMove>();
         for (island i : board.open)
