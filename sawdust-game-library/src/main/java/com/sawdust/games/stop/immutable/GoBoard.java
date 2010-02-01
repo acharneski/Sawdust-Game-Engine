@@ -1,8 +1,13 @@
 package com.sawdust.games.stop.immutable;
 
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 public class GoBoard
 {
@@ -16,23 +21,28 @@ public class GoBoard
         board = b;
     }
 
-    public GoBoard(final Board b, final player player, final tokenPosition position)
+    public GoBoard(final Board b, final Player player, final TokenPosition position)
     {
         board = new Board(b, player, position);
     }
 
-    public tokenMove[] getMoves(player player)
+    public GoBoard()
     {
-        HashSet<tokenMove> moves = new HashSet<tokenMove>();
-        for (island i : board.open)
-        {
-            for (tokenPosition p : i.tokens)
-                moves.add(new tokenMove(player, p));
-        }
-        return null;
+        board = new Board(9, 9);
     }
 
-    public GoBoard doMove(tokenMove move)
+    public TokenMove[] getMoves(Player player)
+    {
+        HashSet<TokenMove> moves = new HashSet<TokenMove>();
+        for (Island i : board.open)
+        {
+            for (TokenPosition p : i.tokens)
+                moves.add(new TokenMove(player, p));
+        }
+        return moves.toArray(new TokenMove[]{});
+    }
+
+    public GoBoard doMove(TokenMove move)
     {
         return new GoBoard(board, move.player, move.position);
     }
@@ -44,7 +54,16 @@ public class GoBoard
 
     public String toXmlString()
     {
-        throw new NotImplemented();
+        StringWriter buffer = new StringWriter();
+        try
+        {
+            JAXBContext.newInstance(XmlBoard.class).createMarshaller().marshal(board.getXmlObj(), buffer);
+        }
+        catch (JAXBException e)
+        {
+            throw new RuntimeException(e);
+        }
+        return buffer.toString();
     }
 
     public static GoBoard fromFile(File in)
@@ -52,8 +71,21 @@ public class GoBoard
         throw new NotImplemented();
     }
 
-    public GoBoard fromXmlString(String str)
+    public static GoBoard fromXmlString(String str)
     {
-        throw new NotImplemented();
+        StringReader buffer = new StringReader(str);
+        try
+        {
+            return new GoBoard(Board.unmarshal((XmlBoard) JAXBContext.newInstance(XmlBoard.class).createUnmarshaller().unmarshal(buffer)));
+        }
+        catch (JAXBException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int islandCount(Player p1)
+    {
+        return board.islandCount(p1);
     }
 }

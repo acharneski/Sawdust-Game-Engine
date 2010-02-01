@@ -16,7 +16,7 @@ public class XmlBoard
     @XmlAttribute
     int cols;
 
-    static final player NON_INITIALIZED = null;
+    static final Player NON_INITIALIZED = null;
 
     public XmlBoard()
     {}
@@ -25,16 +25,16 @@ public class XmlBoard
     {
         rows = board.rows;
         cols = board.cols;
-        player[][] matrix = extractMatrix(board);
+        Player[][] matrix = extractMatrix(board);
          text = matrixToString(matrix);
     }
 
-    public player[][] getMatrix()
+    public Player[][] getMatrix()
     {
-        player[][] matrix = null;
+        Player[][] matrix = null;
         String[] lines = text.split("\n");
         int w = countNonEmpty(lines);
-        matrix = new player[lines.length][];
+        matrix = new Player[lines.length][];
         assert(rows == w);
         int y = 0;
         for(String line : lines)
@@ -43,12 +43,12 @@ public class XmlBoard
             int x = 0;
             String[] tokens = line.split(" ");
             int h = countNonEmpty(tokens);
-            matrix[y] = new player[h];
+            matrix[y] = new Player[h];
             assert(cols == h);
             for(String token : tokens)
             {
                 if(token.isEmpty()) continue;
-                matrix[y][x++] = player.parse(token);
+                matrix[y][x++] = Player.parse(token);
             }
             y++;
         }
@@ -62,17 +62,17 @@ public class XmlBoard
         return r;
     }
 
-    private player[][] extractMatrix(Board board)
+    private Player[][] extractMatrix(Board board)
     {
-        player matrix[][] = new player[rows][cols];
+        Player matrix[][] = new Player[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 matrix[i][j] = NON_INITIALIZED;
-        for (island isl : board.open)
-            for (tokenPosition tok : isl.tokens)
+        for (Island isl : board.open)
+            for (TokenPosition tok : isl.tokens)
                 matrix[tok.x][tok.y] = isl.player;
-        for (island isl : board.islands)
-            for (tokenPosition tok : isl.tokens)
+        for (Island isl : board.islands)
+            for (TokenPosition tok : isl.tokens)
                 matrix[tok.x][tok.y] = isl.player;
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
@@ -80,7 +80,7 @@ public class XmlBoard
         return matrix;
     }
 
-    private String matrixToString(player[][] matrix)
+    private String matrixToString(Player[][] matrix)
     {
         StringBuffer sb = new StringBuffer("\n");
         for (int i = 0; i < rows; i++)

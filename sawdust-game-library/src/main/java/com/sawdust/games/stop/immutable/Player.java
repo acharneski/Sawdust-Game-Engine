@@ -1,16 +1,16 @@
 package com.sawdust.games.stop.immutable;
 
-public class player
+public class Player
 {
 
     public final int value;
 
-    public player()
+    public Player()
     {
         value = 0;
     }
 
-    public player(int i)
+    public Player(int i)
     {
         assert(i>0);
         value = i;
@@ -22,11 +22,11 @@ public class player
         return Integer.toString(value);
     }
 
-    public static player parse(String token)
+    public static Player parse(String token)
     {
-        if(token.equals("0")) return new player();
-        if(token.equals("1")) return new player(1);
-        if(token.equals("2")) return new player(2);
+        if(token.equals("0")) return new Player();
+        if(token.equals("1")) return new Player(1);
+        if(token.equals("2")) return new Player(2);
         return null;
     }
     

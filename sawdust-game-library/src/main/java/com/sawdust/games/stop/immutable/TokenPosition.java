@@ -3,19 +3,19 @@
  */
 package com.sawdust.games.stop.immutable;
 
-public class tokenPosition implements Comparable<tokenPosition>
+public class TokenPosition implements Comparable<TokenPosition>
 {
     final int x;
     final int y;
 
-    public tokenPosition(int x, int y)
+    public TokenPosition(int x, int y)
     {
         super();
         this.x = x;
         this.y = y;
     }
 
-    public boolean isNeigbor(tokenPosition t)
+    public boolean isNeigbor(TokenPosition t)
     {
         boolean a = x == t.x;
         boolean b = y == t.y;
@@ -42,14 +42,14 @@ public class tokenPosition implements Comparable<tokenPosition>
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        tokenPosition other = (tokenPosition) obj;
+        TokenPosition other = (TokenPosition) obj;
         if (x != other.x) return false;
         if (y != other.y) return false;
         return true;
     }
 
     @Override
-    public int compareTo(tokenPosition o)
+    public int compareTo(TokenPosition o)
     {
         if (x < o.x) return -1;
         if (y < o.y) return -1;

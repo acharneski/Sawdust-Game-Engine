@@ -6,10 +6,10 @@ import java.util.logging.Logger;
 public class Board
 {
     private static final Logger LOG = Logger.getLogger(Board.class.getName());
-    public static final player EMPTY_VALUE = new player();
+    public static final Player EMPTY_VALUE = new Player();
 
-    final island[] islands;
-    final island[] open;
+    final Island[] islands;
+    final Island[] open;
     final int cols;
     final int rows;
 
@@ -17,23 +17,23 @@ public class Board
     {
         cols = c;
         rows = r;
-        islands = new island[]{};
-        open = new island[]{ new island(EMPTY_VALUE, r, cols) };
+        islands = new Island[]{};
+        open = new Island[]{ new Island(EMPTY_VALUE, r, cols) };
     }
 
-    public Board(final Board obj, final player player, tokenPosition newPosition)
+    public Board(final Board obj, final Player player, TokenPosition newPosition)
     {
         cols = obj.cols;
         rows = obj.rows;
 
-        HashSet<island> newOpen = new HashSet<island>();
-        island whitespaceSource = null;
-        for (island i : obj.open)
+        HashSet<Island> newOpen = new HashSet<Island>();
+        Island whitespaceSource = null;
+        for (Island i : obj.open)
         {
             if (i.contains(newPosition))
             {
                 whitespaceSource = i;
-                for (island i2 : i.remove(newPosition))
+                for (Island i2 : i.remove(newPosition))
                 {
                     newOpen.add(i2);
                 }
@@ -43,12 +43,12 @@ public class Board
                 newOpen.add(i);
             }
         }
-        open = newOpen.toArray(new island[]{});
+        open = newOpen.toArray(new Island[]{});
 
-        HashSet<island> selfJoined = new HashSet<island>();
-        HashSet<island> enemyFacing = new HashSet<island>();
-        HashSet<island> newIslands = new HashSet<island>();
-        for (island i : obj.islands)
+        HashSet<Island> selfJoined = new HashSet<Island>();
+        HashSet<Island> enemyFacing = new HashSet<Island>();
+        HashSet<Island> newIslands = new HashSet<Island>();
+        for (Island i : obj.islands)
         {
             if (i.isNeigbor(newPosition))
             {
@@ -69,20 +69,20 @@ public class Board
         }
         if(selfJoined.size() > 1)
         {
-            newIslands.add(new island(newPosition, selfJoined.toArray(new island[]{})));
+            newIslands.add(new Island(newPosition, selfJoined.toArray(new Island[]{})));
         }
         else if(selfJoined.size() == 1)
         {
-            newIslands.add(new island(selfJoined.iterator().next(), newPosition));
+            newIslands.add(new Island(selfJoined.iterator().next(), newPosition));
         }
         else
         {
-            newIslands.add(new island(player, newPosition));
+            newIslands.add(new Island(player, newPosition));
         }
-        islands = newIslands.toArray(new island[]{});
+        islands = newIslands.toArray(new Island[]{});
     }
 
-    public Board doMove(tokenMove move)
+    public Board doMove(TokenMove move)
     {
         return new Board(this, move.player, move.position);
     }
@@ -95,19 +95,19 @@ public class Board
     public static Board unmarshal(XmlBoard from)
     {
         Board temp = new Board(from.rows, from.cols);
-        player[][] matrix = from.getMatrix();
+        Player[][] matrix = from.getMatrix();
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
-                temp = temp.doMove(new tokenMove(matrix[x][y], new tokenPosition(x, y)));
+                temp = temp.doMove(new TokenMove(matrix[x][y], new TokenPosition(x, y)));
             }
         return temp;
     }
 
-    public int islandCount(player p1)
+    public int islandCount(Player p1)
     {
         int cnt = 0;
-        for (island i : islands)
+        for (Island i : islands)
         {
             if (i.player == p1)
             {

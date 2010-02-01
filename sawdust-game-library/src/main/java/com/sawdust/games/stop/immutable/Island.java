@@ -8,65 +8,65 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-class island
+class Island
 {
-    final player player;
-    final tokenPosition[] tokens;
+    final Player player;
+    final TokenPosition[] tokens;
 
-    public island(final player p, final tokenPosition... t)
+    public Island(final Player p, final TokenPosition... t)
     {
         super();
         tokens = t;
         player = p;
     }
 
-    public island(final com.sawdust.games.stop.immutable.player p, final int rows, final int cols)
+    public Island(final com.sawdust.games.stop.immutable.Player p, final int rows, final int cols)
     {
         super();
         player = p;
         
-        tokens = new tokenPosition[rows*cols];
+        tokens = new TokenPosition[rows*cols];
         int pos = 0;
-        for(int x=0;x<rows;x++) for(int y=0;y<cols;y++) tokens[pos++] = new tokenPosition(x, y);
+        for(int x=0;x<rows;x++) for(int y=0;y<cols;y++) tokens[pos++] = new TokenPosition(x, y);
     }
 
-    public island(final tokenPosition join, final island... sourceIslands)
+    public Island(final TokenPosition join, final Island... sourceIslands)
     {
         super();
         int size = 1;
-        for(island i : sourceIslands) size += i.tokens.length;
-        tokens = new tokenPosition[size];
+        for(Island i : sourceIslands) size += i.tokens.length;
+        tokens = new TokenPosition[size];
         int pos = 0;
         tokens[pos++] = join;
-        for(island i : sourceIslands) for(tokenPosition p : i.tokens) tokens[pos++] = p;
+        for(Island i : sourceIslands) for(TokenPosition p : i.tokens) tokens[pos++] = p;
         player = sourceIslands[0].player;
     }
 
-    public island[] remove(final tokenPosition t)
+    public Island[] remove(final TokenPosition t)
     {
         assert (this.contains(t));
-        TreeSet<tokenPosition> positions = new TreeSet<tokenPosition>();
-        for (tokenPosition p : tokens)
+        TreeSet<TokenPosition> positions = new TreeSet<TokenPosition>();
+        for (TokenPosition p : tokens)
             positions.add(p);
         positions.remove(t);
         return buildIslands(this.player, positions);
     }
 
-    public static island[] buildIslands(final player player2, Set<tokenPosition> positions)
+    public static Island[] buildIslands(final Player player2, Set<TokenPosition> positions)
     {
-        HashSet<island> newIslands = new HashSet<island>();
+        HashSet<Island> newIslands = new HashSet<Island>();
         while (!positions.isEmpty())
         {
-            island isl = null;
+            Island isl = null;
             while (!positions.isEmpty())
             {
                 int anythingChanged = 0;
-                TreeSet<tokenPosition> newP = new TreeSet<tokenPosition>();
-                for (tokenPosition p : positions)
+                TreeSet<TokenPosition> newP = new TreeSet<TokenPosition>();
+                for (TokenPosition p : positions)
                 {
                     if (null == isl)
                     {
-                        isl = new island(player2, p);
+                        isl = new Island(player2, p);
                         positions.remove(p);
                         anythingChanged++;
                         break;
@@ -81,7 +81,7 @@ class island
                 if (!newP.isEmpty())
                 {
                     positions.removeAll(newP);
-                    isl = new island(isl, newP.toArray(new tokenPosition[] {}));
+                    isl = new Island(isl, newP.toArray(new TokenPosition[] {}));
                     break;
                 }
                 else if(0 == anythingChanged)
@@ -92,11 +92,11 @@ class island
             assert(null != isl);
             newIslands.add(isl);
         }
-        island[] array = newIslands.toArray(new island[] {});
+        Island[] array = newIslands.toArray(new Island[] {});
         return array;
     }
 
-    public island(final island i, final tokenPosition... t)
+    public Island(final Island i, final TokenPosition... t)
     {
         super();
         int oldLength = i.tokens.length;
@@ -110,25 +110,25 @@ class island
         }
     }
 
-    public boolean isNeigbor(tokenPosition t)
+    public boolean isNeigbor(TokenPosition t)
     {
         boolean isNieghbor = false;
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)
         {
-            tokenPosition token = tokens[j];
+            TokenPosition token = tokens[j];
             if (token.isNeigbor(t)) isNieghbor = true;
             if (token.equals(t)) isInside = true;
         }
         return isNieghbor && !isInside;
     }
 
-    public boolean contains(tokenPosition t)
+    public boolean contains(TokenPosition t)
     {
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)
         {
-            tokenPosition token = tokens[j];
+            TokenPosition token = tokens[j];
             if (token.equals(t)) isInside = true;
         }
         return isInside;
@@ -138,7 +138,7 @@ class island
     public int hashCode()
     {
         int result = 0;
-        for(tokenPosition t : tokens) result ^= t.hashCode();
+        for(TokenPosition t : tokens) result ^= t.hashCode();
         result = result * player.hashCode();
         return result;
     }
@@ -149,10 +149,10 @@ class island
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        island other = (island) obj;
+        Island other = (Island) obj;
         if (player != other.player) return false;
         if (tokens.length != other.tokens.length) return false;
-        for(tokenPosition t : other.tokens) if(!contains(t)) return false;
+        for(TokenPosition t : other.tokens) if(!contains(t)) return false;
         return true;
     }
     

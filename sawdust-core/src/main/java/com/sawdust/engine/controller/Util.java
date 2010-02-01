@@ -175,6 +175,7 @@ public class Util
 
     public static <T> T randomMember(final T[] values)
     {
+        if (null == values) return null;
         if (0 == values.length) return null;
         final int i = (int) Math.floor(Math.random() * values.length);
         return values[i];
