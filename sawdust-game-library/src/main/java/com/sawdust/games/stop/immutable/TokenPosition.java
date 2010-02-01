@@ -52,8 +52,8 @@ public class TokenPosition implements Comparable<TokenPosition>
     public int compareTo(TokenPosition o)
     {
         if (x < o.x) return -1;
-        if (y < o.y) return -1;
         if (x > o.x) return 1;
+        if (y < o.y) return -1;
         if (y > o.y) return 1;
         return 0;
     }

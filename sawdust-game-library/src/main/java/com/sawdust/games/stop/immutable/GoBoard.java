@@ -49,7 +49,34 @@ public class GoBoard
 
     public GoBoard doMove(TokenMove move)
     {
-        return new GoBoard(board, move.player, move.position);
+        GoBoard postMove = new GoBoard(board, move.player, move.position);
+        HashSet<Island> surrounded = new HashSet<Island>();
+        Board postCapture = postMove.board;
+        for(Island i : postCapture.islands)
+        {
+            boolean hasFreedom = false;
+            for(Island o : postCapture.open)
+            {
+                if(i.isNeigbor(o))
+                {
+                    hasFreedom = true;
+                    break;
+                }
+            }
+            if(!hasFreedom)
+            {
+                surrounded.add(i);
+            }
+        }
+        for(Island i : surrounded)
+        {
+            for(TokenPosition p : i.tokens)
+            {
+                postCapture = postCapture.remove(p);
+            }
+            System.out.println("Island Captured: " + i.tokens.length);
+        }
+        return new GoBoard(postCapture);
     }
 
     public void toFile(File out)

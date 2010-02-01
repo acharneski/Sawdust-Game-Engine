@@ -155,5 +155,15 @@ class Island
         for(TokenPosition t : other.tokens) if(!contains(t)) return false;
         return true;
     }
+
+
+    public boolean isNeigbor(Island o)
+    {
+        for(TokenPosition p : o.tokens)
+        {
+            if(isNeigbor(p)) return true;
+        }
+        return false;
+    }
     
 }

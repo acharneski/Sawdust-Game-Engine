@@ -29,6 +29,11 @@ public class Player
         if(token.equals("2")) return new Player(2);
         return null;
     }
+
+    public boolean isNull()
+    {
+        return 0 == value;
+    }
     
 
 }

@@ -27,30 +27,37 @@ public class Board
         rows = obj.rows;
 
         HashSet<Island> newOpen = new HashSet<Island>();
-        Island whitespaceSource = null;
+        HashSet<Island> selfJoined = new HashSet<Island>();
+        HashSet<Island> enemyFacing = new HashSet<Island>();
+        HashSet<Island> newIslands = new HashSet<Island>();
+
         for (Island i : obj.open)
         {
-            if (i.contains(newPosition))
+            if (!player.isNull() && i.contains(newPosition))
             {
-                whitespaceSource = i;
                 for (Island i2 : i.remove(newPosition))
                 {
                     newOpen.add(i2);
                 }
+            }
+            else if (player.isNull() && i.isNeigbor(newPosition))
+            {
+                selfJoined.add(i);
             }
             else
             {
                 newOpen.add(i);
             }
         }
-        open = newOpen.toArray(new Island[]{});
 
-        HashSet<Island> selfJoined = new HashSet<Island>();
-        HashSet<Island> enemyFacing = new HashSet<Island>();
-        HashSet<Island> newIslands = new HashSet<Island>();
         for (Island i : obj.islands)
         {
-            if (i.isNeigbor(newPosition))
+            if(player.isNull() && i.contains(newPosition))
+            {
+                Island[] split = i.remove(newPosition);
+                for(Island toAdd : split) newIslands.add(toAdd);
+            }
+            else if (!player.isNull() && i.isNeigbor(newPosition))
             {
                 if (i.player == player)
                 {
@@ -67,19 +74,22 @@ public class Board
                 newIslands.add(i);
             }
         }
+
+        HashSet<Island> targetPool = (player.isNull())?newOpen:newIslands;
         if(selfJoined.size() > 1)
         {
-            newIslands.add(new Island(newPosition, selfJoined.toArray(new Island[]{})));
+            targetPool.add(new Island(newPosition, selfJoined.toArray(new Island[]{})));
         }
         else if(selfJoined.size() == 1)
         {
-            newIslands.add(new Island(selfJoined.iterator().next(), newPosition));
+            targetPool.add(new Island(selfJoined.iterator().next(), newPosition));
         }
         else
         {
-            newIslands.add(new Island(player, newPosition));
+            targetPool.add(new Island(player, newPosition));
         }
         islands = newIslands.toArray(new Island[]{});
+        open = newOpen.toArray(new Island[]{});
     }
 
     public Board doMove(TokenMove move)
@@ -115,5 +125,11 @@ public class Board
             }
         }
         return cnt;
+    }
+
+
+    public Board remove(TokenPosition p)
+    {
+        return new Board(this, new Player(), p);
     }
 }
