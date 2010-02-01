@@ -23,7 +23,6 @@ import com.sawdust.games.stop.immutable.TokenPosition;
 public class GoBoardModelTest
 {
     private JAXBContext context;
-    private JAXBContext contextGoBoard;
 
     public GoBoardModelTest()
     {
@@ -58,7 +57,10 @@ public class GoBoardModelTest
                 }
                 board = board.doMove(move);
                 int islandCount = board.islandCount(p1);
-                echoTest(board);
+                String data = board.toXmlString();
+                System.out.println(data);
+                String echo = GoBoard.fromXmlString(data).toXmlString();
+                assert (echo.equals(data));
                 System.out.println(String.format("Player %s has %d islands", p, islandCount));
             }
         }
@@ -119,14 +121,6 @@ public class GoBoardModelTest
         String data = asString(board);
         System.out.println(data);
         String echo = asString(fromString(data));
-        assert (echo.equals(data));
-    }
-
-    private void echoTest(GoBoard board)
-    {
-        String data = board.toXmlString();
-        System.out.println(data);
-        String echo = GoBoard.fromXmlString(data).toXmlString();
         assert (echo.equals(data));
     }
 

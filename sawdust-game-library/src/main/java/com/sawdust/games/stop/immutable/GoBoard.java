@@ -31,6 +31,11 @@ public class GoBoard
         board = new Board(9, 9);
     }
 
+    public GoBoard(XmlGoBoard unmarshal)
+    {
+        board = Board.unmarshal(unmarshal.board);
+    }
+
     public TokenMove[] getMoves(Player player)
     {
         HashSet<TokenMove> moves = new HashSet<TokenMove>();
@@ -57,7 +62,7 @@ public class GoBoard
         StringWriter buffer = new StringWriter();
         try
         {
-            JAXBContext.newInstance(XmlBoard.class).createMarshaller().marshal(board.getXmlObj(), buffer);
+            JAXBContext.newInstance(XmlGoBoard.class).createMarshaller().marshal(new XmlGoBoard(this), buffer);
         }
         catch (JAXBException e)
         {
@@ -76,7 +81,7 @@ public class GoBoard
         StringReader buffer = new StringReader(str);
         try
         {
-            return new GoBoard(Board.unmarshal((XmlBoard) JAXBContext.newInstance(XmlBoard.class).createUnmarshaller().unmarshal(buffer)));
+            return new GoBoard((XmlGoBoard) JAXBContext.newInstance(XmlGoBoard.class).createUnmarshaller().unmarshal(buffer));
         }
         catch (JAXBException e)
         {
