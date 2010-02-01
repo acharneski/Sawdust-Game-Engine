@@ -4,7 +4,7 @@
 package com.sawdust.games.stop.immutable;
 
 
-class tokenMove
+public class tokenMove
 {
     final tokenPosition position;
     final int player;

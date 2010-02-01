@@ -4,6 +4,7 @@
 package com.sawdust.games.stop.immutable;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -53,38 +54,43 @@ class island
 
     public static island[] buildIslands(final int player, Set<tokenPosition> positions)
     {
-        TreeSet<island> newIslands = new TreeSet<island>();
-        island isl = null;
+        HashSet<island> newIslands = new HashSet<island>();
         while (!positions.isEmpty())
         {
-            int anythingChanged = 0;
+            island isl = null;
             while (!positions.isEmpty())
             {
+                int anythingChanged = 0;
                 TreeSet<tokenPosition> newP = new TreeSet<tokenPosition>();
                 for (tokenPosition p : positions)
                 {
                     if (null == isl)
                     {
                         isl = new island(player, p);
+                        positions.remove(p);
+                        anythingChanged++;
+                        break;
                     }
                     else if (isl.isNeigbor(p))
                     {
                         newP.add(p);
+                        anythingChanged++;
                     }
                 }
-                positions.removeAll(newP);
+                assert(null != isl);
                 if (!newP.isEmpty())
                 {
+                    positions.removeAll(newP);
                     isl = new island(isl, newP.toArray(new tokenPosition[] {}));
-                    anythingChanged++;
                     break;
                 }
+                else if(0 == anythingChanged)
+                {
+                    break; // No more adjacent pieces 
+                }
             }
-            if (0 == anythingChanged)
-            {
-                newIslands.add(isl);
-                isl = null;
-            }
+            assert(null != isl);
+            newIslands.add(isl);
         }
         island[] array = newIslands.toArray(new island[] {});
         return array;

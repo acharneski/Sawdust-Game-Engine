@@ -3,7 +3,7 @@
  */
 package com.sawdust.games.stop.immutable;
 
-class tokenPosition implements Comparable<tokenPosition>
+public class tokenPosition implements Comparable<tokenPosition>
 {
     final int x;
     final int y;
