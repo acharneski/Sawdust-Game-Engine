@@ -108,7 +108,7 @@ public class Board
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
-                temp = temp.doMove(new BoardMove(matrix[x][y], new BoardPosition(x, y)));
+                temp = temp.doMove(new BoardMove(matrix[x][y], new BoardPosition(x, y), null));
             }
         return temp;
     }

@@ -7,12 +7,14 @@ public class BoardMove implements Move
 {
     public final BoardPosition position;
     public final GoPlayer player;
+    public final Island island;
 
-    public BoardMove(final GoPlayer player, final BoardPosition position)
+    public BoardMove(final GoPlayer player, final BoardPosition position, final Island island)
     {
         super();
         this.player = player;
         this.position = position;
+        this.island = island;
     }
 
 

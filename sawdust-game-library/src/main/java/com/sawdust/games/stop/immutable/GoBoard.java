@@ -76,13 +76,13 @@ public class GoBoard implements Game
     public BoardMove[] getMoves(Player player)
     {
         HashSet<BoardMove> moves = new HashSet<BoardMove>();
-        moves.add(new BoardMove((GoPlayer) player, null));
+        moves.add(new BoardMove((GoPlayer) player, null, null));
         for (Island o : board.open)
         {
             HashSet<BoardMove> buffer = new HashSet<BoardMove>();
             for (BoardPosition p : o.tokens)
             {
-                buffer.add(new BoardMove((GoPlayer) player, p));
+                buffer.add(new BoardMove((GoPlayer) player, p, o));
             }
             if(o.tokens.length == 1)
             {
