@@ -15,16 +15,16 @@ import org.junit.Test;
 import com.sawdust.engine.controller.Util;
 import com.sawdust.games.stop.immutable.Board;
 import com.sawdust.games.stop.immutable.GoBoard;
+import com.sawdust.games.stop.immutable.GoPlayer;
 import com.sawdust.games.stop.immutable.XmlBoard;
-import com.sawdust.games.stop.immutable.Player;
-import com.sawdust.games.stop.immutable.TokenMove;
-import com.sawdust.games.stop.immutable.TokenPosition;
+import com.sawdust.games.stop.immutable.BoardMove;
+import com.sawdust.games.stop.immutable.BoardPosition;
 
 public class GoBoardModelTest
 {
-    private JAXBContext context;
+    private static JAXBContext context;
 
-    public GoBoardModelTest()
+    static
     {
         try
         {
@@ -36,20 +36,24 @@ public class GoBoardModelTest
         }
     }
 
+    public GoBoardModelTest()
+    {
+    }
+
     @Test
     public void testGo() throws Exception
     {
         GoBoard board = new GoBoard();
-        Player p1 = new Player(1);
-        Player p2 = new Player(2);
+        GoPlayer p1 = new GoPlayer(1);
+        GoPlayer p2 = new GoPlayer(2);
 
         
         boolean continueGame = true;
         while (continueGame)
         {
-            for(Player p : new Player[]{p1,p2})
+            for(GoPlayer p : new GoPlayer[]{p1,p2})
             {
-                TokenMove move = Util.randomMember(board.getMoves(p));
+                BoardMove move = Util.randomMember(board.getMoves(p));
                 if(null == move) 
                 {
                     continueGame = false;
@@ -70,53 +74,53 @@ public class GoBoardModelTest
     public void testBoard() throws Exception
     {
         Board board = new Board(8, 8);
-        Player p1 = new Player(1);
-        Player p2 = new Player(2);
+        GoPlayer p1 = new GoPlayer(1);
+        GoPlayer p2 = new GoPlayer(2);
 
-        board = board.doMove(new TokenMove(p1, new TokenPosition(2, 2)));
+        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 2)));
         int islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new TokenMove(p1, new TokenPosition(2, 3)));
+        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 3)));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new TokenMove(p2, new TokenPosition(3, 3)));
+        board = board.doMove(new BoardMove(p2, new BoardPosition(3, 3)));
         islandCount = board.islandCount(p2);
         echoTest(board);
         System.out.println(String.format("Player 2 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new TokenMove(p1, new TokenPosition(2, 5)));
+        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 5)));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new TokenMove(p1, new TokenPosition(3, 5)));
+        board = board.doMove(new BoardMove(p1, new BoardPosition(3, 5)));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new TokenMove(p2, new TokenPosition(3, 6)));
+        board = board.doMove(new BoardMove(p2, new BoardPosition(3, 6)));
         islandCount = board.islandCount(p2);
         echoTest(board);
         System.out.println(String.format("Player 2 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new TokenMove(p1, new TokenPosition(2, 4)));
+        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 4)));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 1);
     }
 
-    private void echoTest(Board board) throws JAXBException
+    public static void echoTest(Board board) throws JAXBException
     {
         String data = asString(board);
         System.out.println(data);
@@ -124,27 +128,27 @@ public class GoBoardModelTest
         assert (echo.equals(data));
     }
 
-    private void toFile(Board board, String pathname) throws JAXBException, IOException
+    public static void toFile(Board board, String pathname) throws JAXBException, IOException
     {
         XmlBoard xmlObj = board.getXmlObj();
         File file = new File(pathname);
         context.createMarshaller().marshal(xmlObj, new FileWriter(file));
     }
 
-    private Board fromFile(String pathname) throws JAXBException, IOException
+    public static Board fromFile(String pathname) throws JAXBException, IOException
     {
         File file = new File(pathname);
         XmlBoard unmarshal = (XmlBoard) context.createUnmarshaller().unmarshal(new FileReader(file));
         return Board.unmarshal(unmarshal);
     }
 
-    private Board fromString(String data) throws JAXBException
+    public static Board fromString(String data) throws JAXBException
     {
         StringReader buffer = new StringReader(data);
         return Board.unmarshal((XmlBoard) context.createUnmarshaller().unmarshal(buffer));
     }
 
-    private String asString(Board board) throws JAXBException
+    public static String asString(Board board) throws JAXBException
     {
         XmlBoard xmlObj = board.getXmlObj();
         StringWriter buffer = new StringWriter();

@@ -1,6 +1,8 @@
 package com.sawdust.games.stop.immutable;
 
-public class GoScore
+import com.sawdust.games.model.Score;
+
+public class GoScore implements Score
 {
     final int prisoners;
     final int territory;
@@ -9,6 +11,11 @@ public class GoScore
         super();
         this.prisoners = prisoners;
         this.territory = territory;
+    }
+    @Override
+    public double getValue()
+    {
+        return territory - prisoners;
     }
     
 }

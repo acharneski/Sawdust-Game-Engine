@@ -1,4 +1,4 @@
-package com.sawdust.games.stop.immutable;
+package com.sawdust.games.stop;
 
 public class NotImplemented extends RuntimeException
 {

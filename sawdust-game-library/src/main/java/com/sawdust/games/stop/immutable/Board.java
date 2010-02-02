@@ -3,10 +3,11 @@ package com.sawdust.games.stop.immutable;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+
 public class Board
 {
     private static final Logger LOG = Logger.getLogger(Board.class.getName());
-    public static final Player EMPTY_VALUE = new Player();
+    public static final GoPlayer EMPTY_VALUE = new GoPlayer();
 
     final Island[] islands;
     final Island[] open;
@@ -21,7 +22,7 @@ public class Board
         open = new Island[]{ new Island(EMPTY_VALUE, r, cols) };
     }
 
-    public Board(final Board obj, final Player player, TokenPosition newPosition)
+    public Board(final Board obj, final GoPlayer player, BoardPosition newPosition)
     {
         cols = obj.cols;
         rows = obj.rows;
@@ -92,7 +93,7 @@ public class Board
         open = newOpen.toArray(new Island[]{});
     }
 
-    public Board doMove(TokenMove move)
+    public Board doMove(BoardMove move)
     {
         return new Board(this, move.player, move.position);
     }
@@ -105,16 +106,16 @@ public class Board
     public static Board unmarshal(XmlBoard from)
     {
         Board temp = new Board(from.rows, from.cols);
-        Player[][] matrix = from.getMatrix();
+        GoPlayer[][] matrix = from.getMatrix();
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
-                temp = temp.doMove(new TokenMove(matrix[x][y], new TokenPosition(x, y)));
+                temp = temp.doMove(new BoardMove(matrix[x][y], new BoardPosition(x, y)));
             }
         return temp;
     }
 
-    public int islandCount(Player p1)
+    public int islandCount(GoPlayer p1)
     {
         int cnt = 0;
         for (Island i : islands)
@@ -128,8 +129,8 @@ public class Board
     }
 
 
-    public Board remove(TokenPosition p)
+    public Board remove(BoardPosition p)
     {
-        return new Board(this, new Player(), p);
+        return new Board(this, new GoPlayer(), p);
     }
 }

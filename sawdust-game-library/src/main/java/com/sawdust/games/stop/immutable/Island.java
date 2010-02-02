@@ -8,51 +8,52 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+
 class Island
 {
-    final Player player;
-    final TokenPosition[] tokens;
+    final GoPlayer player;
+    final BoardPosition[] tokens;
 
-    public Island(final Player p, final TokenPosition... t)
+    public Island(final GoPlayer p, final BoardPosition... t)
     {
         super();
         tokens = t;
         player = p;
     }
 
-    public Island(final com.sawdust.games.stop.immutable.Player p, final int rows, final int cols)
+    public Island(final com.sawdust.games.stop.immutable.GoPlayer p, final int rows, final int cols)
     {
         super();
         player = p;
         
-        tokens = new TokenPosition[rows*cols];
+        tokens = new BoardPosition[rows*cols];
         int pos = 0;
-        for(int x=0;x<rows;x++) for(int y=0;y<cols;y++) tokens[pos++] = new TokenPosition(x, y);
+        for(int x=0;x<rows;x++) for(int y=0;y<cols;y++) tokens[pos++] = new BoardPosition(x, y);
     }
 
-    public Island(final TokenPosition join, final Island... sourceIslands)
+    public Island(final BoardPosition join, final Island... sourceIslands)
     {
         super();
         int size = 1;
         for(Island i : sourceIslands) size += i.tokens.length;
-        tokens = new TokenPosition[size];
+        tokens = new BoardPosition[size];
         int pos = 0;
         tokens[pos++] = join;
-        for(Island i : sourceIslands) for(TokenPosition p : i.tokens) tokens[pos++] = p;
+        for(Island i : sourceIslands) for(BoardPosition p : i.tokens) tokens[pos++] = p;
         player = sourceIslands[0].player;
     }
 
-    public Island[] remove(final TokenPosition t)
+    public Island[] remove(final BoardPosition t)
     {
         assert (this.contains(t));
-        TreeSet<TokenPosition> positions = new TreeSet<TokenPosition>();
-        for (TokenPosition p : tokens)
+        TreeSet<BoardPosition> positions = new TreeSet<BoardPosition>();
+        for (BoardPosition p : tokens)
             positions.add(p);
         positions.remove(t);
         return buildIslands(this.player, positions);
     }
 
-    public static Island[] buildIslands(final Player player2, Set<TokenPosition> positions)
+    public static Island[] buildIslands(final GoPlayer player2, Set<BoardPosition> positions)
     {
         HashSet<Island> newIslands = new HashSet<Island>();
         while (!positions.isEmpty())
@@ -61,8 +62,8 @@ class Island
             while (!positions.isEmpty())
             {
                 int anythingChanged = 0;
-                TreeSet<TokenPosition> newP = new TreeSet<TokenPosition>();
-                for (TokenPosition p : positions)
+                TreeSet<BoardPosition> newP = new TreeSet<BoardPosition>();
+                for (BoardPosition p : positions)
                 {
                     if (null == isl)
                     {
@@ -81,7 +82,7 @@ class Island
                 if (!newP.isEmpty())
                 {
                     positions.removeAll(newP);
-                    isl = new Island(isl, newP.toArray(new TokenPosition[] {}));
+                    isl = new Island(isl, newP.toArray(new BoardPosition[] {}));
                     break;
                 }
                 else if(0 == anythingChanged)
@@ -96,7 +97,7 @@ class Island
         return array;
     }
 
-    public Island(final Island i, final TokenPosition... t)
+    public Island(final Island i, final BoardPosition... t)
     {
         super();
         int oldLength = i.tokens.length;
@@ -110,25 +111,25 @@ class Island
         }
     }
 
-    public boolean isNeigbor(TokenPosition t)
+    public boolean isNeigbor(BoardPosition t)
     {
         boolean isNieghbor = false;
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)
         {
-            TokenPosition token = tokens[j];
+            BoardPosition token = tokens[j];
             if (token.isNeigbor(t)) isNieghbor = true;
             if (token.equals(t)) isInside = true;
         }
         return isNieghbor && !isInside;
     }
 
-    public boolean contains(TokenPosition t)
+    public boolean contains(BoardPosition t)
     {
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)
         {
-            TokenPosition token = tokens[j];
+            BoardPosition token = tokens[j];
             if (token.equals(t)) isInside = true;
         }
         return isInside;
@@ -138,7 +139,7 @@ class Island
     public int hashCode()
     {
         int result = 0;
-        for(TokenPosition t : tokens) result ^= t.hashCode();
+        for(BoardPosition t : tokens) result ^= t.hashCode();
         result = result * player.hashCode();
         return result;
     }
@@ -152,14 +153,14 @@ class Island
         Island other = (Island) obj;
         if (player != other.player) return false;
         if (tokens.length != other.tokens.length) return false;
-        for(TokenPosition t : other.tokens) if(!contains(t)) return false;
+        for(BoardPosition t : other.tokens) if(!contains(t)) return false;
         return true;
     }
 
 
     public boolean isNeigbor(Island o)
     {
-        for(TokenPosition p : o.tokens)
+        for(BoardPosition p : o.tokens)
         {
             if(isNeigbor(p)) return true;
         }

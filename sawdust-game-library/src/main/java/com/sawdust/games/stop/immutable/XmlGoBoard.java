@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+
 @XmlRootElement
 public class XmlGoBoard
 {
@@ -50,7 +51,7 @@ public class XmlGoBoard
     @XmlElement
     TreeSet<Score> player = new TreeSet<Score>();
 
-    static final Player NON_INITIALIZED = null;
+    static final GoPlayer NON_INITIALIZED = null;
 
     public XmlGoBoard()
     {}
@@ -58,7 +59,7 @@ public class XmlGoBoard
     public XmlGoBoard(final GoBoard b)
     {
         board = new XmlBoard(b.board);
-        for(Player p : b.getPlayers())
+        for(GoPlayer p : b.getPlayers())
         {
             GoScore scoreObj = b.getScore(p);
             player.add(new Score(p.getName(), scoreObj.prisoners,scoreObj.territory));

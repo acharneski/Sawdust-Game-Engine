@@ -10,23 +10,26 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import com.sawdust.games.model.Game;
+import com.sawdust.games.model.Move;
+import com.sawdust.games.stop.NotImplemented;
 import com.sawdust.games.stop.immutable.XmlGoBoard.Score;
 
-public class GoBoard
+public class GoBoard implements Game
 {
     private static final Logger LOG = Logger.getLogger(GoBoard.class.getName());
     public static final int EMPTY_VALUE = -1;
 
     final Board board;
     
-    final HashMap<Player,GoScore> scores = new HashMap<Player, GoScore>();
+    final HashMap<GoPlayer,GoScore> scores = new HashMap<GoPlayer, GoScore>();
 
     GoBoard(final Board b)
     {
         board = b;
     }
 
-    public GoBoard(final GoBoard b, final Player player, final TokenPosition position)
+    public GoBoard(final GoBoard b, final GoPlayer player, final BoardPosition position)
     {
         board = new Board(b.board, player, position);
         scores.putAll(b.scores);
@@ -42,47 +45,50 @@ public class GoBoard
         board = Board.unmarshal(unmarshal.board);
         for(Score p : unmarshal.player)
         {
-            Player findPlayer = findPlayer(p.name);
+            GoPlayer findPlayer = findPlayer(p.name);
             scores.put(findPlayer, new GoScore(p.prisoners, p.territory));
         }
     }
 
-    private Player findPlayer(String name)
+    private GoPlayer findPlayer(String name)
     {
-        for(Player p : getPlayers())
+        for(GoPlayer p : getPlayers())
         {
             if(p.getName().equals(name)) return p;
         }
         return null;
     }
-
-    public GoBoard(Board newBoard, HashMap<Player, GoScore> newScores)
+ 
+    public GoBoard(Board newBoard, HashMap<GoPlayer, GoScore> newScores)
     {
         board = newBoard;
         scores.putAll(newScores);
     }
 
-    public TokenMove[] getMoves(Player player)
+    public BoardMove[] getMoves(GoPlayer player)
     {
-        HashSet<TokenMove> moves = new HashSet<TokenMove>();
+        HashSet<BoardMove> moves = new HashSet<BoardMove>();
         for (Island i : board.open)
         {
-            for (TokenPosition p : i.tokens)
-                moves.add(new TokenMove(player, p));
+            for (BoardPosition p : i.tokens)
+            {
+                moves.add(new BoardMove(player, p));
+            }
         }
-        return moves.toArray(new TokenMove[]{});
+        return moves.toArray(new BoardMove[]{});
     }
 
-    public GoBoard doMove(TokenMove move)
+    public GoBoard doMove(Move gmove)
     {
+        BoardMove move = (BoardMove) gmove;
         GoBoard postMove = new GoBoard(this, move.player, move.position);
-        HashMap<Player, GoScore> hashMap = new HashMap<Player, GoScore>();
-        for(Player p1 : getPlayers()) 
+        HashMap<GoPlayer, GoScore> hashMap = new HashMap<GoPlayer, GoScore>();
+        for(GoPlayer p1 : getPlayers()) 
         {
             GoScore score = getScore(p1);
             hashMap.put(p1, new GoScore(score.prisoners, 0));
         }
-        HashMap<Player, GoScore> newScores = hashMap;
+        HashMap<GoPlayer, GoScore> newScores = hashMap;
         HashSet<Island> surrounded = new HashSet<Island>();
         Board postCapture = postMove.board;
         for(Island i : postCapture.islands)
@@ -103,7 +109,7 @@ public class GoBoard
         }
         for(Island i : postCapture.open)
         {
-            HashSet<Player> surrounding = new HashSet<Player>();
+            HashSet<GoPlayer> surrounding = new HashSet<GoPlayer>();
             for(Island o : postCapture.islands)
             {
                 if(i.isNeigbor(o))
@@ -113,7 +119,7 @@ public class GoBoard
             }
             if(surrounding.size() == 1)
             {
-                Player player = surrounding.iterator().next();
+                GoPlayer player = surrounding.iterator().next();
                 GoScore score = newScores.get(player);
                 newScores.put(player, new GoScore(score.prisoners, score.territory + i.tokens.length));
             }
@@ -122,7 +128,7 @@ public class GoBoard
         {
             GoScore score = newScores.get(i.player);
             int prisoners = score.prisoners;
-            for(TokenPosition p : i.tokens)
+            for(BoardPosition p : i.tokens)
             {
                 postCapture = postCapture.remove(p);
                 prisoners++;
@@ -170,19 +176,24 @@ public class GoBoard
         }
     }
 
-    public int islandCount(Player p1)
+    public int islandCount(GoPlayer p1)
     {
         return board.islandCount(p1);
     }
 
-    public GoScore getScore(Player p)
+    public GoScore getScore(GoPlayer p)
     {
         if(!scores.containsKey(p)) return new GoScore(0, 0);
         return scores.get(p);
     }
 
-    public Player[] getPlayers()
+    public GoPlayer[] getPlayers()
     {
-        return new Player[]{new Player(1), new Player(2)};
+        return new GoPlayer[]{new GoPlayer(1), new GoPlayer(2)};
+    }
+
+    public Board getBoard()
+    {
+        return board;
     }
 }

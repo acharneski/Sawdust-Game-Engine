@@ -1,16 +1,16 @@
 package com.sawdust.games.stop.immutable;
 
-public class Player
-{
 
+public class GoPlayer implements com.sawdust.games.model.Player
+{
     public final int value;
 
-    public Player()
+    public GoPlayer()
     {
         value = 0;
     }
 
-    public Player(int i)
+    public GoPlayer(int i)
     {
         assert(i>0);
         value = i;
@@ -22,11 +22,11 @@ public class Player
         return Integer.toString(value);
     }
 
-    public static Player parse(String token)
+    public static GoPlayer parse(String token)
     {
-        if(token.equals("0")) return new Player();
-        if(token.equals("1")) return new Player(1);
-        if(token.equals("2")) return new Player(2);
+        if(token.equals("0")) return new GoPlayer();
+        if(token.equals("1")) return new GoPlayer(1);
+        if(token.equals("2")) return new GoPlayer(2);
         return null;
     }
 
@@ -55,7 +55,7 @@ public class Player
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        Player other = (Player) obj;
+        GoPlayer other = (GoPlayer) obj;
         if (value != other.value) return false;
         return true;
     }
