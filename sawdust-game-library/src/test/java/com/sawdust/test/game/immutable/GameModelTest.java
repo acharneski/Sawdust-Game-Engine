@@ -4,33 +4,24 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import com.sawdust.engine.controller.Util;
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
 import com.sawdust.games.model.GameWon;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
-import com.sawdust.games.stop.immutable.BoardMove;
-import com.sawdust.games.stop.immutable.GoBoard;
-import com.sawdust.games.stop.immutable.GoPlayer;
 
 public class GameModelTest
 {
     
-    public GameModelTest()
-    {
-    }
-
     @Test
-    public void testGame() throws Exception
+    public void testCallPerformance() throws Exception
     {
-        Game game = gameFactory();
+        Game game = new com.sawdust.games.stop.immutable.GoBoard();
         HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
-        GoPlayer[] players = game.getPlayers();
-        for(Player p : players)
-        {
-            agents.put(p, getAgent());
-        }
+        Player[] players = game.getPlayers();
+        assert(2 == players.length);
+        agents.put(players[0], new RandomAgent());
+        agents.put(players[1], new RandomAgent());
         try
         {
             while(true)
@@ -39,37 +30,38 @@ public class GameModelTest
                 {
                     Move move = agents.get(p).selectMove(p, game);
                     game = game.doMove(move);
-                    System.out.println(((GoBoard)game).toXmlString());
+                    System.out.println(((com.sawdust.games.stop.immutable.GoBoard)game).toXmlString());
                 }
             }
         }
         catch (GameWon e)
         {
-            Player p = e.winner;
         }
     }
-
-    private Agent getAgent()
+    
+    @Test
+    public void testRandomVsBasicSearch() throws Exception
     {
-        return new Agent()
+        Game game = new com.sawdust.games.stop.immutable.GoBoard();
+        HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
+        Player[] players = game.getPlayers();
+        assert(2 == players.length);
+        agents.put(players[0], new com.sawdust.games.stop.immutable.GoSearchAgent(3,3));
+        agents.put(players[1], new RandomAgent());
+        try
         {
-            @Override
-            public Move selectMove(Player p, Game game)
+            while(true)
             {
-                GoBoard goGame = (GoBoard) game;
-                GoPlayer goPlayer = (GoPlayer) p;
-                return getMove(goGame, goPlayer);
+                for(Player p : players)
+                {
+                    Move move = agents.get(p).selectMove(p, game);
+                    game = game.doMove(move);
+                    System.out.println(((com.sawdust.games.stop.immutable.GoBoard)game).toXmlString());
+                }
             }
-        };
-    }
-
-    private BoardMove getMove(GoBoard goGame, GoPlayer goPlayer)
-    {
-        return Util.randomMember(goGame.getMoves(goPlayer));
-    }
-
-    private Game gameFactory()
-    {
-        return new GoBoard();
+        }
+        catch (GameWon e)
+        {
+        }
     }
 }

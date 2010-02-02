@@ -26,11 +26,10 @@ public class XmlGoBoard
         @XmlAttribute
         int prisoners;
 
-        public Score()
+        @SuppressWarnings("unused")
+        private Score()
         {
             super();
-            this.name = name;
-            this.territory = territory;
         }
 
         public Score(String name, int prisoners, int territory)

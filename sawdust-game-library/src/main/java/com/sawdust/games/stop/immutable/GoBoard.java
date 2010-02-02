@@ -5,39 +5,45 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.logging.Logger;
+import java.util.LinkedList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import com.sawdust.games.model.Game;
 import com.sawdust.games.model.Move;
+import com.sawdust.games.model.Player;
 import com.sawdust.games.stop.NotImplemented;
 import com.sawdust.games.stop.immutable.XmlGoBoard.Score;
 
 public class GoBoard implements Game
 {
-    private static final Logger LOG = Logger.getLogger(GoBoard.class.getName());
     public static final int EMPTY_VALUE = -1;
 
     final Board board;
-    
     final HashMap<GoPlayer,GoScore> scores = new HashMap<GoPlayer, GoScore>();
+    final LinkedList<GoPlayer> turns = new LinkedList<GoPlayer>(); 
 
-    GoBoard(final Board b)
+    GoBoard(final Board b, HashMap<GoPlayer, GoScore> newScores, LinkedList<GoPlayer> turns2)
     {
         board = b;
+        scores.putAll(newScores);
+        turns.addAll(turns2);
+        turns.add(turns.pop());
     }
 
     public GoBoard(final GoBoard b, final GoPlayer player, final BoardPosition position)
     {
         board = new Board(b.board, player, position);
         scores.putAll(b.scores);
+        turns.addAll(b.turns);
+        turns.add(turns.pop());
     }
 
     public GoBoard()
     {
         board = new Board(9, 9);
+        for(GoPlayer p : getPlayers()) turns.add(p);
     }
 
     public GoBoard(XmlGoBoard unmarshal)
@@ -48,8 +54,17 @@ public class GoBoard implements Game
             GoPlayer findPlayer = findPlayer(p.name);
             scores.put(findPlayer, new GoScore(p.prisoners, p.territory));
         }
+        // TODO: Restore who's order it is...
+        for(GoPlayer p : getPlayers()) turns.add(p);
     }
 
+    public GoBoard(Board newBoard, HashMap<GoPlayer, GoScore> newScores)
+    {
+        board = newBoard;
+        scores.putAll(newScores);
+        for(GoPlayer p : getPlayers()) turns.add(p);
+    }
+    
     private GoPlayer findPlayer(String name)
     {
         for(GoPlayer p : getPlayers())
@@ -59,20 +74,14 @@ public class GoBoard implements Game
         return null;
     }
  
-    public GoBoard(Board newBoard, HashMap<GoPlayer, GoScore> newScores)
-    {
-        board = newBoard;
-        scores.putAll(newScores);
-    }
-
-    public BoardMove[] getMoves(GoPlayer player)
+    public BoardMove[] getMoves(Player player)
     {
         HashSet<BoardMove> moves = new HashSet<BoardMove>();
         for (Island i : board.open)
         {
             for (BoardPosition p : i.tokens)
             {
-                moves.add(new BoardMove(player, p));
+                moves.add(new BoardMove((GoPlayer) player, p));
             }
         }
         return moves.toArray(new BoardMove[]{});
@@ -134,9 +143,9 @@ public class GoBoard implements Game
                 prisoners++;
             }
             newScores.put(i.player, new GoScore(prisoners, score.territory));
-            System.out.println("Island Captured: " + i.tokens.length);
+            //System.out.println("Island Captured: " + i.tokens.length);
         }
-        return new GoBoard(postCapture, newScores);
+        return new GoBoard(postCapture, newScores, turns);
     }
 
     public void toFile(File out)
@@ -181,7 +190,7 @@ public class GoBoard implements Game
         return board.islandCount(p1);
     }
 
-    public GoScore getScore(GoPlayer p)
+    public GoScore getScore(Player p)
     {
         if(!scores.containsKey(p)) return new GoScore(0, 0);
         return scores.get(p);
@@ -195,5 +204,10 @@ public class GoBoard implements Game
     public Board getBoard()
     {
         return board;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return turns.peek();
     }
 }

@@ -1,8 +1,9 @@
 package com.sawdust.games.model;
 
+@SuppressWarnings("serial")
 public class GameLost extends GameWon
 {
-    private final Player loser;
+    public final Player loser;
 
     public GameLost(final Player winner, final Player loser)
     {

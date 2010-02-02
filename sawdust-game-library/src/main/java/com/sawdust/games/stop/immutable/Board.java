@@ -1,12 +1,10 @@
 package com.sawdust.games.stop.immutable;
 
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 
 public class Board
 {
-    private static final Logger LOG = Logger.getLogger(Board.class.getName());
     public static final GoPlayer EMPTY_VALUE = new GoPlayer();
 
     final Island[] islands;

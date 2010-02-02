@@ -17,5 +17,10 @@ public class GoScore implements Score
     {
         return territory - prisoners;
     }
+    @Override
+    public String toString()
+    {
+        return "GoScore [prisoners=" + prisoners + ", territory=" + territory + "]";
+    }
     
 }
