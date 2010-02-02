@@ -5,8 +5,8 @@ import com.sawdust.games.model.Move;
 
 public class BoardMove implements Move
 {
-    final BoardPosition position;
-    final GoPlayer player;
+    public final BoardPosition position;
+    public final GoPlayer player;
 
     public BoardMove(final GoPlayer player, final BoardPosition position)
     {
@@ -14,4 +14,13 @@ public class BoardMove implements Move
         this.player = player;
         this.position = position;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "BoardMove [player=" + player + ", position=" + position + "]";
+    }
+
+
 }

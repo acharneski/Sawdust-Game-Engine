@@ -6,8 +6,6 @@ import java.util.Comparator;
 
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
-import com.sawdust.games.model.GameLost;
-import com.sawdust.games.model.GameWon;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
 import com.sawdust.games.stop.immutable.GoPlayer;
@@ -34,7 +32,14 @@ public abstract class FitnessSearchAgent implements Agent
 
     private Move getMove(Game goGame, Player goPlayer)
     {
-        return (Move) move_N(goGame, depth);
+        try
+        {
+            return (Move) move_N(goGame, depth);
+        }
+        catch (GameLost e)
+        {
+            return null;
+        }
     }
 
     private ArrayList<? extends Move> intuition(final Game game, Player participant)
@@ -59,34 +64,24 @@ public abstract class FitnessSearchAgent implements Agent
         return arrayList;
     }
 
-    private Move move_N(Game game, int n)
+    private Move move_N(Game game, int n) throws GameLost
     {
         Player participant = game.getCurrentPlayer();
         ArrayList<? extends Move> moves = intuition(game, participant);
         Move bestMove = null;
-        double bestFitness = Integer.MIN_VALUE;
+        double bestFitness = Integer.MIN_VALUE / 2;
         int loopCount = breadth;
         for (Move thisMove : moves)
         {
             if (0 > --loopCount) break;
+            Game hypotheticalGame;
             try
             {
-                Game hypotheticalGame = game.doMove(thisMove);
-                if (n > 0)
-                {
-                    Move moveN = move_N(hypotheticalGame, n - 1);
-                    hypotheticalGame = hypotheticalGame.doMove(moveN);
-                }
-                double fitness1 = gameFitness(hypotheticalGame, participant);
-                boolean isBetter = fitness1 > bestFitness;
-                if (null == bestMove || isBetter)
-                {
-                    bestMove = thisMove;
-                    bestFitness = fitness1;
-                }
+                hypotheticalGame = game.doMove(thisMove);
             }
             catch (GameLost e)
             {
+                loopCount++;
                 continue;
             }
             catch (GameWon e)
@@ -94,7 +89,35 @@ public abstract class FitnessSearchAgent implements Agent
                 bestMove = thisMove;
                 break;
             }
+
+            if (n > 0)
+            {
+                try
+                {
+                    Move moveN = move_N(hypotheticalGame, n - 1);
+                    hypotheticalGame = hypotheticalGame.doMove(moveN);
+                }
+                catch (GameLost e)
+                {
+                    bestMove = thisMove;
+                    break;
+                }
+                catch (GameWon e)
+                {
+                    loopCount++;
+                    continue;
+                }
+            }
+
+            double fitness = gameFitness(hypotheticalGame, participant);
+            boolean isBetter = fitness > bestFitness;
+            if (null == bestMove || isBetter)
+            {
+                bestMove = thisMove;
+                bestFitness = fitness;
+            }
         }
+        if(null == bestMove) throw new GameLost(null, participant);
         return bestMove;
     }
 

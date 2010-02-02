@@ -17,6 +17,8 @@ class Island
     public Island(final GoPlayer p, final BoardPosition... t)
     {
         super();
+        if(null == t) throw new NullPointerException();
+        for(BoardPosition tok : t) if(null == tok) throw new NullPointerException(); 
         tokens = t;
         player = p;
     }
@@ -34,6 +36,7 @@ class Island
     public Island(final BoardPosition join, final Island... sourceIslands)
     {
         super();
+        if(null == join) throw new NullPointerException();
         int size = 1;
         for(Island i : sourceIslands) size += i.tokens.length;
         tokens = new BoardPosition[size];
@@ -106,6 +109,7 @@ class Island
         tokens = Arrays.copyOf(i.tokens, newLength);
         for (int j = 0; j < t.length; j++)
         {
+            assert(null != t[j]);
             tokens[oldLength + j] = t[j];
             assert (i.isNeigbor(t[j]));
         }
@@ -113,6 +117,7 @@ class Island
 
     public boolean isNeigbor(BoardPosition t)
     {
+        if(null == t) return false;
         boolean isNieghbor = false;
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)

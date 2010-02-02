@@ -6,9 +6,10 @@ import org.junit.Test;
 
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
-import com.sawdust.games.model.GameWon;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
+import com.sawdust.games.model.ai.GameLost;
+import com.sawdust.games.model.ai.GameWon;
 
 public class GameModelTest
 {
@@ -29,6 +30,11 @@ public class GameModelTest
                 for(Player p : players)
                 {
                     Move move = agents.get(p).selectMove(p, game);
+                    if(null == move)
+                    {
+                        throw new GameLost((p.equals(players[0])?players[1]:players[0]), p);
+                    }
+                    System.out.println(move.toString());
                     game = game.doMove(move);
                     System.out.println(((com.sawdust.games.stop.immutable.GoBoard)game).toXmlString());
                 }
@@ -36,6 +42,7 @@ public class GameModelTest
         }
         catch (GameWon e)
         {
+            System.err.println(e.toString());
         }
     }
     
@@ -55,6 +62,11 @@ public class GameModelTest
                 for(Player p : players)
                 {
                     Move move = agents.get(p).selectMove(p, game);
+                    if(null == move)
+                    {
+                        throw new GameLost((p.equals(players[0])?players[1]:players[0]), p);
+                    }
+                    System.out.println(move.toString());
                     game = game.doMove(move);
                     System.out.println(((com.sawdust.games.stop.immutable.GoBoard)game).toXmlString());
                 }
@@ -62,6 +74,7 @@ public class GameModelTest
         }
         catch (GameWon e)
         {
+            System.err.println(e.toString());
         }
     }
 }

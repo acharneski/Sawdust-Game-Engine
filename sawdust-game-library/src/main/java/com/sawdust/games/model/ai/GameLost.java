@@ -1,4 +1,6 @@
-package com.sawdust.games.model;
+package com.sawdust.games.model.ai;
+
+import com.sawdust.games.model.Player;
 
 @SuppressWarnings("serial")
 public class GameLost extends GameWon
@@ -9,6 +11,12 @@ public class GameLost extends GameWon
     {
         super(winner);
         this.loser = loser;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "GameLost [loser=" + loser + ", winner=" + winner + "]";
     }
 
 }

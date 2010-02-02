@@ -1,5 +1,8 @@
 package com.sawdust.games.model;
 
+import com.sawdust.games.model.ai.GameLost;
+import com.sawdust.games.model.ai.GameWon;
+
 
 public interface Game
 {

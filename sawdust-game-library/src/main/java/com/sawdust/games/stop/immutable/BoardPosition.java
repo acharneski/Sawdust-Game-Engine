@@ -57,4 +57,11 @@ public class BoardPosition implements Comparable<BoardPosition>
         if (y > o.y) return 1;
         return 0;
     }
+
+    @Override
+    public String toString()
+    {
+        return "BoardPosition [x=" + x + ", y=" + y + "]";
+    }
+
 }

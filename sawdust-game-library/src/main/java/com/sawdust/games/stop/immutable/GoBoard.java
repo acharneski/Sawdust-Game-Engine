@@ -13,6 +13,8 @@ import javax.xml.bind.JAXBException;
 import com.sawdust.games.model.Game;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
+import com.sawdust.games.model.ai.GameLost;
+import com.sawdust.games.model.ai.GameWon;
 import com.sawdust.games.stop.NotImplemented;
 import com.sawdust.games.stop.immutable.XmlGoBoard.Score;
 
@@ -20,28 +22,23 @@ public class GoBoard implements Game
 {
     public static final int EMPTY_VALUE = -1;
 
-    final Board board;
+    public final Board board;
+    public final boolean lastPlayerPassed;
     final HashMap<GoPlayer,GoScore> scores = new HashMap<GoPlayer, GoScore>();
     final LinkedList<GoPlayer> turns = new LinkedList<GoPlayer>(); 
 
-    GoBoard(final Board b, HashMap<GoPlayer, GoScore> newScores, LinkedList<GoPlayer> turns2)
+    GoBoard(final Board b, HashMap<GoPlayer, GoScore> newScores, LinkedList<GoPlayer> turns2, boolean pass)
     {
+        lastPlayerPassed = pass;
         board = b;
         scores.putAll(newScores);
         turns.addAll(turns2);
         turns.add(turns.pop());
     }
 
-    public GoBoard(final GoBoard b, final GoPlayer player, final BoardPosition position)
-    {
-        board = new Board(b.board, player, position);
-        scores.putAll(b.scores);
-        turns.addAll(b.turns);
-        turns.add(turns.pop());
-    }
-
     public GoBoard()
     {
+        lastPlayerPassed = false;
         board = new Board(9, 9);
         for(GoPlayer p : getPlayers()) turns.add(p);
     }
@@ -56,10 +53,12 @@ public class GoBoard implements Game
         }
         // TODO: Restore who's order it is...
         for(GoPlayer p : getPlayers()) turns.add(p);
+        lastPlayerPassed = false;
     }
 
     public GoBoard(Board newBoard, HashMap<GoPlayer, GoScore> newScores)
     {
+        lastPlayerPassed = false;
         board = newBoard;
         scores.putAll(newScores);
         for(GoPlayer p : getPlayers()) turns.add(p);
@@ -77,33 +76,112 @@ public class GoBoard implements Game
     public BoardMove[] getMoves(Player player)
     {
         HashSet<BoardMove> moves = new HashSet<BoardMove>();
-        for (Island i : board.open)
+        moves.add(new BoardMove((GoPlayer) player, null));
+        for (Island o : board.open)
         {
-            for (BoardPosition p : i.tokens)
+            HashSet<BoardMove> buffer = new HashSet<BoardMove>();
+            for (BoardPosition p : o.tokens)
             {
-                moves.add(new BoardMove((GoPlayer) player, p));
+                buffer.add(new BoardMove((GoPlayer) player, p));
             }
+            if(o.tokens.length == 1)
+            {
+                HashSet<GoPlayer> surrounding = new HashSet<GoPlayer>();
+                for(Island i : board.islands)
+                {
+                    if(i.isNeigbor(o))
+                    {
+                        surrounding.add(i.player);
+                    }
+                }
+                if(surrounding.size() == 1)
+                {
+                    GoPlayer territoryHolder = surrounding.iterator().next();
+                    if(!player.equals(territoryHolder)) 
+                    {
+                        continue; // Skip add to moves
+                    }
+                }
+            }
+            moves.addAll(buffer);
         }
         return moves.toArray(new BoardMove[]{});
     }
 
-    public GoBoard doMove(Move gmove)
+    public GoBoard doMove(Move gmove) throws GameWon
     {
         BoardMove move = (BoardMove) gmove;
-        GoBoard postMove = new GoBoard(this, move.player, move.position);
-        HashMap<GoPlayer, GoScore> hashMap = new HashMap<GoPlayer, GoScore>();
-        for(GoPlayer p1 : getPlayers()) 
+        BoardPosition position = move.position;
+        Player player = move.player;
+        Board postMoveBoard = board;
+        if(null == position ) 
         {
-            GoScore score = getScore(p1);
-            hashMap.put(p1, new GoScore(score.prisoners, 0));
+            if(lastPlayerPassed) 
+            {
+                GoPlayer[] players = getPlayers();
+                Player otherPlayer = players[0].equals(player )?players[1]:players[0];
+                if(getScore(otherPlayer).getValue() > getScore(player).getValue())
+                {
+                    throw new GameLost(otherPlayer , player);
+                }
+                else
+                {
+                    throw new GameWon(player);
+                }
+                
+            }
         }
-        HashMap<GoPlayer, GoScore> newScores = hashMap;
-        HashSet<Island> surrounded = new HashSet<Island>();
-        Board postCapture = postMove.board;
-        for(Island i : postCapture.islands)
+        else
         {
+            postMoveBoard = new Board(board, (GoPlayer) player, position);
+        }
+
+        HashMap<GoPlayer, GoScore> newScores = copyScores();
+        HashSet<Island> surrounded = findSurroundedIslands(postMoveBoard, move.player);
+        Board postCaptureBoard = captureIslands(postMoveBoard, newScores, surrounded);
+        surrounded = findSurroundedIslands(postMoveBoard, null);
+        postCaptureBoard = captureIslands(postCaptureBoard, newScores, surrounded);
+        recalculateTerritory(newScores, board);
+        GoBoard postCapture = new GoBoard(postCaptureBoard, newScores, turns, null == move.position);
+        
+        return postCapture;
+    }
+
+    public HashMap<GoPlayer, GoScore> copyScores()
+    {
+        HashMap<GoPlayer, GoScore> newScores = new HashMap<GoPlayer, GoScore>();
+        for(GoPlayer player : getPlayers()) 
+        {
+            GoScore score = getScore(player);
+            newScores.put(player, new GoScore(score.prisoners, score.territory));
+        }
+        return newScores;
+    }
+
+    public static Board captureIslands(Board postCapture, HashMap<GoPlayer, GoScore> newScores, HashSet<Island> surrounded)
+    {
+        for(Island i : surrounded)
+        {
+            GoScore score = newScores.get(i.player);
+            int prisoners = score.prisoners;
+            for(BoardPosition p : i.tokens)
+            {
+                postCapture = postCapture.remove(p);
+                prisoners++;
+            }
+            if(null != newScores) newScores.put(i.player, new GoScore(prisoners, score.territory));
+        }
+        return postCapture;
+    }
+
+    public static HashSet<Island> findSurroundedIslands(Board board, GoPlayer exempt)
+    {
+        HashSet<Island> surrounded = new HashSet<Island>();
+        for(Island i : board.islands)
+        {
+            if(i.player.equals(exempt)) continue;
             boolean hasFreedom = false;
-            for(Island o : postCapture.open)
+            for(Island o : board.open)
             {
                 if(i.isNeigbor(o))
                 {
@@ -116,36 +194,42 @@ public class GoBoard implements Game
                 surrounded.add(i);
             }
         }
-        for(Island i : postCapture.open)
+        return surrounded;
+    }
+
+    public static HashMap<Island,Player> recalculateTerritory(HashMap<GoPlayer, GoScore> newScores, Board board)
+    {
+        HashMap<Island,Player> returnValue = new HashMap<Island,Player>();
+        if(null != newScores)
+        {
+            for(GoPlayer player : newScores.keySet())
+            {
+                GoScore score = newScores.get(player);
+                newScores.put(player, new GoScore(score.prisoners, 0));
+            }
+        }
+        for(Island o : board.open)
         {
             HashSet<GoPlayer> surrounding = new HashSet<GoPlayer>();
-            for(Island o : postCapture.islands)
+            for(Island i : board.islands)
             {
-                if(i.isNeigbor(o))
+                if(o.isNeigbor(i))
                 {
-                    surrounding.add(o.player);
+                    surrounding.add(i.player);
                 }
             }
             if(surrounding.size() == 1)
             {
                 GoPlayer player = surrounding.iterator().next();
-                GoScore score = newScores.get(player);
-                newScores.put(player, new GoScore(score.prisoners, score.territory + i.tokens.length));
+                returnValue.put(o, player);
+                if(null != newScores)
+                {
+                    GoScore score = newScores.get(player);
+                    newScores.put(player, new GoScore(score.prisoners, score.territory + o.tokens.length));
+                }
             }
         }
-        for(Island i : surrounded)
-        {
-            GoScore score = newScores.get(i.player);
-            int prisoners = score.prisoners;
-            for(BoardPosition p : i.tokens)
-            {
-                postCapture = postCapture.remove(p);
-                prisoners++;
-            }
-            newScores.put(i.player, new GoScore(prisoners, score.territory));
-            //System.out.println("Island Captured: " + i.tokens.length);
-        }
-        return new GoBoard(postCapture, newScores, turns);
+        return returnValue;
     }
 
     public void toFile(File out)

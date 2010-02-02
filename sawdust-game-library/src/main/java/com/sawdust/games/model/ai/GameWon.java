@@ -1,4 +1,6 @@
-package com.sawdust.games.model;
+package com.sawdust.games.model.ai;
+
+import com.sawdust.games.model.Player;
 
 @SuppressWarnings("serial")
 public class GameWon extends Exception
@@ -11,5 +13,11 @@ public class GameWon extends Exception
     }
 
     public final Player winner;
+
+    @Override
+    public String toString()
+    {
+        return "GameWon [winner=" + winner + "]";
+    }
 
 }
