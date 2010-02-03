@@ -3,6 +3,8 @@
  */
 package com.sawdust.test.game.immutable;
 
+import java.util.Date;
+
 import com.sawdust.engine.controller.Util;
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
@@ -17,7 +19,7 @@ import com.sawdust.games.stop.immutable.GoPlayer;
 public final class RandomAgent implements Agent
 {
     @Override
-    public Move selectMove(Player p, Game game)
+    public Move selectMove(Player p, Game game, Date deadline)
     {
         GoBoard goGame = (GoBoard) game;
         GoPlayer goPlayer = (GoPlayer) p;

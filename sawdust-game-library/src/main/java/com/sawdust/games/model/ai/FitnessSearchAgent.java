@@ -3,20 +3,22 @@ package com.sawdust.games.model.ai;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
 import com.sawdust.games.stop.immutable.GoPlayer;
+import com.sawdust.test.game.immutable.DateUtil;
 
 public abstract class FitnessSearchAgent implements Agent
 {
 
     @Override
-    public Move selectMove(Player p, Game game)
+    public Move selectMove(Player p, Game game, Date deadline)
     {
-        return getMove(game,p);
+        return getMove(game,p, deadline);
     }
 
     final int breadth;
@@ -30,11 +32,11 @@ public abstract class FitnessSearchAgent implements Agent
         this.depth = depth;
     }
 
-    private Move getMove(Game goGame, Player goPlayer)
+    private Move getMove(Game goGame, Player goPlayer, Date deadline)
     {
         try
         {
-            return (Move) move_N(goGame, depth);
+            return (Move) move_N(goGame, depth, deadline);
         }
         catch (GameLost e)
         {
@@ -64,16 +66,20 @@ public abstract class FitnessSearchAgent implements Agent
         return arrayList;
     }
 
-    private Move move_N(Game game, int n) throws GameLost
+    private Move move_N(Game game, int n, Date deadline) throws GameLost
     {
+        long startMs = new Date().getTime();
+        long thinkingMs = deadline.getTime() - startMs;
+        if(thinkingMs < 0) return null;
         Player participant = game.getCurrentPlayer();
         ArrayList<? extends Move> moves = intuition(game, participant);
         Move bestMove = null;
         double bestFitness = Integer.MIN_VALUE / 2;
-        int loopCount = breadth;
+        int loopCount = 0;
         for (Move thisMove : moves)
         {
-            if (0 > --loopCount) break;
+            if (breadth < ++loopCount) break;
+            //if(deadline.before(new Date())) break;
             Game hypotheticalGame;
             try
             {
@@ -94,7 +100,8 @@ public abstract class FitnessSearchAgent implements Agent
             {
                 try
                 {
-                    Move moveN = move_N(hypotheticalGame, n - 1);
+                    Move moveN = move_N(hypotheticalGame, n - 1, DateUtil.future(startMs, (int) (loopCount*thinkingMs/breadth)));
+                    if(null == moveN) break;
                     hypotheticalGame = hypotheticalGame.doMove(moveN);
                 }
                 catch (GameLost e)
