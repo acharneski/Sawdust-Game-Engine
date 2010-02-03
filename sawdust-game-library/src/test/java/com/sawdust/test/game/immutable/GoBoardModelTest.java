@@ -77,43 +77,43 @@ public class GoBoardModelTest
         GoPlayer p1 = new GoPlayer(1);
         GoPlayer p2 = new GoPlayer(2);
 
-        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 2), null));
+        board = board.doMove(new BoardMove(p1, BoardPosition.Get(2, 2), null));
         int islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 3), null));
+        board = board.doMove(new BoardMove(p1, BoardPosition.Get(2, 3), null));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new BoardMove(p2, new BoardPosition(3, 3), null));
+        board = board.doMove(new BoardMove(p2, BoardPosition.Get(3, 3), null));
         islandCount = board.islandCount(p2);
         echoTest(board);
         System.out.println(String.format("Player 2 has %d islands", islandCount));
         assert (islandCount == 1);
 
-        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 5), null));
+        board = board.doMove(new BoardMove(p1, BoardPosition.Get(2, 5), null));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new BoardMove(p1, new BoardPosition(3, 5), null));
+        board = board.doMove(new BoardMove(p1, BoardPosition.Get(3, 5), null));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new BoardMove(p2, new BoardPosition(3, 6), null));
+        board = board.doMove(new BoardMove(p2, BoardPosition.Get(3, 6), null));
         islandCount = board.islandCount(p2);
         echoTest(board);
         System.out.println(String.format("Player 2 has %d islands", islandCount));
         assert (islandCount == 2);
 
-        board = board.doMove(new BoardMove(p1, new BoardPosition(2, 4), null));
+        board = board.doMove(new BoardMove(p1, BoardPosition.Get(2, 4), null));
         islandCount = board.islandCount(p1);
         echoTest(board);
         System.out.println(String.format("Player 1 has %d islands", islandCount));

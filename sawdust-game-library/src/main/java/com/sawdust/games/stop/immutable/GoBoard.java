@@ -197,6 +197,17 @@ public class GoBoard implements Game
         return surrounded;
     }
 
+    private transient HashMap<Island,Player> territory = null;
+    public HashMap<Island,Player> findTerritory()
+    {
+        if(null == territory) 
+        {
+            territory = recalculateTerritory(null, board);
+            
+        }
+        return territory;
+    }
+
     public static HashMap<Island,Player> recalculateTerritory(HashMap<GoPlayer, GoScore> newScores, Board board)
     {
         HashMap<Island,Player> returnValue = new HashMap<Island,Player>();
@@ -294,4 +305,18 @@ public class GoBoard implements Game
     {
         return turns.peek();
     }
+
+
+    @Override
+    public int hashCode()
+    {
+        throw new NotImplemented();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        throw new NotImplemented();
+    }
+
 }

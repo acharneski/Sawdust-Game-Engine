@@ -4,46 +4,101 @@
 package com.sawdust.games.stop.immutable;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-
 
 class Island
 {
     final GoPlayer player;
     final BoardPosition[] tokens;
 
-    public Island(final GoPlayer p, final BoardPosition... t)
+    static HashMap<Island, Island> objectCache = new HashMap<Island, Island>();
+
+    public static Island Get(final GoPlayer p, final BoardPosition... t)
+    {
+        Island island = new Island(p, t);
+        if (objectCache.containsKey(island)) return objectCache.get(island);
+        objectCache.put(island, island);
+        return island;
+    }
+
+    private Island(final GoPlayer p, final BoardPosition... t)
     {
         super();
-        if(null == t) throw new NullPointerException();
-        for(BoardPosition tok : t) if(null == tok) throw new NullPointerException(); 
+        if (null == t) throw new NullPointerException();
+        for (BoardPosition tok : t)
+            if (null == tok) throw new NullPointerException();
         tokens = t;
         player = p;
     }
 
-    public Island(final com.sawdust.games.stop.immutable.GoPlayer p, final int rows, final int cols)
+    public static Island Get(final com.sawdust.games.stop.immutable.GoPlayer p, final int rows, final int cols)
+    {
+        Island island = new Island(p, rows, cols);
+        if (objectCache.containsKey(island)) return objectCache.get(island);
+        objectCache.put(island, island);
+        return island;
+    }
+
+    private Island(final com.sawdust.games.stop.immutable.GoPlayer p, final int rows, final int cols)
     {
         super();
         player = p;
-        
-        tokens = new BoardPosition[rows*cols];
+
+        tokens = new BoardPosition[rows * cols];
         int pos = 0;
-        for(int x=0;x<rows;x++) for(int y=0;y<cols;y++) tokens[pos++] = new BoardPosition(x, y);
+        for (int x = 0; x < rows; x++)
+            for (int y = 0; y < cols; y++)
+                tokens[pos++] = BoardPosition.Get(x, y);
     }
 
-    public Island(final BoardPosition join, final Island... sourceIslands)
+    public static Island Get(final BoardPosition join, final Island... sourceIslands)
+    {
+        Island island = new Island(join, sourceIslands);
+        if (objectCache.containsKey(island)) return objectCache.get(island);
+        objectCache.put(island, island);
+        return island;
+    }
+
+    private Island(final BoardPosition join, final Island... sourceIslands)
     {
         super();
-        if(null == join) throw new NullPointerException();
+        if (null == join) throw new NullPointerException();
         int size = 1;
-        for(Island i : sourceIslands) size += i.tokens.length;
+        for (Island i : sourceIslands)
+            size += i.tokens.length;
         tokens = new BoardPosition[size];
         int pos = 0;
         tokens[pos++] = join;
-        for(Island i : sourceIslands) for(BoardPosition p : i.tokens) tokens[pos++] = p;
+        for (Island i : sourceIslands)
+            for (BoardPosition p : i.tokens)
+                tokens[pos++] = p;
         player = sourceIslands[0].player;
+    }
+
+    public static Island Get( Island i, final BoardPosition... t)
+    {
+        Island island = new Island(i,t);
+        if (objectCache.containsKey(island)) return objectCache.get(island);
+        objectCache.put(island, island);
+        return island;
+    }
+
+    public Island(final Island i, final BoardPosition... t)
+    {
+        super();
+        int oldLength = i.tokens.length;
+        int newLength = oldLength + t.length;
+        player = i.player;
+        tokens = Arrays.copyOf(i.tokens, newLength);
+        for (int j = 0; j < t.length; j++)
+        {
+            assert (null != t[j]);
+            tokens[oldLength + j] = t[j];
+            assert (i.isNeigbor(t[j]));
+        }
     }
 
     public Island[] remove(final BoardPosition t)
@@ -70,7 +125,7 @@ class Island
                 {
                     if (null == isl)
                     {
-                        isl = new Island(player2, p);
+                        isl = Island.Get(player2, p);
                         positions.remove(p);
                         anythingChanged++;
                         break;
@@ -81,43 +136,28 @@ class Island
                         anythingChanged++;
                     }
                 }
-                assert(null != isl);
+                assert (null != isl);
                 if (!newP.isEmpty())
                 {
                     positions.removeAll(newP);
-                    isl = new Island(isl, newP.toArray(new BoardPosition[] {}));
+                    isl = Island.Get(isl, newP.toArray(new BoardPosition[] {}));
                     break;
                 }
-                else if(0 == anythingChanged)
+                else if (0 == anythingChanged)
                 {
-                    break; // No more adjacent pieces 
+                    break; // No more adjacent pieces
                 }
             }
-            assert(null != isl);
+            assert (null != isl);
             newIslands.add(isl);
         }
         Island[] array = newIslands.toArray(new Island[] {});
         return array;
     }
 
-    public Island(final Island i, final BoardPosition... t)
-    {
-        super();
-        int oldLength = i.tokens.length;
-        int newLength = oldLength + t.length;
-        player = i.player;
-        tokens = Arrays.copyOf(i.tokens, newLength);
-        for (int j = 0; j < t.length; j++)
-        {
-            assert(null != t[j]);
-            tokens[oldLength + j] = t[j];
-            assert (i.isNeigbor(t[j]));
-        }
-    }
-
     public boolean isNeigbor(BoardPosition t)
     {
-        if(null == t) return false;
+        if (null == t) return false;
         boolean isNieghbor = false;
         boolean isInside = false;
         for (int j = 0; j < tokens.length; j++)
@@ -140,12 +180,16 @@ class Island
         return isInside;
     }
 
+    transient int hashCode = 0;
     @Override
     public int hashCode()
     {
+        if(hashCode != 0) return hashCode;
         int result = 0;
-        for(BoardPosition t : tokens) result ^= t.hashCode();
+        for (BoardPosition t : tokens)
+            result ^= t.hashCode();
         result = result * player.hashCode();
+        hashCode = result;
         return result;
     }
 
@@ -158,18 +202,25 @@ class Island
         Island other = (Island) obj;
         if (player != other.player) return false;
         if (tokens.length != other.tokens.length) return false;
-        for(BoardPosition t : other.tokens) if(!contains(t)) return false;
+        for (BoardPosition t : other.tokens)
+            if (!contains(t)) return false;
         return true;
     }
 
-
+    private final HashMap<Island, Boolean> nearby = new HashMap<Island, Boolean>();
     public boolean isNeigbor(Island o)
     {
-        for(BoardPosition p : o.tokens)
+        if(nearby.containsKey(o)) return nearby.get(o);
+        boolean returnValue = false;
+        for (BoardPosition p : o.tokens)
         {
-            if(isNeigbor(p)) return true;
+            if (isNeigbor(p))
+            {
+                returnValue = true;
+            }
         }
-        return false;
+        nearby.put(o, returnValue);
+        return returnValue;
     }
-    
+
 }

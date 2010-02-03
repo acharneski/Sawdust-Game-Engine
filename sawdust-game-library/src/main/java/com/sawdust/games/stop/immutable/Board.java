@@ -1,5 +1,6 @@
 package com.sawdust.games.stop.immutable;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 
@@ -17,7 +18,7 @@ public class Board
         cols = c;
         rows = r;
         islands = new Island[]{};
-        open = new Island[]{ new Island(EMPTY_VALUE, r, cols) };
+        open = new Island[]{ Island.Get(EMPTY_VALUE, r, cols) };
     }
 
     public Board(final Board obj, final GoPlayer player, BoardPosition newPosition)
@@ -77,7 +78,7 @@ public class Board
         HashSet<Island> targetPool = (player.isNull())?newOpen:newIslands;
         if(selfJoined.size() > 1)
         {
-            targetPool.add(new Island(newPosition, selfJoined.toArray(new Island[]{})));
+            targetPool.add(Island.Get(newPosition, selfJoined.toArray(new Island[]{})));
         }
         else if(selfJoined.size() == 1)
         {
@@ -85,7 +86,7 @@ public class Board
         }
         else
         {
-            targetPool.add(new Island(player, newPosition));
+            targetPool.add(Island.Get(player, newPosition));
         }
         islands = newIslands.toArray(new Island[]{});
         open = newOpen.toArray(new Island[]{});
@@ -108,7 +109,7 @@ public class Board
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
-                temp = temp.doMove(new BoardMove(matrix[x][y], new BoardPosition(x, y), null));
+                temp = temp.doMove(new BoardMove(matrix[x][y], BoardPosition.Get(x, y), null));
             }
         return temp;
     }
@@ -126,9 +127,37 @@ public class Board
         return cnt;
     }
 
-
     public Board remove(BoardPosition p)
     {
         return new Board(this, new GoPlayer(), p);
     }
+
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + cols;
+        result = prime * result + Arrays.hashCode(islands);
+        result = prime * result + Arrays.hashCode(open);
+        result = prime * result + rows;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        Board other = (Board) obj;
+        if (cols != other.cols) return false;
+        if (!Arrays.equals(islands, other.islands)) return false;
+        if (!Arrays.equals(open, other.open)) return false;
+        if (rows != other.rows) return false;
+        return true;
+    }
+
+
 }
