@@ -1,4 +1,4 @@
-package com.sawdust.test.game.immutable;
+package com.sawdust.games;
 
 import java.util.Date;
 

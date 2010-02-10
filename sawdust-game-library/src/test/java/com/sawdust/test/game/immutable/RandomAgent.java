@@ -29,6 +29,8 @@ public final class RandomAgent implements Agent
     private BoardMove getMove(GoBoard goGame, GoPlayer goPlayer)
     {
         BoardMove[] moves = goGame.getMoves(goPlayer);
+        if(null == moves) return null;
+        if(0 == moves.length) return null;
         BoardMove move = null;
         while(move == null)
         {

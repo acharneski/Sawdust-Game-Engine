@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 
+import com.sawdust.games.DateUtil;
 import com.sawdust.games.model.Agent;
 import com.sawdust.games.model.Game;
 import com.sawdust.games.model.Move;
 import com.sawdust.games.model.Player;
 import com.sawdust.games.stop.immutable.GoPlayer;
-import com.sawdust.test.game.immutable.DateUtil;
 
 public abstract class FitnessSearchAgent implements Agent
 {
@@ -36,7 +37,8 @@ public abstract class FitnessSearchAgent implements Agent
     {
         try
         {
-            return (Move) move_N(goGame, depth, deadline);
+            GameScript thePlan = move_N(goGame, depth, deadline);
+            return thePlan.firstMove();
         }
         catch (GameLost e)
         {
@@ -66,53 +68,105 @@ public abstract class FitnessSearchAgent implements Agent
         return arrayList;
     }
 
-    private Move move_N(Game game, int n, Date deadline) throws GameLost
+    public static class GameTransition
+    {
+        public final Game startGame;
+        public final Move move;
+        public final Game endGame;
+        public GameTransition(Game startGame, Move move, Game endGame)
+        {
+            super();
+            this.startGame = startGame;
+            this.move = move;
+            this.endGame = endGame;
+        }
+    }
+    
+    public static class GameScript
+    {
+        private final LinkedList<GameTransition> moves = new LinkedList<GameTransition>();
+        public final Game startGame;
+        public final Game endGame;
+
+        public GameScript(GameScript start, GameTransition t)
+        {
+            super();
+            this.startGame = start.startGame;
+            moves.addAll(start.moves);
+            moves.add(t);
+            this.endGame = t.endGame;
+        }
+
+        public Move firstMove()
+        {
+            Move move = moves.peek().move;
+            assert(null != move);
+            return move;
+        }
+
+        public GameScript(Game startGame)
+        {
+            super();
+            this.startGame = startGame;
+            this.endGame = null;
+        }
+
+        public GameScript(GameScript start, GameScript end)
+        {
+            this.startGame = start.startGame;
+            moves.addAll(start.moves);
+            moves.addAll(end.moves);
+            this.endGame = end.endGame;
+        }
+    }
+    
+    private GameScript move_N(Game game, int n, Date deadline) throws GameLost
     {
         long startMs = new Date().getTime();
         long thinkingMs = deadline.getTime() - startMs;
-        if(thinkingMs < 0) return null;
+        if(thinkingMs < 0) 
+        {
+            return null;
+        }
         Player participant = game.getCurrentPlayer();
         ArrayList<? extends Move> moves = intuition(game, participant);
         Move bestMove = null;
+        GameScript bestScript = null;
         double bestFitness = Integer.MIN_VALUE / 2;
         int loopCount = 0;
+        GameScript baseScript = new GameScript(game);
+        
         for (Move thisMove : moves)
         {
             if (breadth < ++loopCount) break;
             //if(deadline.before(new Date())) break;
             Game hypotheticalGame;
-            try
-            {
-                hypotheticalGame = game.doMove(thisMove);
-            }
-            catch (GameLost e)
-            {
-                loopCount++;
-                continue;
-            }
-            catch (GameWon e)
-            {
-                bestMove = thisMove;
-                break;
-            }
+            GameScript hypotheticalScript;
+            hypotheticalGame = game.doMove(thisMove);
+            hypotheticalScript = new GameScript(baseScript, new GameTransition(game, thisMove, hypotheticalGame));
 
-            if (n > 0)
+            if(null != hypotheticalGame.getWinner())
             {
-                try
+                if(hypotheticalGame.getWinner().equals(participant))
                 {
-                    Move moveN = move_N(hypotheticalGame, n - 1, DateUtil.future(startMs, (int) (loopCount*thinkingMs/breadth)));
-                    if(null == moveN) break;
-                    hypotheticalGame = hypotheticalGame.doMove(moveN);
+                  bestMove = thisMove;
+                  bestScript = hypotheticalScript;
+                  break;
                 }
-                catch (GameLost e)
-                {
-                    bestMove = thisMove;
-                    break;
-                }
-                catch (GameWon e)
+                else
                 {
                     loopCount++;
                     continue;
+                }
+            }
+            
+            if (n > 0)
+            {
+                GameScript moveN = move_N(hypotheticalGame, n - 1, DateUtil.future(startMs, (int) (loopCount*thinkingMs/breadth)));
+                if(null != moveN) 
+                {
+                    hypotheticalGame = moveN.endGame;
+                    hypotheticalScript = new GameScript(hypotheticalScript, moveN);
                 }
             }
 
@@ -122,10 +176,11 @@ public abstract class FitnessSearchAgent implements Agent
             {
                 bestMove = thisMove;
                 bestFitness = fitness;
+                bestScript = hypotheticalScript;
             }
         }
-        if(null == bestMove) throw new GameLost(null, participant);
-        return bestMove;
+        assert(null != bestScript);
+        return bestScript;
     }
 
     private int sortGameMoves(Move o1, Move o2, Game game)
