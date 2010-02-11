@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 
 import com.sawdust.games.DateUtil;
 import com.sawdust.games.model.Agent;
@@ -35,15 +34,9 @@ public abstract class FitnessSearchAgent implements Agent
 
     private Move getMove(Game goGame, Player goPlayer, Date deadline)
     {
-        try
-        {
-            GameScript thePlan = move_N(goGame, depth, deadline);
-            return thePlan.firstMove();
-        }
-        catch (GameLost e)
-        {
-            return null;
-        }
+        GameScript thePlan = move_N(goGame, depth, deadline);
+        if(null == thePlan) return null;
+        return thePlan.firstMove();
     }
 
     private ArrayList<? extends Move> intuition(final Game game, Player participant)
@@ -54,7 +47,11 @@ public abstract class FitnessSearchAgent implements Agent
             @Override
             public int compare(Move o1, Move o2)
             {
-                return sortGameMoves(o1, o2, game);
+                double v1 = moveFitness(o1, game);
+                double v2 = moveFitness(o2, game);
+                int compare1 = Double.compare(v2, v1);
+                if (0 == compare1) return (Math.random() < 0.5) ? -1 : 1;
+                return compare1;
             }
         });
         return moves;
@@ -68,59 +65,7 @@ public abstract class FitnessSearchAgent implements Agent
         return arrayList;
     }
 
-    public static class GameTransition
-    {
-        public final Game startGame;
-        public final Move move;
-        public final Game endGame;
-        public GameTransition(Game startGame, Move move, Game endGame)
-        {
-            super();
-            this.startGame = startGame;
-            this.move = move;
-            this.endGame = endGame;
-        }
-    }
-    
-    public static class GameScript
-    {
-        private final LinkedList<GameTransition> moves = new LinkedList<GameTransition>();
-        public final Game startGame;
-        public final Game endGame;
-
-        public GameScript(GameScript start, GameTransition t)
-        {
-            super();
-            this.startGame = start.startGame;
-            moves.addAll(start.moves);
-            moves.add(t);
-            this.endGame = t.endGame;
-        }
-
-        public Move firstMove()
-        {
-            Move move = moves.peek().move;
-            assert(null != move);
-            return move;
-        }
-
-        public GameScript(Game startGame)
-        {
-            super();
-            this.startGame = startGame;
-            this.endGame = null;
-        }
-
-        public GameScript(GameScript start, GameScript end)
-        {
-            this.startGame = start.startGame;
-            moves.addAll(start.moves);
-            moves.addAll(end.moves);
-            this.endGame = end.endGame;
-        }
-    }
-    
-    private GameScript move_N(Game game, int n, Date deadline) throws GameLost
+    private GameScript move_N(Game game, int n, Date deadline)
     {
         long startMs = new Date().getTime();
         long thinkingMs = deadline.getTime() - startMs;
@@ -128,9 +73,9 @@ public abstract class FitnessSearchAgent implements Agent
         {
             return null;
         }
+        double msPerMove = ((double)thinkingMs)/breadth;
         Player participant = game.getCurrentPlayer();
         ArrayList<? extends Move> moves = intuition(game, participant);
-        Move bestMove = null;
         GameScript bestScript = null;
         double bestFitness = Integer.MIN_VALUE / 2;
         int loopCount = 0;
@@ -149,7 +94,6 @@ public abstract class FitnessSearchAgent implements Agent
             {
                 if(hypotheticalGame.getWinner().equals(participant))
                 {
-                  bestMove = thisMove;
                   bestScript = hypotheticalScript;
                   break;
                 }
@@ -162,8 +106,8 @@ public abstract class FitnessSearchAgent implements Agent
             
             if (n > 0)
             {
-                GameScript moveN = move_N(hypotheticalGame, n - 1, DateUtil.future(startMs, (int) (loopCount*thinkingMs/breadth)));
-                if(null != moveN) 
+                GameScript moveN = move_N(hypotheticalGame, n - 1, DateUtil.future(startMs, (int) (loopCount*msPerMove)));
+                if(null != moveN)
                 {
                     hypotheticalGame = moveN.endGame;
                     hypotheticalScript = new GameScript(hypotheticalScript, moveN);
@@ -172,24 +116,14 @@ public abstract class FitnessSearchAgent implements Agent
 
             double fitness = gameFitness(hypotheticalGame, participant);
             boolean isBetter = fitness > bestFitness;
-            if (null == bestMove || isBetter)
+            if (null == bestScript || isBetter)
             {
-                bestMove = thisMove;
                 bestFitness = fitness;
                 bestScript = hypotheticalScript;
             }
         }
-        assert(null != bestScript);
+        //assert(null != bestScript);
         return bestScript;
-    }
-
-    private int sortGameMoves(Move o1, Move o2, Game game)
-    {
-        double v1 = moveFitness(o1, game);
-        double v2 = moveFitness(o2, game);
-        int compare = Double.compare(v2, v1);
-        if (0 == compare) return (Math.random() < 0.5) ? -1 : 1;
-        return compare;
     }
 
     protected double gameFitness(Game game, Player self)

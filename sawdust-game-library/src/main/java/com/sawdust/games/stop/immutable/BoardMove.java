@@ -15,6 +15,16 @@ public class BoardMove implements Move
         this.player = player;
         this.position = position;
         this.island = island;
+        if(null != position)
+        {
+            assert(null != this.island);
+            assert(this.island.contains(position));
+        }
+        else
+        {
+            assert(null == this.island);
+        }
+        
     }
 
     @Override

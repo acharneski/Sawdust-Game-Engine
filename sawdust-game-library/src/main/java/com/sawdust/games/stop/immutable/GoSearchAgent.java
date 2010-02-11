@@ -33,14 +33,15 @@ public final class GoSearchAgent extends FitnessSearchAgent
         GoBoard g = (GoBoard) game;
         if(null != move.island)
         {
-            if(1 == move.island.tokens.length) return -1;
-            HashMap<Island, Player> recalculateTerritory = g.findTerritory();
-            if(recalculateTerritory.containsKey(move.island))
+            HashMap<Island, Player> territory = g.findTerritory();
+            if(territory.containsKey(move.island))
             {
-                Player surroundingPlayer = recalculateTerritory.get(move.island);
-                if(surroundingPlayer.equals(move.player)) return 0;
+                if(1 == move.island.tokens.length) return -1;
             }
-
+        }
+        else
+        {
+            return 0;
         }
         return super.moveFitness(o1, game);
     }

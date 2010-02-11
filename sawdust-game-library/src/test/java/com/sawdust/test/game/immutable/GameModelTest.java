@@ -54,9 +54,9 @@ public class GameModelTest
         HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
         Player[] players = game.getPlayers();
         assert(2 == players.length);
-        agents.put(players[0], new com.sawdust.games.stop.immutable.GoSearchAgent(4,2));
+        agents.put(players[0], new com.sawdust.games.stop.immutable.GoSearchAgent(15,8));
         agents.put(players[1], new RandomAgent());
-        GameWon end = fight(game, agents, 5000000);
+        GameWon end = fight(game, agents, 2000);
         System.err.println(end);
     }
     
@@ -74,7 +74,7 @@ public class GameModelTest
             @Override
             protected double evaluate(IChromosome c)
             {
-                agents.put(players[0], new com.sawdust.games.stop.immutable.GoSearchAgent(8,11));
+                agents.put(players[0], new com.sawdust.games.stop.immutable.GoSearchAgent(15,8));
                 agents.put(players[1], new com.sawdust.games.stop.immutable.GoSearchAgent(
                         (Integer) c.getGene(0).getAllele(),
                         (Integer) c.getGene(1).getAllele()));
@@ -94,7 +94,7 @@ public class GameModelTest
         {
             population.evolve();
             IChromosome best = population.getFittestChromosome();
-            System.out.println(String.format("Best AI: Depth=%d; Breadth=%d", 
+            System.out.println(String.format("\n\nBest AI: Breadth=%d; Depth=%d\n\n", 
                     (Integer) best.getGene(0).getAllele(),
                     (Integer) best.getGene(1).getAllele()));
         }
