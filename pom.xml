@@ -73,6 +73,7 @@
         <module>sawdust-game-library</module>
         <module>sawdust-gae</module>
         <module>sawdust-gwt</module>
+    <module>game-module-go</module>
   </modules>
 	<reporting>
 		<plugins>

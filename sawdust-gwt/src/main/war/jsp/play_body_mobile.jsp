@@ -41,7 +41,7 @@
 <c:choose>
 	<c:when test="<%=isSessionDefined%>">
 
-		<jsp:useBean id="game" class="com.sawdust.gae.jsp.JspGame">
+		<jsp:useBean id="game" class="com.sawdust.gae.jsp.JspGame" />
 		<jsp:setProperty name="game" property="request" value="<%=request%>" />
 		<jsp:setProperty name="game" property="sessionId" value="<%=tsession.getSessionId()%>" />
 		<%

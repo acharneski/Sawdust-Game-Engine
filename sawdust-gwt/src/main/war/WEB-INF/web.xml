@@ -57,7 +57,13 @@
     <servlet-mapping>
         <servlet-name>tinySession_redirect</servlet-name>
         <url-pattern>/p/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>tinySession_redirect</servlet-name>
         <url-pattern>/f/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>tinySession_redirect</servlet-name>
         <url-pattern>/m/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
