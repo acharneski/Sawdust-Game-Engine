@@ -19,7 +19,7 @@ import com.sawdust.games.go.model.Game;
 import com.sawdust.games.go.model.Move;
 import com.sawdust.games.go.model.Player;
 
-public class GameModelTest
+public class GameModelLab
 {
     
     @Test

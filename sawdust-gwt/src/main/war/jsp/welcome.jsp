@@ -13,8 +13,8 @@
 
 <table border="0">
 <tr>
+    <td><wc:gameType game="Go2"></wc:gameType></td>
     <td><wc:gameType game="Go"></wc:gameType></td>
-    <td><wc:gameType game="Poker"></wc:gameType></td>
 </tr>
 <tr>
     <td><wc:gameType game="WordHunt"></wc:gameType></td>
@@ -25,6 +25,7 @@
     <td><wc:gameType game="Stop"></wc:gameType></td>
 </tr>
 <tr>
-    <td colspan="2"><div class="sdge-game-type"><h2 style="text-align: center;">More games coming soon!</h2></div></td>
+    <td><wc:gameType game="Poker"></wc:gameType></td>
+    <td><div class="sdge-game-type"><h2 style="text-align: center;">More games coming soon!</h2></div></td>
 </tr>
 </table>

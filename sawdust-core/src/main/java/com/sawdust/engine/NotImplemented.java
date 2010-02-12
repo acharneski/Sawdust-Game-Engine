@@ -1,4 +1,4 @@
-package com.sawdust.games.stop;
+package com.sawdust.engine;
 
 public class NotImplemented extends RuntimeException
 {

@@ -2,7 +2,7 @@ package com.sawdust.engine.model.players;
 
 import java.io.Serializable;
 
-public abstract class Participant implements Serializable
+public class Participant implements Serializable
 {
     protected String _id;
 
@@ -10,7 +10,7 @@ public abstract class Participant implements Serializable
     {
     }
 
-    protected Participant(final String id)
+    public Participant(final String id)
     {
         super();
         _id = id;

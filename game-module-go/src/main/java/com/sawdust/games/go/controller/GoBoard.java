@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import com.sawdust.engine.NotImplemented;
 import com.sawdust.games.go.model.Board;
 import com.sawdust.games.go.model.BoardMove;
 import com.sawdust.games.go.model.BoardPosition;
@@ -21,7 +22,6 @@ import com.sawdust.games.go.model.Move;
 import com.sawdust.games.go.model.Player;
 import com.sawdust.games.go.view.XmlGoBoard;
 import com.sawdust.games.go.view.XmlGoBoard.Score;
-import com.sawdust.games.stop.NotImplemented;
 
 public class GoBoard implements Game
 {

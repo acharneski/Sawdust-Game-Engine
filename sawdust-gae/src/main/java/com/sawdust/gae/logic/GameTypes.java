@@ -28,7 +28,8 @@ public class GameTypes
                 PokerGameType.INSTANCE, 
                 WordHuntGameType.INSTANCE, 
                 StopGameType.INSTANCE, 
-                GoGameType.INSTANCE
+                GoGameType.INSTANCE,
+                com.sawdust.games.go.view.GoGameType.INSTANCE
         };
     }
 }

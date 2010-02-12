@@ -20,7 +20,7 @@ import com.sawdust.games.go.model.BoardPosition;
 import com.sawdust.games.go.model.GoPlayer;
 import com.sawdust.games.go.view.XmlBoard;
 
-public class GoBoardModelTest
+public class GoBoardModelLab
 {
     private static JAXBContext context;
 
@@ -36,7 +36,7 @@ public class GoBoardModelTest
         }
     }
 
-    public GoBoardModelTest()
+    public GoBoardModelLab()
     {
     }
 
