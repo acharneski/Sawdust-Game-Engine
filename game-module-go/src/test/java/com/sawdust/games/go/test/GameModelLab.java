@@ -25,7 +25,7 @@ public class GameModelLab
     @Test
     public void testCallPerformance() throws Exception
     {
-        Game game = new com.sawdust.games.go.controller.GoBoard();
+        Game game = new com.sawdust.games.go.controller.GoBoard(9,9);
         HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
         Player[] players = game.getPlayers();
         assert(2 == players.length);
@@ -48,7 +48,7 @@ public class GameModelLab
     @Test
     public void testRandomVsBasicSearch() throws Exception
     {
-        Game game = new com.sawdust.games.go.controller.GoBoard();
+        Game game = new com.sawdust.games.go.controller.GoBoard(9,9);
         HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
         Player[] players = game.getPlayers();
         assert(2 == players.length);
@@ -61,7 +61,7 @@ public class GameModelLab
     @Test
     public void lab1() throws Exception
     {
-        final Game game = new com.sawdust.games.go.controller.GoBoard();
+        final Game game = new com.sawdust.games.go.controller.GoBoard(9,9);
         final HashMap<Player,Agent> agents = new HashMap<Player, Agent>();
         final Player[] players = game.getPlayers();
         assert(2 == players.length);

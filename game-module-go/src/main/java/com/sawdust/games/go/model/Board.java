@@ -111,7 +111,8 @@ public class Board
         for(int x=0;x<from.rows;x++)
             for(int y=0;y<from.cols;y++)
             {
-                temp = temp.doMove(new BoardMove(matrix[x][y], BoardPosition.Get(x, y), null));
+                GoPlayer player = matrix[x][y];
+                if(!player.isNull()) temp = temp.doMove(new BoardMove(player, BoardPosition.Get(x, y), null));
             }
         return temp;
     }

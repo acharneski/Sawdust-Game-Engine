@@ -16,8 +16,7 @@ public class BoardMove implements Move
         this.island = island;
         if(null != position)
         {
-            assert(null != this.island);
-            assert(this.island.contains(position));
+            assert(null == this.island || this.island.contains(position));
         }
         else
         {

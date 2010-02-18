@@ -43,7 +43,7 @@ public class GoBoardModelLab
     @Test
     public void testGo() throws Exception
     {
-        GoBoard board = new GoBoard();
+        GoBoard board = new GoBoard(9,9);
         GoPlayer p1 = new GoPlayer(1);
         GoPlayer p2 = new GoPlayer(2);
 

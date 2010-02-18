@@ -1,16 +1,19 @@
 package com.sawdust.games.go.controller;
 
 import java.io.File;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import com.sawdust.engine.NotImplemented;
+import com.sawdust.engine.model.state.Token;
 import com.sawdust.games.go.model.Board;
 import com.sawdust.games.go.model.BoardMove;
 import com.sawdust.games.go.model.BoardPosition;
@@ -23,8 +26,33 @@ import com.sawdust.games.go.model.Player;
 import com.sawdust.games.go.view.XmlGoBoard;
 import com.sawdust.games.go.view.XmlGoBoard.Score;
 
-public class GoBoard implements Game
+public class GoBoard implements Game, Serializable
 {
+    private static final Logger LOG = Logger.getLogger(GoBoard.class.getName());
+    private static final long serialVersionUID = 6777412046819678208L;
+    protected static class SerialForm implements Serializable
+    {
+        private static final long serialVersionUID = GoBoard.serialVersionUID;
+        String xml = null;
+        protected SerialForm(){}
+        protected SerialForm(GoBoard obj)
+        {
+            xml = obj.toXmlString();
+        }
+        private Object readResolve()
+        {
+            LOG.fine("Read: " + this.xml);
+            return GoBoard.fromXmlString(this.xml);
+        }
+    }
+    
+    private Object writeReplace()
+    {
+        SerialForm serialForm = new SerialForm(this);
+        LOG.fine("Write: " + serialForm.xml);
+        return serialForm;
+    }
+    
     public static final int EMPTY_VALUE = -1;
 
     public final Board board;
@@ -43,11 +71,11 @@ public class GoBoard implements Game
         playerOrder.add(playerOrder.pop());
     }
 
-    public GoBoard()
+    public GoBoard(int rows, int cols)
     {
         lastPlayerPassed = false;
         winner = null;
-        board = new Board(9, 9);
+        board = new Board(rows, cols);
         for (GoPlayer p : getPlayers())
             playerOrder.add(p);
     }
