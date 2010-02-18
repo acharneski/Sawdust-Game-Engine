@@ -80,7 +80,7 @@ public class Board
         }
         else if(selfJoined.size() == 1)
         {
-            targetPool.add(new Island(selfJoined.iterator().next(), newPosition));
+            targetPool.add(Island.Get(selfJoined.iterator().next(), newPosition));
         }
         else
         {
@@ -138,9 +138,11 @@ public class Board
         final int prime = 31;
         int result = 1;
         result = prime * result + cols;
-        result = prime * result + Arrays.hashCode(islands);
-        result = prime * result + Arrays.hashCode(open);
         result = prime * result + rows;
+        for (Island x : islands)
+            result ^= x.hashCode();
+        for (Island x : open)
+            result ^= x.hashCode();
         return result;
     }
 
@@ -152,9 +154,27 @@ public class Board
         if (getClass() != obj.getClass()) return false;
         Board other = (Board) obj;
         if (cols != other.cols) return false;
-        if (!Arrays.equals(islands, other.islands)) return false;
-        if (!Arrays.equals(open, other.open)) return false;
         if (rows != other.rows) return false;
+        if (!unorderedEquals(islands, other.islands)) return false;
+        if (!unorderedEquals(open, other.open)) return false;
+        return true;
+    }
+
+    private <T> boolean unorderedEquals(T[] a, T[] b)
+    {
+        for(T i : a)
+        {
+            boolean found = false;
+            for(T j : b)
+            {
+                if(j.equals(i)) 
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) return false;
+        }
         return true;
     }
 

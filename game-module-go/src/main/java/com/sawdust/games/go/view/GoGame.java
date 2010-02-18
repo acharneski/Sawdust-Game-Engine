@@ -18,6 +18,7 @@ import com.sawdust.engine.model.state.GameLabel;
 import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.config.GameConfig;
+import com.sawdust.engine.view.game.Message;
 import com.sawdust.engine.view.geometry.Position;
 import com.sawdust.engine.view.geometry.Vector;
 import com.sawdust.games.DateUtil;
@@ -311,15 +312,35 @@ public abstract class GoGame extends TokenGame
     {
         LOG.fine("Moving: " + move.toString());
         board = board.doMove(move);
-        Participant participant = getParticipant((GoPlayer)board.getCurrentPlayer());
-        LOG.fine(board.toXmlString());
-        if(participant instanceof Agent<?>)
+
+        if(null != move.position)
         {
-            GoGame.this.saveState();
-            LOG.fine("Agent moving...");
-            ((Agent) participant).Move(this, participant);
+            addMessage(new Message(String.format("Player %d moves at %d,%d", move.player.value, move.position.x, move.position.y)));
         }
-        LOG.fine("Finished Move");
+        else
+        {
+            addMessage(new Message(String.format("Player %d passed", move.player.value)));
+        }
+        
+        GoPlayer currentPlayer = (GoPlayer)board.getCurrentPlayer();
+        if(null == currentPlayer)
+        {
+            GoPlayer winner = (GoPlayer) board.getWinner();
+            addMessage(new Message(String.format("Player %d won", winner.value)));
+        }
+        else
+        {
+            Participant participant = getParticipant(currentPlayer);
+            LOG.fine(board.toXmlString());
+            if(participant instanceof Agent<?>)
+            {
+                GoGame.this.saveState();
+                LOG.fine("Agent moving...");
+                ((Agent) participant).Move(this, participant);
+            }
+            LOG.fine("Finished Move");
+        }
+        
     }
 
     protected String getMoveString(BoardMove move)

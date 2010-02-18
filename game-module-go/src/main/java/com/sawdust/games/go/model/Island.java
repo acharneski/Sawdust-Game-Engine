@@ -87,7 +87,7 @@ public class Island
         return island;
     }
 
-    public Island(final Island i, final BoardPosition... t)
+    private Island(final Island i, final BoardPosition... t)
     {
         super();
         int oldLength = i.tokens.length;

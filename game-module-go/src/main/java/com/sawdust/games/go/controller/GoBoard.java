@@ -135,24 +135,11 @@ public class GoBoard implements Game, Serializable
                 {
                     buffer.add(new BoardMove((GoPlayer) player, p, o));
                 }
-                if (o.tokens.length == 1)
+                if (buffer.size() == 1)
                 {
-                    HashSet<GoPlayer> surrounding = new HashSet<GoPlayer>();
-                    for (Island i : board.islands)
-                    {
-                        if (i.isNeigbor(o))
-                        {
-                            surrounding.add(i.player);
-                        }
-                    }
-                    if (surrounding.size() == 1)
-                    {
-                        GoPlayer territoryHolder = surrounding.iterator().next();
-                        if (!player.equals(territoryHolder))
-                        {
-                            continue; // Skip add to moves
-                        }
-                    }
+                    BoardMove tryMove = buffer.iterator().next();
+                    GoBoard postMove = this.doMove(tryMove);
+                    if(postMove.board.equals(this.board)) continue;
                 }
                 moves.addAll(buffer);
             }
