@@ -37,10 +37,7 @@ public class Board
         {
             if (!player.isNull() && i.contains(newPosition))
             {
-                for (Island i2 : i.remove(newPosition))
-                {
-                    newOpen.add(i2);
-                }
+                for (Island i2 : i.split(newPosition)) newOpen.add(i2);
             }
             else if (player.isNull() && i.isNeigbor(newPosition))
             {
@@ -56,12 +53,11 @@ public class Board
         {
             if(player.isNull() && i.contains(newPosition))
             {
-                Island[] split = i.remove(newPosition);
-                for(Island toAdd : split) newIslands.add(toAdd);
+                for(Island toAdd : i.split(newPosition)) newIslands.add(toAdd);
             }
             else if (!player.isNull() && i.isNeigbor(newPosition))
             {
-                if (i.player == player)
+                if (i.player.equals(player))
                 {
                     selfJoined.add(i);
                 }

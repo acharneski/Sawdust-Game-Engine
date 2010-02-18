@@ -102,7 +102,7 @@ public class Island
         }
     }
 
-    public Island[] remove(final BoardPosition t)
+    public Island[] split(final BoardPosition t)
     {
         assert (this.contains(t));
         TreeSet<BoardPosition> positions = new TreeSet<BoardPosition>();
@@ -142,15 +142,17 @@ public class Island
                 {
                     positions.removeAll(newP);
                     isl = Island.Get(isl, newP.toArray(new BoardPosition[] {}));
-                    break;
                 }
                 else if (0 == anythingChanged)
                 {
                     break; // No more adjacent pieces
                 }
             }
-            assert (null != isl);
-            newIslands.add(isl);
+            if(null != isl)
+            {
+                newIslands.add(isl);
+                isl = null;
+            }
         }
         Island[] array = newIslands.toArray(new Island[] {});
         return array;

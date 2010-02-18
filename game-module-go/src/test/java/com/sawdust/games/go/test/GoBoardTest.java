@@ -89,6 +89,8 @@ public class GoBoardTest
             "</board><player prisoners=\"0\" territory=\"0\">Player 1</player><player prisoners=\"0\" territory=\"0\">Player 2</player></xmlGoBoard>");
 
         assert(board.board.islands.length == 3);
+        assert(0 == board.getScore(p1).prisoners);
+        assert(0 == board.getScore(p2).prisoners);
         BoardMove move = new BoardMove(p1, BoardPosition.Get(1,1), null);
         board = board.doMove(move);
         System.out.println(board.toXmlString());

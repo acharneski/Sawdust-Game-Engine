@@ -191,7 +191,7 @@ public class GoBoard implements Game, Serializable
 
         HashSet<Island> surrounded = findSurroundedIslands(postMoveBoard, move.player);
         Board postCaptureBoard = captureIslands(postMoveBoard, newScores, surrounded);
-        surrounded = findSurroundedIslands(postMoveBoard, null);
+        surrounded = findSurroundedIslands(postCaptureBoard, null);
         postCaptureBoard = captureIslands(postCaptureBoard, newScores, surrounded);
         recalculateTerritory(newScores, board);
         GoBoard postCapture = new GoBoard(postCaptureBoard, newScores, playerOrder, null == move.position);
