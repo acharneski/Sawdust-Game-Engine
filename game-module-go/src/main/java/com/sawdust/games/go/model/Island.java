@@ -203,7 +203,7 @@ public class Island
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Island other = (Island) obj;
-        if (player != other.player) return false;
+        if (!player.equals(other.player)) return false;
         if (tokens.length != other.tokens.length) return false;
         for (BoardPosition t : other.tokens)
             if (!contains(t)) return false;

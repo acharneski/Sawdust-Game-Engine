@@ -1,5 +1,7 @@
 package com.sawdust.games.go.test;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import com.sawdust.games.go.controller.GoBoard;
@@ -152,5 +154,150 @@ public class GoBoardTest
         assert(board.board.islands.length == 1);
         assert(0 == board.getScore(p1).prisoners);
         assert(0 == board.getScore(p2).prisoners);
+    }
+
+    @Test
+    public void testIslandIdentity() throws Exception
+    {
+        GoPlayer p1 = new GoPlayer(1);
+        GoPlayer p2 = new GoPlayer(2);
+
+        GoBoard board = GoBoard.fromXmlString("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xmlGoBoard><board cols=\"9\" rows=\"9\">" +
+            "0 1 0 0 0 0 0 0 0 \n" +
+            "1 0 1 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "</board><player prisoners=\"0\" territory=\"0\">Player 1</player><player prisoners=\"0\" territory=\"0\">Player 2</player></xmlGoBoard>");
+
+        GoBoard fromXmlString = GoBoard.fromXmlString(board.toXmlString());
+        Assert.assertEquals(fromXmlString.board, board.board);
+        assert(board.board.islands.length == 3);
+        BoardMove move = new BoardMove(p1, BoardPosition.Get(1,1), null);
+        board = board.doMove(move);
+        Assert.assertFalse(fromXmlString.board.equals(board.board));
+
+        System.out.println(board.toXmlString());
+        assert(board.board.islands.length == 1);
+        assert(0 == board.getScore(p1).prisoners);
+        assert(0 == board.getScore(p2).prisoners);
+    }
+
+    @Test
+    public void testIslandTwoPassWin() throws Exception
+    {
+        GoPlayer p1 = new GoPlayer(1);
+        GoPlayer p2 = new GoPlayer(2);
+
+        GoBoard originalBoard = GoBoard.fromXmlString("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xmlGoBoard><board cols=\"9\" rows=\"9\">" +
+            "0 1 0 0 0 0 0 0 0 \n" +
+            "1 0 1 0 0 0 0 0 0 \n" +
+            "0 1 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "</board><player prisoners=\"0\" territory=\"0\">Player 1</player><player prisoners=\"0\" territory=\"0\">Player 2</player></xmlGoBoard>");
+
+        {
+            GoBoard board = originalBoard;
+            assert(board.getWinner() == null);
+            BoardMove move = new BoardMove(p1, null, null);
+            
+            board = originalBoard;
+            assert(board.getWinner() == null);
+            move = new BoardMove(p1, null, null);
+            board = board.doMove(move);
+            
+            assert(board.getWinner() == null);
+            move = new BoardMove(p2, null, null);
+            board = board.doMove(move);
+            
+            System.out.println(board.toXmlString());
+            assert((board.getWinner()) != null);
+            assert(((GoPlayer)board.getWinner()).value == 1);
+        }
+        
+        {
+            GoBoard board = originalBoard;
+            assert(board.getWinner() == null);
+            BoardMove move = new BoardMove(p1, null, null);
+
+            board = originalBoard;
+            assert(board.getWinner() == null);
+            move = new BoardMove(p2, null, null);
+            board = board.doMove(move);
+            
+            assert(board.getWinner() == null);
+            move = new BoardMove(p1, null, null);
+            board = board.doMove(move);
+            
+            System.out.println(board.toXmlString());
+            assert(board.getWinner() != null);
+            assert(((GoPlayer)board.getWinner()).value == 1);
+        }
+    }
+
+    @Test
+    public void testIslandTwoPassPrisoner() throws Exception
+    {
+        GoPlayer p1 = new GoPlayer(1);
+        GoPlayer p2 = new GoPlayer(2);
+
+        GoBoard originalBoard = GoBoard.fromXmlString("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xmlGoBoard><board cols=\"9\" rows=\"9\">" +
+            "0 1 0 0 0 0 0 0 0 \n" +
+            "1 0 1 0 0 0 0 0 0 \n" +
+            "0 1 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 2 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "0 0 0 0 0 0 0 0 0 \n" +
+            "</board><player prisoners=\"3\" territory=\"0\">Player 1</player><player prisoners=\"0\" territory=\"0\">Player 2</player></xmlGoBoard>");
+
+        {
+            GoBoard board = originalBoard;
+            assert(board.getWinner() == null);
+            BoardMove move = new BoardMove(p1, null, null);
+            
+            board = originalBoard;
+            assert(board.getWinner() == null);
+            move = new BoardMove(p1, null, null);
+            board = board.doMove(move);
+            
+            assert(board.getWinner() == null);
+            move = new BoardMove(p2, null, null);
+            board = board.doMove(move);
+            
+            System.out.println(board.toXmlString());
+            assert((board.getWinner()) != null);
+            assert(((GoPlayer)board.getWinner()).value == 2);
+        }
+        
+        {
+            GoBoard board = originalBoard;
+            assert(board.getWinner() == null);
+            BoardMove move = new BoardMove(p1, null, null);
+
+            board = originalBoard;
+            assert(board.getWinner() == null);
+            move = new BoardMove(p2, null, null);
+            board = board.doMove(move);
+            
+            assert(board.getWinner() == null);
+            move = new BoardMove(p1, null, null);
+            board = board.doMove(move);
+            
+            System.out.println(board.toXmlString());
+            assert(board.getWinner() != null);
+            assert(((GoPlayer)board.getWinner()).value == 2);
+        }
     }
 }

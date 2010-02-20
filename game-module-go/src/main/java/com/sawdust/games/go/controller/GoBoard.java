@@ -13,7 +13,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import com.sawdust.engine.NotImplemented;
-import com.sawdust.engine.model.state.Token;
 import com.sawdust.games.go.model.Board;
 import com.sawdust.games.go.model.BoardMove;
 import com.sawdust.games.go.model.BoardPosition;
@@ -56,14 +55,16 @@ public class GoBoard implements Game, Serializable
     public static final int EMPTY_VALUE = -1;
 
     public final Board board;
+    public final Board lastboard;
     public final boolean lastPlayerPassed;
     final HashMap<GoPlayer, GoScore> scores = new HashMap<GoPlayer, GoScore>();
     final LinkedList<GoPlayer> playerOrder = new LinkedList<GoPlayer>();
     final Player winner;
 
-    GoBoard(final Board b, HashMap<GoPlayer, GoScore> newScores, LinkedList<GoPlayer> turns2, boolean pass)
+    GoBoard(final Board b, HashMap<GoPlayer, GoScore> newScores, LinkedList<GoPlayer> turns2, boolean pass, Board lastboard)
     {
         lastPlayerPassed = pass;
+        this.lastboard = lastboard;
         winner = null;
         board = b;
         scores.putAll(newScores);
@@ -74,6 +75,7 @@ public class GoBoard implements Game, Serializable
     public GoBoard(int rows, int cols)
     {
         lastPlayerPassed = false;
+        lastboard = null;
         winner = null;
         board = new Board(rows, cols);
         for (GoPlayer p : getPlayers())
@@ -83,26 +85,24 @@ public class GoBoard implements Game, Serializable
     public GoBoard(XmlGoBoard unmarshal)
     {
         board = Board.unmarshal(unmarshal.board);
-        winner = null;
+        lastboard = Board.unmarshal(unmarshal.lastboard);
+        GoPlayer w = null;
         for (Score p : unmarshal.player)
         {
             GoPlayer findPlayer = findPlayer(p.name);
-            scores.put(findPlayer, new GoScore(p.prisoners, p.territory));
+            if(p.winner) 
+            {
+                assert(null == w);
+                w = findPlayer;
+            }
+            GoScore value = new GoScore(p.prisoners, p.territory);
+            scores.put(findPlayer, value);
         }
+        winner = w;
         // TODO: Restore who's order it is...
         for (GoPlayer p : getPlayers())
             playerOrder.add(p);
         lastPlayerPassed = false;
-    }
-
-    public GoBoard(Board newBoard, HashMap<GoPlayer, GoScore> newScores)
-    {
-        lastPlayerPassed = false;
-        winner = null;
-        board = newBoard;
-        scores.putAll(newScores);
-        for (GoPlayer p : getPlayers())
-            playerOrder.add(p);
     }
 
     public GoBoard(GoBoard goBoard, Player winningPlayer)
@@ -110,6 +110,7 @@ public class GoBoard implements Game, Serializable
         lastPlayerPassed = false;
         winner = winningPlayer;
         board = goBoard.board;
+        lastboard = goBoard.lastboard;
         scores.putAll(goBoard.scores);
     }
 
@@ -135,12 +136,10 @@ public class GoBoard implements Game, Serializable
                 {
                     buffer.add(new BoardMove((GoPlayer) player, p, o));
                 }
-                if (buffer.size() == 1)
-                {
-                    BoardMove tryMove = buffer.iterator().next();
-                    GoBoard postMove = this.doMove(tryMove);
-                    if(postMove.board.equals(this.board)) continue;
-                }
+                BoardMove tryMove = buffer.iterator().next();
+                GoBoard postMove = this.doMove(tryMove);
+                if(postMove.board.equals(this.board)) continue;
+                if(postMove.board.equals(this.lastboard)) continue;
                 moves.addAll(buffer);
             }
         }
@@ -149,7 +148,7 @@ public class GoBoard implements Game, Serializable
 
     public GoBoard doMove(Move gmove)
     {
-        assert(null==winner);
+        if(null != winner) return this;
         BoardMove move = (BoardMove) gmove;
         BoardPosition position = move.position;
         Player player = move.player;
@@ -181,7 +180,7 @@ public class GoBoard implements Game, Serializable
         surrounded = findSurroundedIslands(postCaptureBoard, null);
         postCaptureBoard = captureIslands(postCaptureBoard, newScores, surrounded);
         recalculateTerritory(newScores, board);
-        GoBoard postCapture = new GoBoard(postCaptureBoard, newScores, playerOrder, null == move.position);
+        GoBoard postCapture = new GoBoard(postCaptureBoard, newScores, playerOrder, null == move.position, board);
 
         return postCapture;
     }

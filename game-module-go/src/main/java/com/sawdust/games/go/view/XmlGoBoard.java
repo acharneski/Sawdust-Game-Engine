@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import org.jgap.gp.terminal.False;
+
 import com.sawdust.games.go.controller.GoBoard;
 import com.sawdust.games.go.model.GoPlayer;
 import com.sawdust.games.go.model.GoScore;
@@ -35,18 +37,22 @@ public class XmlGoBoard
         public
         int prisoners;
 
+        @XmlAttribute(required=false)
+        public boolean winner = false;
+
         @SuppressWarnings("unused")
         private Score()
         {
             super();
         }
 
-        public Score(String name, int prisoners, int territory)
+        public Score(String name, int prisoners, int territory, boolean w)
         {
             super();
             this.name = name;
             this.territory = territory;
             this.prisoners = prisoners;
+            this.winner = w;
         }
 
         @Override
@@ -60,6 +66,9 @@ public class XmlGoBoard
     public
     TreeSet<Score> player = new TreeSet<Score>();
 
+    @XmlElement
+    public XmlBoard lastboard;
+
     static final GoPlayer NON_INITIALIZED = null;
 
     public XmlGoBoard()
@@ -71,7 +80,8 @@ public class XmlGoBoard
         for(GoPlayer p : b.getPlayers())
         {
             GoScore scoreObj = b.getScore(p);
-            player.add(new Score(p.getName(), scoreObj.prisoners,scoreObj.territory));
+            Score score = new Score(p.getName(), scoreObj.prisoners,scoreObj.territory, p.equals(b.getWinner()));
+            player.add(score);
         }
     }
 

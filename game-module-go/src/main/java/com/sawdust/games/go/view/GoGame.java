@@ -47,7 +47,7 @@ public abstract class GoGame extends TokenGame
     private static final Vector   playTokenOffset   = new Vector(0, 75);
     private static final Vector   rowOffset         = new Vector(0, 50);
     
-    public final int maxRow = 5;
+    public final int maxRow = 7;
     private IndexPosition _lastPosition;
     private GoBoard board = null;
     
@@ -57,9 +57,16 @@ public abstract class GoGame extends TokenGame
         ArrayList<GameLabel> labels = new ArrayList<GameLabel>();
         int card = 0;
 
-        labels.add(new GameLabel("PASS_CMD", new IndexPosition(ROW_SCORES, card++), "Pass").setCommand("Pass"));
+        if(null == board.getWinner())
+        {
+            labels.add(new GameLabel("PASS_CMD", new IndexPosition(ROW_SCORES, card++), "Pass").setCommand("Pass"));
+        }
+        else
+        {
+            labels.add(new GameLabel("PASS_CMD", new IndexPosition(ROW_SCORES, card++), "Restart").setCommand("Deal"));
+        }
+            
         GoScore blackScore = board.getScore(board.getPlayers()[0]);
-
         if (null != blackScore)
         {
             labels.add(new GameLabel("BLACK_PRISONERS_LABEL", new IndexPosition(ROW_SCORES, card++), "Black Prisoners:"));
@@ -74,7 +81,6 @@ public abstract class GoGame extends TokenGame
         }
 
         GoScore whiteScore = board.getScore(board.getPlayers()[1]);
-
         if (null != whiteScore)
         {
             labels.add(new GameLabel("WHITE_PRISONERS_LABEL", new IndexPosition(ROW_SCORES, card++), "White Prisoners:"));
@@ -162,30 +168,32 @@ public abstract class GoGame extends TokenGame
             }
         }
 
-        cardIdCounter = 0x4000;
-        ArrayList<IndexPosition> openPos = new ArrayList<IndexPosition>();
-        for(Island i : board.getBoard().open)
+        if(null == board.getWinner())
         {
-            for(BoardPosition t : i.tokens)
+            cardIdCounter = 0x4000;
+            ArrayList<IndexPosition> openPos = new ArrayList<IndexPosition>();
+            for(Island i : board.getBoard().open)
             {
-                openPos.add(new IndexPosition(t.x, t.y));
+                for(BoardPosition t : i.tokens)
+                {
+                    openPos.add(new IndexPosition(t.x, t.y));
+                }
             }
+            final IndexPosition position = new IndexPosition(ROW_PLAYERTOKEN, 0, 1);
+            int i = ((GoPlayer)board.getCurrentPlayer()).value-1;
+            Participant participant = getParticipant(i);
+            String art = playerArt[i];
+            final BoardToken token = new BoardToken(++cardIdCounter, "GO1", art, participant, null, true, position);
+            token.getPosition().setZ(4);
+            token.setText("Place this piece on the board to move");
+            HashMap<IndexPosition, String> moveCommands = token.getMoveCommands();
+            for (final IndexPosition pos : openPos)
+            {
+                final String cmd = String.format("Move %d, %d", pos.getCurveIndex(), pos.getCardIndex());
+                moveCommands.put(pos, cmd);
+            }
+            returnValue.add(token);
         }
-        
-        final IndexPosition position = new IndexPosition(ROW_PLAYERTOKEN, 0, 1);
-        int i = ((GoPlayer)board.getCurrentPlayer()).value-1;
-        Participant participant = getParticipant(i);
-        String art = playerArt[i];
-        final BoardToken token = new BoardToken(++cardIdCounter, "GO1", art, participant, null, true, position);
-        token.getPosition().setZ(4);
-        token.setText("Place this piece on the board to move");
-        HashMap<IndexPosition, String> moveCommands = token.getMoveCommands();
-        for (final IndexPosition pos : openPos)
-        {
-            final String cmd = String.format("Move %d, %d", pos.getCurveIndex(), pos.getCardIndex());
-            moveCommands.put(pos, cmd);
-        }
-        returnValue.add(token);
 
         return returnValue;
     }
@@ -231,6 +239,15 @@ public abstract class GoGame extends TokenGame
     public void doReset()
     {
         board = new GoBoard(maxRow,maxRow);
+        try
+        {
+            saveState();
+        }
+        catch (GameException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -275,35 +292,38 @@ public abstract class GoGame extends TokenGame
             this.doStart(); //HACK
         }
         ArrayList<GameCommand> arrayList = new ArrayList<GameCommand>();
-        assert (access.getId().equals(board.getCurrentPlayer()));
-        int moveId = 0;
-        for (final BoardMove move : board.getMoves(board.getCurrentPlayer()))
+        if(null == board.getWinner())
         {
-            final String moveString = GoGame.this.getMoveString(move);
-            arrayList.add(new GameCommand()
+            assert (access.getId().equals(board.getCurrentPlayer()));
+            int moveId = 0;
+            for (final BoardMove move : board.getMoves(board.getCurrentPlayer()))
             {
-                @Override
-                public String getHelpText()
+                final String moveString = GoGame.this.getMoveString(move);
+                arrayList.add(new GameCommand()
                 {
-                    return "Help not availible";
-                }
-
-                @Override
-                public String getCommandText()
-                {
-                    return moveString;
-                }
-
-                @Override
-                public boolean doCommand(Participant access, String commandText) throws GameException
-                {
-                    assert (access.getId().equals(GoGame.this.getParticipant((GoPlayer)board.getCurrentPlayer())));
-                    if(!moveString.equals(commandText)) return false;
-                    GoGame.this.doMove(move);
-                    saveState();
-                    return true;
-                }
-            });
+                    @Override
+                    public String getHelpText()
+                    {
+                        return "Help not availible";
+                    }
+                    
+                    @Override
+                    public String getCommandText()
+                    {
+                        return moveString;
+                    }
+                    
+                    @Override
+                    public boolean doCommand(Participant access, String commandText) throws GameException
+                    {
+                        assert (access.getId().equals(GoGame.this.getParticipant((GoPlayer)board.getCurrentPlayer())));
+                        if(!moveString.equals(commandText)) return false;
+                        GoGame.this.doMove(move);
+                        saveState();
+                        return true;
+                    }
+                });
+            }
         }
         return arrayList;
     }
@@ -311,6 +331,14 @@ public abstract class GoGame extends TokenGame
     protected void doMove(BoardMove move) throws GameException
     {
         LOG.fine("Moving: " + move.toString());
+        if(null == move.position) 
+        {
+            _lastPosition = null;
+        }
+        else
+        {
+            _lastPosition = new IndexPosition(move.position.x, move.position.y);
+        }
         board = board.doMove(move);
 
         if(null != move.position)
@@ -322,14 +350,14 @@ public abstract class GoGame extends TokenGame
             addMessage(new Message(String.format("Player %d passed", move.player.value)));
         }
         
-        GoPlayer currentPlayer = (GoPlayer)board.getCurrentPlayer();
-        if(null == currentPlayer)
+        if(null != board.getWinner())
         {
             GoPlayer winner = (GoPlayer) board.getWinner();
             addMessage(new Message(String.format("Player %d won", winner.value)));
         }
         else
         {
+            GoPlayer currentPlayer = (GoPlayer)board.getCurrentPlayer();
             Participant participant = getParticipant(currentPlayer);
             LOG.fine(board.toXmlString());
             if(participant instanceof Agent<?>)

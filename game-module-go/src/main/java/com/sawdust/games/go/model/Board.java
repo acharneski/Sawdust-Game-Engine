@@ -1,9 +1,14 @@
 package com.sawdust.games.go.model;
 
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import com.sawdust.games.go.view.XmlBoard;
+import com.sawdust.games.go.view.XmlGoBoard;
 
 
 public class Board
@@ -102,6 +107,7 @@ public class Board
 
     public static Board unmarshal(XmlBoard from)
     {
+        if(null == from) return null;
         Board temp = new Board(from.rows, from.cols);
         GoPlayer[][] matrix = from.getMatrix();
         for(int x=0;x<from.rows;x++)
@@ -178,5 +184,24 @@ public class Board
         return true;
     }
 
+    @Override
+    public String toString()
+    {
+        return toXmlString();
+    }
+
+    public String toXmlString()
+    {
+        StringWriter buffer = new StringWriter();
+        try
+        {
+            JAXBContext.newInstance(XmlBoard.class).createMarshaller().marshal(new XmlBoard(this), buffer);
+        }
+        catch (JAXBException e)
+        {
+            throw new RuntimeException(e);
+        }
+        return buffer.toString();
+    }
 
 }
