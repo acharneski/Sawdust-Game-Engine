@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import org.jgap.gp.terminal.False;
-
 import com.sawdust.games.go.controller.GoBoard;
 import com.sawdust.games.go.model.GoPlayer;
 import com.sawdust.games.go.model.GoScore;
@@ -18,8 +16,10 @@ import com.sawdust.games.go.model.GoScore;
 public class XmlGoBoard
 {
     @XmlElement
-    public
-    XmlBoard board;
+    public XmlBoard board;
+
+    @XmlAttribute(required=true)
+    public Boolean passed = false;
 
     @XmlRootElement
     public
@@ -77,6 +77,8 @@ public class XmlGoBoard
     public XmlGoBoard(final GoBoard b)
     {
         board = new XmlBoard(b.board);
+        lastboard = (null == b.lastboard)?null:new XmlBoard(b.lastboard);
+        passed = b.lastPlayerPassed;
         for(GoPlayer p : b.getPlayers())
         {
             GoScore scoreObj = b.getScore(p);

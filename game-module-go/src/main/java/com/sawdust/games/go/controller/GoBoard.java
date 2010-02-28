@@ -102,7 +102,7 @@ public class GoBoard implements Game, Serializable
         // TODO: Restore who's order it is...
         for (GoPlayer p : getPlayers())
             playerOrder.add(p);
-        lastPlayerPassed = false;
+        lastPlayerPassed = unmarshal.passed;
     }
 
     public GoBoard(GoBoard goBoard, Player winningPlayer)

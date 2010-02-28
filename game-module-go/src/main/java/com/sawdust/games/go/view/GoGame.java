@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import com.sawdust.engine.controller.Util;
 import com.sawdust.engine.controller.entities.GameSession;
+import com.sawdust.engine.controller.entities.GameSession.SessionStatus;
 import com.sawdust.engine.controller.exceptions.GameException;
 import com.sawdust.engine.model.GameType;
-import com.sawdust.engine.model.basetypes.BaseGame;
 import com.sawdust.engine.model.basetypes.TokenGame;
+import com.sawdust.engine.model.players.ActivityEvent;
 import com.sawdust.engine.model.players.Agent;
 import com.sawdust.engine.model.players.Participant;
 import com.sawdust.engine.model.players.Player;
@@ -47,8 +49,8 @@ public abstract class GoGame extends TokenGame
     private static final Vector   playTokenOffset   = new Vector(0, 75);
     private static final Vector   rowOffset         = new Vector(0, 50);
     
-    public final int maxRow = 7;
-    private IndexPosition _lastPosition;
+    public static final int maxRow = 5;
+    private IndexPosition _lastPosition = null;
     private GoBoard board = null;
     
     @Override
@@ -132,10 +134,23 @@ public abstract class GoGame extends TokenGame
     {
         ArrayList<Token> returnValue = new ArrayList<Token>();
         int cardIdCounter = 0;
-        IndexPosition lastPosition = _lastPosition;
-        if (null != lastPosition)
+
+        
+        for (int i = 0; i < maxRow; i++)
         {
-            BoardToken token = new BoardToken(0X1001, "GO1", "GO:HIGHLIGHT", null, null, false, lastPosition);
+            for (int j = 0; j < maxRow; j++)
+            {
+                IndexPosition position = new IndexPosition(i + OFFSET_BOARD, j, 0);
+                BoardToken token = new BoardToken(++cardIdCounter, "GO1", "GO:BOARD", null, null, false, position);
+                token.getPosition().setZ(1);
+                token.setText("Board Tile");
+                returnValue.add(token);
+            }
+        }
+        
+        if (null != _lastPosition)
+        {
+            BoardToken token = new BoardToken(0X1001, "GO1", "GO:HIGHLIGHT", null, null, false, _lastPosition);
             token.getPosition().setZ(2);
             token.setText("Last-moved piece");
             returnValue.add(token);
@@ -153,18 +168,6 @@ public abstract class GoGame extends TokenGame
                 token.getPosition().setZ(3);
                 returnValue.add(token);
                 
-            }
-        }
-        
-        for (int i = 0; i < maxRow; i++)
-        {
-            for (int j = 0; j < maxRow; j++)
-            {
-                IndexPosition position = new IndexPosition(i + OFFSET_BOARD, j, 0);
-                BoardToken token = new BoardToken(++cardIdCounter, "GO1", "GO:BOARD", null, null, false, position);
-                token.getPosition().setZ(1);
-                token.setText("Board Tile");
-                returnValue.add(token);
             }
         }
 
@@ -206,7 +209,7 @@ public abstract class GoGame extends TokenGame
 
     private Participant getParticipant(final GoPlayer goPlayer)
     {
-        ArrayList<Participant> ps = new ArrayList<Participant>(_displayFilter.keySet());
+        ArrayList<Participant> ps = getParticipants();
         int idx = goPlayer.value-1;
         if(idx >= ps.size())
         {
@@ -216,13 +219,21 @@ public abstract class GoGame extends TokenGame
                 public void Move(GoGame game, Participant participant) throws GameException
                 {
                     Move selectMove = goSearchAgent.selectMove(goPlayer, game.board, DateUtil.future(500));
-                    LOG.fine("Agent Move: "+selectMove.toString());
-                    game.doMove((BoardMove) selectMove);
+                    if(null != selectMove)
+                    {
+                        LOG.fine("Agent Move: "+selectMove.toString());
+                        game.doMove((BoardMove) selectMove);
+                    }
                 }
             };
         }
         Participant participant = ps.get(idx);
         return participant;
+    }
+
+    private ArrayList<Participant> getParticipants()
+    {
+        return new ArrayList<Participant>(_displayFilter.keySet());
     }
 
     protected GoGame()
@@ -238,15 +249,30 @@ public abstract class GoGame extends TokenGame
     @Override
     public void doReset()
     {
+        GameSession session = getSession();
+        if(null != session) 
+        {
+            session.setMinimumPlayers(1);
+            try
+            {
+                session.setStatus(SessionStatus.Playing, null);
+            }
+            catch (GameException e)
+            {
+                LOG.warning(Util.getFullString(e));
+            }
+        }
+        LOG.info("Restarting Go 2.0");
         board = new GoBoard(maxRow,maxRow);
+        _lastPosition = null;
         try
         {
             saveState();
         }
         catch (GameException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.warning(Util.getFullString(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -257,6 +283,25 @@ public abstract class GoGame extends TokenGame
     public void doStart() throws GameException
     {
         doReset();
+
+        final GameSession session = getSession();
+        if (session != null)
+        {
+           session.doUnitWager();
+           ArrayList<Participant> participants = getParticipants();
+           int playerCount = 0;
+           for (final Participant p : participants)
+           {
+              if (!(p instanceof Agent<?>))
+              {
+                  playerCount++;
+              }
+           }
+           for(int i=2;i>playerCount;i--)
+           {
+               session.withdraw(-session.getUnitWager(), null, "Agent Ante Up");
+           }
+        }
     }
 
     @Override
@@ -331,29 +376,50 @@ public abstract class GoGame extends TokenGame
     protected void doMove(BoardMove move) throws GameException
     {
         LOG.fine("Moving: " + move.toString());
+        this.board = board.doMove(move);
+
         if(null == move.position) 
         {
-            _lastPosition = null;
-        }
-        else
-        {
-            _lastPosition = new IndexPosition(move.position.x, move.position.y);
-        }
-        board = board.doMove(move);
-
-        if(null != move.position)
-        {
-            addMessage(new Message(String.format("Player %d moves at %d,%d", move.player.value, move.position.x, move.position.y)));
-        }
-        else
-        {
+            this._lastPosition = null;
             addMessage(new Message(String.format("Player %d passed", move.player.value)));
+        }
+        else
+        {
+            this._lastPosition = new IndexPosition(move.position.x, move.position.y);
+            addMessage(new Message(String.format("Player %d moves at %d,%d", move.player.value, move.position.x, move.position.y)));
         }
         
         if(null != board.getWinner())
         {
             GoPlayer winner = (GoPlayer) board.getWinner();
             addMessage(new Message(String.format("Player %d won", winner.value)));
+            
+            Participant winningParticipant = getParticipant(move.player);
+            if(winningParticipant instanceof Player)
+            {
+                String type = "Win/Stop";
+                String event = String.format("I won a game of Go 2.0 on Sawdust Game Engine!");
+                ((Player)winningParticipant).logActivity(new ActivityEvent(type,event));
+                //rollForLoot(winningParticipant);
+            }
+            GameSession session = getSession();
+            if(null != session)
+            {
+                final ArrayList<Player> collection = new ArrayList<Player>();
+                if (winningParticipant instanceof Player)
+                {
+                    collection.add((Player) winningParticipant);
+                }
+                session.doSplitWagerPool(collection);
+                try
+                {
+                    session.setStatus(SessionStatus.Playing, null);
+                }
+                catch (GameException e)
+                {
+                    LOG.warning(Util.getFullString(e));
+                }
+            }
         }
         else
         {

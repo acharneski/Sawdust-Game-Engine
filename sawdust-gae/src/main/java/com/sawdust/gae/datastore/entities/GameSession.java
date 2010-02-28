@@ -626,19 +626,22 @@ public class GameSession extends DataObj implements com.sawdust.engine.controlle
     private boolean dropInactivePlayers(GameState game)
     {
         boolean isGameDirty = false;
-        for (final SessionMember member : members)
+        if(null != game)
         {
-            if (member.getMemberStatus() == MemberStatus.Timeout)
+            for (final SessionMember member : members)
             {
-                game.doAddMessage("%s has been dropped from the game", member);
-                isGameDirty = true;
-                dropMember(member);
-            }
-            if (member.getMemberStatus() == MemberStatus.Quit)
-            {
-                game.doAddMessage("%s has been dropped from the game", member);
-                isGameDirty = true;
-                dropMember(member);
+                if (member.getMemberStatus() == MemberStatus.Timeout)
+                {
+                    game.doAddMessage("%s has been dropped from the game", member);
+                    isGameDirty = true;
+                    dropMember(member);
+                }
+                if (member.getMemberStatus() == MemberStatus.Quit)
+                {
+                    game.doAddMessage("%s has been dropped from the game", member);
+                    isGameDirty = true;
+                    dropMember(member);
+                }
             }
         }
         return isGameDirty;
