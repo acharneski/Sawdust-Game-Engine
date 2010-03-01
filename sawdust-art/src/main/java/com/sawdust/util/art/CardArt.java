@@ -84,7 +84,7 @@ public class CardArt extends ArtToken
     String getKey()
     {
         String suitLabel = _suit.toString();
-        String rankLabel = ((CardGenerator1)_parent).getRankLabel(_rank);
+        String rankLabel = _rank.toString();
         return rankLabel + suitLabel;
     }
 

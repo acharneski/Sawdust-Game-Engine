@@ -104,13 +104,13 @@ public String getId() {
 }
 
 },
-cards110C
+cards1TC
 {
 public AbstractImagePrototype getImage() {
- return singleton.instance().get10C(); 
+ return singleton.instance().getTC(); 
 }
 public String getId() {
- return "10C"; 
+ return "TC"; 
 }
 
 },
@@ -234,13 +234,13 @@ public String getId() {
 }
 
 },
-cards110D
+cards1TD
 {
 public AbstractImagePrototype getImage() {
- return singleton.instance().get10D(); 
+ return singleton.instance().getTD(); 
 }
 public String getId() {
- return "10D"; 
+ return "TD"; 
 }
 
 },
@@ -364,13 +364,13 @@ public String getId() {
 }
 
 },
-cards110H
+cards1TH
 {
 public AbstractImagePrototype getImage() {
- return singleton.instance().get10H(); 
+ return singleton.instance().getTH(); 
 }
 public String getId() {
- return "10H"; 
+ return "TH"; 
 }
 
 },
@@ -494,13 +494,13 @@ public String getId() {
 }
 
 },
-cards110S
+cards1TS
 {
 public AbstractImagePrototype getImage() {
- return singleton.instance().get10S(); 
+ return singleton.instance().getTS(); 
 }
 public String getId() {
- return "10S"; 
+ return "TS"; 
 }
 
 },

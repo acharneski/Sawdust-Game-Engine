@@ -23,8 +23,8 @@ AbstractImagePrototype getQC();
 AbstractImagePrototype get7C();
 @Resource("cards1/6C.png")
 AbstractImagePrototype get6C();
-@Resource("cards1/10C.png")
-AbstractImagePrototype get10C();
+@Resource("cards1/TC.png")
+AbstractImagePrototype getTC();
 @Resource("cards1/3C.png")
 AbstractImagePrototype get3C();
 @Resource("cards1/2C.png")
@@ -49,8 +49,8 @@ AbstractImagePrototype getQD();
 AbstractImagePrototype get7D();
 @Resource("cards1/6D.png")
 AbstractImagePrototype get6D();
-@Resource("cards1/10D.png")
-AbstractImagePrototype get10D();
+@Resource("cards1/TD.png")
+AbstractImagePrototype getTD();
 @Resource("cards1/3D.png")
 AbstractImagePrototype get3D();
 @Resource("cards1/2D.png")
@@ -75,8 +75,8 @@ AbstractImagePrototype getQH();
 AbstractImagePrototype get7H();
 @Resource("cards1/6H.png")
 AbstractImagePrototype get6H();
-@Resource("cards1/10H.png")
-AbstractImagePrototype get10H();
+@Resource("cards1/TH.png")
+AbstractImagePrototype getTH();
 @Resource("cards1/3H.png")
 AbstractImagePrototype get3H();
 @Resource("cards1/2H.png")
@@ -101,8 +101,8 @@ AbstractImagePrototype getQS();
 AbstractImagePrototype get7S();
 @Resource("cards1/6S.png")
 AbstractImagePrototype get6S();
-@Resource("cards1/10S.png")
-AbstractImagePrototype get10S();
+@Resource("cards1/TS.png")
+AbstractImagePrototype getTS();
 @Resource("cards1/3S.png")
 AbstractImagePrototype get3S();
 @Resource("cards1/2S.png")

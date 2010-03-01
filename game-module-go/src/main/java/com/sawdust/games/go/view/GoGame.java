@@ -21,6 +21,7 @@ import com.sawdust.engine.model.state.IndexPosition;
 import com.sawdust.engine.model.state.Token;
 import com.sawdust.engine.view.config.GameConfig;
 import com.sawdust.engine.view.game.Message;
+import com.sawdust.engine.view.game.SolidColorGameCanvas;
 import com.sawdust.engine.view.geometry.Position;
 import com.sawdust.engine.view.geometry.Vector;
 import com.sawdust.games.DateUtil;
@@ -49,7 +50,7 @@ public abstract class GoGame extends TokenGame
     private static final Vector   playTokenOffset   = new Vector(0, 75);
     private static final Vector   rowOffset         = new Vector(0, 50);
     
-    public static final int maxRow = 5;
+    public static final int maxRow = 9;
     private IndexPosition _lastPosition = null;
     private GoBoard board = null;
     
@@ -244,6 +245,7 @@ public abstract class GoGame extends TokenGame
     public GoGame(GameConfig config)
     {
         super(config);
+        setCanvas(new SolidColorGameCanvas("cornflowerblue", "black"));
     }
 
     @Override
